@@ -37,9 +37,11 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
       - run: npm ci
+      # GITHUB_REPOSITORY is populated under every trigger, including
+      # workflow_dispatch, where github.event.repository can be absent.
+      - name: Derive base path
+        run: echo "BASE_PATH=/${GITHUB_REPOSITORY##*/}/" >> "$GITHUB_ENV"
       - run: npm run build
-        env:
-          BASE_PATH: /${{ github.event.repository.name }}/
       - uses: actions/upload-pages-artifact@v3
         with: { path: dist }
 
