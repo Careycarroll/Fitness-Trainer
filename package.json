@@ -1,0 +1,19 @@
+{
+  "name": "training-planner",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "description": "Offline-first, single-user training planner. Deterministic rules engine, phone-first PWA.",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run validate && vite build",
+    "preview": "vite preview",
+    "validate": "node scripts/validate.js",
+    "test": "node --test \"tests/**/*.test.js\"",
+    "check": "npm run validate && npm test"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0",
+    "vite-plugin-pwa": "^0.21.0"
+  }
+}

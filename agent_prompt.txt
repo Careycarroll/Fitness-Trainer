@@ -1,0 +1,40 @@
+TRAINING PLANNER — CONTEXT FOR AI COLLABORATORS
+
+Read docs/adr/README.md and js/engine/SPEC.md before proposing any change. They are binding.
+
+WHAT THIS IS
+Single-user, offline-first PWA that generates training sessions and multi-week blocks from a
+deterministic rules engine. Phone-first. No backend, no accounts, no network in the core path.
+
+THE RULE THAT IS BROKEN MOST OFTEN
+Data holds VALUES. Code holds SHAPES.
+- Different numbers (reps, %1RM, work/rest) -> a record in js/data/styles.json
+- Different structure (AMRAP vs. sets x reps) -> a new generator in js/engine/
+Never put control flow, safety gates or validators into JSON. See ADR-012 for the promotion
+test; scripts/checks/10-no-logic-in-data.js enforces it and will fail the build.
+
+HARD CONSTRAINTS
+1. The engine is pure. No Date.now(), no Math.random(), no fetch, no localStorage inside
+   js/engine/. Randomness comes from createRng(seed) in rng.js. Same request => same program.
+2. Safety gates live in js/engine/safety.js and fail closed. An unknown gate id throws. Data may
+   REFERENCE a gate by id; data may never DEFINE one.
+3. No planning logic in js/ui/. The UI builds a request and renders a result. That is all.
+4. Storage is gated to M6 (ADR-011). Do not implement js/storage/db.js without also implementing
+   JSON export/import in the same change.
+5. Exercise ids are immutable once shipped. Logged sets reference them.
+6. Every field in SPEC.md needs a validator rule in scripts/checks/.
+
+BEFORE YOU COMMIT
+  npm run check     (validators + tests; both must pass)
+
+SCOPE DISCIPLINE (ADR-007)
+There is no deadline, which makes scope the only real risk. A milestone is never extended to
+absorb a new idea — it is closed at its exit criteria and the idea goes to docs/MILESTONES.md
+Backlog. "All possible exercises" is not an exit criterion; the M4 rule is two options per
+(pattern x loadType x equipment-profile) cell.
+
+WHAT NOT TO SUGGEST
+- An LLM anywhere in the generation path (ADR-002)
+- Importing a public exercise dataset (ADR-006 — none carry planning primitives)
+- Extracting shared UI into a package (ADR-005 — not before a fourth app)
+- A framework (ADR-001 — vanilla is deliberate, for a long-lived project)

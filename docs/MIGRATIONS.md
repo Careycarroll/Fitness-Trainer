@@ -1,0 +1,26 @@
+# Schema Migrations
+
+Two independent version lines. Do not conflate them.
+
+| Line | Governs | Current |
+|---|---|---|
+| **Definition-file schema** (`SPEC.md`) | Shipped JSON in `js/data/` | 1 |
+| **Stored-record schema** (`js/storage/db.js`) | User data in IndexedDB and export files | 1 (unimplemented, gated to M6) |
+
+## Rules
+
+1. Any change to `SPEC.md` bumps the definition-file schema version and gets an entry below.
+2. Any change to a stored record shape bumps `DB_VERSION` **and** the export-format version,
+   and ships with a forward migration. There is no backward migration; export files are
+   upgraded on import, never downgraded.
+3. An exercise `id` is immutable once shipped. Renaming one orphans every logged set that
+   references it. To retire a record, mark it inactive — never delete or rename.
+4. ADR-012 consequence: every field promoted from code to data joins this file permanently.
+   That recurring cost is the reason the promotion test exists.
+
+## Log
+
+### v1 — 2026-08-09 — initial
+
+Exercises (dual-domain per ADR-009), styles, landmarks, splits, equipment, substitution
+weights, progression coefficients. No migration required; nothing previously shipped.

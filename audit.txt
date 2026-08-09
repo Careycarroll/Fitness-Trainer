@@ -1,0 +1,36 @@
+AUDIT LOG — decisions, reversals, and things deliberately left undone.
+Append-only. Newest last.
+
+2026-08-09  M0  Repo scaffolded. Vite + vanilla JS PWA, GH Pages via Actions. ADR-001.
+2026-08-09  M0  ADRs 001-012 written to docs/adr/ as one file per decision, extracted from
+                PLAN.md. PLAN.md now links rather than restates — duplicated decisions drift.
+2026-08-09  M1  SPEC.md written. 12 movement patterns, dual-domain exercise record (ADR-009).
+2026-08-09  M2  Seed catalog: 24 records, every pattern covered exactly twice. Deliberately
+                small. Its job is to break the schema cheaply before M4 makes breakage
+                expensive (ADR-008).
+2026-08-09  M2  Validator suite: 10 validators, 2,839 checks, green.
+2026-08-09  M2  Check 10 (no-logic-in-data) added. Enforces the ADR-012 warning-sign list
+                mechanically rather than by review discipline. Review discipline does not
+                survive a year of solo commits.
+2026-08-09  M3  Load-domain generator. 28 unit tests, green.
+2026-08-09  M3  Interval-domain generator written ahead of M7. Rationale: writing the second
+                generator immediately proves the two-generator split is real rather than
+                aspirational. Cheap now, and it validates ADR-010 before M4 authors 200
+                records against the assumption.
+
+DELIBERATELY NOT DONE
+- js/storage/db.js throws by design. Gated to M6 (ADR-011). A logger without an export path is
+  the specific failure this project decided to prevent in writing.
+- No PWA icons in public/icons/ yet. Build works; install prompt will not show a proper icon.
+  Cosmetic, filed to Backlog.
+- Progression is implemented but unexercised — there is no history to read until M6.
+- CrossFit style parameters exist in styles.json but the benchmark-WOD table and gymnastic
+  progressions do not. M9, and first to cut.
+
+OPEN RISKS
+- iOS Safari is the binding PWA constraint (ADR-001). Nothing has been tested there yet.
+  Chrome desktop passing proves nothing about storage eviction behaviour.
+- Volume landmarks are population estimates with wide individual variance. Documented in
+  landmarks.json and README. Not medical guidance.
+- free-exercise-db licence has NOT been verified. It is not vendored or depended on, but if it
+  is used even as an authoring reference in M4, check the licence first (ADR-006).

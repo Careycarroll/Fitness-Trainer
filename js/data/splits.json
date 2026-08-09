@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "splits": [
+    { "id": "full-body-3", "name": "Full Body ×3", "daysPerWeek": 3, "days": [
+      { "label": "Full Body A", "patterns": ["squat", "horizontalPush", "horizontalPull", "core"] },
+      { "label": "Full Body B", "patterns": ["hinge", "verticalPush", "verticalPull", "carry"] },
+      { "label": "Full Body C", "patterns": ["lunge", "horizontalPush", "verticalPull", "core"] }
+    ]},
+    { "id": "upper-lower-4", "name": "Upper / Lower ×4", "daysPerWeek": 4, "days": [
+      { "label": "Upper A", "patterns": ["horizontalPush", "horizontalPull", "verticalPush", "core"] },
+      { "label": "Lower A", "patterns": ["squat", "hinge", "lunge", "core"] },
+      { "label": "Upper B", "patterns": ["verticalPush", "verticalPull", "horizontalPull", "carry"] },
+      { "label": "Lower B", "patterns": ["hinge", "squat", "lunge", "core"] }
+    ]},
+    { "id": "ppl-6", "name": "Push / Pull / Legs ×6", "daysPerWeek": 6, "days": [
+      { "label": "Push A", "patterns": ["horizontalPush", "verticalPush", "core"] },
+      { "label": "Pull A", "patterns": ["verticalPull", "horizontalPull", "carry"] },
+      { "label": "Legs A", "patterns": ["squat", "hinge", "lunge"] },
+      { "label": "Push B", "patterns": ["verticalPush", "horizontalPush", "core"] },
+      { "label": "Pull B", "patterns": ["horizontalPull", "verticalPull", "carry"] },
+      { "label": "Legs B", "patterns": ["hinge", "squat", "lunge"] }
+    ]},
+    { "id": "conditioning-3", "name": "Conditioning ×3", "daysPerWeek": 3, "days": [
+      { "label": "Intervals", "patterns": ["monostructural", "hinge", "core"] },
+      { "label": "Mixed Modal", "patterns": ["monostructural", "squat", "horizontalPush"] },
+      { "label": "Steady", "patterns": ["monostructural"] }
+    ]}
+  ]
+}

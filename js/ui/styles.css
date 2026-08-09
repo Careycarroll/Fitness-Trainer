@@ -1,0 +1,37 @@
+/* Forked from the existing web apps (ADR-005). Phone-first: no layout above 640px matters. */
+:root {
+  --bg: #12161c; --surface: #1a212a; --text: #e6edf3; --muted: #9aa7b4;
+  --accent: #4c9aff; --warn: #f0b429; --error: #ff6b6b; --border: #2a3340;
+  --radius: 10px; --gap: 12px;
+}
+[data-theme='light'] {
+  --bg: #f6f8fa; --surface: #ffffff; --text: #1a212a; --muted: #5b6773;
+  --border: #d7dee6;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+#app { max-width: 720px; margin: 0 auto; padding: var(--gap); }
+.app-bar { display: flex; align-items: center; justify-content: space-between; }
+h1 { font-size: 1.25rem; margin: 0; }
+h2 { font-size: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin: 24px 0 8px; }
+.panel { display: grid; gap: var(--gap); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--gap); }
+label { display: grid; gap: 4px; font-size: .85rem; color: var(--muted); }
+input, select, button {
+  font: inherit; padding: 12px; border-radius: var(--radius);
+  border: 1px solid var(--border); background: var(--bg); color: var(--text);
+  min-height: 44px; /* thumb target */
+}
+button.primary { background: var(--accent); color: #08121f; border: 0; font-weight: 600; }
+button.ghost { background: none; border: 0; font-size: 1.2rem; min-height: 44px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--gap); margin-bottom: var(--gap); }
+.card h3 { margin: 0 0 8px; font-size: 1rem; }
+.card ul { margin: 0; padding-left: 18px; }
+.card li { margin-bottom: 6px; }
+.meta { color: var(--muted); font-size: .8rem; margin: 8px 0 0; }
+.tag { font-size: .7rem; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; }
+.warn { color: var(--warn); font-size: .8rem; }
+.error { color: var(--error); }

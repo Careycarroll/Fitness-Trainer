@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "note": "COEFFICIENTS only. The progression ALGORITHM is code (js/engine/progression.js, ADR-012).",
+  "models": {
+    "double-progression": {
+      "appliesTo": ["bodybuilding", "core"],
+      "loadIncrementFraction": 0.025,
+      "repCeilingHoldSessions": 1
+    },
+    "linear-load": {
+      "appliesTo": ["strength", "powerlifting"],
+      "upperBodyIncrementKg": 2.5,
+      "lowerBodyIncrementKg": 5.0,
+      "stallThresholdSessions": 2,
+      "deloadFraction": 0.90
+    },
+    "interval-density": {
+      "appliesTo": ["hiit", "cardio", "crossfit"],
+      "workSecondsIncrement": 5,
+      "restSecondsDecrement": 5,
+      "restSecondsFloor": 10
+    }
+  },
+  "epley": {
+    "note": "1RM estimated from logged sets, adjusted for RIR. Coefficient only; formula is code.",
+    "coefficient": 0.0333
+  },
+  "deloadTriggers": {
+    "note": "Thresholds are data. The TRIGGER LOGIC is code and fails closed (ADR-012).",
+    "consecutiveStallSessions": 3,
+    "weeklyVolumeOverMrvFraction": 1.0,
+    "averageRirBelow": 0.5
+  }
+}

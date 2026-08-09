@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "note": "Parameters only. A style that needs a new SHAPE is a new generator in code, not a record here (ADR-010, ADR-012).",
+  "styles": [
+    {
+      "id": "powerlifting", "name": "Powerlifting", "domain": "load", "tier": 1,
+      "repRange": { "min": 1, "max": 6 },
+      "intensityBand": { "min": 0.80, "max": 0.95 },
+      "setsPerMainLift": { "min": 3, "max": 6 },
+      "accessoryRatio": 0.30,
+      "restSeconds": { "main": 240, "accessory": 120 },
+      "workRest": null,
+      "patternEmphasis": { "squat": 1.0, "hinge": 1.0, "horizontalPush": 1.0, "verticalPush": 0.4, "horizontalPull": 0.5, "verticalPull": 0.4, "lunge": 0.2, "core": 0.3, "carry": 0.1, "olympic": 0.0, "gymnastic": 0.0, "monostructural": 0.0 },
+      "fatigueBudget": 22
+    },
+    {
+      "id": "bodybuilding", "name": "Bodybuilding", "domain": "load", "tier": 1,
+      "repRange": { "min": 8, "max": 15 },
+      "intensityBand": { "min": 0.60, "max": 0.75 },
+      "setsPerMainLift": { "min": 3, "max": 5 },
+      "accessoryRatio": 0.60,
+      "restSeconds": { "main": 120, "accessory": 75 },
+      "workRest": null,
+      "patternEmphasis": { "squat": 0.7, "hinge": 0.6, "horizontalPush": 0.9, "verticalPush": 0.8, "horizontalPull": 0.9, "verticalPull": 0.9, "lunge": 0.6, "core": 0.5, "carry": 0.2, "olympic": 0.0, "gymnastic": 0.1, "monostructural": 0.0 },
+      "fatigueBudget": 20
+    },
+    {
+      "id": "strength", "name": "General Strength", "domain": "load", "tier": 1,
+      "repRange": { "min": 4, "max": 8 },
+      "intensityBand": { "min": 0.72, "max": 0.87 },
+      "setsPerMainLift": { "min": 3, "max": 5 },
+      "accessoryRatio": 0.40,
+      "restSeconds": { "main": 180, "accessory": 90 },
+      "workRest": null,
+      "patternEmphasis": { "squat": 0.9, "hinge": 0.9, "horizontalPush": 0.9, "verticalPush": 0.7, "horizontalPull": 0.8, "verticalPull": 0.7, "lunge": 0.4, "core": 0.4, "carry": 0.3, "olympic": 0.0, "gymnastic": 0.1, "monostructural": 0.0 },
+      "fatigueBudget": 21
+    },
+    {
+      "id": "core", "name": "Core", "domain": "load", "tier": 2,
+      "repRange": { "min": 8, "max": 20 },
+      "intensityBand": { "min": 0.50, "max": 0.70 },
+      "setsPerMainLift": { "min": 3, "max": 4 },
+      "accessoryRatio": 0.70,
+      "restSeconds": { "main": 75, "accessory": 45 },
+      "workRest": null,
+      "patternEmphasis": { "core": 1.0, "carry": 0.7, "hinge": 0.2, "squat": 0.1, "horizontalPush": 0.1, "verticalPush": 0.1, "horizontalPull": 0.1, "verticalPull": 0.1, "lunge": 0.1, "olympic": 0.0, "gymnastic": 0.2, "monostructural": 0.0 },
+      "fatigueBudget": 10
+    },
+    {
+      "id": "hiit", "name": "HIIT", "domain": "time", "tier": 2,
+      "repRange": null,
+      "intensityBand": null,
+      "setsPerMainLift": null,
+      "accessoryRatio": 0.0,
+      "restSeconds": { "main": 60, "accessory": 60 },
+      "workRest": { "workSeconds": 40, "restSeconds": 20, "rounds": 8 },
+      "patternEmphasis": { "monostructural": 1.0, "hinge": 0.6, "squat": 0.5, "core": 0.5, "horizontalPush": 0.4, "lunge": 0.4, "carry": 0.2, "verticalPush": 0.3, "horizontalPull": 0.3, "verticalPull": 0.2, "olympic": 0.0, "gymnastic": 0.1 },
+      "fatigueBudget": 14
+    },
+    {
+      "id": "cardio", "name": "Cardio", "domain": "time", "tier": 2,
+      "repRange": null,
+      "intensityBand": null,
+      "setsPerMainLift": null,
+      "accessoryRatio": 0.0,
+      "restSeconds": { "main": 60, "accessory": 60 },
+      "workRest": { "workSeconds": 600, "restSeconds": 120, "rounds": 2 },
+      "patternEmphasis": { "monostructural": 1.0, "squat": 0.0, "hinge": 0.0, "lunge": 0.0, "horizontalPush": 0.0, "verticalPush": 0.0, "horizontalPull": 0.0, "verticalPull": 0.0, "carry": 0.0, "core": 0.0, "olympic": 0.0, "gymnastic": 0.0 },
+      "fatigueBudget": 12
+    },
+    {
+      "id": "crossfit", "name": "CrossFit", "domain": "time", "tier": 3,
+      "repRange": null,
+      "intensityBand": null,
+      "setsPerMainLift": null,
+      "accessoryRatio": 0.0,
+      "restSeconds": { "main": 90, "accessory": 90 },
+      "workRest": { "workSeconds": 720, "restSeconds": 0, "rounds": 1 },
+      "patternEmphasis": { "olympic": 1.0, "gymnastic": 1.0, "monostructural": 0.9, "squat": 0.7, "hinge": 0.7, "core": 0.4, "horizontalPush": 0.4, "verticalPush": 0.4, "horizontalPull": 0.3, "verticalPull": 0.5, "lunge": 0.4, "carry": 0.3 },
+      "fatigueBudget": 18
+    }
+  ]
+}

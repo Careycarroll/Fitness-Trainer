@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    { "id": "commercial-gym", "name": "Commercial Gym", "available": ["barbell", "rack", "bench", "platform", "bumper-plates", "dumbbell", "kettlebell", "cable-machine", "pull-up-bar", "belt", "rower", "air-bike", "ab-wheel", "rings", "wall"] },
+    { "id": "home-garage", "name": "Home / Garage", "available": ["barbell", "rack", "bench", "platform", "bumper-plates", "kettlebell", "pull-up-bar", "belt", "rings", "wall", "ab-wheel"] },
+    { "id": "minimal", "name": "Minimal / Travel", "available": ["kettlebell", "wall"] }
+  ]
+}

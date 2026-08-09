@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "note": "Ranking COEFFICIENTS only. The ranking algorithm lives in js/engine/substitution.js (ADR-012).",
+  "weights": {
+    "patternMismatch": 1000,
+    "equipmentUnavailable": 1000,
+    "fatigueCostDelta": 12,
+    "skillDelta": 8,
+    "primaryMuscleMissing": 25,
+    "secondaryMuscleMissing": 6,
+    "loadTypeChange": 4,
+    "unilateralMismatch": 3,
+    "scoringDomainMismatch": 500
+  }
+}
