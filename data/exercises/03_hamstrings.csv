@@ -1,0 +1,20 @@
+name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,emphasis,joint_load
+Romanian Deadlift,romanian-deadlift,romanian_deadlift,strength,hinge,hamstrings|glutes,erectors|lats,barbell,TRUE,4,2,6,10,150,FALSE,weight_reps,stretch_bias,lower_back
+Dumbbell Romanian Deadlift,dumbbell-romanian-deadlift,romanian_deadlift,strength,hinge,hamstrings|glutes,erectors|forearms,dumbbell,TRUE,3,2,8,12,120,FALSE,weight_reps,stretch_bias,lower_back
+Deficit Romanian Deadlift,deficit-romanian-deadlift,romanian_deadlift,strength,hinge,hamstrings|glutes,erectors|lats,barbell|box,TRUE,4,3,6,10,150,FALSE,weight_reps,stretch_bias,lower_back
+B-Stance Romanian Deadlift,b-stance-romanian-deadlift,romanian_deadlift,strength,hinge,hamstrings|glutes,erectors|abs,dumbbell,TRUE,3,2,8,12,120,TRUE,weight_reps,stretch_bias,lower_back
+Stiff-Leg Deadlift,stiff-leg-deadlift,stiff_leg_deadlift,strength,hinge,hamstrings|glutes,erectors|lats,barbell,TRUE,4,3,6,10,150,FALSE,weight_reps,stretch_bias,lower_back
+Dumbbell Stiff-Leg Deadlift,dumbbell-stiff-leg-deadlift,stiff_leg_deadlift,strength,hinge,hamstrings|glutes,erectors|forearms,dumbbell,TRUE,3,2,8,12,120,FALSE,weight_reps,stretch_bias,lower_back
+Barbell Good Morning,barbell-good-morning,good_morning,strength,hinge,hamstrings|erectors,glutes|abs,barbell|rack,TRUE,3,4,8,12,120,FALSE,weight_reps,stretch_bias,lower_back
+Band Good Morning,band-good-morning,good_morning,strength,hinge,hamstrings|erectors,glutes,bands,FALSE,1,2,12,20,60,FALSE,reps_only,stretch_bias,
+Seated Leg Curl,seated-leg-curl,leg_curl,strength,isolation,hamstrings,calves,leg_curl_machine,FALSE,2,1,8,15,90,FALSE,weight_reps,stretch_bias,
+Lying Leg Curl,lying-leg-curl,leg_curl,strength,isolation,hamstrings,calves,leg_curl_machine,FALSE,2,1,8,15,90,FALSE,weight_reps,shortened_bias,
+Single-Leg Seated Leg Curl,single-leg-seated-leg-curl,leg_curl,strength,isolation,hamstrings,calves,leg_curl_machine,FALSE,1,1,10,15,60,TRUE,weight_reps,stretch_bias,
+Standing Single-Leg Curl,standing-single-leg-curl,leg_curl,strength,isolation,hamstrings,calves,leg_curl_machine,FALSE,1,1,10,15,60,TRUE,weight_reps,shortened_bias,
+Band Leg Curl,band-leg-curl,leg_curl,strength,isolation,hamstrings,calves,bands,FALSE,1,1,12,20,45,FALSE,reps_only,shortened_bias,
+Nordic Curl,nordic-curl,nordic,strength,isolation,hamstrings,glutes|calves,bodyweight|bench,FALSE,3,4,3,8,120,FALSE,reps_only,stretch_bias,knee
+Band-Assisted Nordic Curl,band-assisted-nordic-curl,nordic,strength,isolation,hamstrings,glutes|calves,bodyweight|bands|bench,FALSE,2,3,5,10,90,FALSE,reps_only,stretch_bias,knee
+Glute-Ham Raise,glute-ham-raise,nordic,strength,isolation,hamstrings,glutes|erectors,back_extension_bench,FALSE,3,3,6,12,120,FALSE,reps_only,stretch_bias,knee
+Sliding Leg Curl,sliding-leg-curl,sliding_curl,strength,isolation,hamstrings,glutes|abs,bodyweight,FALSE,1,2,8,15,60,FALSE,reps_only,shortened_bias,
+Stability Ball Leg Curl,stability-ball-leg-curl,sliding_curl,strength,isolation,hamstrings,glutes|abs,bodyweight|stability_ball,FALSE,1,2,10,20,60,FALSE,reps_only,shortened_bias,
+Single-Leg 45-Degree Hip Extension,single-leg-45-degree-hip-extension,hip_extension,strength,hinge,hamstrings|glutes,erectors,back_extension_bench,FALSE,2,2,10,15,90,TRUE,weight_reps,,lower_back

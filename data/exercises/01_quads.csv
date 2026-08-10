@@ -1,0 +1,35 @@
+name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,emphasis,joint_load
+Back Squat,back-squat,squat,strength,squat,quads|glutes,adductors|erectors|abs,barbell|rack,TRUE,5,3,3,8,180,FALSE,weight_reps,,lower_back
+Front Squat,front-squat,squat,strength,squat,quads,glutes|upper_back|abs,barbell|rack,TRUE,4,4,3,6,180,FALSE,weight_reps,,knee
+Safety Bar Squat,safety-bar-squat,squat,strength,squat,quads|glutes,erectors|abs,safety_bar|rack,TRUE,4,2,5,10,180,FALSE,weight_reps,,
+Box Squat,box-squat,squat,strength,squat,quads|glutes,adductors|erectors,barbell|rack|box,TRUE,4,3,3,6,180,FALSE,weight_reps,,lower_back
+Band-Resisted Back Squat,band-resisted-back-squat,squat,strength,squat,quads|glutes,adductors|erectors|abs,barbell|rack|bands,TRUE,3,3,3,6,150,FALSE,weight_reps,shortened_bias,
+Goblet Squat,goblet-squat,squat,strength,squat,quads,glutes|abs,dumbbell,TRUE,2,1,8,15,90,FALSE,weight_reps,,
+Heels-Elevated Goblet Squat,heels-elevated-goblet-squat,squat,strength,squat,quads,glutes|abs,dumbbell|slant_board,TRUE,2,1,8,15,90,FALSE,weight_reps,stretch_bias,knee
+Cyclist Squat,cyclist-squat,squat,strength,squat,quads,glutes|abs,barbell|rack|slant_board,TRUE,3,2,6,12,120,FALSE,weight_reps,stretch_bias,knee
+Slant Board Squat,slant-board-squat,squat,strength,squat,quads,glutes|abs,bodyweight|slant_board,TRUE,2,2,10,20,60,FALSE,reps_only,stretch_bias,knee
+Bodyweight Squat,bodyweight-squat,squat,strength,squat,quads,glutes|abs,bodyweight,TRUE,1,1,15,30,60,FALSE,reps_only,,
+Jump Squat,jump-squat,squat,strength,explosive,quads,glutes|calves,bodyweight,TRUE,2,2,3,8,120,FALSE,reps_only,,knee
+Wall Sit,wall-sit,squat,strength,squat,quads,glutes|abs,bodyweight,FALSE,1,1,30,90,60,FALSE,time,,
+Hack Squat,hack-squat,machine_squat,strength,squat,quads,glutes,hack_squat,TRUE,3,1,8,15,120,FALSE,weight_reps,,knee
+Belt Squat,belt-squat,machine_squat,strength,squat,quads|glutes,adductors,belt_squat,TRUE,3,1,8,15,120,FALSE,weight_reps,,
+Leg Press,leg-press,leg_press,strength,squat,quads|glutes,adductors,leg_press,TRUE,4,1,8,20,120,FALSE,weight_reps,,
+Single-Leg Leg Press,single-leg-leg-press,leg_press,strength,squat,quads|glutes,adductors,leg_press,TRUE,3,1,8,15,90,TRUE,weight_reps,,
+Leg Extension,leg-extension,leg_extension,strength,isolation,quads,,leg_extension_machine,FALSE,1,1,10,20,60,FALSE,weight_reps,shortened_bias,knee
+Sissy Squat,sissy-squat,sissy_squat,strength,isolation,quads,abs,bodyweight,FALSE,2,3,8,15,60,FALSE,reps_only,stretch_bias,knee
+Reverse Nordic Curl,reverse-nordic-curl,sissy_squat,strength,isolation,quads,abs|hip_flexors,bodyweight,FALSE,2,3,5,12,90,FALSE,reps_only,stretch_bias,knee
+Band-Assisted Reverse Nordic,band-assisted-reverse-nordic,sissy_squat,strength,isolation,quads,abs|hip_flexors,bodyweight|bands,FALSE,1,2,8,15,60,FALSE,reps_only,stretch_bias,knee
+Bulgarian Split Squat,bulgarian-split-squat,split_squat,strength,squat,quads|glutes,adductors|abs,dumbbell|bench,TRUE,3,2,6,12,90,TRUE,weight_reps,stretch_bias,
+ATG Split Squat,atg-split-squat,split_squat,strength,squat,quads|glutes,adductors|hip_flexors,dumbbell,TRUE,3,3,6,12,90,TRUE,weight_reps,stretch_bias,knee
+Split Squat,split-squat,split_squat,strength,squat,quads|glutes,adductors|abs,dumbbell,TRUE,2,2,8,12,90,TRUE,weight_reps,,
+Front-Foot-Elevated Split Squat,front-foot-elevated-split-squat,split_squat,strength,squat,quads|glutes,adductors|abs,dumbbell|box,TRUE,2,2,8,12,90,TRUE,weight_reps,stretch_bias,knee
+Reverse Lunge,reverse-lunge,lunge,strength,squat,quads|glutes,hamstrings|abs,dumbbell,TRUE,2,2,8,12,90,TRUE,weight_reps,,
+Walking Lunge,walking-lunge,lunge,strength,squat,quads|glutes,hamstrings|adductors,dumbbell,TRUE,3,2,8,16,120,TRUE,weight_reps,,
+Step-Up,step-up,step_up,strength,squat,quads|glutes,hamstrings|calves,dumbbell|box,TRUE,2,2,8,12,90,TRUE,weight_reps,shortened_bias,
+Petersen Step-Up,petersen-step-up,step_up,strength,squat,quads,calves|glutes,bodyweight|box,FALSE,1,3,10,20,60,TRUE,reps_only,shortened_bias,knee
+Step-Down,step-down,step_up,strength,squat,quads|glutes,adductors|abs,dumbbell|box,TRUE,2,2,8,15,90,TRUE,weight_reps,stretch_bias,knee
+Pistol Squat,pistol-squat,single_leg_squat,strength,squat,quads|glutes,adductors|abs,bodyweight,TRUE,2,4,3,8,90,TRUE,reps_only,stretch_bias,knee
+Terminal Knee Extension,terminal-knee-extension,tke,strength,isolation,quads,,bands,FALSE,1,1,15,25,45,TRUE,reps_only,shortened_bias,
+Backward Sled Drag,backward-sled-drag,sled,strength,locomotion,quads,glutes|calves,sled,TRUE,2,1,20,40,90,FALSE,weight_distance,,
+Forward Sled Push,forward-sled-push,sled,strength,locomotion,quads|glutes,calves|abs,sled,TRUE,3,2,20,40,120,FALSE,weight_distance,,
+Forward Sled Drag,forward-sled-drag,sled,strength,locomotion,quads|glutes,hamstrings|calves,sled,TRUE,2,1,20,40,90,FALSE,weight_distance,,

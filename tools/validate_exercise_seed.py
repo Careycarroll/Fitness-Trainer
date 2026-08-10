@@ -1,0 +1,853 @@
+#!/usr/bin/env python3
+"""
+validate_exercise_seed.py  (v3)
+
+Validates the split exercise library (data/exercises/NN_*.csv) and emits typed
+JSON as a build artifact.
+
+The CSVs are the authoring surface (good for cross-row calibration).
+The JSON is the machine surface (typed, arrays, safe to load).
+This script is the contract between them.
+
+Usage:
+    python validate_exercise_seed.py data/exercises/
+    python validate_exercise_seed.py data/exercises/ -o build/exercises.json
+    python validate_exercise_seed.py data/exercises/ --strict     # warnings fail too
+    python validate_exercise_seed.py data/exercises/01_quads.csv  # single file
+
+Exit codes:
+    0 = clean (or warnings only, without --strict)
+    1 = validation errors
+
+No third-party dependencies.
+
+v3 changes:
+  - Directory mode. Concatenates NN_*.csv so calibration and slug uniqueness
+    stay GLOBAL even though authoring is per-file.
+  - Enforces the ownership rule: first token of primary_muscles must belong to
+    the owning file. 12_fullbody.csv is exempt (pattern-selected).
+  - New columns: exercise_family (required), joint_load (optional).
+  - New patterns: isolation, explosive.
+  - New tracking type: weight_distance. time_load promoted to v1.
+  - `machine` REMOVED from the vocabulary, replaced by 12 specific tokens.
+  - Equipment substitution map (SATISFIES) + NO_SUBSTITUTE_FAMILIES.
+  - Gym-profile survivor reporting; build fails if a profile zeroes a muscle.
+  - Derived rule: bench + incline/decline => requires an adjustable bench.
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import glob
+import json
+import os
+import statistics
+import sys
+from collections import Counter, defaultdict
+
+# ---------------------------------------------------------------------------
+# Controlled vocabularies.
+#
+# These are the whole point of this script. A typo in a free-text muscle name
+# does not crash anything -- it silently removes an exercise from the
+# generator's candidate pool for that muscle. That bug is invisible on
+# inspection and will happen somewhere between rows 60 and 250.
+# ---------------------------------------------------------------------------
+
+MODALITIES = {"strength", "conditioning", "mobility"}
+
+MOVEMENT_PATTERNS = {
+    "squat", "hinge", "push_h", "push_v", "pull_h", "pull_v",
+    "carry", "core", "locomotion",
+    # v3 additions
+    "isolation",   # single-joint work whose pattern carries no programming meaning
+    "explosive",   # CNS-cost-first; must be placed early or not at all
+}
+
+# Patterns the solver EXCLUDES from pattern-balance checks. `isolation` is the
+# honest junk drawer -- counting calf raises toward trunk balance (which the
+# original seed did, filing them under `core`) made sessions look better
+# balanced than they were.
+PATTERNS_EXCLUDED_FROM_BALANCE = {"isolation"}
+
+# Patterns that must be placed in the first block of a session.
+PATTERNS_EARLY_ONLY = {"explosive"}
+
+# v1 now implements weight_reps, reps_only, time, time_load, weight_distance.
+# distance_time remains schema-ready with no logging UI -- warning, not error.
+TRACKING_TYPES = {
+    "weight_reps", "reps_only", "time", "time_load", "weight_distance",
+    "distance_time",
+}
+TRACKING_TYPES_V1 = {
+    "weight_reps", "reps_only", "time", "time_load", "weight_distance",
+}
+
+# A muscle token earns a place here only if you would ever program it while
+# deliberately EXCLUDING its parent. Front/side/rear delts pass: a lateral
+# raise makes side_delts primary with no other head involved, and "rear delts
+# but not front delts" is a real programming decision.
+#
+# `upper_chest` failed that test and was removed -- no exercise makes it
+# primary without also making `chest` primary, so the token never changed a
+# selection decision. It also double-counted volume: every incline press
+# scored once for chest and once for upper_chest, silently inflating the
+# generator's weekly fatigue budget.
+#
+# Tricep and bicep heads fail the same test. Their real distinction lives in
+# EMPHASIS below.
+MUSCLES = {
+    # lower
+    "quads", "hamstrings", "glutes", "adductors", "abductors", "calves",
+    "hip_flexors",
+    # posterior chain / back
+    "erectors", "lats", "mid_back", "upper_back", "traps",
+    # push
+    "chest", "triceps",
+    "front_delts", "side_delts", "rear_delts",
+    # arms / trunk
+    "biceps", "forearms", "abs", "obliques", "neck",
+}
+
+# ---------------------------------------------------------------------------
+# Equipment.
+#
+# `equipment` is the generator's ONLY hard filter. Every other column is a
+# preference. That is why `machine` had to die: it appeared on 35 rows and
+# stood for eleven physically different units, so the filter had exactly one
+# useful mode (full commercial gym) and lied everywhere else.
+# ---------------------------------------------------------------------------
+
+EQUIPMENT_CORE = {
+    "barbell", "dumbbell", "kettlebell", "trap_bar", "ez_bar", "safety_bar",
+    "cable", "rack", "bench", "box", "platform", "landmine",
+    "pullup_bar", "dip_bar", "dip_belt", "parallettes",
+    "suspension_trainer", "bands", "ab_wheel", "sled",
+    "stability_ball", "slant_board", "plate", "med_ball",
+    "bodyweight",
+}
+
+# The machine split. `machine` is REMOVED from the vocabulary entirely --
+# leaving it as a legal fallback guarantees drift back into it on row 260.
+#
+# Three of these were missing from EQUIPMENT_VOCABULARY.md v1 §2.3, which
+# proposed 9. calf_machine, hip_abductor_machine, and captains_chair had rows
+# with nowhere to land, and folding them into plate_loaded would be false --
+# plenty of gyms have a chest press and no calf machine.
+EQUIPMENT_MACHINES = {
+    "leg_press",
+    "hack_squat",
+    "belt_squat",
+    "leg_extension_machine",
+    "leg_curl_machine",
+    "smith_machine",
+    "plate_loaded",            # chest/shoulder press, machine row, mach. lateral, etc.
+    "pec_deck",                # incl. reverse-fly station
+    "back_extension_bench",    # 45deg hyper, reverse hyper, GHD/GHR
+    "calf_machine",
+    "hip_abductor_machine",    # abduction AND adduction unit
+    "captains_chair",
+}
+
+EQUIPMENT = EQUIPMENT_CORE | EQUIPMENT_MACHINES
+
+RETIRED_EQUIPMENT = {
+    "machine": "split into 12 specific tokens in v3 -- see EQUIPMENT_VOCABULARY.md §1",
+    "belt": "renamed to dip_belt to avoid collision with a lifting belt",
+}
+
+# owned token -> requirements it can satisfy.
+#
+# Asymmetry is deliberate and is where the value is. A bench serves as a box;
+# a box has no back support and no stability, so it does not serve as a bench.
+# A Smith machine covers a rack for a bench press but not for a rack pull.
+SATISFIES: dict[str, set[str]] = {
+    "kettlebell":    {"dumbbell"},
+    "dumbbell":      {"kettlebell", "plate"},
+    "barbell":       {"ez_bar"},
+    "ez_bar":        {"barbell"},
+    "trap_bar":      set(),
+    "plate":         set(),
+    "bench":         {"box"},
+    "box":           set(),
+    "smith_machine": {"rack"},
+    "dip_bar":       {"parallettes"},
+    "parallettes":   set(),
+    "rings":         {"suspension_trainer"},
+}
+
+# Families where the KB<->DB swap is genuinely worse, not merely different.
+NO_SUBSTITUTE_FAMILIES: dict[str, set[str]] = {
+    "fly":           {"kettlebell"},
+    "wrist_curl":    {"kettlebell"},
+    "preacher_curl": {"kettlebell"},
+    "lateral_raise": {"kettlebell"},
+}
+
+# EMPHASIS is the answer to "chest vs upper_chest", moved to the correct layer.
+#
+# It does NOT affect muscle targeting or volume accounting. It exists so the
+# generator can tell near-identical stimuli apart -- so it never prescribes
+# flat bench, dumbbell bench, and push-ups in the same session.
+EMPHASIS = {
+    "flat", "incline", "decline", "overhead",
+    "stretch_bias", "shortened_bias",
+    "long_head", "short_head",
+    "wide_grip", "close_grip",
+}
+
+# joint_load is DESCRIPTIVE, not a warning. Read it as: "this movement places
+# significant demand on this joint, at end range, under load, even when
+# performed correctly."
+#
+# The generator reads it in both directions -- avoid_joint_load: [knee] for
+# acute pain, prioritize_joint_load: [knee] for building knee resilience.
+# Sissy squats and reverse Nordics carry `knee` as a FEATURE.
+JOINT_LOAD = {"knee", "lower_back", "shoulder", "elbow", "wrist", "hip", "neck"}
+
+# ---------------------------------------------------------------------------
+# The ownership rule.
+#
+# An exercise lives in exactly ONE file, determined by the FIRST token in its
+# primary_muscles column. Without it the same movement gets authored three
+# times by three different judgment calls, each with its own fatigue_cost.
+# Nothing errors. The seed loader keeps whichever it read last -- alphabetical
+# by filename, an arbitrary winner -- and the generator runs on ratings nobody
+# approved.
+# ---------------------------------------------------------------------------
+
+FILE_OWNERSHIP: dict[str, set[str]] = {
+    "01_quads":      {"quads"},
+    "02_glutes":     {"glutes"},
+    "03_hamstrings": {"hamstrings"},
+    "04_calves":     {"calves"},
+    "05_hips":       {"adductors", "abductors"},
+    "06_chest":      {"chest"},
+    "07_back":       {"lats", "mid_back", "upper_back", "traps", "erectors"},
+    "08_shoulders":  {"front_delts", "side_delts", "rear_delts", "neck"},
+    "09_biceps":     {"biceps", "forearms"},
+    "10_triceps":    {"triceps"},
+    "11_core":       {"abs", "obliques", "hip_flexors"},
+}
+
+# The one exemption. Snatch is glutes|hamstrings|traps -- no single group owns
+# it, and forcing it into glutes buries it. These rows are defined by their
+# PATTERN, not their primary muscle.
+PATTERN_SELECTED_FILES: dict[str, set[str]] = {
+    "12_fullbody": {"explosive", "carry", "locomotion"},
+}
+
+# ---------------------------------------------------------------------------
+# Gym profiles. Row counts alone do not tell you whether the library works.
+# These do. Build FAILS if any profile drops a muscle group to zero.
+# ---------------------------------------------------------------------------
+
+GYM_PROFILES: dict[str, set[str]] = {
+    "commercial": set(EQUIPMENT),
+    "garage": {
+        "barbell", "rack", "bench", "dumbbell", "box", "bands", "pullup_bar",
+        "dip_bar", "dip_belt", "kettlebell", "plate", "trap_bar", "ez_bar",
+        "slant_board", "ab_wheel", "sled", "bodyweight", "landmine",
+    },
+    "minimal": {
+        "dumbbell", "bands", "bench", "box", "pullup_bar", "slant_board",
+        "bodyweight",
+    },
+    "hotel": {"bodyweight", "bands", "box"},
+}
+
+# Profiles allowed to miss a muscle group, with the reason. `hotel` cannot
+# train biceps: the honest bodyweight biceps exercise is a chin-up, which is
+# lats-primary and lives in 07_back.csv.
+PROFILE_ZERO_EXEMPTIONS: dict[str, set[str]] = {
+    "hotel": {"biceps", "forearms", "neck", "adductors", "abductors"},
+    "minimal": {"neck"},
+}
+
+BOOLEAN_COLUMNS = ["is_compound", "is_unilateral"]
+LIST_COLUMNS = ["primary_muscles", "secondary_muscles", "equipment",
+                "emphasis", "joint_load"]
+INT_COLUMNS = [
+    "fatigue_cost", "technical_demand",
+    "default_rep_low", "default_rep_high", "default_rest_sec",
+]
+
+REQUIRED_COLUMNS = [
+    "name", "slug", "exercise_family", "modality", "movement_pattern",
+    "primary_muscles", "secondary_muscles", "equipment",
+    "is_compound", "fatigue_cost", "technical_demand",
+    "default_rep_low", "default_rep_high", "default_rest_sec",
+    "is_unilateral", "tracking_type",
+]
+
+OPTIONAL_COLUMNS = ["emphasis", "joint_load"]
+
+# Columns that must EXIST in the header but may legitimately be empty.
+# secondary_muscles is blank on all 9 calf rows, both neck rows, wrist
+# curls, and several core rows -- those movements genuinely have no
+# meaningful secondary mover. Treating blank as an error dropped 21 rows
+# and produced fake "zero exercises for calves" profile failures.
+BLANK_ALLOWED_COLUMNS = {"secondary_muscles", "emphasis", "joint_load"}
+
+CANONICAL_HEADER = REQUIRED_COLUMNS + OPTIONAL_COLUMNS
+
+LIST_DELIMITER = "|"
+
+# Ratings are 1-5 on both axes. A healthy library is bottom-heavy: most
+# movements are 1s and 2s. If the mean climbs past this, the scale has drifted
+# and the generator's session fatigue budget has quietly stopped meaning
+# anything.
+DRIFT_MEAN_CEILING = 2.6
+
+# Composition floors, per file. See EXERCISE_LIBRARY_TAXONOMY.md §4.
+MIN_DUMBBELL_ONLY = 3
+MIN_BODYWEIGHT_ONLY = 1
+MIN_TECHNICAL_DEMAND_1 = 2
+
+# Files exempt from the bodyweight-only floor, with reason. There is no loaded
+# bodyweight biceps movement; the honest one is a chin-up (lats-primary).
+BODYWEIGHT_FLOOR_EXEMPT = {"09_biceps", "05_hips"}
+
+
+class Report:
+    """Collects errors and warnings with row context."""
+
+    def __init__(self) -> None:
+        self.errors: list[str] = []
+        self.warnings: list[str] = []
+        self.notes: list[str] = []
+
+    def error(self, where: str, slug: str, msg: str) -> None:
+        self.errors.append(self._fmt(where, slug, msg))
+
+    def warn(self, where: str, slug: str, msg: str) -> None:
+        self.warnings.append(self._fmt(where, slug, msg))
+
+    def note(self, msg: str) -> None:
+        self.notes.append(msg)
+
+    @staticmethod
+    def _fmt(where: str, slug: str, msg: str) -> str:
+        label = f"{where} [{slug}]" if slug else where
+        return f"{label}: {msg}"
+
+    @property
+    def ok(self) -> bool:
+        return not self.errors
+
+
+# ---------------------------------------------------------------------------
+# Parsing helpers
+# ---------------------------------------------------------------------------
+
+def parse_bool(raw: str) -> bool | None:
+    v = (raw or "").strip().upper()
+    if v in {"TRUE", "T", "YES", "Y", "1"}:
+        return True
+    if v in {"FALSE", "F", "NO", "N", "0"}:
+        return False
+    return None
+
+
+def parse_list(raw: str) -> list[str]:
+    return [t.strip() for t in (raw or "").split(LIST_DELIMITER) if t.strip()]
+
+
+def validate_vocab(tokens, vocab, column, where, slug, report) -> None:
+    for token in tokens:
+        if token in RETIRED_EQUIPMENT and column == "equipment":
+            report.error(where, slug,
+                         f"equipment: '{token}' is retired -- "
+                         f"{RETIRED_EQUIPMENT[token]}")
+            continue
+        if token not in vocab:
+            hint = suggest(token, vocab)
+            suffix = f" (did you mean '{hint}'?)" if hint else ""
+            report.error(where, slug, f"{column}: unknown token '{token}'{suffix}")
+
+
+def suggest(token: str, vocab: set[str]) -> str | None:
+    """Cheap near-miss finder: catches singular/plural and one-char typos."""
+    for candidate in sorted(vocab):
+        if candidate == token:
+            continue
+        if candidate.startswith(token) or token.startswith(candidate):
+            return candidate
+        if _within_one_edit(token, candidate):
+            return candidate
+    return None
+
+
+def _within_one_edit(a: str, b: str) -> bool:
+    if a == b:
+        return True
+    if len(a) > len(b):
+        a, b = b, a
+    if len(b) - len(a) > 1:
+        return False
+    if len(a) == len(b):
+        return sum(1 for x, y in zip(a, b) if x != y) == 1
+    for i in range(len(b)):
+        if b[:i] + b[i + 1:] == a:
+            return True
+    return False
+
+
+# ---------------------------------------------------------------------------
+# Muscle hierarchy detection
+#
+# Self-maintaining version of the chest/upper_chest argument. Any token that is
+# a prefixed or suffixed variant of another token in MUSCLES (upper_chest ->
+# chest, lats_lower -> lats) is treated as a region of its parent, and must
+# earn its place by appearing as a primary mover somewhere its parent does not.
+# Finds nothing today. That is the point -- next time someone adds `inner_quad`
+# at row 260, the build explains why not.
+# ---------------------------------------------------------------------------
+
+def derive_hierarchy(vocab: set[str]) -> dict[str, str]:
+    child_to_parent: dict[str, str] = {}
+    for child in vocab:
+        for parent in vocab:
+            if child == parent:
+                continue
+            if child.endswith("_" + parent) or child.startswith(parent + "_"):
+                child_to_parent[child] = parent
+    return child_to_parent
+
+
+def check_hierarchy(rows, report) -> None:
+    hierarchy = derive_hierarchy(MUSCLES)
+    if not hierarchy:
+        return
+    for child, parent in sorted(hierarchy.items()):
+        justified = any(
+            child in r["primary_muscles"] and parent not in r["primary_muscles"]
+            for r in rows
+        )
+        if not justified:
+            report.warn(
+                "vocabulary", "",
+                f"muscle '{child}' is a region of '{parent}' and never appears "
+                f"as a primary mover without it. It cannot change a selection "
+                f"decision, and it double-counts volume. Remove it, or express "
+                f"the distinction in `emphasis`."
+            )
+
+
+# ---------------------------------------------------------------------------
+# Equipment resolution
+# ---------------------------------------------------------------------------
+
+def owned_expands_to(owned: set[str]) -> set[str]:
+    """Everything an owned token set can satisfy, including substitutions."""
+    resolved = set(owned)
+    for token in owned:
+        resolved |= SATISFIES.get(token, set())
+    return resolved
+
+
+def row_is_available(row, owned: set[str]) -> bool:
+    """
+    True if every equipment requirement is met, directly or by substitution.
+    Family-level exceptions block otherwise-legal substitutions.
+    """
+    blocked = NO_SUBSTITUTE_FAMILIES.get(row["exercise_family"], set())
+    available = owned_expands_to(owned - blocked) | (owned & {"bodyweight"})
+    if not row["equipment"]:
+        return True
+    return all(req in available for req in row["equipment"])
+
+
+def requires_adjustable_bench(row) -> bool:
+    """
+    Derived rule, not a token. Incline dumbbell press needs an adjustable
+    bench; flat bench press does not. One rule in the validator, zero new
+    tokens, zero rows to edit.
+    """
+    return "bench" in row["equipment"] and bool(
+        {"incline", "decline"} & set(row["emphasis"])
+    )
+
+
+# ---------------------------------------------------------------------------
+# Row-level validation
+# ---------------------------------------------------------------------------
+
+def validate_row(raw: dict, where: str, report: Report) -> dict | None:
+    slug = (raw.get("slug") or "").strip()
+
+    for col in REQUIRED_COLUMNS:
+        if col in BLANK_ALLOWED_COLUMNS:
+            continue
+        if not (raw.get(col) or "").strip():
+            report.error(where, slug, f"missing required value in '{col}'")
+            return None
+
+    row: dict = {"name": raw["name"].strip(), "slug": slug,
+                 "exercise_family": raw["exercise_family"].strip()}
+
+    if slug != slug.lower() or " " in slug or "_" in slug:
+        report.error(where, slug, "slug must be lowercase and hyphen-delimited")
+
+    modality = raw["modality"].strip()
+    if modality not in MODALITIES:
+        report.error(where, slug, f"modality: unknown value '{modality}'")
+    row["modality"] = modality
+
+    pattern = raw["movement_pattern"].strip()
+    if pattern not in MOVEMENT_PATTERNS:
+        hint = suggest(pattern, MOVEMENT_PATTERNS)
+        suffix = f" (did you mean '{hint}'?)" if hint else ""
+        report.error(where, slug, f"movement_pattern: unknown '{pattern}'{suffix}")
+    row["movement_pattern"] = pattern
+
+    for col, vocab in (
+        ("primary_muscles", MUSCLES),
+        ("secondary_muscles", MUSCLES),
+        ("equipment", EQUIPMENT),
+        ("emphasis", EMPHASIS),
+        ("joint_load", JOINT_LOAD),
+    ):
+        tokens = parse_list(raw.get(col, ""))
+        validate_vocab(tokens, vocab, col, where, slug, report)
+        row[col] = tokens
+
+    if not row["primary_muscles"]:
+        report.error(where, slug, "primary_muscles must have at least one token")
+
+    overlap = set(row["primary_muscles"]) & set(row["secondary_muscles"])
+    if overlap:
+        report.error(where, slug,
+                     f"muscle in both primary and secondary: {sorted(overlap)}")
+
+    for col in BOOLEAN_COLUMNS:
+        val = parse_bool(raw[col])
+        if val is None:
+            report.error(where, slug, f"{col}: not a boolean ('{raw[col]}')")
+            val = False
+        row[col] = val
+
+    for col in INT_COLUMNS:
+        try:
+            row[col] = int(raw[col])
+        except (TypeError, ValueError):
+            report.error(where, slug, f"{col}: not an integer ('{raw[col]}')")
+            row[col] = 0
+
+    for col in ("fatigue_cost", "technical_demand"):
+        if not 1 <= row.get(col, 0) <= 5:
+            report.error(where, slug, f"{col}: {row.get(col)} outside 1-5")
+
+    if row["default_rep_low"] > row["default_rep_high"]:
+        report.error(where, slug, "default_rep_low exceeds default_rep_high")
+
+    tracking = raw["tracking_type"].strip()
+    if tracking not in TRACKING_TYPES:
+        report.error(where, slug, f"tracking_type: unknown '{tracking}'")
+    elif tracking not in TRACKING_TYPES_V1:
+        report.warn(where, slug,
+                    f"tracking_type '{tracking}' has no logging UI in v1")
+    row["tracking_type"] = tracking
+
+    # --- calibration contradictions -------------------------------------
+    # A push-up IS a compound that costs 1. So is a bodyweight squat, a
+    # band lat pulldown, a diamond push-up. Warning on all of them taught
+    # you to ignore warnings, which is worse than not having the check --
+    # and --strict turns each one into a CI failure.
+    _unloadable = {"bodyweight", "bands"} & set(row["equipment"])
+    if (row["is_compound"] and row["fatigue_cost"] == 1
+            and pattern != "isolation" and not _unloadable):
+        report.warn(where, slug,
+                    "compound movement rated fatigue_cost 1 -- verify")
+    if not row["is_compound"] and row["fatigue_cost"] >= 4:
+        report.warn(where, slug,
+                    f"isolation movement rated fatigue_cost "
+                    f"{row['fatigue_cost']} -- verify")
+    if row["technical_demand"] >= 4 and row["default_rest_sec"] < 120:
+        # Gated to weight_reps: pistol squat and single-arm push-up at 90s
+        # are correctly rated. Bodyweight skill work is technically
+        # demanding without being systemically taxing, so short rest is fine.
+        row["tracking_type"] == "weight_reps" and report.warn(where, slug,
+                    f"technical_demand {row['technical_demand']} with only "
+                    f"{row['default_rest_sec']}s rest -- form will degrade")
+    if row["fatigue_cost"] == 5 and row["technical_demand"] == 5:
+        report.warn(where, slug,
+                    "rated 5/5 on both axes -- the generator can almost never "
+                    "place this; confirm it is deliberate")
+    if pattern in PATTERNS_EARLY_ONLY and row["fatigue_cost"] >= 4:
+        report.warn(where, slug,
+                    "explosive pattern with fatigue_cost >= 4 -- explosive cost "
+                    "is CNS-first; verify this is not double-counting")
+
+    row["requires_adjustable_bench"] = requires_adjustable_bench(row)
+    return row
+
+
+# ---------------------------------------------------------------------------
+# File-level and global checks
+# ---------------------------------------------------------------------------
+
+def check_ownership(stem: str, rows: list[dict], report: Report) -> None:
+    if stem in PATTERN_SELECTED_FILES:
+        allowed = PATTERN_SELECTED_FILES[stem]
+        for row in rows:
+            if row["movement_pattern"] not in allowed:
+                report.error(
+                    f"{stem}.csv", row["slug"],
+                    f"pattern-selected file requires movement_pattern in "
+                    f"{sorted(allowed)}, got '{row['movement_pattern']}'"
+                )
+        return
+
+    owned = FILE_OWNERSHIP.get(stem)
+    if owned is None:
+        report.warn(f"{stem}.csv", "",
+                    "file is not in FILE_OWNERSHIP -- ownership unchecked")
+        return
+
+    for row in rows:
+        if not row["primary_muscles"]:
+            continue
+        first = row["primary_muscles"][0]
+        if first not in owned:
+            correct = next(
+                (s for s, toks in FILE_OWNERSHIP.items() if first in toks),
+                "no file",
+            )
+            report.error(
+                f"{stem}.csv", row["slug"],
+                f"ownership violation: first primary muscle '{first}' belongs "
+                f"to {correct}, not {stem}. An exercise lives in exactly one "
+                f"file."
+            )
+
+
+def check_composition(stem: str, rows: list[dict], report: Report) -> None:
+    db_only = [r for r in rows
+               if row_is_available(r, {"dumbbell", "bodyweight"})]
+    bw_only = [r for r in rows if row_is_available(r, {"bodyweight"})]
+    easy = [r for r in rows if r["technical_demand"] == 1]
+
+    if len(db_only) < MIN_DUMBBELL_ONLY:
+        report.warn(f"{stem}.csv", "",
+                    f"only {len(db_only)} rows survive a dumbbell-only filter "
+                    f"(floor is {MIN_DUMBBELL_ONLY})")
+    if len(bw_only) < MIN_BODYWEIGHT_ONLY and stem not in BODYWEIGHT_FLOOR_EXEMPT:
+        report.warn(f"{stem}.csv", "",
+                    f"no bodyweight-only rows (floor is {MIN_BODYWEIGHT_ONLY})")
+    if len(easy) < MIN_TECHNICAL_DEMAND_1:
+        report.warn(f"{stem}.csv", "",
+                    f"only {len(easy)} rows at technical_demand 1 -- nothing to "
+                    f"place in the back half of a session")
+
+    singletons = [fam for fam, n in Counter(
+        r["exercise_family"] for r in rows).items() if n == 1]
+    if singletons:
+        report.note(f"  {stem}: {len(singletons)} single-row families "
+                    f"(no substitute): {', '.join(sorted(singletons))}")
+
+
+def check_global(rows: list[dict], report: Report) -> None:
+    seen: dict[str, str] = {}
+    for row in rows:
+        if row["slug"] in seen:
+            report.error(
+                row["_file"], row["slug"],
+                f"duplicate slug -- already defined in {seen[row['slug']]}. "
+                f"The seed loader would keep whichever file it read last."
+            )
+        else:
+            seen[row["slug"]] = row["_file"]
+
+    names: dict[str, str] = {}
+    for row in rows:
+        key = row["name"].lower()
+        if key in names:
+            report.error(row["_file"], row["slug"],
+                         f"duplicate display name -- also in {names[key]}")
+        else:
+            names[key] = row["_file"]
+
+    # families must not straddle incompatible patterns
+    fam_patterns = defaultdict(set)
+    for row in rows:
+        fam_patterns[row["exercise_family"]].add(row["movement_pattern"])
+    for fam, pats in sorted(fam_patterns.items()):
+        meaningful = pats - PATTERNS_EXCLUDED_FROM_BALANCE - {"explosive"}
+        if len(meaningful) > 1:
+            report.warn(
+                "families", "",
+                f"family '{fam}' spans patterns {sorted(pats)} -- rows in a "
+                f"family are substitution candidates, so a swap would change "
+                f"the session's pattern balance"
+            )
+
+    check_hierarchy(rows, report)
+
+    fatigue = [r["fatigue_cost"] for r in rows]
+    mean = statistics.mean(fatigue)
+    if mean > DRIFT_MEAN_CEILING:
+        report.error(
+            "calibration", "",
+            f"mean fatigue_cost is {mean:.2f}, above the {DRIFT_MEAN_CEILING} "
+            f"ceiling. The scale has stretched and the generator's per-session "
+            f"fatigue budget has stopped meaning anything."
+        )
+
+
+def check_profiles(rows: list[dict], report: Report) -> None:
+    for profile, owned in GYM_PROFILES.items():
+        exempt = PROFILE_ZERO_EXEMPTIONS.get(profile, set())
+        survivors = [r for r in rows if row_is_available(r, owned)]
+        by_muscle = defaultdict(int)
+        for row in survivors:
+            for muscle in row["primary_muscles"]:
+                by_muscle[muscle] += 1
+        for muscle in sorted(MUSCLES):
+            if by_muscle[muscle] == 0 and muscle not in exempt:
+                report.error(
+                    f"profile:{profile}", "",
+                    f"zero exercises with '{muscle}' as a primary muscle. "
+                    f"The generator cannot build a session targeting it."
+                )
+
+
+# ---------------------------------------------------------------------------
+# Reporting
+# ---------------------------------------------------------------------------
+
+def print_summary(rows: list[dict], per_file: dict[str, list[dict]]) -> None:
+    print("\n--- library ---")
+    print(f"{len(rows)} rows across {len(per_file)} files")
+
+    print("\n--- rows and mean fatigue_cost, per file ---")
+    for stem in sorted(per_file):
+        frows = per_file[stem]
+        if not frows:
+            print(f"  {stem:<16} {0:>4}   (no valid rows)")
+            continue
+        mean = statistics.mean(r["fatigue_cost"] for r in frows)
+        print(f"  {stem:<16} {len(frows):>4}   {mean:.2f}")
+
+    for col in ("fatigue_cost", "technical_demand"):
+        dist = Counter(r[col] for r in rows)
+        mean = statistics.mean(r[col] for r in rows)
+        bars = "  ".join(f"{k}:{dist.get(k, 0):>3}" for k in range(1, 6))
+        print(f"\n{col}: mean {mean:.2f}   {bars}")
+
+    print("\n--- pattern coverage ---")
+    pat = Counter(r["movement_pattern"] for r in rows)
+    for p in sorted(MOVEMENT_PATTERNS):
+        flag = ""
+        if p in PATTERNS_EXCLUDED_FROM_BALANCE:
+            flag = "  (excluded from balance checks)"
+        elif p in PATTERNS_EARLY_ONLY:
+            flag = "  (must be placed early)"
+        print(f"  {p:<12} {pat.get(p, 0):>4}{flag}")
+
+    print("\n--- joint_load ---")
+    jl = Counter(j for r in rows for j in r["joint_load"])
+    for j in sorted(JOINT_LOAD, key=lambda k: -jl.get(k, 0)):
+        print(f"  {j:<12} {jl.get(j, 0):>4}")
+
+    print("\n--- survivors per gym profile ---")
+    for profile, owned in GYM_PROFILES.items():
+        survivors = [r for r in rows if row_is_available(r, owned)]
+        pct = 100 * len(survivors) / max(len(rows), 1)
+        print(f"  {profile:<12} {len(survivors):>4}  ({pct:.0f}%)")
+
+    adj = [r for r in rows if r["requires_adjustable_bench"]]
+    print(f"\nrows requiring an adjustable bench (derived): {len(adj)}")
+
+
+# ---------------------------------------------------------------------------
+# Entry point
+# ---------------------------------------------------------------------------
+
+def load_paths(target: str) -> list[str]:
+    if os.path.isdir(target):
+        return sorted(glob.glob(os.path.join(target, "[0-9][0-9]_*.csv")))
+    return [target]
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description="Validate the exercise library.")
+    ap.add_argument("target", help="directory of NN_*.csv files, or one file")
+    ap.add_argument("-o", "--out", help="write typed JSON build artifact here")
+    ap.add_argument("--strict", action="store_true",
+                    help="treat warnings as failures (use in CI)")
+    args = ap.parse_args()
+
+    paths = load_paths(args.target)
+    if not paths:
+        print(f"no NN_*.csv files found in {args.target}", file=sys.stderr)
+        return 1
+
+    report = Report()
+    all_rows: list[dict] = []
+    per_file: dict[str, list[dict]] = {}
+
+    for path in paths:
+        stem = os.path.splitext(os.path.basename(path))[0]
+        with open(path, newline="", encoding="utf-8") as fh:
+            reader = csv.DictReader(fh)
+            header = reader.fieldnames or []
+            if header != CANONICAL_HEADER:
+                extra = [c for c in header if c not in CANONICAL_HEADER]
+                missing = [c for c in CANONICAL_HEADER if c not in header]
+                report.error(
+                    f"{stem}.csv", "",
+                    f"header mismatch -- missing {missing}, unexpected {extra}. "
+                    f"All files must share an identical header; the validator "
+                    f"concatenates them."
+                )
+                continue
+
+            rows = []
+            for i, raw in enumerate(reader, start=2):
+                row = validate_row(raw, f"{stem}.csv row {i}", report)
+                if row is not None:
+                    row["_file"] = f"{stem}.csv"
+                    rows.append(row)
+
+        check_ownership(stem, rows, report)
+        check_composition(stem, rows, report)
+        per_file[stem] = rows
+        all_rows.extend(rows)
+
+    if all_rows:
+        check_global(all_rows, report)
+        check_profiles(all_rows, report)
+
+    for msg in report.notes:
+        print(msg)
+    if report.warnings:
+        print(f"\n--- {len(report.warnings)} warning(s) ---")
+        for msg in report.warnings:
+            print(f"  WARN  {msg}")
+    if report.errors:
+        print(f"\n--- {len(report.errors)} error(s) ---")
+        for msg in report.errors:
+            print(f"  ERROR {msg}")
+
+    if all_rows:
+        print_summary(all_rows, per_file)
+
+    failed = bool(report.errors) or (args.strict and bool(report.warnings))
+
+    if args.out and not failed:
+        os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
+        payload = [{k: v for k, v in r.items() if k != "_file"}
+                   for r in all_rows]
+        with open(args.out, "w", encoding="utf-8") as fh:
+            json.dump(payload, fh, indent=2, sort_keys=True)
+            fh.write("\n")
+        print(f"\nwrote {len(payload)} rows -> {args.out}")
+
+    print("\nFAIL" if failed else "\nPASS")
+    return 1 if failed else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -3,19 +3,29 @@
   "note": "COEFFICIENTS only. The progression ALGORITHM is code (js/engine/progression.js, ADR-012).",
   "models": {
     "double-progression": {
-      "appliesTo": ["bodybuilding", "core"],
+      "appliesTo": [
+        "bodybuilding",
+        "core"
+      ],
       "loadIncrementFraction": 0.025,
       "repCeilingHoldSessions": 1
     },
     "linear-load": {
-      "appliesTo": ["strength", "powerlifting"],
+      "appliesTo": [
+        "strength",
+        "powerlifting"
+      ],
       "upperBodyIncrementKg": 2.5,
-      "lowerBodyIncrementKg": 5.0,
+      "lowerBodyIncrementKg": 5,
       "stallThresholdSessions": 2,
-      "deloadFraction": 0.90
+      "deloadFraction": 0.9
     },
     "interval-density": {
-      "appliesTo": ["hiit", "cardio", "crossfit"],
+      "appliesTo": [
+        "hiit",
+        "cardio",
+        "crossfit"
+      ],
       "workSecondsIncrement": 5,
       "restSecondsDecrement": 5,
       "restSecondsFloor": 10
@@ -28,7 +38,8 @@
   "deloadTriggers": {
     "note": "Thresholds are data. The TRIGGER LOGIC is code and fails closed (ADR-012).",
     "consecutiveStallSessions": 3,
-    "weeklyVolumeOverMrvFraction": 1.0,
+    "weeklyVolumeOverMrvFraction": 1,
     "averageRirBelow": 0.5
-  }
+  },
+  "compressedAccessoryMultiplier": 0.75
 }
