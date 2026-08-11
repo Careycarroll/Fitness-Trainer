@@ -37,7 +37,7 @@ describe('deload triggers fail closed', () => {
   test('clean progression increases load, lower body more than upper', () => {
     const recent = [session(100, 3), session(105, 3), session(110, 3)];
     const lower = nextLoad({ exercise: { pattern: 'squat' }, model: linear, recentSessions: recent, deloadTriggers: triggers });
-    const upper = nextLoad({ exercise: { pattern: 'horizontalPush' }, model: linear, recentSessions: recent, deloadTriggers: triggers });
+    const upper = nextLoad({ exercise: { pattern: 'push_h' }, model: linear, recentSessions: recent, deloadTriggers: triggers });
     assert.equal(lower.action, 'increase');
     assert.ok(lower.delta > upper.delta);
   });

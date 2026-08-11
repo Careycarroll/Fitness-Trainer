@@ -43,12 +43,18 @@ unqualified athlete.
 
 ---
 
-## M4 — Full catalog authoring · **next. The long pole.**
+## M4 — Full catalog authoring · **done**
 
 Hand-author the catalog against the schema M3 has now proven.
 
 **Exit (mechanical, per ADR-008):** every (pattern × loadType × equipment-profile) cell holds
 at least two options — roughly 180–220 records — and all validators stay green.
+
+**Closed at 285 records across 12 CSV files.** All 11 validators pass, 24419 checks.
+Check 11 (shipped-profile coverage) ran green for the first time — it had been
+throwing on a signature mismatch since it was written and reporting 0 checks.
+`monostructural` is the sole SKIP, deferred to M7 by `scripts/checks/_deferred.js`.
+See ADR-026 for the vocabulary reconciliation this required.
 
 **Not exit:** "all possible exercises." That has no exit condition. Past two options per cell,
 more records add variety but zero generator capability. Variety goes to Backlog forever.

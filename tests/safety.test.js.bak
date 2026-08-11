@@ -48,6 +48,6 @@ describe('gates are enforced by the generator, not merely available', () => {
   test('a qualified athlete can receive them', () => {
     const ready = { skillLevel: 4, hasCoaching: true, strictReps: { 'pull-up': 10, 'pike-push-up': 12 } };
     const { allowed } = filterByGates(defs.exercises, ready);
-    assert.ok(allowed.some((e) => e.skillGate === 'olympic-lift'));
+    assert.ok(allowed.some((e) => e.pattern === 'olympic'));
   });
 });

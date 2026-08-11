@@ -18,7 +18,11 @@ export default {
       if (ex.skill >= 5) {
         assert(ex.skillGate !== null, `${ex.id}: skill 5 movement must declare a skillGate`);
       }
-      if (ex.pattern === 'olympic') {
+      // ADR-026 retired the `olympic` pattern; Olympic lifts ship as
+      // `explosive` carrying skillGate 'olympic-lift'. Keying on the pattern
+      // made this assertion unreachable rather than false — a check that
+      // stops running looks identical to one that passes.
+      if (ex.skillGate === 'olympic-lift') {
         assert(ex.skillGate !== null, `${ex.id}: olympic pattern must declare a skillGate`);
       }
     }

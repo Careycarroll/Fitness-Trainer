@@ -16,8 +16,12 @@ corresponding migration note in `docs/MIGRATIONS.md`.
 
 ### `pattern` — movement pattern (12)
 
-`squat` · `hinge` · `lunge` · `horizontalPush` · `verticalPush` · `horizontalPull` ·
-`verticalPull` · `carry` · `core` · `olympic` · `gymnastic` · `monostructural`
+`squat` · `lunge` · `hinge` · `push_h` · `push_v` · `pull_h` · `pull_v` ·
+`carry` · `core` · `isolation` · `explosive` · `locomotion` · `monostructural`
+
+ADR-026: `olympic` and `gymnastic` are retired. Olympic lifts are `explosive`
+with `skillGate: 'olympic-lift'`; `gymnastic` returns only if M9 lands.
+`lunge` is derived at build time from `exercise_family`, never authored.
 
 Pattern is the axis substitution matches on (ADR: substitution resolves by pattern +
 equipment, not hand-maintained substitute lists — those rot on every catalog addition).
