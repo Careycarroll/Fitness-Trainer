@@ -30,7 +30,7 @@ const defs = {
 };
 
 const checkFiles = readdirSync(join(here, 'checks'))
-  .filter((f) => /^\d\d-/.test(f))
+  .filter((f) => /^\d\d-.*\.js$/.test(f))
   .sort();
 
 let total = 0;
