@@ -46,13 +46,19 @@ export function isPerformable(exercise, ownedSet) {
 }
 
 /**
- * @param {object} profile   { id, name, equipment: string[], assumesAll?: boolean }
+ * @param {object} profile   { id, name, available|equipment: string[], assumesAll?: boolean }
  * @param {string[]} requiredPatterns
  * @param {object[]} catalog
  * @returns {{ covered: string[], gaps: Array<{pattern, suggests}>, optionsByPattern: Map }}
  */
 export function analyzeCoverage(profile, requiredPatterns, catalog) {
-  const owned = new Set(profile.equipment ?? []);
+  // equipment.json ships profiles with `available`; tests and runtime-constructed
+  // profiles have used `equipment`. Reading only one silently produced an empty
+  // owned-set for every shipped profile, so only zero-equipment movements were
+  // ever performable. commercial-gym masked it via assumesAll, and check 11 --
+  // the one validator that would have caught it -- was throwing on a signature
+  // mismatch and reporting 0 checks. Accept both; neither shape is wrong.
+  const owned = new Set(profile.available ?? profile.equipment ?? []);
   const assumesAll = profile.assumesAll === true;
 
   const optionsByPattern = new Map();
