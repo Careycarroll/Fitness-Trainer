@@ -9,7 +9,7 @@ globally.
 `exercise_family` and `joint_load` columns documented; `weight_distance`
 tracking type added; §7 rewritten as a record of what was actually built.
 
-Current state: **248 rows across 11 files.** `12_fullbody.csv` not yet written.
+Current state: **285 rows across 12 files. COMPLETE.** `12_fullbody.csv` written; it is the only pattern-selected file and the sole source of the `carry` pattern.
 
 ---
 

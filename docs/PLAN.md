@@ -88,7 +88,10 @@ regression testing possible at all (ADR-002).
 
 ---
 
-## 4. Open questions blocking M4
+## 4. Questions that blocked M4 — ALL CLOSED
+
+> Resolved by ADR-026 (vocabulary reconciliation) and ADR-027 (block
+> nesting). Kept for the reasoning; none of these are open.
 
 1. **Equipment profiles.** Three ship today: `commercial-gym`, `home-garage`, `minimal`. Which
    are real? This directly sizes M4 — the completeness rule is *two options per
@@ -104,4 +107,30 @@ regression testing possible at all (ADR-002).
 
 ## 5. Status
 
-See [`MILESTONES.md`](MILESTONES.md). M0–M3 complete and green; M4 is next and is the long pole.
+**M0–M5 done. M6 next.**
+
+| | | |
+|---|---|---|
+| M0 | Scaffolding | done |
+| M1 | Schema contract | done |
+| M2 | Seed catalog | done (24 scaffolding rows, now retired) |
+| M3 | Load-domain generator | done |
+| M4 | Full catalog authoring | **done — 285 rows, 12 files** |
+| M5 | UI shell | **done — render, edit, honest failure reporting** |
+| M6 | Logger + IndexedDB + export/import | **next. Indivisible (ADR-011).** |
+| M7 | Interval-domain generator | `monostructural` deferral expires here |
+| M8 | Progression from history | fatigue budget becomes cross-day |
+| M9 | CrossFit | last, and first to cut |
+
+**Gates green:** 11 validators, 24557 checks, 82 tests.
+
+Check 11 (shipped-profile coverage) ran green for the first time during M4 — it
+had been throwing on a signature mismatch since it was written and reporting
+`0 checks`, so profile coverage had never actually been verified. Two defects
+surfaced when it started running; both are recorded in ADR-026.
+
+**One declared deferral:** `monostructural` has no catalog rows until M7.
+Declared in `scripts/checks/_deferred.js`, printed as SKIP on every run, and
+guarded against staleness — the build fails if the pattern ever becomes
+coverable while still deferred. Emptying that map is M7's mechanical exit
+(ADR-007).

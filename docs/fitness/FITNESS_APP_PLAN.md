@@ -1,3 +1,27 @@
+> **⚠️ §6 (Stack) IS WRONG AND SUPERSEDED. Read this before anything else.**
+>
+> This plan was written before the repository was visible. §6 specifies
+> **Next.js + TypeScript + Postgres + Drizzle on Vercel + Neon**. That is not
+> this project and never was. It directly contradicts two accepted ADRs:
+>
+> - **ADR-001** — Vite + vanilla JS PWA, phone-first, offline-first
+> - **ADR-004** — IndexedDB with JSON export/import; no server, no database
+>
+> Adopting §6 would discard M0–M3 (schema contract, seed catalog, load-domain
+> generator), all of which shipped. **`docs/adr/` is authoritative for every
+> architectural question.** Where this document disagrees with an ADR, the ADR
+> wins.
+>
+> §1–§5 and §7–§9 remain useful: the problem statement, the recursive plan tree
+> (which ADR-027 restored the engine to), prescription-vs-performance
+> separation, and the generator's approach are all still correct. The data model
+> in §3 is expressed in SQL tables; read it as the shape, not the storage.
+>
+> Kept rather than deleted because the reasoning has value and because a plan
+> that was wrong is worth being able to see (same principle as ADR immutability).
+
+---
+
 # Fitness App — Technical Plan v3
 
 **Role split:** Carey = Product Manager (scope, priorities, acceptance criteria). Claude = Software Engineer (architecture, schema, implementation, tradeoffs).

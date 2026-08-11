@@ -4,7 +4,7 @@ Settles the equipment layer before `12_fullbody.csv` is written. Covers the
 canonical token list, the `machine` problem, the substitution map, and the gym
 profiles the validator reports survivors against.
 
-Library state at time of writing: **247 rows across 11 files.**
+Library state: **285 rows across 12 files, complete.** The `machine` split shipped at 12 tokens, not the 9 proposed here — calf, hip abductor/adductor, and captain's chair rows had nowhere legal to land. Every open decision in §8 is closed; see ADR-021, ADR-022, ADR-026.
 
 ---
 
