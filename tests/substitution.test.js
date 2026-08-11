@@ -6,7 +6,11 @@ import { defs } from '../js/engine/defs.js';
 const byId = Object.fromEntries(defs.exercises.map((e) => [e.id, e]));
 const weights = defs.substitutionWeights;
 const commercial = defs.equipment.find((p) => p.id === 'commercial-gym');
-const minimal = defs.equipment.find((p) => p.id === 'minimal');
+// `minimal` is a VALIDATOR-side profile from EQUIPMENT_VOCABULARY.md §6, not a
+// shipped app profile — equipment.json ships commercial-gym and home-garage
+// only. The lookup silently returned undefined, so this suite's equipment
+// assertion has never actually constrained anything.
+const minimal = defs.equipment.find((p) => p.id === 'home-garage');
 
 describe('substitution ranks by pattern + equipment', () => {
   test('never returns the target itself', () => {

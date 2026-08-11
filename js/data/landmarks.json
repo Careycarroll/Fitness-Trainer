@@ -3,20 +3,143 @@
   "units": "hard sets per week",
   "caveat": "Population estimates from published hypertrophy literature. Wide individual variance. The engine seeds from these and then corrects against logged history. Not medical guidance; does not account for injury history.",
   "landmarks": {
-    "chest":      { "mv": 4, "mev": 8,  "mav": 16, "mrv": 22 },
-    "back":       { "mv": 6, "mev": 10, "mav": 20, "mrv": 25 },
-    "quads":      { "mv": 4, "mev": 8,  "mav": 16, "mrv": 20 },
-    "hamstrings": { "mv": 3, "mev": 6,  "mav": 12, "mrv": 16 },
-    "glutes":     { "mv": 0, "mev": 4,  "mav": 12, "mrv": 16 },
-    "calves":     { "mv": 4, "mev": 8,  "mav": 14, "mrv": 20 },
-    "shoulders":  { "mv": 4, "mev": 8,  "mav": 16, "mrv": 22 },
-    "biceps":     { "mv": 4, "mev": 8,  "mav": 14, "mrv": 20 },
-    "triceps":    { "mv": 4, "mev": 6,  "mav": 12, "mrv": 18 },
-    "forearms":   { "mv": 0, "mev": 2,  "mav": 8,  "mrv": 12 },
-    "abs":        { "mv": 0, "mev": 4,  "mav": 12, "mrv": 20 },
-    "obliques":   { "mv": 0, "mev": 3,  "mav": 9,  "mrv": 14 },
-    "traps":      { "mv": 0, "mev": 4,  "mav": 12, "mrv": 18 },
-    "lowerBack":  { "mv": 2, "mev": 4,  "mav": 8,  "mrv": 12 },
-    "systemic":   { "mv": 0, "mev": 0,  "mav": 0,  "mrv": 0 }
+    "chest": {
+      "mv": 4,
+      "mev": 8,
+      "mav": 16,
+      "mrv": 22
+    },
+    "lats": {
+      "mv": 6,
+      "mev": 10,
+      "mav": 20,
+      "mrv": 25
+    },
+    "mid_back": {
+      "mv": 6,
+      "mev": 10,
+      "mav": 20,
+      "mrv": 25
+    },
+    "upper_back": {
+      "mv": 6,
+      "mev": 10,
+      "mav": 20,
+      "mrv": 25
+    },
+    "quads": {
+      "mv": 4,
+      "mev": 8,
+      "mav": 16,
+      "mrv": 20
+    },
+    "hamstrings": {
+      "mv": 3,
+      "mev": 6,
+      "mav": 12,
+      "mrv": 16
+    },
+    "glutes": {
+      "mv": 0,
+      "mev": 4,
+      "mav": 12,
+      "mrv": 16
+    },
+    "calves": {
+      "mv": 4,
+      "mev": 8,
+      "mav": 14,
+      "mrv": 20
+    },
+    "front_delts": {
+      "mv": 4,
+      "mev": 8,
+      "mav": 16,
+      "mrv": 22
+    },
+    "side_delts": {
+      "mv": 4,
+      "mev": 8,
+      "mav": 16,
+      "mrv": 22
+    },
+    "rear_delts": {
+      "mv": 4,
+      "mev": 8,
+      "mav": 16,
+      "mrv": 22
+    },
+    "biceps": {
+      "mv": 4,
+      "mev": 8,
+      "mav": 14,
+      "mrv": 20
+    },
+    "triceps": {
+      "mv": 4,
+      "mev": 6,
+      "mav": 12,
+      "mrv": 18
+    },
+    "forearms": {
+      "mv": 0,
+      "mev": 2,
+      "mav": 8,
+      "mrv": 12
+    },
+    "abs": {
+      "mv": 0,
+      "mev": 4,
+      "mav": 12,
+      "mrv": 20
+    },
+    "obliques": {
+      "mv": 0,
+      "mev": 3,
+      "mav": 9,
+      "mrv": 14
+    },
+    "traps": {
+      "mv": 0,
+      "mev": 4,
+      "mav": 12,
+      "mrv": 18
+    },
+    "erectors": {
+      "mv": 2,
+      "mev": 4,
+      "mav": 8,
+      "mrv": 12
+    },
+    "systemic": {
+      "mv": 0,
+      "mev": 0,
+      "mav": 0,
+      "mrv": 0
+    },
+    "adductors": {
+      "mv": 4,
+      "mev": 8,
+      "mav": 14,
+      "mrv": 20
+    },
+    "abductors": {
+      "mv": 4,
+      "mev": 8,
+      "mav": 14,
+      "mrv": 20
+    },
+    "hip_flexors": {
+      "mv": 4,
+      "mev": 8,
+      "mav": 14,
+      "mrv": 20
+    },
+    "neck": {
+      "mv": 4,
+      "mev": 8,
+      "mav": 14,
+      "mrv": 20
+    }
   }
 }

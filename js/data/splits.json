@@ -3,15 +3,15 @@
   "splits": [
     {
       "id": "full-body-3",
-      "name": "Full Body ×3",
+      "name": "Full Body \u00d73",
       "daysPerWeek": 3,
       "days": [
         {
           "label": "Full Body A",
           "patterns": [
             "squat",
-            "horizontalPush",
-            "horizontalPull",
+            "push_h",
+            "pull_h",
             "core"
           ]
         },
@@ -19,8 +19,8 @@
           "label": "Full Body B",
           "patterns": [
             "hinge",
-            "verticalPush",
-            "verticalPull",
+            "push_v",
+            "pull_v",
             "carry"
           ]
         },
@@ -28,8 +28,8 @@
           "label": "Full Body C",
           "patterns": [
             "lunge",
-            "horizontalPush",
-            "verticalPull",
+            "push_h",
+            "pull_v",
             "core"
           ]
         }
@@ -38,15 +38,15 @@
     },
     {
       "id": "upper-lower-4",
-      "name": "Upper / Lower ×4",
+      "name": "Upper / Lower \u00d74",
       "daysPerWeek": 4,
       "days": [
         {
           "label": "Upper A",
           "patterns": [
-            "horizontalPush",
-            "horizontalPull",
-            "verticalPush",
+            "push_h",
+            "pull_h",
+            "push_v",
             "core"
           ]
         },
@@ -62,9 +62,9 @@
         {
           "label": "Upper B",
           "patterns": [
-            "verticalPush",
-            "verticalPull",
-            "horizontalPull",
+            "push_v",
+            "pull_v",
+            "pull_h",
             "carry"
           ]
         },
@@ -82,22 +82,22 @@
     },
     {
       "id": "ppl-6",
-      "name": "Push / Pull / Legs ×6",
+      "name": "Push / Pull / Legs \u00d76",
       "daysPerWeek": 6,
       "days": [
         {
           "label": "Push A",
           "patterns": [
-            "horizontalPush",
-            "verticalPush",
+            "push_h",
+            "push_v",
             "core"
           ]
         },
         {
           "label": "Pull A",
           "patterns": [
-            "verticalPull",
-            "horizontalPull",
+            "pull_v",
+            "pull_h",
             "carry"
           ]
         },
@@ -112,16 +112,16 @@
         {
           "label": "Push B",
           "patterns": [
-            "verticalPush",
-            "horizontalPush",
+            "push_v",
+            "push_h",
             "core"
           ]
         },
         {
           "label": "Pull B",
           "patterns": [
-            "horizontalPull",
-            "verticalPull",
+            "pull_h",
+            "pull_v",
             "carry"
           ]
         },
@@ -138,7 +138,7 @@
     },
     {
       "id": "conditioning-3",
-      "name": "Conditioning ×3",
+      "name": "Conditioning \u00d73",
       "daysPerWeek": 3,
       "days": [
         {
@@ -154,7 +154,7 @@
           "patterns": [
             "monostructural",
             "squat",
-            "horizontalPush"
+            "push_h"
           ]
         },
         {
