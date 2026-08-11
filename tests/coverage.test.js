@@ -64,7 +64,7 @@ test('coverage: profiles', async (t) => {
       assert.fail('expected CoverageError');
     } catch (err) {
       assert.ok(err instanceof CoverageError);
-      assert.match(err.message, /no 'hinge' option available in profile "Sparse"/);
+      assert.match(err.message, /Profile "Sparse" cannot perform any 'hinge' movement/);
       assert.match(err.message, /kettlebell/);
       assert.equal(err.gaps[0].pattern, 'hinge');
     }
@@ -84,7 +84,7 @@ test('coverage: profiles', async (t) => {
       assert.fail('expected CoverageError');
     } catch (err) {
       assert.equal(err.gaps.length, 2);
-      assert.match(err.message, /Also uncovered: vertical-pull/);
+      assert.match(err.message, /'hinge', 'vertical-pull'/);
     }
   });
 

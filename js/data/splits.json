@@ -165,6 +165,50 @@
         }
       ],
       "sessionsPerWeek": 3
+    },
+    {
+      "id": "powerlifting-4",
+      "name": "Powerlifting \u00d74",
+      "daysPerWeek": 4,
+      "sessionsPerWeek": 4,
+      "days": [
+        {
+          "label": "Squat",
+          "patterns": [
+            "squat",
+            "squat",
+            "hinge",
+            "core"
+          ]
+        },
+        {
+          "label": "Bench",
+          "patterns": [
+            "push_h",
+            "push_h",
+            "pull_h",
+            "isolation"
+          ]
+        },
+        {
+          "label": "Deadlift",
+          "patterns": [
+            "hinge",
+            "hinge",
+            "squat",
+            "pull_h"
+          ]
+        },
+        {
+          "label": "Upper",
+          "patterns": [
+            "push_v",
+            "pull_v",
+            "pull_h",
+            "isolation"
+          ]
+        }
+      ]
     }
   ]
 }

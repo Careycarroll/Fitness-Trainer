@@ -40,7 +40,17 @@
         "isolation": 0.5,
         "locomotion": 0.2
       },
-      "fatigueBudget": 22
+      "fatigueBudget": 22,
+      "exercisesPerSession": {
+        "min": 5,
+        "max": 7
+      },
+      "allowPatternRepeat": true,
+      "preferredSplits": [
+        "powerlifting-4",
+        "upper-lower-4",
+        "full-body-3"
+      ]
     },
     {
       "id": "bodybuilding",
@@ -80,7 +90,17 @@
         "isolation": 0.5,
         "locomotion": 0.2
       },
-      "fatigueBudget": 20
+      "fatigueBudget": 20,
+      "exercisesPerSession": {
+        "min": 6,
+        "max": 9
+      },
+      "allowPatternRepeat": false,
+      "preferredSplits": [
+        "ppl-6",
+        "upper-lower-4",
+        "full-body-3"
+      ]
     },
     {
       "id": "strength",
@@ -120,7 +140,17 @@
         "isolation": 0.5,
         "locomotion": 0.2
       },
-      "fatigueBudget": 21
+      "fatigueBudget": 21,
+      "exercisesPerSession": {
+        "min": 5,
+        "max": 7
+      },
+      "allowPatternRepeat": false,
+      "preferredSplits": [
+        "full-body-3",
+        "upper-lower-4",
+        "powerlifting-4"
+      ]
     },
     {
       "id": "core",
@@ -160,7 +190,16 @@
         "isolation": 0.5,
         "locomotion": 0.2
       },
-      "fatigueBudget": 10
+      "fatigueBudget": 10,
+      "exercisesPerSession": {
+        "min": 4,
+        "max": 6
+      },
+      "allowPatternRepeat": false,
+      "preferredSplits": [
+        "full-body-3",
+        "upper-lower-4"
+      ]
     },
     {
       "id": "hiit",
@@ -195,7 +234,15 @@
         "isolation": 0.2,
         "locomotion": 0.6
       },
-      "fatigueBudget": 14
+      "fatigueBudget": 14,
+      "exercisesPerSession": {
+        "min": 6,
+        "max": 10
+      },
+      "allowPatternRepeat": false,
+      "preferredSplits": [
+        "conditioning-3"
+      ]
     },
     {
       "id": "cardio",
@@ -230,7 +277,15 @@
         "isolation": 0.2,
         "locomotion": 0.6
       },
-      "fatigueBudget": 12
+      "fatigueBudget": 12,
+      "exercisesPerSession": {
+        "min": 1,
+        "max": 3
+      },
+      "allowPatternRepeat": false,
+      "preferredSplits": [
+        "conditioning-3"
+      ]
     },
     {
       "id": "crossfit",
@@ -265,7 +320,15 @@
         "isolation": 0.2,
         "locomotion": 0.6
       },
-      "fatigueBudget": 18
+      "fatigueBudget": 18,
+      "exercisesPerSession": {
+        "min": 3,
+        "max": 6
+      },
+      "allowPatternRepeat": false,
+      "preferredSplits": [
+        "conditioning-3"
+      ]
     }
   ]
 }

@@ -17,16 +17,26 @@ export class CoverageError extends Error {
    * @param {Array<{pattern: string, suggests: string[]}>} gaps
    */
   constructor(profileName, gaps) {
-    const first = gaps[0];
-    const lines = [
-      `Cannot generate: no '${first.pattern}' option available in profile "${profileName}".`
-    ];
-    if (first.suggests.length) {
-      lines.push(`Add one of: ${first.suggests.join(', ')}.`);
+    const equipmentGaps = gaps.filter((g) => g.reason !== 'no-catalog-rows');
+    const missingGaps = gaps.filter((g) => g.reason === 'no-catalog-rows');
+
+    const lines = [];
+    if (equipmentGaps.length) {
+      const names = equipmentGaps.map((g) => `'${g.pattern}'`).join(', ');
+      lines.push(
+        `Profile "${profileName}" cannot perform any ${names} movement.`
+      );
+      for (const g of equipmentGaps) {
+        if (g.suggests.length) {
+          lines.push(`  ${g.pattern}: add ${g.suggests.join(' or ')}.`);
+        }
+      }
     }
-    if (gaps.length > 1) {
-      const rest = gaps.slice(1).map((g) => g.pattern).join(', ');
-      lines.push(`Also uncovered: ${rest}.`);
+    if (missingGaps.length) {
+      const names = missingGaps.map((g) => `'${g.pattern}'`).join(', ');
+      lines.push(
+        `The catalog has no ${names} movements yet — no equipment change fixes this.`
+      );
     }
     super(lines.join('\n'));
     this.name = 'CoverageError';
@@ -71,6 +81,15 @@ export function analyzeCoverage(profile, requiredPatterns, catalog) {
     optionsByPattern.set(pattern, options);
 
     if (options.length === 0) {
+      // WHY a pattern is uncoverable determines what we can honestly tell the
+      // user. If the catalog has zero rows for it, no amount of equipment
+      // helps and suggesting some is a lie -- that is a missing milestone,
+      // not a missing dumbbell.
+      if (all.length === 0) {
+        gaps.push({ pattern, reason: 'no-catalog-rows', suggests: [] });
+        continue;
+      }
+
       // Suggest the smallest set of tokens that would unlock this pattern:
       // any single token that, added alone, makes at least one exercise work.
       const suggests = new Set();
@@ -85,7 +104,7 @@ export function analyzeCoverage(profile, requiredPatterns, catalog) {
           .sort((a, b) => a.length - b.length)[0];
         (cheapest ?? []).forEach((t) => suggests.add(t));
       }
-      gaps.push({ pattern, suggests: [...suggests].sort() });
+      gaps.push({ pattern, reason: 'equipment', suggests: [...suggests].sort() });
     } else {
       covered.push(pattern);
     }
