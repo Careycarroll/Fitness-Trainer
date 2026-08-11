@@ -61,7 +61,7 @@ more records add variety but zero generator capability. Variety goes to Backlog 
 
 ---
 
-## M5 — UI shell · shell exists
+## M5 — UI shell · **done**
 
 Request form, session render, theme toggle. Rendering only — no planning logic in `js/ui/`.
 
