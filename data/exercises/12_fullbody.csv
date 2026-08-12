@@ -31,3 +31,4 @@ Plate Pinch Hold,plate-pinch-hold,grip_hold,strength,carry,forearms,,plate,FALSE
 Sled Rope Pull,sled-rope-pull,sled,strength,locomotion,lats|mid_back,biceps|abs|rear_delts,sled,TRUE,2,1,20,40,90,FALSE,weight_distance,,
 Lateral Sled Drag,lateral-sled-drag,sled,strength,locomotion,abductors|quads,glutes|calves,sled,TRUE,2,2,20,40,90,TRUE,weight_distance,,
 Bear Crawl,bear-crawl,crawl,strength,locomotion,abs|front_delts,quads|obliques|traps,bodyweight,TRUE,2,2,20,60,60,FALSE,time,,wrist|shoulder
+Mountain Climber,mountain-climber,crawl,strength,locomotion,abs|hip_flexors,front_delts|quads,bodyweight,TRUE,2,2,20,60,60,FALSE,time,,wrist|shoulder

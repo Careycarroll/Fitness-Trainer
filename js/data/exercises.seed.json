@@ -10187,6 +10187,47 @@
       "repLow": 20,
       "repHigh": 60,
       "sourceFile": "12_fullbody.csv"
+    },
+    {
+      "id": "mountain-climber",
+      "name": "Mountain Climber",
+      "pattern": "locomotion",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "abs",
+        "hip_flexors"
+      ],
+      "secondaryMuscles": [
+        "front_delts",
+        "quads"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 20,
+        "maxSeconds": 60
+      },
+      "roundsCapable": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "crawl",
+      "jointLoad": [
+        "wrist",
+        "shoulder"
+      ],
+      "emphasis": null,
+      "repLow": 20,
+      "repHigh": 60,
+      "sourceFile": "12_fullbody.csv"
     }
   ]
 }
