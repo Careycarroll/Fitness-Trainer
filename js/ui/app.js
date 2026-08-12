@@ -34,12 +34,25 @@ let visibleDay = 0;        // single-session mode: which day of the split is sho
 let scope = 'session';     // 'session' | 'block'
 let edited = false;
 let pinnedSeed = null;     // set when the user asks to reproduce a draft
+let seedLabel = '';         // the user's number/name, shown separately from the resolved integer
 
-/** A typed seed wins; anything unparseable falls back to a fresh draft. */
+/** Numeric seeds pass through; named seeds hash deterministically to a positive integer. */
 function seedFrom(raw) {
-  const n = Number(String(raw ?? '').trim());
+  const value = String(raw ?? '').trim();
+  seedLabel = value;
+  if (!value) return nextSeed();
+
+  const n = Number(value);
   if (Number.isInteger(n) && n > 0) return n;
-  return nextSeed();
+
+  // FNV-1a keeps memorable labels such as "Mine" reproducible while the engine
+  // continues receiving the integer seed required by its request contract.
+  let hash = 2166136261;
+  for (const char of value) {
+    hash ^= char.codePointAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0) || 1;
 }
 
 function nextSeed() {
@@ -61,13 +74,24 @@ export function mount(root, defs) {
   root.innerHTML = `
     <header class="app-bar">
       <h1>Training Planner</h1>
-      <button id="theme" class="ghost" aria-label="Toggle theme">◐</button>
+      <div class="app-actions">
+        ${import.meta.env.DEV ? `
+          <label class="preview-control">Preview
+            <select id="preview" aria-label="Responsive preview">
+              <option value="auto">Auto</option>
+              <option value="phone">Phone · 390px</option>
+              <option value="desktop">Desktop</option>
+            </select>
+          </label>` : ''}
+        <button id="theme" class="ghost icon-button" aria-label="Toggle theme">◐</button>
+      </div>
     </header>
 
-    <form id="req" class="panel">
+    <aside class="planner-sidebar">
+      <form id="req" class="panel planner-form">
       <label>Plan
         <select name="scope">
-          <option value="session" selected>One session</option>
+          <option value="session" selected>Session preview</option>
           <option value="block">Full block</option>
         </select>
       </label>
@@ -92,14 +116,15 @@ export function mount(root, defs) {
       <label>Skill level (1–5)
         <input type="number" name="skillLevel" min="1" max="5" value="2" />
       </label>
-      <label>Seed (blank = new draft)
-        <input type="text" name="seed" inputmode="numeric" placeholder="random"
+      <label>Seed (number or name; blank = new draft)
+        <input type="text" name="seed" placeholder="random"
                autocomplete="off" />
       </label>
-      <button type="submit" class="primary">Generate</button>
-    </form>
+        <button type="submit" class="primary">Generate</button>
+      </form>
 
-    <p class="warn" role="note">Nothing is saved — edits included. Persistence and export ship together in M6 (ADR-011).</p>
+      <p class="warn" role="note">Nothing is saved — edits included. Persistence and export ship together in M6 (ADR-011).</p>
+    </aside>
     <section id="out" aria-live="polite"></section>
   `;
 
@@ -119,6 +144,14 @@ export function mount(root, defs) {
   form.equipmentProfile.addEventListener('change', (e) => {
     localStorage.setItem(PREF_PROFILE, e.target.value);
   });
+
+  const preview = root.querySelector('#preview');
+  if (preview) {
+    preview.addEventListener('change', () => {
+      document.documentElement.dataset.preview = preview.value;
+    });
+    document.documentElement.dataset.preview = preview.value;
+  }
 
   root.querySelector('#theme').addEventListener('click', () => {
     const el = document.documentElement;
@@ -168,412 +201,309 @@ export function mount(root, defs) {
   // (week, session, block, setGroup) index rather than by DOM position, so a
   // re-render cannot desynchronise the handler from the data.
   out.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-act]');
-    if (!btn || !current) return;
-    const { act, w, s, b, g } = btn.dataset;
-    handleEdit(act, Number(w), Number(s), Number(b), Number(g), btn);
-    paint(out);
+    const day = e.target.closest('[data-day]');
+    if (day) {
+      visibleDay = Number(day.dataset.day);
+      paint(out);
+      return;
+    }
+
+    const seed = e.target.closest('[data-copy-seed]');
+    if (seed) {
+      const value = seed.dataset.copySeed;
+      navigator.clipboard?.writeText(value).catch(() => {});
+      seed.textContent = 'copied';
+      setTimeout(() => { if (seed.isConnected) seed.textContent = value; }, 900);
+      return;
+    }
+
+    const swap = e.target.closest('[data-swap]');
+    if (swap) {
+      const { w, s, b, g } = indices(swap);
+      toggleSwapList(out, swap, w, s, b, g);
+      return;
+    }
+
+    const pick = e.target.closest('[data-pick]');
+    if (pick) {
+      const { w, s, b, g } = indices(pick);
+      replaceSetGroup(w, s, b, g, pick.dataset.pick);
+      edited = true;
+      paint(out);
+      return;
+    }
+
+    const remove = e.target.closest('[data-remove]');
+    if (remove) {
+      if (!window.confirm('Remove this exercise from the draft?')) return;
+      const { w, s, b, g } = indices(remove);
+      const block = current.weeks[w].sessions[s].blocks[b];
+      block.setGroups.splice(g, 1);
+      if (block.setGroups.length === 0) current.weeks[w].sessions[s].blocks.splice(b, 1);
+      edited = true;
+      paint(out);
+    }
   });
 
   out.addEventListener('change', (e) => {
-    const input = e.target.closest('[data-field]');
-    if (!input || !current) return;
-    const { field, w, s, b, g } = input.dataset;
-    const sg = setGroupAt(current.weeks[+w].sessions[+s], +b, +g);
-    if (!sg) return;
-    const n = Number(input.value);
-    if (Number.isFinite(n) && n > 0) {
-      sg[field] = Math.round(n);
-      edited = true;
-    }
+    const input = e.target.closest('[data-edit]');
+    if (!input) return;
+    const { w, s, b, g } = indices(input);
+    const group = setGroupAt(current.weeks[w].sessions[s], b, g);
+    const value = Number(input.value);
+    if (!Number.isFinite(value)) return;
+    group.prescription[input.dataset.edit] = value;
+    edited = true;
     paint(out);
   });
 }
 
-// ---------------------------------------------------------------------------
-// Editing
-//
-// Every operation here mutates `current` and nothing else. The engine is never
-// re-run: regenerating would discard the edits, which is the opposite of what
-// an edit means.
-// ---------------------------------------------------------------------------
-
-function handleEdit(act, w, s, b, g, btn) {
-  // The day picker addresses no block, so its buttons carry no w/s/b/g. Reading
-  // the session first threw on weeks[NaN] and the click did nothing at all --
-  // handle it before touching the program.
-  if (act === 'use-seed') {
-    const field = document.querySelector('#req input[name="seed"]');
-    if (field) { field.value = btn.dataset.seed; field.focus(); }
-    return;
-  }
-
-  if (act === 'day') {
-    visibleDay = Number(btn.dataset.day);
-    return;
-  }
-
-  const session = current.weeks[w].sessions[s];
-  const block = session.blocks?.[b];
-  if (!block) return;
-
-  if (act === 'remove') {
-    const [gone] = block.setGroups.splice(g, 1);
-    // A block whose last setGroup was removed is not an empty block, it is a
-    // block that no longer exists. Leaving it would render as an empty card and
-    // would make `blockType` describe nothing.
-    if (block.setGroups.length === 0) session.blocks.splice(b, 1);
-    (session.omitted ??= []).push({
-      pattern: gone?.pattern ?? '—',
-      reason: 'removed-by-user',
-      name: gone?.name
-    });
-    recomputeFatigue(session);
-    edited = true;
-    return;
-  }
-
-  if (act === 'swap-open') {
-    const sg = setGroupAt(session, b, g);
-    if (sg) sg.swapOpen = !sg.swapOpen;
-    return;
-  }
-
-  if (act === 'swap-to') {
-    const sg = setGroupAt(session, b, g);
-    const replacement = currentDefs.exercises.find((e) => e.id === btn.dataset.id);
-    if (!sg || !replacement) return;
-    // Prescription is preserved; identity is replaced. Swapping a movement is
-    // not a request to re-prescribe it — if the sets and reps changed under the
-    // user, the swap would silently be an edit they did not make.
-    block.setGroups[g] = {
-      ...sg,
-      exerciseId: replacement.id,
-      name: replacement.name,
-      pattern: replacement.pattern,
-      equipment: replacement.equipment,
-      primaryMuscles: replacement.primaryMuscles,
-      exerciseFamily: replacement.exerciseFamily ?? null,
-      fatigueCost: replacement.fatigueCost,
-      rir: replacement.defaultRIR ?? sg.rir,
-      warmupRequired: replacement.warmupRequired,
-      unilateral: replacement.unilateral,
-      swapOpen: false,
-      userSwapped: true
-    };
-    recomputeFatigue(session);
-    edited = true;
-  }
+function indices(el) {
+  return {
+    w: Number(el.dataset.w),
+    s: Number(el.dataset.s),
+    b: Number(el.dataset.b),
+    g: Number(el.dataset.g)
+  };
 }
-
-/**
- * Fatigue is the engine's number, and after an edit it is no longer the engine's
- * session. Recomputing from the catalog keeps the displayed total honest rather
- * than leaving a stale figure that quietly stops describing what is on screen.
- */
-function recomputeFatigue(session) {
-  session.fatigueUsed = allSetGroups(session).reduce((sum, sg) => {
-    const ex = currentDefs.exercises.find((e) => e.id === sg.exerciseId);
-    return sum + (ex?.fatigueCost ?? 0);
-  }, 0);
-}
-
-/** Substitution candidates come from the engine, never from this file (ADR-002). */
-function substitutesFor(sg, session) {
-  const target = currentDefs.exercises.find((e) => e.id === sg.exerciseId);
-  if (!target) return [];
-  const profile = currentDefs.equipment.find((p) => p.id === currentRequest.equipmentProfile);
-  const inUse = new Set(allSetGroups(session).map((x) => x.exerciseId));
-  return rankSubstitutes(target, currentDefs.exercises, currentDefs.substitutionWeights, profile, 8)
-    .filter((r) => !inUse.has(r.exercise.id))
-    .slice(0, 6);
-}
-
-// ---------------------------------------------------------------------------
-// Render
-// ---------------------------------------------------------------------------
 
 function paint(out) {
   if (!current) return;
-  out.innerHTML = scope === 'session' ? renderSingle() : renderProgram();
-}
-
-function renderSingle() {
-  const week = current.weeks[0];
-  const day = Math.min(visibleDay, week.sessions.length - 1);
-  const session = week.sessions[day];
   const style = currentDefs.styles.find((s) => s.id === current.styleId);
-  const split = currentDefs.splits.find((s) => s.id === current.splitId);
+  const seedText = seedLabel || String(current.seed);
+  const seedTitle = seedLabel
+    ? `Named seed “${esc(seedLabel)}” resolves to ${current.seed}`
+    : `Resolved seed ${current.seed}`;
+  const editMessage = edited
+    ? '<p class="edit-note">This draft has local edits. Regenerating replaces them, and nothing is saved yet.</p>'
+    : '<p class="edit-note">Sets and reps are editable. Draft edits remain only on this screen.</p>';
 
-  // The other days are shown as a picker rather than hidden. The split is what
-  // makes this session make sense — "Push A" is only meaningful next to "Pull A".
-  const picker = week.sessions.map((s, i) => `
-    <button class="ghost day-tab${i === day ? ' selected' : ''}"
-            aria-pressed="${i === day}" data-act="day" data-day="${i}">
-      ${esc(s.label)}
-    </button>`).join('');
-
-  return `
-    <div class="program-head">
-      <h2>${esc(style.name)}</h2>
-      <p class="meta">${esc(split?.name ?? current.splitId)} · one session ·
-        seed <button class="ghost seed-copy" data-act="use-seed"
-              data-seed="${current.seed}" title="Reuse this seed">${current.seed}</button>${edited ? ' · edited' : ''}</p>
-      <div class="day-picker">${picker}</div>
-      <p class="meta">Days/week picks the split, so this session is day ${day + 1}
-        of ${week.sessions.length}. It is one day of a real week, not a standalone plan (ADR-015).</p>
-    </div>
-    ${sessionHtml(session, 0, day)}`;
-}
-
-function renderProgram() {
-  const style = currentDefs.styles.find((s) => s.id === current.styleId);
-  const split = currentDefs.splits.find((s) => s.id === current.splitId);
-
-  const header = `
+  const head = `
     <div class="program-head">
       <h2>${esc(style.name)}</h2>
       <p class="meta">
-        ${esc(split?.name ?? current.splitId)} ·
-        ${current.weeks.length} week${current.weeks.length === 1 ? '' : 's'} ·
-        seed ${current.seed}${edited ? ' · edited' : ''}
+        ${scope === 'session' ? `${current.daysPerWeek} split days · session preview` : `${current.weeks.length} weeks × ${current.daysPerWeek} days`}
+        · seed <button class="ghost seed-copy" data-copy-seed="${esc(String(current.seed))}" title="${seedTitle}">${esc(seedText)}</button>
+        ${seedLabel ? ` <span class="resolved-seed">(resolved: ${current.seed})</span>` : ''}
       </p>
-      ${split && split.daysPerWeek !== currentRequest.daysPerWeek
-        ? `<p class="note">You asked for ${currentRequest.daysPerWeek} days/week; the closest
-            shipped split is ${split.daysPerWeek}. Nothing was invented to fill the gap.</p>`
-        : ''}
+      ${editMessage}
     </div>`;
 
-  return header + current.weeks.map((wk, wi) => `
-    <h3 class="week">Week ${wk.week}</h3>
-    ${wk.sessions.map((s, si) => sessionHtml(s, wi, si)).join('')}`).join('');
+  if (scope === 'session') {
+    const sessions = current.weeks[0].sessions;
+    visibleDay = Math.min(visibleDay, Math.max(0, sessions.length - 1));
+    const tabs = `
+      <nav class="day-picker" aria-label="Split day preview">
+        ${sessions.map((s, i) => `
+          <button class="ghost day-tab${i === visibleDay ? ' selected' : ''}"
+                  data-day="${i}" aria-pressed="${i === visibleDay}">
+            ${esc(s.label)}
+          </button>`).join('')}
+      </nav>`;
+    const context = `<p class="note">Days/week picks the split; this is day ${visibleDay + 1} of ${sessions.length}, not a standalone plan (ADR-015).</p>`;
+    out.innerHTML = head + tabs + context + renderSession(sessions[visibleDay], 0, visibleDay, style);
+    return;
+  }
+
+  out.innerHTML = head + current.weeks.map((week, w) => `
+    <h2 class="week">Week ${week.weekNumber}</h2>
+    ${week.sessions.map((session, s) => renderSession(session, w, s, style)).join('')}
+  `).join('');
 }
 
-// ---------------------------------------------------------------------------
-// One block renderer for both domains (ADR-027).
-//
-// The session wrapper still differs — a load session reports a fatigue total, a
-// time session reports rounds and an estimated duration — but the block list
-// itself no longer branches on `session.domain` to find the exercises.
-// ---------------------------------------------------------------------------
-
-function sessionHtml(s, w, si) {
-  const blocks = (s.blocks ?? []).map((b, bi) => blockHtml(b, s, w, si, bi)).join('');
-  const isTime = s.domain === 'time';
+function renderSession(session, w, s, style) {
+  const groups = allSetGroups(session);
+  const domainMeta = session.domain === 'load'
+    ? `${session.fatigueUsed ?? groups.reduce((n, g) => n + (g.fatigueCost ?? 0), 0)} / ${session.fatigueBudget ?? style.fatigueBudget} fatigue`
+    : `${session.rounds} rounds · ${session.timeCapMinutes} min cap`;
+  const timing = session.schedule
+    ? `${esc(session.schedule.weekday)} · ${session.schedule.gapDays}d gap · ${esc(session.schedule.recovery)}`
+    : '';
 
   return `
-    <article class="card">
-      <h3>${esc(s.label)}${isTime ? ` <span class="tag">${esc(s.format)}</span>` : ''}</h3>
-      <ul class="blocks">${blocks}</ul>
-      ${omittedHtml(s.omitted)}
-      ${gateHtml(s.blockedByGates)}
-      <p class="meta">
-        ${isTime
-          ? `${s.rounds} round(s) · ~${Math.round(s.estimatedSeconds / 60)} min · `
-          : ''}fatigue ${s.fatigueUsed}/${s.fatigueBudget}
-      </p>
+    <article class="card session">
+      <h3>${esc(session.label)}</h3>
+      <ul class="blocks">
+        ${session.blocks.map((block, b) => renderBlock(block, w, s, b, session.domain)).join('')}
+      </ul>
+      ${renderOmitted(session.omitted)}
+      <p class="meta">${domainMeta}${timing ? ` · ${timing}` : ''}</p>
     </article>`;
 }
 
-/** Group-level chrome. A straight block needs none, which is why it gets none. */
-const BLOCK_LABEL = {
-  straight: '',
-  superset: 'Superset',
-  circuit: 'Circuit',
-  emom: 'EMOM',
-  amrap: 'AMRAP'
-};
+function renderBlock(block, w, s, b, domain) {
+  const type = block.blockType ?? 'straight';
+  const heading = type === 'straight'
+    ? ''
+    : `<div class="block-group-head"><strong>${esc(blockLabel(type))}</strong><span class="tag">${block.setGroups.length} exercises</span></div>`;
 
-function blockHtml(b, session, w, si, bi) {
-  const label = BLOCK_LABEL[b.blockType] ?? b.blockType;
-  const detail = [
-    b.rounds ? `${b.rounds} round(s)` : '',
-    b.timeCapSeconds ? `${Math.round(b.timeCapSeconds / 60)} min cap` : ''
-  ].filter(Boolean).join(' · ');
+  return `
+    <li class="block block-${esc(type)}">
+      ${heading}
+      <ol class="setgroups">
+        ${block.setGroups.map((group, g) => renderSetGroup(group, w, s, b, g, domain, type)).join('')}
+      </ol>
+    </li>`;
+}
 
-  const head = label
-    ? `<div class="block-group-head">
-         <span class="tag">${esc(label)}</span>
-         ${detail ? `<span class="meta">${esc(detail)}</span>` : ''}
-       </div>`
+function renderSetGroup(group, w, s, b, g, domain, blockType) {
+  const p = group.prescription ?? {};
+  const role = group.role ? `<span class="tag">${esc(group.role)}</span>` : '';
+  const warmup = group.warmupRequired
+    ? '<span class="tag warn-tag" title="Perform appropriate warm-up sets before the prescribed work sets">warm-up required</span>'
+    : '';
+  const marker = blockType === 'straight' ? '' : `<span class="marker">${g + 1}</span>`;
+  const swapped = group.swappedFrom
+    ? `<p class="note">Swapped from ${esc(group.swappedFrom.name)}</p>`
     : '';
 
-  // A multi-setGroup block is one unit of work, so its members are numbered
-  // A1/A2/... the way they would be written on paper. A one-element block gets
-  // no prefix, because "A1" with no A2 is noise.
-  const many = b.setGroups.length > 1;
-  const letter = String.fromCharCode(65 + bi);
+  const controls = domain === 'load'
+    ? loadControls(p, w, s, b, g)
+    : timeControls(p, w, s, b, g);
 
   return `
-    <li class="block block-${esc(b.blockType)}">
-      ${head}
-      <ul class="setgroups">
-        ${b.setGroups.map((sg, gi) =>
-          setGroupHtml(sg, session, w, si, bi, gi, many ? `${letter}${gi + 1}` : '')
-        ).join('')}
-      </ul>
-    </li>`;
-}
-
-function setGroupHtml(sg, session, w, si, bi, gi, marker) {
-  const addr = `data-w="${w}" data-s="${si}" data-b="${bi}" data-g="${gi}"`;
-
-  // A load setGroup prescribes sets/reps/intensity; a time setGroup prescribes
-  // work/rest seconds. Which fields exist is the honest discriminator — the
-  // domain does not need to be consulted.
-  const prescription = sg.workSeconds !== undefined
-    ? `<span class="meta">${sg.workSeconds}s work / ${sg.restSeconds}s rest</span>`
-    : `<label>sets
-         <input type="number" min="1" max="10" value="${sg.sets}"
-                data-field="sets" ${addr} />
-       </label>
-       <label>reps
-         <input type="number" min="1" max="50" value="${sg.reps}"
-                data-field="reps" ${addr} />
-       </label>
-       <span class="meta">@ ${Math.round(sg.intensityOf1RM * 100)}% · RIR ${sg.rir} · ${sg.restSeconds}s</span>`;
-
-  return `
-    <li class="setgroup${sg.userSwapped ? ' swapped' : ''}">
+    <li class="setgroup${group.swappedFrom ? ' swapped' : ''}">
       <div class="block-head">
-        ${marker ? `<span class="marker">${esc(marker)}</span>` : ''}
-        <strong>${esc(sg.name)}</strong>
-        <span class="tag">${esc(sg.role ?? '')}</span>
-        ${sg.warmupRequired ? '<span class="tag warn-tag">warmup</span>' : ''}
-        ${sg.userSwapped ? '<span class="tag">swapped</span>' : ''}
+        ${marker}<strong>${esc(group.name)}</strong>${role}${warmup}
       </div>
-
-      <div class="block-edit">
-        ${prescription}
-        <button class="ghost" data-act="swap-open" ${addr}>swap</button>
-        <button class="ghost danger" data-act="remove" ${addr}>remove</button>
-      </div>
-
-      ${sg.swapOpen ? swapListHtml(sg, session, w, si, bi, gi) : ''}
+      ${controls}
+      ${swapped}
     </li>`;
 }
 
-function swapListHtml(sg, session, w, si, bi, gi) {
-  const options = substitutesFor(sg, session);
-  if (options.length === 0) {
-    return `<p class="meta swap-list">No substitute available in this equipment profile.</p>`;
-  }
+function loadControls(p, w, s, b, g) {
+  const load = p.load != null
+    ? `${formatNumber(p.load)} ${esc(p.loadUnit ?? '')}`.trim()
+    : p.percent1RM != null
+      ? `${formatNumber(p.percent1RM)}% 1RM · load unavailable until a max is configured`
+      : 'load not prescribed';
+  const intensity = [load, p.rir != null ? `RIR ${formatNumber(p.rir)}` : '', p.restSec != null ? `${p.restSec}s rest` : '']
+    .filter(Boolean).join(' · ');
+
   return `
-    <ul class="swap-list">
-      ${options.map((o) => `
-        <li>
-          <button class="ghost" data-act="swap-to" data-id="${esc(o.exercise.id)}"
-                  data-w="${w}" data-s="${si}" data-b="${bi}" data-g="${gi}">
-            ${esc(o.exercise.name)}
-          </button>
-          <span class="meta">fatigue ${o.exercise.fatigueCost} · ${esc(o.exercise.pattern)}</span>
-        </li>`).join('')}
-    </ul>`;
-}
-
-// ---------------------------------------------------------------------------
-// Honest reporting of what is NOT in the session
-// ---------------------------------------------------------------------------
-
-const OMIT_REASON = {
-  'style-emphasis-zero': 'this style does not program it',
-  'no-unused-candidates': 'every option was already used',
-  'fatigue-budget-exhausted': 'fatigue budget reached',
-  'no-time-domain': 'no work/rest window authored for it',
-  'removed-by-user': 'you removed it'
-};
-
-function omittedHtml(omitted) {
-  if (!omitted?.length) return '';
-  return `
-    <div class="omitted">
-      <h4>Not included</h4>
-      <ul>
-        ${omitted.map((o) => `
-          <li>${esc(o.name ?? patternLabel(o.pattern))} —
-            ${esc(OMIT_REASON[o.reason] ?? o.reason)}</li>`).join('')}
-      </ul>
+    <div class="block-edit">
+      ${numberEdit('sets', p.sets, w, s, b, g, 1)}
+      ${numberEdit('reps', p.reps, w, s, b, g, 1)}
+      <p class="intensity">${esc(intensity)}</p>
+      ${editActions(w, s, b, g)}
     </div>`;
 }
 
-function gateHtml(blocked) {
-  if (!blocked?.length) return '';
-  return `<p class="meta">${blocked.length} movement(s) held back by skill gates.</p>`;
+function timeControls(p, w, s, b, g) {
+  const details = [
+    p.workSec != null ? `${p.workSec}s work` : '',
+    p.restSec != null ? `${p.restSec}s rest` : '',
+    p.rounds != null ? `${p.rounds} rounds` : ''
+  ].filter(Boolean).join(' · ');
+
+  return `
+    <div class="block-edit">
+      ${p.workSec != null ? numberEdit('workSec', p.workSec, w, s, b, g, 1, 'work (sec)') : ''}
+      ${p.restSec != null ? numberEdit('restSec', p.restSec, w, s, b, g, 1, 'rest (sec)') : ''}
+      <p class="intensity">${esc(details || 'timed prescription')}</p>
+      ${editActions(w, s, b, g)}
+    </div>`;
 }
 
-// ---------------------------------------------------------------------------
-// Failure: coverage
-// ---------------------------------------------------------------------------
+function numberEdit(field, value, w, s, b, g, step = 1, label = field) {
+  return `
+    <label>${esc(label)}
+      <input type="number" min="0" step="${step}" value="${value ?? ''}"
+             data-edit="${field}" data-w="${w}" data-s="${s}" data-b="${b}" data-g="${g}" />
+    </label>`;
+}
+
+function editActions(w, s, b, g) {
+  const data = `data-w="${w}" data-s="${s}" data-b="${b}" data-g="${g}"`;
+  return `
+    <button class="action-button" data-swap ${data}>Swap</button>
+    <button class="action-button danger" data-remove ${data}>Remove</button>`;
+}
+
+function toggleSwapList(out, button, w, s, b, g) {
+  const existing = button.closest('.setgroup')?.querySelector('.swap-list');
+  if (existing) { existing.remove(); return; }
+
+  const group = setGroupAt(current.weeks[w].sessions[s], b, g);
+  const alternatives = rankSubstitutes(group.exerciseId, currentDefs, currentRequest, 5);
+  const list = document.createElement('ul');
+  list.className = 'swap-list';
+  list.innerHTML = alternatives.length
+    ? alternatives.map((x) => `
+        <li>
+          <button class="ghost" data-pick="${esc(x.exercise.id)}"
+                  data-w="${w}" data-s="${s}" data-b="${b}" data-g="${g}">
+            ${esc(x.exercise.name)}
+          </button>
+          <span class="meta">${formatNumber(x.score)}</span>
+        </li>`).join('')
+    : '<li class="note">No compatible substitutes found.</li>';
+  button.closest('.setgroup')?.append(list);
+}
+
+function replaceSetGroup(w, s, b, g, replacementId) {
+  const group = setGroupAt(current.weeks[w].sessions[s], b, g);
+  const replacement = currentDefs.exercises.find((x) => x.id === replacementId);
+  if (!replacement) return;
+  const original = group.swappedFrom ?? { id: group.exerciseId, name: group.name };
+  group.exerciseId = replacement.id;
+  group.name = replacement.name;
+  group.fatigueCost = replacement.fatigueCost;
+  group.warmupRequired = replacement.warmupRequired;
+  group.swappedFrom = original;
+}
+
+function renderOmitted(omitted = []) {
+  if (!omitted.length) return '';
+  return `
+    <section class="omitted" aria-label="Omitted training patterns">
+      <h4>Not included</h4>
+      <ul>
+        ${omitted.map((x) => `<li><strong>${esc(x.pattern)}</strong>: ${esc(x.reason ?? 'No eligible exercise')}</li>`).join('')}
+      </ul>
+    </section>`;
+}
 
 function coverageHtml(err, defs, request) {
   const profile = defs.equipment.find((p) => p.id === request.equipmentProfile);
-  const style = defs.styles.find((s) => s.id === request.styleId);
-
-  const equipmentGaps = err.gaps.filter((g) => g.reason !== 'no-catalog-rows');
-  const missingGaps = err.gaps.filter((g) => g.reason === 'no-catalog-rows');
-
-  const parts = [
-    `<div class="card error-card" role="alert">
-       <h2>Can't build this session</h2>
-       <p class="meta">${esc(style.name)} · ${esc(profile?.name ?? request.equipmentProfile)}</p>`
-  ];
-
-  if (equipmentGaps.length) {
-    parts.push(`
-      <h3>Your equipment can't cover ${equipmentGaps.length === 1 ? 'one movement' : `${equipmentGaps.length} movements`}</h3>
+  const gaps = err.gaps ?? [];
+  return `
+    <article class="card error-card">
+      <h2>Equipment coverage problem</h2>
+      <p>The ${esc(profile?.name ?? request.equipmentProfile)} profile cannot perform every required pattern.</p>
       <ul class="gap-list">
-        ${equipmentGaps.map((g) => `
+        ${gaps.map((gap) => `
           <li>
-            <strong>${esc(patternLabel(g.pattern))}</strong>
-            ${g.suggests.length
-              ? `<span class="fix">add ${g.suggests.map((t) => `<code>${esc(t)}</code>`).join(' or ')}</span>`
-              : `<span class="fix">no single item unlocks this</span>`}
-          </li>`).join('')}
-      </ul>`);
-  }
-
-  if (missingGaps.length) {
-    parts.push(`
-      <h3>Not in the catalog yet</h3>
-      <ul class="gap-list">
-        ${missingGaps.map((g) => `
-          <li>
-            <strong>${esc(patternLabel(g.pattern))}</strong>
-            <span class="fix">no exercises authored — equipment won't help</span>
+            <strong>${esc(gap.pattern)}</strong>
+            ${gap.suggestions?.length
+              ? `<span class="fix">Add ${gap.suggestions.map((s) => esc(s.join(' + '))).join(' or ')}</span>`
+              : '<span class="fix">No compatible catalog option is available.</span>'}
           </li>`).join('')}
       </ul>
-      <p class="meta">Conditioning styles need interval-domain movements (rower, bike,
-      jump rope). Those land in M7.</p>`);
-  }
-
-  parts.push(`
-      <p class="meta">Nothing partial was generated. A session missing a movement
-      the split asked for is worse than no session (ADR-014).</p>
-    </div>`);
-
-  return parts.join('');
+    </article>`;
 }
 
 function genericErrorHtml(err) {
-  return `<div class="card error-card" role="alert">
-            <h2>Generation failed</h2>
-            <p>${esc(err.message)}</p>
-            <p class="meta">${esc(err.name ?? 'Error')} — this one is a bug, not a setting.</p>
-          </div>`;
+  return `
+    <article class="card error-card">
+      <h2>Could not generate the plan</h2>
+      <p>${esc(err?.message ?? 'Unknown error')}</p>
+    </article>`;
 }
 
-// ---------------------------------------------------------------------------
+function blockLabel(type) {
+  return ({ superset: 'Superset', circuit: 'Circuit', amrap: 'AMRAP' })[type] ?? type;
+}
 
-const PATTERN_LABELS = {
-  squat: 'Squat', lunge: 'Lunge', hinge: 'Hinge',
-  push_h: 'Horizontal push', push_v: 'Vertical push',
-  pull_h: 'Horizontal pull', pull_v: 'Vertical pull',
-  carry: 'Carry', core: 'Core', isolation: 'Isolation',
-  explosive: 'Explosive', locomotion: 'Locomotion',
-  monostructural: 'Conditioning'
-};
-const patternLabel = (p) => PATTERN_LABELS[p] ?? p;
+function formatNumber(value) {
+  return Number.isInteger(Number(value)) ? String(Number(value)) : Number(value).toFixed(1);
+}
 
-const esc = (s) =>
-  String(s).replace(/[&<>"']/g, (c) =>
-    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function esc(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
