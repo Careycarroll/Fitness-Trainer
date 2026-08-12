@@ -252,7 +252,7 @@ export function mount(root, defs) {
     const group = setGroupAt(current.weeks[w].sessions[s], b, g);
     const value = Number(input.value);
     if (!Number.isFinite(value)) return;
-    group.prescription[input.dataset.edit] = value;
+    group[input.dataset.edit] = value;
     edited = true;
     paint(out);
   });
@@ -276,13 +276,13 @@ function paint(out) {
     : `Resolved seed ${current.seed}`;
   const editMessage = edited
     ? '<p class="edit-note">This draft has local edits. Regenerating replaces them, and nothing is saved yet.</p>'
-    : '<p class="edit-note">Sets and reps are editable. Draft edits remain only on this screen.</p>';
+    : '<p class="edit-note">Sets and reps are editable; draft edits remain only on this screen. Intensity is prescribed as a percentage of 1RM — absolute loads need logged maxes (M7).</p>';
 
   const head = `
     <div class="program-head">
       <h2>${esc(style.name)}</h2>
       <p class="meta">
-        ${scope === 'session' ? `${current.daysPerWeek} split days · session preview` : `${current.weeks.length} weeks × ${current.daysPerWeek} days`}
+        ${scope === 'session' ? `${(current.weeks[0]?.sessions.length ?? 0)} split days · session preview` : `${current.weeks.length} weeks × ${(current.weeks[0]?.sessions.length ?? 0)} days`}
         · seed <button class="ghost seed-copy" data-copy-seed="${esc(String(current.seed))}" title="${seedTitle}">${esc(seedText)}</button>
         ${seedLabel ? ` <span class="resolved-seed">(resolved: ${current.seed})</span>` : ''}
       </p>
@@ -341,13 +341,13 @@ function renderBlock(block, w, s, b, domain) {
     <li class="block block-${esc(type)}">
       ${heading}
       <ol class="setgroups">
-        ${block.setGroups.map((group, g) => renderSetGroup(group, w, s, b, g, domain, type)).join('')}
+        ${block.setGroups.map((group, g) => renderSetGroup(group, w, s, b, g, domain, type, block.rounds)).join('')}
       </ol>
     </li>`;
 }
 
-function renderSetGroup(group, w, s, b, g, domain, blockType) {
-  const p = group.prescription ?? {};
+function renderSetGroup(group, w, s, b, g, domain, blockType, rounds) {
+  const p = group;
   const role = group.role ? `<span class="tag">${esc(group.role)}</span>` : '';
   const warmup = group.warmupRequired
     ? '<span class="tag warn-tag" title="Perform appropriate warm-up sets before the prescribed work sets">warm-up required</span>'
@@ -359,7 +359,7 @@ function renderSetGroup(group, w, s, b, g, domain, blockType) {
 
   const controls = domain === 'load'
     ? loadControls(p, w, s, b, g)
-    : timeControls(p, w, s, b, g);
+    : timeControls(p, w, s, b, g, rounds);
 
   return `
     <li class="setgroup${group.swappedFrom ? ' swapped' : ''}">
@@ -372,12 +372,12 @@ function renderSetGroup(group, w, s, b, g, domain, blockType) {
 }
 
 function loadControls(p, w, s, b, g) {
-  const load = p.load != null
-    ? `${formatNumber(p.load)} ${esc(p.loadUnit ?? '')}`.trim()
-    : p.percent1RM != null
-      ? `${formatNumber(p.percent1RM)}% 1RM · load unavailable until a max is configured`
+  // No absolute load until logged maxes exist (M7). Percent-of-1RM is all the
+  // engine can honestly prescribe, so there is no load branch to fall back to.
+  const load = p.intensityOf1RM != null
+      ? `${formatNumber(p.intensityOf1RM * 100)}% 1RM`
       : 'load not prescribed';
-  const intensity = [load, p.rir != null ? `RIR ${formatNumber(p.rir)}` : '', p.restSec != null ? `${p.restSec}s rest` : '']
+  const intensity = [load, p.rir != null ? `RIR ${formatNumber(p.rir)}` : '', p.restSeconds != null ? `${p.restSeconds}s rest` : '']
     .filter(Boolean).join(' · ');
 
   return `
@@ -389,17 +389,17 @@ function loadControls(p, w, s, b, g) {
     </div>`;
 }
 
-function timeControls(p, w, s, b, g) {
+function timeControls(p, w, s, b, g, rounds) {
   const details = [
-    p.workSec != null ? `${p.workSec}s work` : '',
-    p.restSec != null ? `${p.restSec}s rest` : '',
-    p.rounds != null ? `${p.rounds} rounds` : ''
+    p.workSeconds != null ? `${p.workSeconds}s work` : '',
+    p.restSeconds != null ? `${p.restSeconds}s rest` : '',
+    rounds != null ? `${rounds} rounds` : ''
   ].filter(Boolean).join(' · ');
 
   return `
     <div class="block-edit">
-      ${p.workSec != null ? numberEdit('workSec', p.workSec, w, s, b, g, 1, 'work (sec)') : ''}
-      ${p.restSec != null ? numberEdit('restSec', p.restSec, w, s, b, g, 1, 'rest (sec)') : ''}
+      ${p.workSeconds != null ? numberEdit('workSeconds', p.workSeconds, w, s, b, g, 1, 'work (sec)') : ''}
+      ${p.restSeconds != null ? numberEdit('restSeconds', p.restSeconds, w, s, b, g, 1, 'rest (sec)') : ''}
       <p class="intensity">${esc(details || 'timed prescription')}</p>
       ${editActions(w, s, b, g)}
     </div>`;
