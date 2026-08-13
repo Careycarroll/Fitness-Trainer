@@ -315,17 +315,15 @@ function renderSession(session, w, s, style) {
   const groups = allSetGroups(session);
   const domainMeta = session.domain === 'load'
     ? `${session.fatigueUsed ?? groups.reduce((n, g) => n + (g.fatigueCost ?? 0), 0)} / ${session.fatigueBudget ?? style.fatigueBudget} fatigue`
-    : `${session.rounds} rounds · ${session.timeCapMinutes} min cap`;
-  const timing = session.schedule
-    ? `${esc(session.schedule.weekday)} · ${session.schedule.gapDays}d gap · ${esc(session.schedule.recovery)}`
-    : '';
+    : sessionTiming(session);
+  const timing = '';
 
   return `
     <article class="card session">
       <h3>${esc(session.label)}</h3>
-      <ul class="blocks">
-        ${session.blocks.map((block, b) => renderBlock(block, w, s, b, session.domain)).join('')}
-      </ul>
+      ${session.blocks.length
+        ? `<ul class="blocks">${session.blocks.map((block, b) => renderBlock(block, w, s, b, session.domain)).join('')}</ul>`
+        : emptySession(session)}
       ${renderOmitted(session.omitted)}
       <p class="meta">${domainMeta}${timing ? ` · ${timing}` : ''}</p>
     </article>`;
@@ -459,7 +457,7 @@ function renderOmitted(omitted = []) {
     <section class="omitted" aria-label="Omitted training patterns">
       <h4>Not included</h4>
       <ul>
-        ${omitted.map((x) => `<li><strong>${esc(x.pattern)}</strong>: ${esc(x.reason ?? 'No eligible exercise')}</li>`).join('')}
+        ${omitted.map((x) => `<li><strong>${esc(patternLabel(x.pattern))}</strong> — ${esc(omitReason(x))}</li>`).join('')}
       </ul>
     </section>`;
 }
@@ -506,4 +504,44 @@ function esc(value) {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#039;');
+}
+
+
+/** Rounds and the time cap sit on the block (ADR-027), never on the session. */
+function sessionTiming(session) {
+  const rounds = session.blocks.reduce((n, b) => Math.max(n, b.rounds ?? 0), 0);
+  const cap = session.blocks.reduce((n, b) => Math.max(n, b.timeCapSeconds ?? 0), 0);
+  return [
+    rounds ? `${rounds} rounds` : '',
+    cap ? `${Math.round(cap / 60)} min cap` : '',
+  ].filter(Boolean).join(' · ') || 'timed session';
+}
+
+/**
+ * A session with no blocks is not an error — the engine reports the gap in
+ * omitted[] and carries on (539f900). But it must say so, or it reads as broken.
+ */
+function emptySession(session) {
+  const deferred = (session.omitted ?? []).some((x) => x.pattern === 'monostructural');
+  return `<p class="edit-note">Nothing could be prescribed for this session. ${
+    deferred
+      ? 'Steady-state and machine conditioning need the monostructural catalog — rower, bike, jump rope — which ships in M6.'
+      : 'No exercise in the catalog matches this session\u2019s patterns under the current equipment profile.'
+  }</p>`;
+}
+
+function patternLabel(p) {
+  const NAMES = {
+    monostructural: 'Steady-state conditioning',
+    push_h: 'Horizontal push', push_v: 'Vertical push',
+    pull_h: 'Horizontal pull', pull_v: 'Vertical pull',
+  };
+  return NAMES[p] ?? p.replace(/_/g, ' ').replace(/^./, (c) => c.toUpperCase());
+}
+
+/** Engine reason codes are vocabulary, not prose. Translate at the boundary. */
+function omitReason(x) {
+  if (x.pattern === 'monostructural') return 'deferred to M6 — no rower, bike, or jump-rope movements yet';
+  if (x.reason === 'no-unused-candidates') return 'no time-scored exercise available for this pattern';
+  return x.reason ?? 'no eligible exercise';
 }
