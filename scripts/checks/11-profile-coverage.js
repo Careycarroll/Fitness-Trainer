@@ -41,7 +41,6 @@ import { analyzeCoverage } from '../../js/engine/coverage.js';
  * strength authoring closes it.
  */
 const DEFERRED_PATTERNS = {
-  monostructural: 'M7 — interval-domain generator (rower, air-bike, jump rope)'
 };
 
 /** Accept either an array of profiles or an object keyed by id. */

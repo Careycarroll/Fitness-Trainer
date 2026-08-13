@@ -13,7 +13,6 @@
  * does not explain itself.
  */
 export const DEFERRED_PATTERNS = {
-  monostructural: 'M7 — interval-domain generator (rower, air-bike, jump rope)'
 };
 
 export const isDeferred = (p) => p in DEFERRED_PATTERNS;

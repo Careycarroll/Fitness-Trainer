@@ -10514,6 +10514,591 @@
       "repLow": 20,
       "repHigh": 60,
       "sourceFile": "12_fullbody.csv"
+    },
+    {
+      "id": "walking",
+      "name": "Walking",
+      "pattern": "monostructural",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "calves"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "hamstrings"
+      ],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 60,
+        "maxSeconds": 3600
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "walk",
+      "jointLoad": [],
+      "emphasis": null,
+      "repLow": 60,
+      "repHigh": 3600,
+      "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "running-outdoor",
+      "name": "Running - Outdoor",
+      "pattern": "monostructural",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "calves"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "hamstrings",
+        "hip_flexors"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 60,
+        "maxSeconds": 3600
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "run",
+      "jointLoad": [
+        "knee",
+        "ankle"
+      ],
+      "emphasis": null,
+      "repLow": 60,
+      "repHigh": 3600,
+      "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "running-treadmill",
+      "name": "Running - Treadmill",
+      "pattern": "monostructural",
+      "loadType": "none",
+      "equipment": [
+        "treadmill"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "calves"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "hamstrings",
+        "hip_flexors"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 60,
+        "maxSeconds": 3600
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "run",
+      "jointLoad": [
+        "knee",
+        "ankle"
+      ],
+      "emphasis": null,
+      "repLow": 60,
+      "repHigh": 3600,
+      "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "cycling-outdoor",
+      "name": "Cycling - Outdoor",
+      "pattern": "monostructural",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings",
+        "calves"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 60,
+        "maxSeconds": 5400
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "cycle",
+      "jointLoad": [
+        "knee"
+      ],
+      "emphasis": null,
+      "repLow": 60,
+      "repHigh": 5400,
+      "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "cycling-stationary-bike",
+      "name": "Cycling - Stationary Bike",
+      "pattern": "monostructural",
+      "loadType": "none",
+      "equipment": [
+        "stationary_bike"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings",
+        "calves"
+      ],
+      "fatigueCost": 2,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 60,
+        "maxSeconds": 3600
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "cycle",
+      "jointLoad": [
+        "knee"
+      ],
+      "emphasis": null,
+      "repLow": 60,
+      "repHigh": 3600,
+      "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "air-bike",
+      "name": "Air Bike",
+      "pattern": "monostructural",
+      "loadType": "none",
+      "equipment": [
+        "air_bike"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "lats",
+        "front_delts",
+        "hamstrings"
+      ],
+      "fatigueCost": 3,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 20,
+        "maxSeconds": 1200
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "cycle",
+      "jointLoad": [
+        "knee"
+      ],
+      "emphasis": null,
+      "repLow": 20,
+      "repHigh": 1200,
+      "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "rowing-machine",
+      "name": "Rowing Machine",
+      "pattern": "monostructural",
+      "loadType": "none",
+      "equipment": [
+        "rower"
+      ],
+      "primaryMuscles": [
+        "lats",
+        "quads"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "hamstrings",
+        "biceps",
+        "erectors"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 60,
+        "maxSeconds": 1800
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "row",
+      "jointLoad": [
+        "lower_back",
+        "knee"
+      ],
+      "emphasis": null,
+      "repLow": 60,
+      "repHigh": 1800,
+      "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "ski-erg",
+      "name": "Ski Erg",
+      "pattern": "monostructural",
+      "loadType": "none",
+      "equipment": [
+        "ski_erg"
+      ],
+      "primaryMuscles": [
+        "lats",
+        "triceps"
+      ],
+      "secondaryMuscles": [
+        "abs",
+        "glutes",
+        "erectors"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 1200
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "erg",
+      "jointLoad": [
+        "shoulder",
+        "lower_back"
+      ],
+      "emphasis": null,
+      "repLow": 30,
+      "repHigh": 1200,
+      "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "elliptical-trainer",
+      "name": "Elliptical Trainer",
+      "pattern": "monostructural",
+      "loadType": "none",
+      "equipment": [
+        "elliptical"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings",
+        "calves",
+        "lats"
+      ],
+      "fatigueCost": 2,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 60,
+        "maxSeconds": 3600
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "erg",
+      "jointLoad": [],
+      "emphasis": null,
+      "repLow": 60,
+      "repHigh": 3600,
+      "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "stair-climber",
+      "name": "Stair Climber",
+      "pattern": "monostructural",
+      "loadType": "none",
+      "equipment": [
+        "stair_climber"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "calves",
+        "hamstrings"
+      ],
+      "fatigueCost": 2,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 60,
+        "maxSeconds": 3600
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "step",
+      "jointLoad": [
+        "knee"
+      ],
+      "emphasis": null,
+      "repLow": 60,
+      "repHigh": 3600,
+      "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "jump-rope",
+      "name": "Jump Rope",
+      "pattern": "monostructural",
+      "loadType": "none",
+      "equipment": [
+        "jump_rope"
+      ],
+      "primaryMuscles": [
+        "calves",
+        "quads"
+      ],
+      "secondaryMuscles": [
+        "hamstrings",
+        "forearms"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 300
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "jump_rope",
+      "jointLoad": [
+        "ankle"
+      ],
+      "emphasis": null,
+      "repLow": 30,
+      "repHigh": 300,
+      "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "heavy-bag-boxing",
+      "name": "Heavy Bag Boxing",
+      "pattern": "monostructural",
+      "loadType": "none",
+      "equipment": [
+        "heavy_bag"
+      ],
+      "primaryMuscles": [
+        "front_delts",
+        "obliques"
+      ],
+      "secondaryMuscles": [
+        "triceps",
+        "abs",
+        "calves"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 60,
+        "maxSeconds": 300
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "boxing",
+      "jointLoad": [
+        "shoulder",
+        "wrist"
+      ],
+      "emphasis": null,
+      "repLow": 60,
+      "repHigh": 300,
+      "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "shadow-boxing",
+      "name": "Shadow Boxing",
+      "pattern": "monostructural",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "front_delts",
+        "obliques"
+      ],
+      "secondaryMuscles": [
+        "triceps",
+        "abs",
+        "calves"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 60,
+        "maxSeconds": 300
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "boxing",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "emphasis": null,
+      "repLow": 60,
+      "repHigh": 300,
+      "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "battle-ropes",
+      "name": "Battle Ropes",
+      "pattern": "monostructural",
+      "loadType": "none",
+      "equipment": [
+        "battle_ropes"
+      ],
+      "primaryMuscles": [
+        "front_delts",
+        "lats"
+      ],
+      "secondaryMuscles": [
+        "abs",
+        "forearms",
+        "biceps"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 15,
+        "maxSeconds": 120
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "battle_rope",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "emphasis": null,
+      "repLow": 15,
+      "repHigh": 120,
+      "sourceFile": "13_conditioning.csv"
     }
   ]
 }
