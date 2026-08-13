@@ -197,18 +197,49 @@ describe('prescriptions are sane', () => {
     }
   });
 
+  /**
+   * Two rules, not one (#37). A time-SCORED row carries honest bounds and is
+   * clamped to them. A reps-for-time row has none -- its rep columns hold reps,
+   * not seconds -- so it takes the STYLE's work window unmodified. Asserting
+   * only the first would leave the second path uncovered.
+   */
   test('interval work respects each exercise timeDomain bounds', () => {
     const byId = Object.fromEntries(defs.exercises.map((e) => [e.id, e]));
+    let clamped = 0;
+    let repsForTime = 0;
+
     for (const id of ['hiit', 'cardio', 'crossfit']) {
+      const style = defs.styles.find((s) => s.id === id);
       const p = generate({ ...base, styleId: id, daysPerWeek: 3 }, defs);
+
       for (const sg of p.weeks[0].sessions.flatMap(allSetGroups)) {
         const ex = byId[sg.exerciseId];
-        assert.ok(
-          sg.workSeconds >= ex.timeDomain.minSeconds &&
-          sg.workSeconds <= ex.timeDomain.maxSeconds,
-          `${sg.exerciseId}: ${sg.workSeconds}s outside [${ex.timeDomain.minSeconds},${ex.timeDomain.maxSeconds}]`);
+
+        if (ex.timeDomain) {
+          clamped += 1;
+          assert.ok(
+            sg.workSeconds >= ex.timeDomain.minSeconds &&
+            sg.workSeconds <= ex.timeDomain.maxSeconds,
+            `${sg.exerciseId}: ${sg.workSeconds}s outside [${ex.timeDomain.minSeconds},${ex.timeDomain.maxSeconds}]`);
+          continue;
+        }
+
+        repsForTime += 1;
+        assert.ok(ex.repsForTime,
+          `${sg.exerciseId}: no timeDomain and not repsForTime — it should never have reached the interval pool`);
+        assert.ok(sg.repsForTime === true,
+          `${sg.exerciseId}: setGroup must carry repsForTime so a consumer can render reps, not a timer`);
+
+        const wr = style.workRest ?? style.intervals ?? {};
+        if (wr.workSeconds != null) {
+          assert.equal(sg.workSeconds, wr.workSeconds,
+            `${sg.exerciseId}: reps-for-time takes the style work window unmodified`);
+        }
       }
     }
+
+    assert.ok(clamped > 0, 'no time-scored rows exercised — the clamp path is untested');
+    assert.ok(repsForTime > 0, 'no reps-for-time rows reached the interval pool (#37 did not take)');
   });
 
   test('no exercise appears twice in one session', () => {

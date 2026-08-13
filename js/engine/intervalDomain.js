@@ -25,7 +25,10 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
   const ctx = request.athlete ?? { skillLevel: 2, hasCoaching: false, strictReps: {} };
 
   const available = catalog.filter(
-    (e) => isAvailable(e, profile) && (e.scoring === 'time' || e.scoring === 'both')
+    // ADR-009 counts reps-for-time as a time-domain mode, so compound
+    // reps_only rows belong here even though they stay load-SCORED. Without
+    // them the pool is 19 rows of planks and carries (#37).
+    (e) => isAvailable(e, profile) && (e.scoring === 'time' || e.scoring === 'both' || e.repsForTime)
   );
   const { allowed, blocked } = filterByGates(available, ctx);
 
@@ -62,8 +65,12 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
     // (scoring 'both' <=> timeDomain !== null, enforced by check 03). Guarded
     // anyway: relying on an invariant held in another file is how a null
     // dereference reaches a user.
+    // A time-SCORED row carries its own honest bounds and is clamped to them.
+    // A reps-for-time row has none -- its rep columns are reps -- so it takes
+    // the style's work window unmodified. Anything else would be a fabricated
+    // number dressed up as a catalog fact.
     const td = candidate.timeDomain;
-    if (!td) {
+    if (!td && !candidate.repsForTime) {
       omitted.push({ pattern, reason: 'no-time-domain', exerciseId: candidate.id });
       continue;
     }
@@ -74,7 +81,11 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
     setGroups.push(
       makeSetGroup(candidate, {
         role: 'station',
-        workSeconds: clamp(wr.workSeconds, td.minSeconds, td.maxSeconds),
+        workSeconds: td ? clamp(wr.workSeconds, td.minSeconds, td.maxSeconds) : wr.workSeconds,
+        // The prescription is "as many good reps as you can inside the window",
+        // not a rep count. A consumer needs to be able to say that rather than
+        // rendering a work timer identical to a plank's.
+        repsForTime: candidate.repsForTime === true,
         restSeconds: wr.restSeconds,
         roundsCapable: candidate.roundsCapable,
         kipAllowed: candidate.kipAllowed,

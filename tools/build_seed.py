@@ -81,6 +81,26 @@ LUNGE_FAMILIES = {"lunge", "split_squat", "step_up"}
 TIME_TRACKING = {"time", "time_load"}
 LOAD_TRACKING = {"weight_reps", "weight_distance", "reps_only"}
 
+# ADR-009's domain table names three time-domain scoring modes: work/rest
+# intervals, rounds, and REPS-FOR-TIME. A compound `reps_only` movement is the
+# third one -- "push-ups for 40 seconds" is reps-for-time, not load work -- so
+# excluding it from the time domain contradicted the ADR that defined the
+# domain. 36 rows were invisible to conditioning as a result (#37).
+#
+# What deliberately does NOT change:
+#   - `scoring` stays "load". It drives the load-domain filter, so flipping it
+#     would remove these rows from powerlifting and bodybuilding.
+#   - `timeDomain` stays null. These rows' rep columns hold REPS, not seconds;
+#     inventing a window from default_rest_sec is exactly the dishonesty the
+#     original derivation refused, and that refusal was right. The interval
+#     domain prescribes the STYLE's work window for these rows instead of
+#     clamping to per-exercise bounds that do not exist.
+#
+# Isolation rows are excluded deliberately. "40 seconds of band glute kickbacks"
+# is not conditioning, and a blanket flip would admit 46 such rows to HIIT
+# circuits. Compound-only keeps the rule defensible.
+REPS_FOR_TIME_TRACKING = {"reps_only"}
+
 
 def split_tokens(value: str) -> list[str]:
     return [t.strip() for t in (value or "").split("|") if t.strip()]
@@ -119,6 +139,8 @@ def build_record(row: dict, source: str) -> dict:
     skill = to_int(row["technical_demand"], "technical_demand", slug)
     rep_low = to_int(row["default_rep_low"], "default_rep_low", slug)
     rep_high = to_int(row["default_rep_high"], "default_rep_high", slug)
+    compound = to_bool(row["is_compound"])
+    reps_for_time = tracking in REPS_FOR_TIME_TRACKING and compound
 
     if tracking in TIME_TRACKING:
         scoring = "both"
@@ -151,7 +173,11 @@ def build_record(row: dict, source: str) -> dict:
         "unilateral": to_bool(row["is_unilateral"]),
         "scoring": scoring,
         "timeDomain": time_domain,
-        "roundsCapable": scoring != "load",
+        "roundsCapable": scoring != "load" or reps_for_time,
+        # A non-null timeDomain is no longer the only route into the time
+        # domain; see REPS_FOR_TIME_TRACKING above. Check 03 admits the pairing
+        # explicitly rather than leaving it implied.
+        "repsForTime": reps_for_time,
         "kipAllowed": None,          # non-null iff pattern === "gymnastic" (none)
         "monostructural": False,     # load-domain catalog; M7 owns this
         "skillGate": "olympic-lift" if skill == 5 else None,

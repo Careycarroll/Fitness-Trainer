@@ -1,6 +1,6 @@
 import { PATTERNS, LOAD_TYPES, SCORING, MUSCLES } from './_enums.js';
 
-const REQUIRED = ['id','name','pattern','loadType','equipment','primaryMuscles','secondaryMuscles','fatigueCost','skill','defaultRIR','restSeconds','warmupRequired','unilateral','scoring','timeDomain','roundsCapable','kipAllowed','monostructural','skillGate'];
+const REQUIRED = ['id','name','pattern','loadType','equipment','primaryMuscles','secondaryMuscles','fatigueCost','skill','defaultRIR','restSeconds','warmupRequired','unilateral','scoring','timeDomain','roundsCapable','repsForTime','kipAllowed','monostructural','skillGate'];
 
 export default {
   id: '01', name: 'Exercise record shape & enums',
@@ -23,6 +23,7 @@ export default {
       assert(Number.isInteger(ex.restSeconds) && ex.restSeconds > 0, `${ex.id}: restSeconds must be a positive int`);
       assert(typeof ex.warmupRequired === 'boolean', `${ex.id}: warmupRequired must be boolean`);
       assert(typeof ex.unilateral === 'boolean', `${ex.id}: unilateral must be boolean`);
+      assert(typeof ex.repsForTime === 'boolean', `${ex.id}: repsForTime must be boolean`);
     }
   }
 };

@@ -33,7 +33,7 @@ export function generate(request, defs) {
   const domainCatalog = defs.exercises.filter((e) =>
     style.domain === 'load'
       ? e.scoring === 'load' || e.scoring === 'both'
-      : e.scoring === 'time' || e.scoring === 'both'
+      : e.scoring === 'time' || e.scoring === 'both' || e.repsForTime
   );
   const requiredPatterns = [
     ...new Set(split.days.flatMap((d) => d.patterns))
