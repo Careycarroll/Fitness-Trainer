@@ -23,13 +23,13 @@ Nobody reads these front to back. You arrive with a question — start here.
 [001](ADR-001-platform-web-pwa.md) · [004](ADR-004-storage-indexeddb-export.md) · [005](ADR-005-fork-scaffolding.md) · [007](ADR-007-no-deadline-quality-gates.md) · [011](ADR-011-persistence-gate.md)
 
 **Engine and generation**
-[002](ADR-002-deterministic-rules-engine.md) · [010](ADR-010-styles-as-data.md) · [013](ADR-013-equipment-profiles-and-first-style.md) · [014](ADR-014-editable-profiles-and-whole-session-conditioning.md) · [015](ADR-015-arbitrary-training-days.md)
+[002](ADR-002-deterministic-rules-engine.md) · [010](ADR-010-styles-as-data.md) · [013](ADR-013-equipment-profiles-and-first-style.md) · [014](ADR-014-editable-profiles-and-whole-session-conditioning.md) · [015](ADR-015-arbitrary-training-days.md) · [027](ADR-027-block-setgroup-nesting.md)
 
 **Data/code boundary and authoring surface**
-[003](ADR-003-content-as-data.md) · [006](ADR-006-hand-authored-catalog.md) · [008](ADR-008-catalog-before-logger.md) · [012](ADR-012-data-code-boundary.md) · [016](ADR-016-catalog-authored-as-split-csv.md) · [017](ADR-017-catalog-file-ownership-rule.md)
+[003](ADR-003-content-as-data.md) · [006](ADR-006-hand-authored-catalog.md) · [008](ADR-008-catalog-before-logger.md) · [012](ADR-012-data-code-boundary.md) · [016](ADR-016-catalog-authored-as-split-csv.md) · [017](ADR-017-catalog-file-ownership-rule.md) · [028](ADR-028-conditioning-catalog-ownership.md)
 
 **Catalog vocabularies**
-[009](ADR-009-dual-domain-schema.md) · [018](ADR-018-muscle-token-admission-test.md) · [019](ADR-019-isolation-and-explosive-patterns.md) · [020](ADR-020-joint-load-is-descriptive.md) · [021](ADR-021-retire-machine-equipment-token.md) · [022](ADR-022-equipment-substitution-map.md) · [024](ADR-024-odd-objects-excluded.md) · [025](ADR-025-single-joint-pattern-inconsistency.md)
+[009](ADR-009-dual-domain-schema.md) · [018](ADR-018-muscle-token-admission-test.md) · [019](ADR-019-isolation-and-explosive-patterns.md) · [020](ADR-020-joint-load-is-descriptive.md) · [021](ADR-021-retire-machine-equipment-token.md) · [022](ADR-022-equipment-substitution-map.md) · [024](ADR-024-odd-objects-excluded.md) · [025](ADR-025-single-joint-pattern-inconsistency.md) · [026](ADR-026-catalog-schema-reconciliation.md)
 
 **Progression and history**
 [023](ADR-023-e1rm-from-logged-sets.md)
@@ -65,6 +65,9 @@ Nobody reads these front to back. You arrive with a question — start here.
 | [023](ADR-023-e1rm-from-logged-sets.md) | `ExerciseMax` is append-only; e1RM computed from logged sets | ACCEPTED | 009 | Two-tier confidence so a hypertrophy block does not go blind. |
 | [024](ADR-024-odd-objects-excluded.md) | Odd objects and strongman implements excluded until owned | ACCEPTED | 021 | Invented ratings corrupt calibration for every row rated against them. |
 | [025](ADR-025-single-joint-pattern-inconsistency.md) | Single-joint pattern rule is inconsistent for flies and trunk work | PROPOSED | 019 | Recorded unresolved rather than rediscovered in three months. |
+| [026](ADR-026-catalog-schema-reconciliation.md) | Catalog schema reconciled with the engine vocabulary | ACCEPTED | 16 | The 285-row catalog and the engine disagreed on every vocabulary. |
+| [027](ADR-027-block-setgroup-nesting.md) | A block holds an ordered list of setGroups; both domains emit one shape | ACCEPTED | 2, 9 | Consumers stopped branching on `session.domain`. |
+| [028](ADR-028-conditioning-catalog-ownership.md) | Conditioning modalities own a file; prescription stays duration and intensity | PROPOSED | 17, 9 | A rower is a rower; a burpee is a movement conditioning happens to select. |
 
 ---
 
