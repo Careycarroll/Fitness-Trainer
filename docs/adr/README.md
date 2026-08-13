@@ -65,9 +65,9 @@ Nobody reads these front to back. You arrive with a question — start here.
 | [023](ADR-023-e1rm-from-logged-sets.md) | `ExerciseMax` is append-only; e1RM computed from logged sets | ACCEPTED | 009 | Two-tier confidence so a hypertrophy block does not go blind. |
 | [024](ADR-024-odd-objects-excluded.md) | Odd objects and strongman implements excluded until owned | ACCEPTED | 021 | Invented ratings corrupt calibration for every row rated against them. |
 | [025](ADR-025-single-joint-pattern-inconsistency.md) | Single-joint pattern rule is inconsistent for flies and trunk work | PROPOSED | 019 | Recorded unresolved rather than rediscovered in three months. |
-| [026](ADR-026-catalog-schema-reconciliation.md) | Catalog schema reconciled with the engine vocabulary | ACCEPTED | 16 | The 285-row catalog and the engine disagreed on every vocabulary. |
-| [027](ADR-027-block-setgroup-nesting.md) | A block holds an ordered list of setGroups; both domains emit one shape | ACCEPTED | 2, 9 | Consumers stopped branching on `session.domain`. |
-| [028](ADR-028-conditioning-catalog-ownership.md) | Conditioning modalities own a file; prescription stays duration and intensity | PROPOSED | 17, 9 | A rower is a rower; a burpee is a movement conditioning happens to select. |
+| [026](ADR-026-catalog-schema-reconciliation.md) | Catalog schema reconciled with the engine vocabulary | ACCEPTED | 016 | The 285-row catalog and the engine disagreed on every vocabulary. |
+| [027](ADR-027-block-setgroup-nesting.md) | A block holds an ordered list of setGroups; both domains emit one shape | ACCEPTED | 002, 009 | Consumers stopped branching on `session.domain`. |
+| [028](ADR-028-conditioning-catalog-ownership.md) | Conditioning modalities own a file; prescription stays duration and intensity | PROPOSED | 017, 009 | A rower is a rower; a burpee is a movement conditioning happens to select. |
 
 ---
 
