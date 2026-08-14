@@ -20,6 +20,47 @@ import { makeBlock, makeSetGroup } from './blocks.js';
 
 export const DOMAIN = 'time';
 
+/**
+ * A reps-for-time row has no timeDomain of its own (#37): its rep columns hold
+ * REPS, not seconds, so it takes the style's work window unmodified. That was
+ * fine at HIIT's 40s and indefensible at CrossFit's 720s, which prescribed
+ * twelve minutes of unbroken push-ups. Above this ceiling the row is omitted
+ * with a reason rather than dressed up as a prescription (#29).
+ *
+ * 90s is a judgement, not a measurement. It is the point past which "as many
+ * good reps as you can" stops describing anything an athlete would recognise.
+ */
+export const REPS_FOR_TIME_MAX_SECONDS = 90;
+
+/** Why this candidate cannot serve this style's window, or null if it can. */
+function rejection(candidate, wr) {
+  if (!candidate.timeDomain && !candidate.repsForTime) return 'no-time-domain';
+  if (!candidate.timeDomain && wr.workSeconds > REPS_FOR_TIME_MAX_SECONDS) {
+    return 'reps-for-time-window-too-long';
+  }
+  return null;
+}
+
+/**
+ * Can this row serve the style's window without being clamped down to a
+ * fraction of it? Battle Ropes caps at 120s, so cardio's 600s interval
+ * collapsed to a two-minute training day — legal, and useless (#29).
+ */
+function servesFullWindow(candidate, wr) {
+  const td = candidate.timeDomain;
+  return td ? td.maxSeconds >= wr.workSeconds : true;
+}
+
+/**
+ * A time-SCORED row carries honest bounds and is clamped to them. A
+ * reps-for-time row has none, so it takes the style window as-is — already
+ * bounded by REPS_FOR_TIME_MAX_SECONDS above.
+ */
+function workWindow(candidate, wr) {
+  const td = candidate.timeDomain;
+  return td ? clamp(wr.workSeconds, td.minSeconds, td.maxSeconds) : wr.workSeconds;
+}
+
 export function generateSession({ style, day, catalog, profile, request, dayIndex }) {
   const rng = createRng(request.seed + dayIndex * 104729);
   const ctx = request.athlete ?? { skillLevel: 2, hasCoaching: false, strictReps: {} };
@@ -43,45 +84,23 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
   ).sort((a, b) => (style.patternEmphasis[b.pattern] ?? 0) - (style.patternEmphasis[a.pattern] ?? 0));
 
   const chosen = new Set();
+  const usedPatterns = new Set();
 
-  for (const pattern of day.patterns) {
-    const candidate = pool.find((e) => e.pattern === pattern && !chosen.has(e.id));
+  /** Common admission path: fatigue, window legality, bookkeeping. */
+  function place(candidate) {
+    if (fatigueUsed + candidate.fatigueCost > style.fatigueBudget) return 'fatigue-budget-exhausted';
 
-    if (!candidate) {
-      omitted.push({ pattern, reason: 'no-unused-candidates' });
-      continue;
-    }
-    if (fatigueUsed + candidate.fatigueCost > style.fatigueBudget) {
-      omitted.push({
-        pattern,
-        reason: 'fatigue-budget-exhausted',
-        wouldHaveCost: candidate.fatigueCost,
-        remaining: style.fatigueBudget - fatigueUsed
-      });
-      continue;
-    }
-
-    // timeDomain is non-null for every time-scored row by ADR-026's derivation
-    // (scoring 'both' <=> timeDomain !== null, enforced by check 03). Guarded
-    // anyway: relying on an invariant held in another file is how a null
-    // dereference reaches a user.
-    // A time-SCORED row carries its own honest bounds and is clamped to them.
-    // A reps-for-time row has none -- its rep columns are reps -- so it takes
-    // the style's work window unmodified. Anything else would be a fabricated
-    // number dressed up as a catalog fact.
-    const td = candidate.timeDomain;
-    if (!td && !candidate.repsForTime) {
-      omitted.push({ pattern, reason: 'no-time-domain', exerciseId: candidate.id });
-      continue;
-    }
+    const why = rejection(candidate, wr);
+    if (why) return why;
 
     fatigueUsed += candidate.fatigueCost;
     chosen.add(candidate.id);
+    usedPatterns.add(candidate.pattern);
 
     setGroups.push(
       makeSetGroup(candidate, {
         role: 'station',
-        workSeconds: td ? clamp(wr.workSeconds, td.minSeconds, td.maxSeconds) : wr.workSeconds,
+        workSeconds: workWindow(candidate, wr),
         // The prescription is "as many good reps as you can inside the window",
         // not a rep count. A consumer needs to be able to say that rather than
         // rendering a work timer identical to a plank's.
@@ -92,6 +111,60 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
         monostructural: candidate.monostructural
       })
     );
+    return null;
+  }
+
+  // Pass 1 — the split's required patterns. Scan for the first candidate that
+  // can actually serve the window rather than taking the first by emphasis and
+  // omitting the whole pattern when it happens to be inadmissible.
+  for (const pattern of day.patterns) {
+    // Rows that can hold the whole window come first; a clamped row is a
+    // fallback, not an equal option. Stable within each tier, so the seeded
+    // emphasis order still decides between equals (ADR-002).
+    const candidates = pool
+      .filter((e) => e.pattern === pattern && !chosen.has(e.id))
+      .sort((a, c) => Number(servesFullWindow(c, wr)) - Number(servesFullWindow(a, wr)));
+
+    if (!candidates.length) {
+      omitted.push({ pattern, reason: 'no-unused-candidates' });
+      continue;
+    }
+
+    let lastReason = null;
+    let placed = false;
+    for (const candidate of candidates) {
+      lastReason = place(candidate);
+      if (!lastReason) { placed = true; break; }
+    }
+    if (!placed) omitted.push({ pattern, reason: lastReason, exerciseId: candidates[0].id });
+  }
+
+  // Pass 2 — fill toward the style's own exercisesPerSession.
+  //
+  // This block did not exist. The loop above placed exactly one station per
+  // split pattern, so `exercisesPerSession` was never read and HIIT declared
+  // min 6 while emitting 3. Every "circuit" of one station traced back to a
+  // split day with one pattern, not to a selector giving up. Same failure the
+  // load domain had before 539f900: a style knob that did nothing.
+  const target = style.exercisesPerSession?.min ?? 1;
+  const ceiling = style.exercisesPerSession?.max ?? target;
+
+  for (const candidate of pool) {
+    if (setGroups.length >= Math.min(target, ceiling)) break;
+    if (chosen.has(candidate.id)) continue;
+    if (!style.allowPatternRepeat && usedPatterns.has(candidate.pattern)) continue;
+    place(candidate);
+  }
+
+  // A session that cannot reach its own declared minimum is reported rather
+  // than quietly handed over as a complete workout.
+  if (setGroups.length < target) {
+    omitted.push({
+      pattern: null,
+      reason: 'session-under-filled',
+      placed: setGroups.length,
+      target
+    });
   }
 
   // An AMRAP is one unbroken effort against a cap; intervals are rounds of
@@ -102,7 +175,10 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
   const blocks = setGroups.length
     ? [
         makeBlock(isAmrap ? 'amrap' : 'circuit', setGroups, {
-          rounds: wr.rounds,
+          // An AMRAP's round count is what the athlete PRODUCES against the
+          // cap, so prescribing `rounds: 1` stated a target that does not
+          // exist. Null says "not prescribed"; the cap carries the intent.
+          rounds: isAmrap ? null : wr.rounds,
           timeCapSeconds: isAmrap ? wr.workSeconds : null
         })
       ]
@@ -116,7 +192,8 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
     label: day.label,
     styleId: style.id,
     format: isAmrap ? 'amrap' : 'intervals',
-    rounds: wr.rounds,
+    // Consistent with the block: an AMRAP's rounds are produced, not prescribed.
+    rounds: isAmrap ? null : wr.rounds,
     capSeconds: wr.workSeconds,
     blocks,
     omitted,
