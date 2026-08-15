@@ -89,10 +89,10 @@ export function mount(root, defs) {
 
     <aside class="planner-sidebar">
       <form id="req" class="panel planner-form">
-      <label>Plan
+      <label>View
         <select name="scope">
-          <option value="session" selected>Session preview</option>
-          <option value="block">Full block</option>
+          <option value="session" selected>One day at a time</option>
+          <option value="block">All weeks</option>
         </select>
       </label>
       <label>Style
@@ -300,7 +300,7 @@ function paint(out) {
             ${esc(s.label)}
           </button>`).join('')}
       </nav>`;
-    const context = `<p class="note">Days/week picks the split; this is day ${visibleDay + 1} of ${sessions.length}, not a standalone plan (ADR-015).</p>`;
+    const context = `<p class="note">Day ${visibleDay + 1} of a ${sessions.length}-day week. Switch to All weeks to see the whole block.</p>`;
     out.innerHTML = head + tabs + context + renderSession(sessions[visibleDay], 0, visibleDay, style);
     return;
   }
@@ -320,7 +320,7 @@ function renderSession(session, w, s, style) {
 
   return `
     <article class="card session">
-      <h3>${esc(session.label)}</h3>
+      <h3><span class="day-index">Day ${s + 1}</span>${esc(session.label)}</h3>
       ${session.blocks.length
         ? `<ul class="blocks">${session.blocks.map((block, b) => renderBlock(block, w, s, b, session.domain)).join('')}</ul>`
         : emptySession(session)}
