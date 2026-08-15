@@ -49,7 +49,10 @@
       "preferredSplits": [
         "powerlifting-4",
         "upper-lower-4",
-        "full-body-3"
+        "full-body-3",
+        "full-body-1",
+        "full-body-2",
+        "body-part-5"
       ]
     },
     {
@@ -99,7 +102,10 @@
       "preferredSplits": [
         "ppl-6",
         "upper-lower-4",
-        "full-body-3"
+        "full-body-3",
+        "full-body-1",
+        "full-body-2",
+        "body-part-5"
       ]
     },
     {
@@ -149,7 +155,10 @@
       "preferredSplits": [
         "full-body-3",
         "upper-lower-4",
-        "powerlifting-4"
+        "powerlifting-4",
+        "full-body-1",
+        "full-body-2",
+        "body-part-5"
       ]
     },
     {
@@ -198,7 +207,10 @@
       "allowPatternRepeat": false,
       "preferredSplits": [
         "full-body-3",
-        "upper-lower-4"
+        "upper-lower-4",
+        "full-body-1",
+        "full-body-2",
+        "body-part-5"
       ]
     },
     {

@@ -306,7 +306,7 @@ function paint(out) {
   }
 
   out.innerHTML = head + current.weeks.map((week, w) => `
-    <h2 class="week">Week ${week.weekNumber}</h2>
+    <h2 class="week">Week ${week.week}</h2>
     ${week.sessions.map((session, s) => renderSession(session, w, s, style)).join('')}
   `).join('');
 }

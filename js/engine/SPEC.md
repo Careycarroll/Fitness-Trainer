@@ -116,7 +116,12 @@ Per `muscleGroup`: `{ mv, mev, mav, mrv }` in hard sets per week.
 
 ## `splits.json`, `equipment.json`, `substitution-weights.json`
 
-- `splits.json` — day templates: `{id, name, daysPerWeek, days:[{label, patterns:[]}]}`
+- `splits.json` — day templates:
+  `{id, name, daysPerWeek, days:[{label, patterns:[], muscles?:[]}]}`
+  `muscles` is **optional** and **weights** selection within the day's own patterns;
+  it never filters. Patterns alone cannot express a body-part split — "Chest &
+  Triceps" and "Shoulders & Arms" are both `push_h/push_v/isolation` — so without
+  it those days differ only by seed. A day that omits it scores exactly as before.
 - `equipment.json` — named profiles: `{id, name, available:[loadType/equipment tokens]}`
 - `substitution-weights.json` — ranking coefficients only: how much a `fatigueCost` delta,
   `skill` delta or muscle-overlap gap penalises a candidate. **Coefficients are data; the
@@ -205,8 +210,14 @@ Candidates are **scored**, not sorted-and-end-picked. The retired rule took
 fatigue, "last" meant *cheapest*, so with 123 cost-1 catalog rows every accessory
 resolved to a 1 and a powerlifting day came out at 8 of a 22 budget.
 
-Score terms: style pattern emphasis · cost fit against budget-remaining-per-slot ·
-penalties for repeating an `exerciseFamily` or a pattern.
+Score terms: style pattern emphasis · the split day's optional `muscles` ·
+cost fit against budget-remaining-per-slot · penalties for repeating an
+`exerciseFamily` or a pattern.
+
+The muscle term is applied in **both** passes. Weighting pass 1 alone is not
+enough: pass 2 picks its next pattern by style emphasis, so a chest day opened
+with a bench and finished with good mornings and split squats. Pass 2 now also
+weighs whether a pattern's remaining candidates serve the day.
 
 Two rules live in **code**, not `styles.json`, because they are safety-adjacent
 and must fail closed (ADR-012):

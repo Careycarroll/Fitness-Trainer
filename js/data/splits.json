@@ -2,6 +2,50 @@
   "schemaVersion": 1,
   "splits": [
     {
+      "id": "full-body-1",
+      "name": "Full Body \u00d71",
+      "daysPerWeek": 1,
+      "days": [
+        {
+          "label": "Full Body",
+          "patterns": [
+            "squat",
+            "hinge",
+            "push_h",
+            "pull_h",
+            "core"
+          ]
+        }
+      ],
+      "sessionsPerWeek": 1
+    },
+    {
+      "id": "full-body-2",
+      "name": "Full Body \u00d72",
+      "daysPerWeek": 2,
+      "days": [
+        {
+          "label": "Full Body A",
+          "patterns": [
+            "squat",
+            "push_h",
+            "pull_h",
+            "core"
+          ]
+        },
+        {
+          "label": "Full Body B",
+          "patterns": [
+            "hinge",
+            "push_v",
+            "pull_v",
+            "carry"
+          ]
+        }
+      ],
+      "sessionsPerWeek": 2
+    },
+    {
       "id": "full-body-3",
       "name": "Full Body \u00d73",
       "daysPerWeek": 3,
@@ -81,6 +125,81 @@
       "sessionsPerWeek": 4
     },
     {
+      "id": "body-part-5",
+      "name": "Body Part \u00d75",
+      "daysPerWeek": 5,
+      "days": [
+        {
+          "label": "Chest & Triceps",
+          "patterns": [
+            "push_h",
+            "push_v",
+            "isolation"
+          ],
+          "muscles": [
+            "chest",
+            "triceps",
+            "front_delts"
+          ]
+        },
+        {
+          "label": "Back & Biceps",
+          "patterns": [
+            "pull_h",
+            "pull_v",
+            "isolation"
+          ],
+          "muscles": [
+            "lats",
+            "mid_back",
+            "biceps",
+            "rear_delts"
+          ]
+        },
+        {
+          "label": "Legs \u2014 Quads",
+          "patterns": [
+            "squat",
+            "lunge",
+            "core"
+          ],
+          "muscles": [
+            "quads",
+            "glutes"
+          ]
+        },
+        {
+          "label": "Shoulders & Arms",
+          "patterns": [
+            "push_v",
+            "isolation",
+            "pull_h"
+          ],
+          "muscles": [
+            "front_delts",
+            "side_delts",
+            "rear_delts",
+            "triceps",
+            "biceps"
+          ]
+        },
+        {
+          "label": "Legs \u2014 Posterior",
+          "patterns": [
+            "hinge",
+            "squat",
+            "carry"
+          ],
+          "muscles": [
+            "hamstrings",
+            "glutes",
+            "erectors"
+          ]
+        }
+      ],
+      "sessionsPerWeek": 5
+    },
+    {
       "id": "ppl-6",
       "name": "Push / Pull / Legs \u00d76",
       "daysPerWeek": 6,
@@ -91,6 +210,10 @@
             "push_h",
             "push_v",
             "core"
+          ],
+          "muscles": [
+            "chest",
+            "triceps"
           ]
         },
         {
@@ -99,6 +222,10 @@
             "pull_v",
             "pull_h",
             "carry"
+          ],
+          "muscles": [
+            "lats",
+            "biceps"
           ]
         },
         {
@@ -107,6 +234,10 @@
             "squat",
             "hinge",
             "lunge"
+          ],
+          "muscles": [
+            "quads",
+            "glutes"
           ]
         },
         {
@@ -115,6 +246,11 @@
             "push_v",
             "push_h",
             "core"
+          ],
+          "muscles": [
+            "front_delts",
+            "side_delts",
+            "triceps"
           ]
         },
         {
@@ -123,6 +259,12 @@
             "pull_h",
             "pull_v",
             "carry"
+          ],
+          "muscles": [
+            "mid_back",
+            "traps",
+            "rear_delts",
+            "biceps"
           ]
         },
         {
@@ -131,6 +273,11 @@
             "hinge",
             "squat",
             "lunge"
+          ],
+          "muscles": [
+            "hamstrings",
+            "glutes",
+            "erectors"
           ]
         }
       ],

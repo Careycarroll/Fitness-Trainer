@@ -29,6 +29,18 @@
  *      is what steers which patterns pass 2 returns to.
  *
  * Both passes call the same `pick()`. A session is not two kinds of thing.
+ *
+ * A split day may also declare `muscles`. Patterns alone cannot express a
+ * body-part split: "Chest & Triceps" and "Shoulders & Arms" are both
+ * `push_h, push_v, isolation`, so the engine drew them from one pool and they
+ * differed only by seed. The same defect sat in ppl-6, where Push A and Push B
+ * were identical days under different labels.
+ *
+ * `muscles` WEIGHTS selection, it does not filter it. A thin equipment profile
+ * must still produce a session rather than an empty day, which is the same
+ * reasoning the substitution map follows (ADR-022). The field is optional, and
+ * a day without it scores exactly as before — the term is +0 for every
+ * candidate, so existing splits are provably unchanged.
  */
 import { createRng, shuffle } from './rng.js';
 import { filterByGates } from './safety.js';
@@ -59,6 +71,9 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
     (e) => isAvailable(e, profile) && (e.scoring === 'load' || e.scoring === 'both')
   );
   const { allowed, blocked } = filterByGates(available, ctx);
+
+  // Optional (see header). Empty set => every muscle term below is +0.
+  const dayMuscles = new Set(day.muscles ?? []);
 
   const count = style.exercisesPerSession ?? DEFAULT_COUNT;
   // An explicit request wins over the style default, clamped to something a
@@ -97,7 +112,7 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
       || (repeated && style.allowPatternRepeat === true);
 
     const chosen = pick({
-      pool: allowed, pattern, style, state, rng, isMain,
+      pool: allowed, pattern, style, state, rng, isMain, dayMuscles,
       slotsLeft: Math.max(1, target - state.blocks.length)
     });
 
@@ -122,11 +137,11 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
   // -----------------------------------------------------------------------
   let guard = 40;   // pick() is monotonic and the pool is finite; still, never spin
   while (state.blocks.length < target && guard-- > 0) {
-    const pattern = nextAccessoryPattern(style, state, allowed);
+    const pattern = nextAccessoryPattern(style, state, allowed, dayMuscles);
     if (!pattern) break;
 
     const chosen = pick({
-      pool: allowed, pattern, style, state, rng, isMain: false,
+      pool: allowed, pattern, style, state, rng, isMain: false, dayMuscles,
       slotsLeft: Math.max(1, target - state.blocks.length)
     });
 
@@ -174,7 +189,7 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
  * a session short one movement that says why beats one that quietly substituted
  * something the style does not program (ADR-014).
  */
-function pick({ pool, pattern, style, state, rng, isMain, slotsLeft }) {
+function pick({ pool, pattern, style, state, rng, isMain, slotsLeft, dayMuscles }) {
   const remaining = style.fatigueBudget - state.fatigueUsed;
 
   const legal = pool.filter((e) => {
@@ -192,7 +207,7 @@ function pick({ pool, pattern, style, state, rng, isMain, slotsLeft }) {
   let best = null;
   let bestScore = -Infinity;
   for (const e of shuffle(rng, legal)) {
-    const s = score({ exercise: e, pattern, style, state, isMain, remaining, slotsLeft });
+    const s = score({ exercise: e, pattern, style, state, isMain, remaining, slotsLeft, dayMuscles });
     if (s > bestScore) { bestScore = s; best = e; }
   }
   return best;
@@ -202,12 +217,18 @@ function pick({ pool, pattern, style, state, rng, isMain, slotsLeft }) {
  * Deliberately few terms. This is the function to tune when output looks wrong,
  * and one with fifteen weights cannot be reasoned about from a generated session.
  */
-function score({ exercise, pattern, style, state, isMain, remaining, slotsLeft }) {
+function score({ exercise, pattern, style, state, isMain, remaining, slotsLeft, dayMuscles }) {
   const emphasis = style.patternEmphasis[pattern] ?? 0;
+  const muscles = muscleFit(exercise, dayMuscles);
 
   // Main work wants the heaviest legal thing: it is the point of the session.
+  // The muscle term is weighted to outrank ONE step of fatigueCost, so a chest
+  // day opens with a bench rather than whichever push_h row happens to cost
+  // most. Two steps still win, because a body-part label must not turn the
+  // main lift into an isolation movement.
   if (isMain) {
-    return exercise.fatigueCost * 10 + emphasis * 2 - familyPenalty(state, exercise) * 3;
+    return exercise.fatigueCost * 10 + emphasis * 2 + muscles * 8
+      - familyPenalty(state, exercise) * 3;
   }
 
   // Accessories aim to SPEND the remaining budget across the remaining slots
@@ -218,6 +239,7 @@ function score({ exercise, pattern, style, state, isMain, remaining, slotsLeft }
 
   return (
     emphasis * 4 +
+    muscles * 5 +
     fatigueFit * 3 -
     familyPenalty(state, exercise) * 3 -
     patternPenalty(state, pattern, style) * 2 +
@@ -225,6 +247,23 @@ function score({ exercise, pattern, style, state, isMain, remaining, slotsLeft }
     // is a legitimate accessory.
     ((exercise.primaryMuscles?.length ?? 0) > 1 ? 0.5 : 0)
   );
+}
+
+/**
+ * How well this row serves the day's declared muscles: the share of its primary
+ * muscles the day named, plus a quarter-credit for secondaries. Zero when the
+ * day declares none, which is what makes the field inert where unused.
+ */
+function muscleFit(exercise, dayMuscles) {
+  if (!dayMuscles || dayMuscles.size === 0) return 0;
+  const primary = exercise.primaryMuscles ?? [];
+  if (primary.length === 0) return 0;
+  const secondary = exercise.secondaryMuscles ?? [];
+  const hitPrimary = primary.filter((m) => dayMuscles.has(m)).length / primary.length;
+  const hitSecondary = secondary.length
+    ? secondary.filter((m) => dayMuscles.has(m)).length / secondary.length
+    : 0;
+  return clamp(hitPrimary + hitSecondary * 0.25, 0, 1);
 }
 
 /**
@@ -253,17 +292,27 @@ const patternPenalty = (state, pattern, style) => {
  * patterns for volume, powerlifting at 0.30 spreads out instead of adding a
  * fourth squat.
  */
-function nextAccessoryPattern(style, state, pool) {
+function nextAccessoryPattern(style, state, pool, dayMuscles) {
   const ratio = style.accessoryRatio ?? 0.4;
   const patterns = Object.keys(style.patternEmphasis)
     .filter((p) => (style.patternEmphasis[p] ?? 0) > 0)
     .filter((p) => pool.some((e) => e.pattern === p && !state.usedIds.has(e.id)));
 
+  // Pass 2 has to weigh muscles too, or it undoes pass 1: style emphasis alone
+  // sent a "Chest & Triceps" day to hinge and squat for its accessories, so the
+  // session opened with a bench and finished with good mornings. What matters
+  // is whether the pattern's REMAINING candidates serve the day, not whether
+  // the pattern sounds related.
   let best = null;
   let bestScore = -Infinity;
   for (const p of patterns) {
     const used = state.usedPatterns.get(p) ?? 0;
-    const s = (style.patternEmphasis[p] ?? 0) - used * (1 - ratio) * 1.5;
+    const fit = dayMuscles && dayMuscles.size
+      ? Math.max(0, ...pool
+          .filter((e) => e.pattern === p && !state.usedIds.has(e.id))
+          .map((e) => muscleFit(e, dayMuscles)))
+      : 0;
+    const s = (style.patternEmphasis[p] ?? 0) - used * (1 - ratio) * 1.5 + fit * 1.5;
     if (s > bestScore) { bestScore = s; best = p; }
   }
   return best;
