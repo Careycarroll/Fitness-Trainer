@@ -341,6 +341,56 @@
       "preferredSplits": [
         "conditioning-3"
       ]
+    },
+    {
+      "id": "athletic",
+      "name": "Athletic Performance",
+      "domain": "load",
+      "tier": 2,
+      "repRange": {
+        "min": 3,
+        "max": 8
+      },
+      "intensityBand": {
+        "min": 0.6,
+        "max": 0.85
+      },
+      "setsPerMainLift": {
+        "min": 3,
+        "max": 5
+      },
+      "accessoryRatio": 0.4,
+      "restSeconds": {
+        "main": 180,
+        "accessory": 90
+      },
+      "workRest": null,
+      "patternEmphasis": {
+        "explosive": 1.0,
+        "lunge": 0.8,
+        "squat": 0.8,
+        "hinge": 0.8,
+        "locomotion": 0.7,
+        "pull_v": 0.7,
+        "push_v": 0.7,
+        "core": 0.6,
+        "pull_h": 0.6,
+        "push_h": 0.6,
+        "carry": 0.5,
+        "monostructural": 0.3,
+        "isolation": 0.1
+      },
+      "fatigueBudget": 16,
+      "exercisesPerSession": {
+        "min": 5,
+        "max": 7
+      },
+      "allowPatternRepeat": false,
+      "preferredSplits": [
+        "athletic-4",
+        "full-body-3",
+        "upper-lower-4"
+      ]
     }
   ]
 }

@@ -356,6 +356,69 @@
           ]
         }
       ]
+    },
+    {
+      "id": "athletic-4",
+      "name": "Athletic \u00d74",
+      "daysPerWeek": 4,
+      "days": [
+        {
+          "label": "Power",
+          "patterns": [
+            "explosive",
+            "squat",
+            "core"
+          ],
+          "muscles": [
+            "glutes",
+            "quads",
+            "hamstrings",
+            "abs"
+          ]
+        },
+        {
+          "label": "Speed & Posterior",
+          "patterns": [
+            "explosive",
+            "hinge",
+            "locomotion"
+          ],
+          "muscles": [
+            "hamstrings",
+            "glutes",
+            "erectors"
+          ]
+        },
+        {
+          "label": "Upper Power",
+          "patterns": [
+            "push_v",
+            "pull_v",
+            "push_h"
+          ],
+          "muscles": [
+            "front_delts",
+            "lats",
+            "chest",
+            "triceps"
+          ]
+        },
+        {
+          "label": "Unilateral & Trunk",
+          "patterns": [
+            "lunge",
+            "pull_h",
+            "core"
+          ],
+          "muscles": [
+            "quads",
+            "glutes",
+            "mid_back",
+            "obliques"
+          ]
+        }
+      ],
+      "sessionsPerWeek": 4
     }
   ]
 }
