@@ -269,3 +269,65 @@ When a check reveals a problem:
    menu of five.
 
 Do not pad. The human is reading this between other work.
+
+---
+
+## Getting files in and out
+
+You cannot read the filesystem. Every file you reason about arrives because the
+human zipped it and uploaded it, and every file you produce arrives because they
+moved it out of `~/Downloads`.
+
+### Asking for source
+
+Name real paths. **zsh aborts the whole command on an unmatched glob** — it does
+not pass the pattern through the way bash does, so one wrong guess produces no
+zip at all and a `no matches found` error:
+
+```bash
+# Wrong — js/engine/select*.js does not exist, so nothing is written
+zip "$HOME/Downloads/x.zip" js/engine/loadDomain.js js/engine/select*.js
+
+# Right — confirm what exists first
+ls js/engine/
+```
+
+Prefer `git ls-files` when you want tracked files only:
+
+```bash
+git ls-files 'data/exercises/*.csv' 'js/data/*.json' |
+  zip "$HOME/Downloads/Catalog.zip" -@
+```
+
+Ask for the smallest set that answers the question. A zip of four files is read
+in full; a zip of forty arrives truncated, and a truncated file in your context
+is not a file you have read.
+
+### Delivering files
+
+Anything you generate lands in `~/Downloads`. It is **not installed** until the
+human moves it. Always emit the `mv`, anchored to the repo root, chained so a
+failed move cannot be mistaken for success:
+
+```bash
+repo="$(git rev-parse --show-toplevel)" &&
+mv "$HOME/Downloads/app.js" "$repo/js/ui/app.js" &&
+cd "$repo" && git diff --stat -- js/ui/app.js
+```
+
+Watch for case and version suffixes: the file the human downloads may be
+`Readme.md` or `README_v2.md` even when you named it something else. Ask rather
+than assume the name.
+
+Do not describe a file as written, installed, or applied until you have seen
+output proving it. "I created X" is a claim about their filesystem, and you
+cannot see their filesystem.
+
+### Never write a document with a heredoc
+
+A heredoc whose body contains code fences, backticks, or a line that resembles
+the delimiter will strand the terminal at a `heredoc>` prompt. Markdown and
+anything else prose-shaped goes out as a file plus an `mv` or `cat >>`, not as
+shell input.
+
+Heredocs are for **patches** — short, code-only, with asserts — not for content.
