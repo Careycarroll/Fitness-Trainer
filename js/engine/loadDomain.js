@@ -137,7 +137,7 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
   // -----------------------------------------------------------------------
   let guard = 40;   // pick() is monotonic and the pool is finite; still, never spin
   while (state.blocks.length < target && guard-- > 0) {
-    const pattern = nextAccessoryPattern(style, state, allowed, dayMuscles);
+    const pattern = nextAccessoryPattern(style, state, allowed, dayMuscles, day.patterns);
     if (!pattern) break;
 
     const chosen = pick({
@@ -292,17 +292,21 @@ const patternPenalty = (state, pattern, style) => {
  * patterns for volume, powerlifting at 0.30 spreads out instead of adding a
  * fourth squat.
  */
-function nextAccessoryPattern(style, state, pool, dayMuscles) {
+function nextAccessoryPattern(style, state, pool, dayMuscles, dayPatterns) {
   const ratio = style.accessoryRatio ?? 0.4;
-  const patterns = Object.keys(style.patternEmphasis)
+  // The fill may only choose patterns THE DAY DECLARES (SPEC.md: muscles weight
+  // selection within the day's own patterns; they never filter). Ranking all of
+  // style.patternEmphasis let an unused 0.9 pattern outscore a declared one that
+  // pass 1 had already used, so a posterior-chain day filled with cable rows and
+  // every leg day picked up sled drags. Missing dayPatterns yields no fill rather
+  // than a silent widening — the shortfall is reported as count-not-reachable.
+  const patterns = [...new Set(dayPatterns ?? [])]
     .filter((p) => (style.patternEmphasis[p] ?? 0) > 0)
     .filter((p) => pool.some((e) => e.pattern === p && !state.usedIds.has(e.id)));
 
-  // Pass 2 has to weigh muscles too, or it undoes pass 1: style emphasis alone
-  // sent a "Chest & Triceps" day to hinge and squat for its accessories, so the
-  // session opened with a bench and finished with good mornings. What matters
-  // is whether the pattern's REMAINING candidates serve the day, not whether
-  // the pattern sounds related.
+  // Among declared patterns, muscle fit still decides: what matters is whether
+  // the pattern's REMAINING candidates serve the day, not whether the pattern
+  // sounds related.
   let best = null;
   let bestScore = -Infinity;
   for (const p of patterns) {
