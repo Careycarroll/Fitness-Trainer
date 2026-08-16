@@ -63,7 +63,7 @@ const DEFAULT_COUNT = { min: 4, max: 6 };
 const MAX_TOP_COST = 5;
 const MAX_TOP_COST_COUNT = 1;
 
-export function generateSession({ style, day, catalog, profile, request, dayIndex }) {
+export function generateSession({ style, day, catalog, profile, request, dayIndex, week }) {
   const rng = createRng(request.seed + dayIndex * 7919);
   const ctx = request.athlete ?? { skillLevel: 2, hasCoaching: false, strictReps: {} };
 
@@ -112,7 +112,7 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
       || (repeated && style.allowPatternRepeat === true);
 
     const chosen = pick({
-      pool: allowed, pattern, style, state, rng, isMain, dayMuscles,
+      pool: allowed, pattern, style, state, rng, isMain, dayMuscles, week,
       slotsLeft: Math.max(1, target - state.blocks.length)
     });
 
@@ -127,7 +127,7 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
       continue;
     }
 
-    commit(state, chosen, style, { isMain, emphasis, rng });
+    commit(state, chosen, style, { isMain, emphasis, rng, week });
   }
 
   // -----------------------------------------------------------------------
@@ -141,7 +141,7 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
     if (!pattern) break;
 
     const chosen = pick({
-      pool: allowed, pattern, style, state, rng, isMain: false, dayMuscles,
+      pool: allowed, pattern, style, state, rng, isMain: false, dayMuscles, week,
       slotsLeft: Math.max(1, target - state.blocks.length)
     });
 
@@ -161,7 +161,8 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
     commit(state, chosen, style, {
       isMain: false,
       emphasis: style.patternEmphasis[pattern] ?? 0,
-      rng
+      rng,
+      week
     });
   }
 
@@ -189,7 +190,7 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
  * a session short one movement that says why beats one that quietly substituted
  * something the style does not program (ADR-014).
  */
-function pick({ pool, pattern, style, state, rng, isMain, slotsLeft, dayMuscles }) {
+function pick({ pool, pattern, style, state, rng, isMain, slotsLeft, dayMuscles, week }) {
   const remaining = style.fatigueBudget - state.fatigueUsed;
 
   const legal = pool.filter((e) => {
@@ -207,7 +208,7 @@ function pick({ pool, pattern, style, state, rng, isMain, slotsLeft, dayMuscles 
   let best = null;
   let bestScore = -Infinity;
   for (const e of shuffle(rng, legal)) {
-    const s = score({ exercise: e, pattern, style, state, isMain, remaining, slotsLeft, dayMuscles });
+    const s = score({ exercise: e, pattern, style, state, isMain, remaining, slotsLeft, dayMuscles, week });
     if (s > bestScore) { bestScore = s; best = e; }
   }
   return best;
@@ -217,7 +218,7 @@ function pick({ pool, pattern, style, state, rng, isMain, slotsLeft, dayMuscles 
  * Deliberately few terms. This is the function to tune when output looks wrong,
  * and one with fifteen weights cannot be reasoned about from a generated session.
  */
-function score({ exercise, pattern, style, state, isMain, remaining, slotsLeft, dayMuscles }) {
+function score({ exercise, pattern, style, state, isMain, remaining, slotsLeft, dayMuscles, week }) {
   const emphasis = style.patternEmphasis[pattern] ?? 0;
   const muscles = muscleFit(exercise, dayMuscles);
 
@@ -226,9 +227,12 @@ function score({ exercise, pattern, style, state, isMain, remaining, slotsLeft, 
   // day opens with a bench rather than whichever push_h row happens to cost
   // most. Two steps still win, because a body-part label must not turn the
   // main lift into an isolation movement.
+  const repeat = weekPenalty(week, exercise) * (style.weekRepeatCost ?? 1);
+
   if (isMain) {
     return exercise.fatigueCost * 10 + emphasis * 2 + muscles * 8
-      - familyPenalty(state, exercise) * 3;
+      - familyPenalty(state, exercise) * 3
+      - repeat * WEEK_REPEAT_MAIN;
   }
 
   // Accessories aim to SPEND the remaining budget across the remaining slots
@@ -242,7 +246,8 @@ function score({ exercise, pattern, style, state, isMain, remaining, slotsLeft, 
     muscles * 5 +
     fatigueFit * 3 -
     familyPenalty(state, exercise) * 3 -
-    patternPenalty(state, pattern, style) * 2 +
+    patternPenalty(state, pattern, style) * 2 -
+    repeat * WEEK_REPEAT_ACCESSORY +
     // A nudge toward compounds among accessories, not a filter: an isolation row
     // is a legitimate accessory.
     ((exercise.primaryMuscles?.length ?? 0) > 1 ? 0.5 : 0)
@@ -271,6 +276,24 @@ function muscleFit(exercise, dayMuscles) {
  * goblet squat and heels-elevated goblet squat are one exercise with a wedge
  * under the heels. This is what exercise_family was authored for (ADR-026).
  */
+/**
+ * What this row already cost the WEEK, not the session (#40). A repeat is a cost
+ * a style can afford, never a prohibition: powerlifting squatting twice a week is
+ * the program working, and hard exclusion would shrink the pool on exactly the
+ * narrow days that already finish short on fatigue budget. Same family counts
+ * half — Back Squat then Front Squat is closer to a repeat than to variety.
+ * Scale per style with `weekRepeatCost` (ADR-012: data holds values).
+ */
+const WEEK_REPEAT_MAIN = 6;
+const WEEK_REPEAT_ACCESSORY = 4;
+
+const weekPenalty = (week, exercise) => {
+  if (!week) return 0;
+  const byId = week.usedIds.get(exercise.id) ?? 0;
+  const byFamily = week.usedFamilies.get(exercise.exerciseFamily ?? exercise.id) ?? 0;
+  return byId + (byFamily - byId) * 0.5;
+};
+
 const familyPenalty = (state, exercise) =>
   state.usedFamilies.get(exercise.exerciseFamily ?? exercise.id) ?? 0;
 
@@ -330,7 +353,7 @@ function cheapestCost(pool, pattern, state) {
   return costs.length ? Math.min(...costs) : null;
 }
 
-function commit(state, exercise, style, { isMain, emphasis, rng }) {
+function commit(state, exercise, style, { isMain, emphasis, rng, week }) {
   state.fatigueUsed += exercise.fatigueCost;
   state.usedIds.add(exercise.id);
   if (exercise.fatigueCost >= MAX_TOP_COST) state.topCostUsed++;
@@ -338,6 +361,12 @@ function commit(state, exercise, style, { isMain, emphasis, rng }) {
   const family = exercise.exerciseFamily ?? exercise.id;
   state.usedFamilies.set(family, (state.usedFamilies.get(family) ?? 0) + 1);
   state.usedPatterns.set(exercise.pattern, (state.usedPatterns.get(exercise.pattern) ?? 0) + 1);
+
+  if (week) {
+    const fam = exercise.exerciseFamily ?? exercise.id;
+    week.usedIds.set(exercise.id, (week.usedIds.get(exercise.id) ?? 0) + 1);
+    week.usedFamilies.set(fam, (week.usedFamilies.get(fam) ?? 0) + 1);
+  }
 
   state.blocks.push(straightBlock(exercise, prescribe({ exercise, style, isMain, emphasis, rng })));
 }

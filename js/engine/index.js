@@ -54,6 +54,12 @@ export function generate(request, defs) {
   const weeks = [];
 
   for (let w = 0; w < request.blockWeeks; w++) {
+    // Week-level selection memory (#40). Sessions are generated in split order
+    // and each one reads what the earlier days already used, so the same top-
+    // scoring row cannot silently lead two days. Reset per week: a new week is
+    // allowed to look like the last one.
+    const week = { usedIds: new Map(), usedFamilies: new Map() };
+
     const sessions = split.days.map((day, dayIndex) =>
       generator.generateSession({
         style,
@@ -61,7 +67,8 @@ export function generate(request, defs) {
         catalog: defs.exercises,
         profile,
         request: { ...request, seed: request.seed + w * 31 },
-        dayIndex
+        dayIndex,
+        week
       })
     );
     weeks.push({ week: w + 1, sessions });
