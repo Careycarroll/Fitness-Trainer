@@ -56,6 +56,28 @@ export function isPerformable(exercise, ownedSet) {
 }
 
 /**
+ * The tokens a profile owns. equipment.json ships `available`; tests and
+ * runtime-constructed profiles have used `equipment`. Accept both -- reading one
+ * silently produced an empty owned-set for every shipped profile (ADR-026).
+ */
+export function ownedOf(profile) {
+  return new Set(profile?.available ?? profile?.equipment ?? []);
+}
+
+/**
+ * Can this profile perform this exercise? THE single availability rule (#41).
+ *
+ * substitution.js carried a second copy that read profile.available directly and
+ * ignored assumesAll, so coverage -- the precondition check -- was more permissive
+ * than selection. A gap surfaced as a quiet short session instead of a
+ * CoverageError, which is fail-closed inverted. One function, both callers.
+ */
+export function isAvailable(exercise, profile) {
+  if (profile?.assumesAll === true) return true;
+  return isPerformable(exercise, ownedOf(profile));
+}
+
+/**
  * @param {object} profile   { id, name, available|equipment: string[], assumesAll?: boolean }
  * @param {string[]} requiredPatterns
  * @param {object[]} catalog
@@ -68,7 +90,7 @@ export function analyzeCoverage(profile, requiredPatterns, catalog) {
   // ever performable. commercial-gym masked it via assumesAll, and check 11 --
   // the one validator that would have caught it -- was throwing on a signature
   // mismatch and reporting 0 checks. Accept both; neither shape is wrong.
-  const owned = new Set(profile.available ?? profile.equipment ?? []);
+  const owned = ownedOf(profile);
   const assumesAll = profile.assumesAll === true;
 
   const optionsByPattern = new Map();

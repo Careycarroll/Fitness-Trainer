@@ -8,9 +8,10 @@
  * ADR-012: the coefficients are data (substitution-weights.json); this ranking is code.
  */
 
-export function isAvailable(exercise, profile) {
-  return exercise.equipment.every((token) => profile.available.includes(token));
-}
+// #41: availability is defined once, in coverage.js. Re-exported here so the two
+// generators keep importing it from where they always have.
+export { isAvailable } from './coverage.js';
+import { isAvailable } from './coverage.js';
 
 /** Lower is better. Infinity-ish scores mean "not a substitute at all". */
 export function score(target, candidate, weights, profile) {
