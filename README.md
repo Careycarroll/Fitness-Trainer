@@ -62,15 +62,15 @@ Control flow, safety gates, and validators never become data. A dropped key in J
 | M3 Load-domain generator | done |
 | M4 Full catalog integrated with the engine | done |
 | M5 Planner UI | done — audited, not merely shipped |
-| M6 Conditioning expansion and catalog alignment | **next** |
+| M6 Conditioning expansion and catalog alignment | **in progress** |
 | M7 Persistence and FitNotes interoperability | gated by ADR-011 |
 
 Verified on the current `main` branch:
 
-- 286 generated exercises from 12 CSV source files
-- 7 training styles
-- 11 validators and 24,648 validation checks passing
-- 86 tests passing
+- 300 generated exercises from 13 CSV source files
+- 8 training styles
+- 11 validators and 27,665 validation checks passing
+- 90 tests passing
 - deterministic seeded generation
 - unified `Block → SetGroup` output across load and conditioning domains
 - scored exercise selection, accessory fill, equipment coverage, substitutions, safety gates, scheduling, progression, and deload behavior under test
@@ -119,26 +119,28 @@ Start with [`docs/adr/README.md`](docs/adr/README.md). Load-bearing decisions in
 
 Accepted ADRs are immutable. If a decision changes, add a new ADR that supersedes or refines the old one rather than editing history.
 
-## Next milestone: M6
+## Current milestone: M6
 
 M6 completes the training vocabulary before any interoperability work, because export and import mappings built against an incomplete catalog would have to be redone.
 
-- ADR for conditioning catalog ownership and domain scope
-- monostructural catalog rows: rower, bike, jump rope, boxing, machine cardio
-- conditioning generator for steady, interval, and round-based work
-- canonical exercise naming aligned with the FitNotes exercise library
+Done:
 
-### Known conditioning gap
+- ADR-028 (PROPOSED) — conditioning modalities own a file; prescription stays duration and intensity
+- ADR-029 (PROPOSED) — `fatigue_cost` stays one 1-5 scale; `metabolic_cost` deferred
+- `13_conditioning.csv`: 14 monostructural rows and the retirement of the monostructural deferral
+- the ADR-009 reps-for-time derivation, making compound `reps_only` rows time-eligible without authoring records
+- a conditioning generator for steady, interval, and round-based work: reps-for-time capped, `exercisesPerSession` honoured, full-window rows preferred over clamped ones
 
-The M5 audit measured the time-domain candidate pool. Only 19 of 286 rows are time-scored, and they cluster in core and carries:
+Remaining:
 
-```text
-squat: 1   core: 7   carry: 9   locomotion: 2
-```
+- evaluate distance, pace, incline, and machine-intensity prescriptions (#30)
+- align canonical exercise naming with the FitNotes exercise library (#33)
 
-No time-scored `hinge`, `push_h`, `push_v`, `pull_h`, or `pull_v` row exists. Consequently the `cardio` style emits zero blocks in every session, and `hiit` emits single-station "circuits". The engine reports these honestly in `omitted[]` and the UI explains them rather than rendering a blank card, so this is a catalog gap rather than a defect.
+### Conditioning gap: closed
 
-Separately, 42 `reps_only` compound rows are time-domain scoring under ADR-009's own definition of the domain — "reps-for-time" — but the current derivation treats them as load-only. Resolving that rule is expected to supply most of the missing pattern coverage without authoring new records, which materially reduces the scope of the new conditioning file.
+The M5 audit found only 19 time-scored rows, none for `hinge`, `push_h`, `push_v`, `pull_h`, or `pull_v`, and a `cardio` style that emitted zero blocks. M6 closed this two ways. The ADR-009 reps-for-time derivation made compound `reps_only` rows time-eligible — candidate pool 23 to 55, covering `push_h`, `push_v`, `pull_h`, `pull_v`, `squat`, and `explosive` without authoring records — and `13_conditioning.csv` added the monostructural modalities `cardio` requires. `hiit` and `crossfit` now build multi-station circuits and `cardio` generates on both shipped profiles.
+
+One thin spot remains by design: authored time-scored `hinge` rows are still a pool of one, tracked with the catalog rather than blocking the milestone.
 
 M7 then adds durable local state: profile editing, IndexedDB persistence, JSON export and import, dated plan export to FitNotes, and local import of completed FitNotes history. Persistence must fail safely.
 
