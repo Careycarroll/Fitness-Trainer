@@ -29,7 +29,7 @@ Nobody reads these front to back. You arrive with a question — start here.
 [003](ADR-003-content-as-data.md) · [006](ADR-006-hand-authored-catalog.md) · [008](ADR-008-catalog-before-logger.md) · [012](ADR-012-data-code-boundary.md) · [016](ADR-016-catalog-authored-as-split-csv.md) · [017](ADR-017-catalog-file-ownership-rule.md) · [028](ADR-028-conditioning-catalog-ownership.md)
 
 **Catalog vocabularies**
-[009](ADR-009-dual-domain-schema.md) · [018](ADR-018-muscle-token-admission-test.md) · [019](ADR-019-isolation-and-explosive-patterns.md) · [020](ADR-020-joint-load-is-descriptive.md) · [021](ADR-021-retire-machine-equipment-token.md) · [022](ADR-022-equipment-substitution-map.md) · [024](ADR-024-odd-objects-excluded.md) · [025](ADR-025-single-joint-pattern-inconsistency.md) · [026](ADR-026-catalog-schema-reconciliation.md) · [029](ADR-029-defer-metabolic-cost.md)
+[009](ADR-009-dual-domain-schema.md) · [018](ADR-018-muscle-token-admission-test.md) · [019](ADR-019-isolation-and-explosive-patterns.md) · [020](ADR-020-joint-load-is-descriptive.md) · [021](ADR-021-retire-machine-equipment-token.md) · [022](ADR-022-equipment-substitution-map.md) · [024](ADR-024-odd-objects-excluded.md) · [025](ADR-025-single-joint-pattern-inconsistency.md) · [026](ADR-026-catalog-schema-reconciliation.md) · [029](ADR-029-defer-metabolic-cost.md) · [030](ADR-030-defer-distance-and-pace.md)
 
 **Progression and history**
 [023](ADR-023-e1rm-from-logged-sets.md)
@@ -69,6 +69,7 @@ Nobody reads these front to back. You arrive with a question — start here.
 | [027](ADR-027-block-setgroup-nesting.md) | A block holds an ordered list of setGroups; both domains emit one shape | ACCEPTED | 002, 009 | Consumers stopped branching on `session.domain`. |
 | [028](ADR-028-conditioning-catalog-ownership.md) | Conditioning modalities own a file; prescription stays duration and intensity | PROPOSED | 017, 009 | A rower is a rower; a burpee is a movement conditioning happens to select. |
 | [029](ADR-029-defer-metabolic-cost.md) | `fatigue_cost` stays one scale; `metabolic_cost` deferred | PROPOSED | 009, 026 | One generator per session, so the currencies never sum. |
+| [030](ADR-030-defer-distance-and-pace.md) | Duration and intensity remain the whole conditioning prescription | PROPOSED | 028, 009 | The app plans how long and how hard, not how far and how fast. |
 
 ---
 
