@@ -20,7 +20,7 @@ That history is the point: it shows what was believed and why it changed.
 Nobody reads these front to back. You arrive with a question — start here.
 
 **Platform, storage, and process**
-[001](ADR-001-platform-web-pwa.md) · [004](ADR-004-storage-indexeddb-export.md) · [005](ADR-005-fork-scaffolding.md) · [007](ADR-007-no-deadline-quality-gates.md) · [011](ADR-011-persistence-gate.md)
+[001](ADR-001-platform-web-pwa.md) · [004](ADR-004-storage-indexeddb-export.md) · [005](ADR-005-fork-scaffolding.md) · [007](ADR-007-no-deadline-quality-gates.md) · [011](ADR-011-persistence-gate.md) · [031](ADR-031-planner-not-logger.md)
 
 **Engine and generation**
 [002](ADR-002-deterministic-rules-engine.md) · [010](ADR-010-styles-as-data.md) · [013](ADR-013-equipment-profiles-and-first-style.md) · [014](ADR-014-editable-profiles-and-whole-session-conditioning.md) · [015](ADR-015-arbitrary-training-days.md) · [027](ADR-027-block-setgroup-nesting.md)
@@ -70,6 +70,7 @@ Nobody reads these front to back. You arrive with a question — start here.
 | [028](ADR-028-conditioning-catalog-ownership.md) | Conditioning modalities own a file; prescription stays duration and intensity | PROPOSED | 017, 009 | A rower is a rower; a burpee is a movement conditioning happens to select. |
 | [029](ADR-029-defer-metabolic-cost.md) | `fatigue_cost` stays one scale; `metabolic_cost` deferred | PROPOSED | 009, 026 | One generator per session, so the currencies never sum. |
 | [030](ADR-030-defer-distance-and-pace.md) | Duration and intensity remain the whole conditioning prescription | PROPOSED | 028, 009 | The app plans how long and how hard, not how far and how fast. |
+| [031](ADR-031-planner-not-logger.md) | Trainer is a planner; FitNotes is the system of record for performed work | PROPOSED | 011, 004, 023 | Two systems of record disagree, and nothing resolves the disagreement. |
 
 ---
 
