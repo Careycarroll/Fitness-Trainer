@@ -32,6 +32,27 @@ export const DOMAIN = 'time';
  */
 export const REPS_FOR_TIME_MAX_SECONDS = 90;
 
+/**
+ * In an interval style `workSeconds` is a PER-STATION window. In an AMRAP it is
+ * the cap on the WHOLE block, and feeding it to a station handed one movement
+ * the entire session: crossfit prescribed Elliptical Trainer 720s beside Wall
+ * Sit 90s and a 45s plank - an 855s round against a 720s cap, so the athlete
+ * never reached station two (#42).
+ *
+ * An AMRAP round must fit inside the cap several times over. Three is a
+ * judgement, not a measurement: below it the block stops being "as many rounds
+ * as possible" and becomes one long effort with decoration attached.
+ */
+export const AMRAP_MIN_ROUNDS = 3;
+
+/** The window ONE station may occupy, derived from the cap for round-based work. */
+function stationWindowFor(style, wr, isAmrap) {
+  if (!isAmrap) return wr;
+  const stations = Math.max(1, style.exercisesPerSession?.min ?? 1);
+  const perStation = Math.floor(wr.workSeconds / (AMRAP_MIN_ROUNDS * stations));
+  return { ...wr, workSeconds: Math.max(1, perStation) };
+}
+
 /** Why this candidate cannot serve this style's window, or null if it can. */
 function rejection(candidate, wr) {
   if (!candidate.timeDomain && !candidate.repsForTime) return 'no-time-domain';
@@ -74,6 +95,8 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
   const { allowed, blocked } = filterByGates(available, ctx);
 
   const wr = style.workRest;
+  const isAmrap = wr.restSeconds === 0 && wr.rounds === 1;
+  const stationWindow = stationWindowFor(style, wr, isAmrap);
   const setGroups = [];
   const omitted = [];
   let fatigueUsed = 0;
@@ -90,7 +113,7 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
   function place(candidate) {
     if (fatigueUsed + candidate.fatigueCost > style.fatigueBudget) return 'fatigue-budget-exhausted';
 
-    const why = rejection(candidate, wr);
+    const why = rejection(candidate, stationWindow);
     if (why) return why;
 
     fatigueUsed += candidate.fatigueCost;
@@ -100,7 +123,7 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
     setGroups.push(
       makeSetGroup(candidate, {
         role: 'station',
-        workSeconds: workWindow(candidate, wr),
+        workSeconds: workWindow(candidate, stationWindow),
         // The prescription is "as many good reps as you can inside the window",
         // not a rep count. A consumer needs to be able to say that rather than
         // rendering a work timer identical to a plank's.
@@ -123,7 +146,7 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
     // emphasis order still decides between equals (ADR-002).
     const candidates = pool
       .filter((e) => e.pattern === pattern && !chosen.has(e.id))
-      .sort((a, c) => Number(servesFullWindow(c, wr)) - Number(servesFullWindow(a, wr)));
+      .sort((a, c) => Number(servesFullWindow(c, stationWindow)) - Number(servesFullWindow(a, stationWindow)));
 
     if (!candidates.length) {
       omitted.push({ pattern, reason: 'no-unused-candidates' });
@@ -171,7 +194,6 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
   // work/rest. Both are ONE block containing every movement, because the
   // rounds and the cap describe the group and there is nowhere else to put
   // them that means what they need to mean.
-  const isAmrap = wr.restSeconds === 0 && wr.rounds === 1;
   const blocks = setGroups.length
     ? [
         makeBlock(isAmrap ? 'amrap' : 'circuit', setGroups, {
@@ -184,8 +206,9 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
       ]
     : [];
 
-  const totalSeconds =
-    setGroups.reduce((s, sg) => s + sg.workSeconds + sg.restSeconds, 0) * wr.rounds;
+  // An AMRAP lasts exactly its cap, however many rounds the athlete produces.
+  const roundSeconds = setGroups.reduce((s, sg) => s + sg.workSeconds + sg.restSeconds, 0);
+  const totalSeconds = isAmrap ? wr.workSeconds : roundSeconds * wr.rounds;
 
   return {
     domain: DOMAIN,

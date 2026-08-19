@@ -180,6 +180,49 @@ describe('fatigue budget', () => {
   });
 });
 
+import { AMRAP_MIN_ROUNDS } from '../js/engine/intervalDomain.js';
+
+/**
+ * #42. An AMRAP is "as many rounds as possible against a cap", so a round the
+ * athlete cannot finish once is not a round. crossfit shipped Elliptical
+ * Trainer 720s beside Wall Sit 90s and a 45s plank: an 855s round against a
+ * 720s cap, so stations two and three were unreachable.
+ *
+ * The hard invariant is that a round fits inside the cap. The derived station
+ * window targets AMRAP_MIN_ROUNDS of them, but a row whose own minSeconds
+ * exceeds that window clamps UP, so the achieved ratio can fall below the
+ * target without the session being broken. Asserting the ratio would make this
+ * test fail on catalog changes that are not defects; asserting the fit does
+ * not.
+ */
+describe('AMRAP rounds fit their cap (#42)', () => {
+  test('no AMRAP round exceeds its own time cap', () => {
+    let amraps = 0;
+
+    for (const id of ['hiit', 'cardio', 'crossfit']) {
+      const p = generate({ ...base, styleId: id, daysPerWeek: 3 }, defs);
+
+      for (const session of p.weeks[0].sessions) {
+        for (const block of session.blocks) {
+          if (block.blockType !== 'amrap') continue;
+          amraps += 1;
+
+          const round = block.setGroups.reduce(
+            (t, g) => t + g.workSeconds + g.restSeconds, 0);
+
+          assert.ok(round > 0, `${id}: an AMRAP round of zero seconds`);
+          assert.ok(
+            round <= block.timeCapSeconds,
+            `${id}: round ${round}s exceeds the ${block.timeCapSeconds}s cap — ` +
+            'the athlete cannot complete one round, so later stations are unreachable');
+        }
+      }
+    }
+
+    assert.ok(amraps > 0, 'no AMRAP block was generated — this test proved nothing');
+  });
+});
+
 describe('prescriptions are sane', () => {
   test('load prescriptions sit inside the style bands', () => {
     for (const id of ['powerlifting', 'bodybuilding', 'strength', 'core']) {
@@ -232,8 +275,19 @@ describe('prescriptions are sane', () => {
 
         const wr = style.workRest ?? style.intervals ?? {};
         if (wr.workSeconds != null) {
-          assert.equal(sg.workSeconds, wr.workSeconds,
-            `${sg.exerciseId}: reps-for-time takes the style work window unmodified`);
+          // #42: `workSeconds` is a PER-STATION window in an interval style and
+          // the WHOLE-BLOCK cap in an AMRAP. The rule this test protects is
+          // unchanged -- a reps-for-time row takes the station window
+          // unmodified -- but for an AMRAP that window is DERIVED from the cap
+          // rather than equal to it. Asserting equality with the cap is what
+          // demanded twelve minutes of unbroken hip thrusts.
+          const isAmrap = wr.restSeconds === 0 && wr.rounds === 1;
+          const stations = Math.max(1, style.exercisesPerSession?.min ?? 1);
+          const stationSeconds = isAmrap
+            ? Math.max(1, Math.floor(wr.workSeconds / (AMRAP_MIN_ROUNDS * stations)))
+            : wr.workSeconds;
+          assert.equal(sg.workSeconds, stationSeconds,
+            `${sg.exerciseId}: reps-for-time takes the station work window unmodified`);
         }
       }
     }
