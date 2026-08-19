@@ -541,7 +541,31 @@ function patternLabel(p) {
 
 /** Engine reason codes are vocabulary, not prose. Translate at the boundary. */
 function omitReason(x) {
-  if (x.pattern === 'monostructural') return 'deferred to M6 — no rower, bike, or jump-rope movements yet';
-  if (x.reason === 'no-unused-candidates') return 'no time-scored exercise available for this pattern';
-  return x.reason ?? 'no eligible exercise';
+  // Keyed on the REASON, never on the pattern. The old first line returned
+  // 'deferred to M6' for any monostructural omission, which stopped being
+  // true when 13_conditioning.csv landed 14 rows (#28) and pre-empted every
+  // other cause besides (#43).
+  switch (x.reason) {
+    // The style does not train this pattern. Not a gap - a choice.
+    case 'style-emphasis-zero':
+      return 'not trained by this style';
+    case 'no-unused-candidates':
+      return 'no eligible exercise left for this pattern';
+    case 'no-catalog-rows':
+      return 'no exercise in the catalog for this pattern';
+    case 'equipment':
+      return 'no exercise your equipment profile can supply';
+    case 'fatigue-budget-exhausted':
+      return 'the session fatigue budget was already spent';
+    case 'no-time-domain':
+      return 'no exercise here can be prescribed for time';
+    case 'reps-for-time-window-too-long':
+      return 'the work window is too long to prescribe as continuous reps';
+    case 'session-under-filled':
+      return `only ${x.placed} of ${x.target} exercises could be placed`;
+    case 'count-not-reachable':
+      return 'the session could not reach its exercise count';
+    default:
+      return x.reason ?? 'no eligible exercise';
+  }
 }

@@ -141,6 +141,21 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
   // can actually serve the window rather than taking the first by emphasis and
   // omitting the whole pattern when it happens to be inadmissible.
   for (const pattern of day.patterns) {
+    // A style that scores this pattern at 0 does not want it, which is not the
+    // same as the catalog being unable to supply it. `pool` is already filtered
+    // to emphasis > 0, so without this branch the pattern arrives here with an
+    // empty candidate list and gets reported as `no-unused-candidates` - a
+    // claim about the catalog. cardio scores hinge, core, squat and push_h at 0
+    // while `conditioning-3` declares them for hiit and crossfit, so every
+    // cardio session asserted a gap that does not exist (#43).
+    //
+    // loadDomain.js has emitted this code since it was written. Same reason,
+    // same spelling: one vocabulary across both generators.
+    if ((style.patternEmphasis[pattern] ?? 0) === 0) {
+      omitted.push({ pattern, reason: 'style-emphasis-zero' });
+      continue;
+    }
+
     // Rows that can hold the whole window come first; a clamped row is a
     // fallback, not an equal option. Stable within each tier, so the seeded
     // emphasis order still decides between equals (ADR-002).
