@@ -69,7 +69,7 @@ Verified on the current `main` branch:
 
 - 300 generated exercises from 13 CSV source files
 - 8 training styles
-- 11 validators and 27,665 validation checks passing
+- 11 validators and 27,693 validation checks passing
 - 91 tests passing
 - deterministic seeded generation
 - unified `Block → SetGroup` output across load and conditioning domains
