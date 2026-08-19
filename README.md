@@ -62,15 +62,15 @@ Control flow, safety gates, and validators never become data. A dropped key in J
 | M3 Load-domain generator | done |
 | M4 Full catalog integrated with the engine | done |
 | M5 Planner UI | done — audited, not merely shipped |
-| M6 Conditioning expansion and catalog alignment | **in progress** |
-| M7 Persistence and FitNotes interoperability | gated by ADR-011 |
+| M6 Conditioning expansion and catalog alignment | done — 16 issues closed; ADR-028/029/030 remain PROPOSED |
+| M7 Persistence and FitNotes interoperability | **next** — gated by ADR-011 |
 
 Verified on the current `main` branch:
 
 - 300 generated exercises from 13 CSV source files
 - 8 training styles
 - 11 validators and 27,665 validation checks passing
-- 90 tests passing
+- 91 tests passing
 - deterministic seeded generation
 - unified `Block → SetGroup` output across load and conditioning domains
 - scored exercise selection, accessory fill, equipment coverage, substitutions, safety gates, scheduling, progression, and deload behavior under test
@@ -102,6 +102,23 @@ npm run build
 
 Validation confirms that the generated JSON matches its source and that definition files remain schema-valid, internally consistent, and free of planning logic.
 
+### FitNotes mapping manifest
+
+`data/fitnotes/fitnotes-mapping.csv` maps every exercise definition in the
+athlete's FitNotes export onto this catalog, and `data/fitnotes/README.md`
+records the merge rule, the tiering, and the deliberate omissions. Trainer IDs
+and names are canonical for exported plans; FitNotes names are preserved as
+migration aliases.
+
+The manifest is **authored, not generated** — it encodes judgement calls no
+matcher can make. An early automated pass scored `Incline Barbell Bench Press`
+against `Barbell Bench Press` while `Incline Barbell Press` existed, which
+would have carried 18 completed sets onto the wrong lift. Do not rebuild it
+from a fresh fuzzy pass.
+
+No live FitNotes database is read or modified by anything in this repo, and
+the export itself is deliberately not committed.
+
 ## Decisions
 
 Start with [`docs/adr/README.md`](docs/adr/README.md). Load-bearing decisions include:
@@ -119,11 +136,15 @@ Start with [`docs/adr/README.md`](docs/adr/README.md). Load-bearing decisions in
 
 Accepted ADRs are immutable. If a decision changes, add a new ADR that supersedes or refines the old one rather than editing history.
 
-## Current milestone: M6
+## Milestone complete: M6
 
-M6 completes the training vocabulary before any interoperability work, because export and import mappings built against an incomplete catalog would have to be redone.
+M6 completed the training vocabulary before any interoperability work, because export and import mappings built against an incomplete catalog would have to be redone. All 16 issues are closed.
 
-Done:
+The three ADRs governing it — 028, 029, 030 — are still **PROPOSED**. The
+work they describe has shipped and held under test; promoting them is a
+separate, deliberate decision, because an ACCEPTED ADR is immutable here.
+
+Shipped:
 
 - ADR-028 (PROPOSED) — conditioning modalities own a file; prescription stays duration and intensity
 - ADR-029 (PROPOSED) — `fatigue_cost` stays one 1-5 scale; `metabolic_cost` deferred
@@ -131,10 +152,16 @@ Done:
 - the ADR-009 reps-for-time derivation, making compound `reps_only` rows time-eligible without authoring records
 - a conditioning generator for steady, interval, and round-based work: reps-for-time capped, `exercisesPerSession` honoured, full-window rows preferred over clamped ones
 
-Remaining:
-
-- evaluate distance, pace, incline, and machine-intensity prescriptions (#30)
-- align canonical exercise naming with the FitNotes exercise library (#33)
+- ADR-030 (PROPOSED) — duration and intensity remain the whole conditioning
+  prescription; no distance, pace, incline, or resistance field (#30)
+- an AMRAP station window derived from the block cap rather than handed the
+  whole cap — `crossfit` went from an 855s round under a 720s cap, which the
+  athlete could not complete once, to a 240s round at exactly 3.0 rounds (#42)
+- omission reporting that names its real cause: a pattern the style scores at
+  0 reports `style-emphasis-zero` rather than claiming a catalog gap (#43)
+- `data/fitnotes/fitnotes-mapping.csv` — 149 FitNotes definitions and 748
+  completed sets mapped onto the catalog, with the many-to-one merge rule
+  and its preconditions recorded beside it (#33)
 
 ### Conditioning gap: closed
 
