@@ -136,13 +136,18 @@ The engine's single entry point. Constructed by the UI, consumed by `engine/inde
 ```js
 {
   schemaVersion: 1,
-  styleId: "hypertrophy-upper-lower",
+  styleId: "strength",      // one of the eight ids in styles.json
   daysPerWeek: 4,
   sessionMinutes: 70,
   equipmentProfile: "commercial-gym",
   blockWeeks: 1,            // 1 = single session set; 4-12 = mesocycle
-  seed: 20260809,           // determinism: same request => same program (ADR-002)
-  history: []               // logged sets; empty until M6
+  seed: 20260813,           // determinism: same request => same program (ADR-002)
+  athlete: {                // REQUIRED. safety.js gates on skillLevel
+    skillLevel: 3,          // 1-5; 5 admits olympic lifts
+    hasCoaching: false,
+    strictReps: {}          // exerciseId -> rep cap, athlete override
+  },
+  history: []               // completed sets; populated by the FitNotes import (#24)
 }
 ```
 
@@ -150,6 +155,29 @@ The engine's single entry point. Constructed by the UI, consumed by `engine/inde
 no `Math.random`, no I/O inside the generator (ADR-002).
 
 ---
+
+## Program output shape
+
+`generate(request, definitions)` returns a PROGRAM. Read this from the engine, not
+from the illustration below it: `splitId` and `domain` are emitted and were
+undocumented here until #35 had to persist them.
+
+```js
+{
+  schemaVersion: 1,
+  styleId: 'strength',
+  splitId: 'upper-lower-4',   // which split template was resolved
+  domain: 'load' | 'time',    // which generator ran
+  seed: 20260813,
+  weeks: [ { week: 1, sessions: [ /* see below */ ] } ]
+}
+```
+
+The program is what gets persisted, not the request. `js/ui/app.js` mutates the
+program tree in place — `group[field] = value`, `setGroups.splice()`, and
+`blocks.splice()` when a block empties — so replaying the request through the
+engine reproduces the ORIGINAL draft rather than what the athlete is looking at.
+The request is stored beside it for provenance (#35).
 
 ## Session output shape (ADR-027) — CURRENT
 

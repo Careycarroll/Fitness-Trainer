@@ -2,10 +2,23 @@
 
 Two independent version lines. Do not conflate them.
 
+Three constants, not two, because the store LAYOUT and the record SHAPE move
+independently:
+
+- `STATE_VERSION` (`js/storage/state.js`) — the shape of a stored record. A field
+  added inside a plan bumps this and gets a migration in `migrate()`.
+- `EXPORT_FORMAT` (`js/storage/state.js`) — the export envelope. Kept separate
+  because an envelope change need not imply a record change, or the reverse.
+- `DB_VERSION` (`js/storage/db.js`) — the object-store layout. A new store or index
+  bumps this and adds a case to `upgrade()`.
+
+Conflating the record shape with the store layout is how a migration runs
+twice or not at all.
+
 | Line | Governs | Current |
 |---|---|---|
 | **Definition-file schema** (`SPEC.md`) | Shipped JSON in `js/data/` | 1 |
-| **Stored-record schema** (`js/storage/db.js`) | User data in IndexedDB and export files | 1 (unimplemented, gated to M6) |
+| **Stored-record schema** (`js/storage/state.js`) | User data in IndexedDB and export files | 1 |
 
 ## Rules
 
@@ -42,5 +55,26 @@ What changed in the emitted shape:
 the flat one. Anything already sketched against `blocks[i].reps` or `stations[]`
 is stale. Read `js/engine/SPEC.md` and `js/engine/blocks.js` for the contract.
 
-**The first real migration will be the first change AFTER M6 lands.** From that
-point a shape change is a migration function keyed on `schemaVersion`, per ADR-004.
+### v1 — 2026-08-19 — storage implemented (#35, ADR-031)
+
+`STATE_VERSION` is **1** and no migration is required: this is the first
+implementation, so there is no earlier stored shape to migrate from.
+
+Stores, per ADR-031 rather than the retired sketch:
+
+| Store | Holds | Lifecycle |
+| --- | --- | --- |
+| `meta` | `lastImportAt` | one row |
+| `plans` | request + program + edit flag | durable; the app is the only copy |
+| `importedSets` | normalised FitNotes history | **replaced in full** per import (ruling 2) |
+| `exerciseMax` | e1RM rows | append-only (ADR-023) |
+
+The previous sketch declared `sessions`, `sets` and `programs`. A `sets` store
+keyed on `sessionId` is a LOGGER's schema, which ADR-031 ruling 1 excludes.
+There is deliberately no store for a raw FitNotes database (ruling 3), and a
+test asserts its absence.
+
+**From here, a stored-shape change is a real migration.** The next one bumps
+`STATE_VERSION`, adds a case to `migrate()` in `state.js`, and gets an entry
+below. Export files are upgraded on import and never downgraded (rule 2), so a
+file written by an older build must keep opening in a newer one.
