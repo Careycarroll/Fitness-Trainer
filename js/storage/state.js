@@ -285,10 +285,8 @@ export function validate(state) {
   return state;
 }
 
-/** Store names, shared with db.js so the two cannot drift. */
-export const STORES = Object.freeze({
-  meta: { keyPath: 'key', indexes: [] },
-  plans: { keyPath: 'id', indexes: ['createdAt'] },
-  importedSets: { keyPath: 'id', indexes: ['exerciseId', 'date'] },
-  exerciseMax: { keyPath: 'id', indexes: ['exerciseId', 'effectiveDate'] }
-});
+// STORES is NOT declared here. db.js owns the object-store layout because it is
+// the only module that creates one. The copy that used to sit here claimed
+// `meta` was keyed on `key` and declared four indexes db.js does not create --
+// under a comment asserting the two could not drift. They had already drifted,
+// and nothing imported either, so nothing failed.
