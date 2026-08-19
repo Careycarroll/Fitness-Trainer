@@ -179,7 +179,12 @@ def build_record(row: dict, source: str) -> dict:
         # explicitly rather than leaving it implied.
         "repsForTime": reps_for_time,
         "kipAllowed": None,          # non-null iff pattern === "gymnastic" (none)
-        "monostructural": False,     # load-domain catalog; M7 owns this
+        # Derived, not hardcoded. This read False for all 300 rows including
+        # the 14 conditioning modalities whose pattern IS monostructural, so
+        # every setGroup carried `monostructural: false` while its pattern
+        # said otherwise. "M7 owns this" was true when the catalog had no
+        # such rows; 13_conditioning.csv landed them in #28.
+        "monostructural": derive_pattern(row) == "monostructural",
         "skillGate": "olympic-lift" if skill == 5 else None,
         # --- pass-through, authored and already validated (ADR-026) ----------
         # Discarding these at the boundary would make ADR-020's

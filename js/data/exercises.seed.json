@@ -10545,7 +10545,7 @@
       "roundsCapable": true,
       "repsForTime": false,
       "kipAllowed": null,
-      "monostructural": false,
+      "monostructural": true,
       "skillGate": null,
       "exerciseFamily": "walk",
       "jointLoad": [],
@@ -10585,7 +10585,7 @@
       "roundsCapable": true,
       "repsForTime": false,
       "kipAllowed": null,
-      "monostructural": false,
+      "monostructural": true,
       "skillGate": null,
       "exerciseFamily": "run",
       "jointLoad": [
@@ -10628,7 +10628,7 @@
       "roundsCapable": true,
       "repsForTime": false,
       "kipAllowed": null,
-      "monostructural": false,
+      "monostructural": true,
       "skillGate": null,
       "exerciseFamily": "run",
       "jointLoad": [
@@ -10670,7 +10670,7 @@
       "roundsCapable": true,
       "repsForTime": false,
       "kipAllowed": null,
-      "monostructural": false,
+      "monostructural": true,
       "skillGate": null,
       "exerciseFamily": "cycle",
       "jointLoad": [
@@ -10711,7 +10711,7 @@
       "roundsCapable": true,
       "repsForTime": false,
       "kipAllowed": null,
-      "monostructural": false,
+      "monostructural": true,
       "skillGate": null,
       "exerciseFamily": "cycle",
       "jointLoad": [
@@ -10753,7 +10753,7 @@
       "roundsCapable": true,
       "repsForTime": false,
       "kipAllowed": null,
-      "monostructural": false,
+      "monostructural": true,
       "skillGate": null,
       "exerciseFamily": "cycle",
       "jointLoad": [
@@ -10796,7 +10796,7 @@
       "roundsCapable": true,
       "repsForTime": false,
       "kipAllowed": null,
-      "monostructural": false,
+      "monostructural": true,
       "skillGate": null,
       "exerciseFamily": "row",
       "jointLoad": [
@@ -10839,7 +10839,7 @@
       "roundsCapable": true,
       "repsForTime": false,
       "kipAllowed": null,
-      "monostructural": false,
+      "monostructural": true,
       "skillGate": null,
       "exerciseFamily": "erg",
       "jointLoad": [
@@ -10882,7 +10882,7 @@
       "roundsCapable": true,
       "repsForTime": false,
       "kipAllowed": null,
-      "monostructural": false,
+      "monostructural": true,
       "skillGate": null,
       "exerciseFamily": "erg",
       "jointLoad": [],
@@ -10921,7 +10921,7 @@
       "roundsCapable": true,
       "repsForTime": false,
       "kipAllowed": null,
-      "monostructural": false,
+      "monostructural": true,
       "skillGate": null,
       "exerciseFamily": "step",
       "jointLoad": [
@@ -10962,7 +10962,7 @@
       "roundsCapable": true,
       "repsForTime": false,
       "kipAllowed": null,
-      "monostructural": false,
+      "monostructural": true,
       "skillGate": null,
       "exerciseFamily": "jump_rope",
       "jointLoad": [
@@ -11004,7 +11004,7 @@
       "roundsCapable": true,
       "repsForTime": false,
       "kipAllowed": null,
-      "monostructural": false,
+      "monostructural": true,
       "skillGate": null,
       "exerciseFamily": "boxing",
       "jointLoad": [
@@ -11047,7 +11047,7 @@
       "roundsCapable": true,
       "repsForTime": false,
       "kipAllowed": null,
-      "monostructural": false,
+      "monostructural": true,
       "skillGate": null,
       "exerciseFamily": "boxing",
       "jointLoad": [
@@ -11089,7 +11089,7 @@
       "roundsCapable": true,
       "repsForTime": false,
       "kipAllowed": null,
-      "monostructural": false,
+      "monostructural": true,
       "skillGate": null,
       "exerciseFamily": "battle_rope",
       "jointLoad": [
