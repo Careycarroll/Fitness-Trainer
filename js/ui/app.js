@@ -3,7 +3,10 @@
  * No planning logic lives here — the engine is the only thing that decides what to train
  * (ADR-002). If a rule appears in this file, it is in the wrong place.
  *
- * Nothing is persisted. Storage is gated to M6 (ADR-011).
+ * Planner state persists to IndexedDB via ../storage/. This file decides WHEN
+ * to save (debounced off paint, flushed on visibilitychange) and never HOW:
+ * canonical form, versioning and the export envelope live in state.js so they
+ * stay testable in node --test (#35, ADR-011).
  *
  * ADR-027: blocks now hold an ordered list of setGroups. Two consequences visible
  * throughout this file:
@@ -22,11 +25,13 @@
 import { generate, CoverageError } from '../engine/index.js';
 import { rankSubstitutes } from '../engine/substitution.js';
 import { allSetGroups, setGroupAt } from '../engine/blocks.js';
+import * as db from '../storage/db.js';
+import { emptyState, putPlan, toExportJSON, fromImportJSON } from '../storage/state.js';
 
 const PREF_PROFILE = 'pref:equipmentProfile';
 const DEFAULT_PROFILE = 'home-garage';
 
-/** The program currently on screen. Mutated by edits; never persisted (ADR-011). */
+/** The program currently on screen. Mutated by edits, then persisted by paint(). */
 let current = null;
 let currentDefs = null;
 let currentRequest = null;
@@ -35,6 +40,23 @@ let scope = 'session';     // 'session' | 'block'
 let edited = false;
 let pinnedSeed = null;     // set when the user asks to reproduce a draft
 let seedLabel = '';         // the user's number/name, shown separately from the resolved integer
+
+/**
+ * ONE stored draft, not a plan library. `plans` is an array and `putPlan` keys on
+ * id, so many are storable - but this UI has no plan list, no picker and no
+ * delete, so persisting every Generate click would accumulate drafts the athlete
+ * can neither see nor remove. Data with no surface is worse than no data.
+ */
+const DRAFT_ID = 'draft:current';
+
+/** Canonical state as last loaded or saved. Null until hydrate() resolves. */
+let persisted = null;
+/** True while restoring, so hydrating a draft does not immediately re-save it. */
+let hydrating = false;
+let saveTimer = null;
+/** What the sidebar says about persistence. Empty means nothing worth saying. */
+let storageNote = '';
+let statusEl = null;
 
 /** Numeric seeds pass through; named seeds hash deterministically to a positive integer. */
 function seedFrom(raw) {
@@ -123,7 +145,14 @@ export function mount(root, defs) {
         <button type="submit" class="primary">Generate</button>
       </form>
 
-      <p class="warn" role="note">Nothing is saved — edits included. Persistence and export ship together in M6 (ADR-011).</p>
+      <div class="storage-panel">
+        <div class="storage-actions">
+          <button type="button" id="export" class="ghost">Export backup</button>
+          <button type="button" id="import" class="ghost">Import backup</button>
+          <input type="file" id="import-file" accept="application/json,.json" hidden />
+        </div>
+        <p id="storage-status" class="note" role="status"></p>
+      </div>
     </aside>
     <section id="out" aria-live="polite"></section>
   `;
@@ -159,6 +188,69 @@ export function mount(root, defs) {
     localStorage.setItem('theme', el.dataset.theme);
   });
   document.documentElement.dataset.theme = localStorage.getItem('theme') ?? 'dark';
+
+  statusEl = root.querySelector('#storage-status');
+  const importFile = root.querySelector('#import-file');
+
+  root.querySelector('#export').addEventListener('click', () => {
+    // Exports whatever is STORED, not what is on screen: the file has to be the
+    // thing a wipe-and-import reproduces (ADR-011). A pending debounce would
+    // otherwise export one edit behind.
+    flushSave().then(() => {
+      try {
+        const json = toExportJSON(persisted ?? emptyState(), new Date().toISOString());
+        const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `training-planner-${new Date().toISOString().slice(0, 10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        storageNote = 'Backup exported.';
+      } catch (err) {
+        storageNote = `Export failed: ${err.message}`;
+      }
+      paintStatus();
+    });
+  });
+
+  root.querySelector('#import').addEventListener('click', () => importFile.click());
+
+  importFile.addEventListener('change', async () => {
+    const file = importFile.files?.[0];
+    importFile.value = '';          // so re-picking the same file fires change
+    if (!file) return;
+    if (!window.confirm(
+      'Importing replaces everything this app has stored. Export first if you want to keep it. Continue?'
+    )) return;
+
+    let next;
+    try {
+      next = fromImportJSON(await file.text());
+    } catch (err) {
+      // Fails closed (#35): a refused import changes nothing at all.
+      storageNote = `Import refused: ${err.message} Nothing was changed.`;
+      paintStatus();
+      return;
+    }
+
+    const { ok, error } = await db.trySave(next);
+    if (!ok) {
+      storageNote = `Import read correctly but could not be stored: ${error?.message ?? 'unknown'}`;
+      paintStatus();
+      return;
+    }
+    persisted = next;
+    storageNote = 'Import complete.';
+    restoreDraft(out, form);
+  });
+
+  // A phone switching apps is exactly when a pending debounce dies, and ADR-004
+  // is explicit that there is no server to fall back on.
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') flushSave();
+  });
+
+  hydrate(out, form);
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -267,15 +359,141 @@ function indices(el) {
   };
 }
 
+/**
+ * Read stored state and restore the draft, if there is one.
+ *
+ * A missing draft is not an error and neither is an unreadable database: a fresh
+ * install and an evicted one are indistinguishable here, and ADR-004 records
+ * eviction as expected iOS Safari behaviour rather than a fault. A CORRUPT store
+ * is different - state.js throws, and this reports it without overwriting
+ * anything, because a silent overwrite of the one copy is unrecoverable.
+ */
+async function hydrate(out, form) {
+  if (!db.available()) {
+    storageNote = 'This browser has no storage available here, so drafts are not saved. Export to keep one.';
+    paintStatus();
+    return;
+  }
+  try {
+    persisted = await db.load();
+  } catch (err) {
+    persisted = null;
+    storageNote = `Stored data could not be read (${err.message}). It has been left untouched, not overwritten.`;
+    paintStatus();
+    return;
+  }
+  restoreDraft(out, form);
+}
+
+/** Put the stored draft back on screen and back into the form. */
+function restoreDraft(out, form) {
+  const draft = persisted?.plans.find((p) => p.id === DRAFT_ID);
+  if (!draft) { paintStatus(); return; }
+
+  hydrating = true;
+  try {
+    currentRequest = draft.request;
+    current = draft.program;
+    edited = draft.edited === true;
+    // A named seed resolves to an integer, and only the integer is in the
+    // request - so the label has to be stored beside it or "Mine" comes back as
+    // 1276318216 after a reload.
+    seedLabel = draft.seedLabel ?? '';
+    visibleDay = 0;
+    restoreForm(form, draft);
+    paint(out);
+  } finally {
+    hydrating = false;
+  }
+  paintStatus();
+}
+
+/** Reflect a restored request back into the controls that produced it. */
+function restoreForm(form, draft) {
+  const r = draft.request;
+  if (draft.scope) form.scope.value = draft.scope;
+  scope = form.scope.value;
+  form.styleId.value = r.styleId;
+  form.daysPerWeek.value = r.daysPerWeek;
+  form.blockWeeks.value = r.blockWeeks;
+  form.equipmentProfile.value = r.equipmentProfile;
+  if (form.skillLevel) form.skillLevel.value = r.athlete?.skillLevel ?? 2;
+  form.seed.value = seedLabel || String(r.seed);
+  form.querySelector('.block-only').hidden = scope === 'session';
+}
+
+/** Collapse a burst of edits into one write. */
+function scheduleSave() {
+  if (hydrating || !current || !db.available()) return;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(flushSave, 600);
+}
+
+/**
+ * Write the draft now. Awaited by export, so the file is never one edit behind.
+ *
+ * `createdAt` is preserved across saves. Refreshing it every time would make the
+ * record differ on every keystroke for no reason, and #35's gate compares stored
+ * state.
+ */
+async function flushSave() {
+  clearTimeout(saveTimer);
+  saveTimer = null;
+  if (hydrating || !current) return;
+
+  const base = persisted ?? emptyState();
+  const previous = base.plans.find((p) => p.id === DRAFT_ID);
+  const next = putPlan(base, {
+    id: DRAFT_ID,
+    createdAt: previous?.createdAt ?? new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    edited,
+    seedLabel,
+    scope,
+    request: currentRequest,
+    program: current
+  });
+
+  const { ok, error } = await db.trySave(next);
+  if (ok) {
+    persisted = next;
+    if (storageNote.startsWith('Not saved')) storageNote = '';
+  } else {
+    // Visible, never silent. There is no server to fall back on (ADR-004).
+    storageNote = `Not saved: ${error?.message ?? 'storage unavailable'}. Export to keep this draft.`;
+  }
+  paintStatus();
+}
+
+/**
+ * ADR-031 requires the last import date wherever progression-derived numbers
+ * appear. There are none until M8, so it lives here - visible rather than
+ * technically satisfied.
+ */
+function paintStatus() {
+  if (!statusEl) return;
+  const last = persisted?.meta?.lastImportAt;
+  const parts = [];
+  if (storageNote) parts.push(storageNote);
+  parts.push(last
+    ? `Last FitNotes import: ${last.slice(0, 10)}.`
+    : 'No FitNotes history imported yet.');
+  statusEl.textContent = parts.join(' ');
+}
+
 function paint(out) {
   if (!current) return;
+  // ONE save anchor. Every mutation path - assignment, splice, swap, remove,
+  // regenerate - mutates `current` and then calls paint(out), so hooking here
+  // covers all of them. Four call sites would be four chances to miss one.
+  scheduleSave();
   const style = currentDefs.styles.find((s) => s.id === current.styleId);
   const seedText = seedLabel || String(current.seed);
   const seedTitle = seedLabel
     ? `Named seed “${esc(seedLabel)}” resolves to ${current.seed}`
     : `Resolved seed ${current.seed}`;
   const editMessage = edited
-    ? '<p class="edit-note">This draft has local edits. Regenerating replaces them, and nothing is saved yet.</p>'
+    ? '<p class="edit-note">This draft has local edits, saved automatically. Regenerating replaces them.</p>'
     : '<p class="edit-note">Sets and reps are editable; draft edits remain only on this screen. Intensity is prescribed as a percentage of 1RM — absolute loads need logged maxes (M7).</p>';
 
   const head = `
