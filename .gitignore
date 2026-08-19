@@ -6,3 +6,8 @@ dist-ssr/
 .vite/
 coverage/
 *.log
+
+# editor and migration leftovers
+*.bak
+*.bak2
+*.pre-remap
