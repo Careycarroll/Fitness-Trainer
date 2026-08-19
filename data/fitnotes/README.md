@@ -27,8 +27,11 @@ export is the athlete's own data and is deliberately not committed.
 | `legacy` | 4 | No Trainer equivalent; imports as a legacy row |
 
 `tracking` is populated for all 311 rows — the 98 matched, the 213 Trainer rows
-with no FitNotes definition — as `weight_reps` (118), `reps_only` (67), `time`
-(15), `time_load` (8), or `weight_distance` (5).
+with no FitNotes definition — as `weight_reps` (187), `reps_only` (84), `time`
+(27), `time_load` (8), or `weight_distance` (5).
+
+Correction: an earlier revision gave 118/67/15/8/5. Those count the 213 absent
+rows alone, not all 311.
 
 ### No fuzzy tier is auto-approved
 
@@ -37,7 +40,9 @@ An early automated pass scored `Incline Barbell Bench Press` against
 carried 18 sets onto the wrong lift. Nothing above `token-set` is applied without
 an explicit decision recorded against an issue.
 
-The 40 `review` rows carry **0 completed sets between them**. They cannot corrupt
+The 40 `review` rows carry **0 completed sets between them** — one, `Laying
+Dumbell Curl` (id 226), has a single log row that is not a completed set, and
+#24 imports only `is_complete = 1`. They cannot corrupt
 history, so they do not block the manifest. They are picker clutter, not data
 risk.
 
