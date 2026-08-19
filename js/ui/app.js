@@ -522,10 +522,18 @@ function sessionTiming(session) {
  * omitted[] and carries on (539f900). But it must say so, or it reads as broken.
  */
 function emptySession(session) {
-  const deferred = (session.omitted ?? []).some((x) => x.pattern === 'monostructural');
+  // Was keyed on pattern === 'monostructural' and promised the rower/bike/jump
+  // rope catalog "ships in M6". It shipped in #28, so the banner told the user
+  // to wait for something already installed (#43). Every reason code is
+  // translated in omitReason(); the banner defers to it rather than keeping a
+  // second, staler opinion.
+  const why = (session.omitted ?? [])
+    .map((x) => omitReason(x))
+    .filter((v, i, all) => all.indexOf(v) === i);
+
   return `<p class="edit-note">Nothing could be prescribed for this session. ${
-    deferred
-      ? 'Steady-state and machine conditioning need the monostructural catalog — rower, bike, jump rope — which ships in M6.'
+    why.length
+      ? esc(why.join('; ')) + '.'
       : 'No exercise in the catalog matches this session\u2019s patterns under the current equipment profile.'
   }</p>`;
 }
