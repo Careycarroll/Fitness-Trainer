@@ -15,8 +15,6 @@ import { generate } from '../js/engine/index.js';
 import { allSetGroups } from '../js/engine/blocks.js';
 import { defs } from '../js/engine/defs.js';
 
-const DEFERRED = new Set(['monostructural']);
-
 const timeEligible = (e) =>
   e.scoring === 'time' || e.scoring === 'both' || e.repsForTime === true;
 
@@ -53,7 +51,6 @@ describe('reps-for-time derivation (#37)', () => {
       for (const split of defs.splits.filter((sp) => sp.id.startsWith('conditioning'))) {
         for (const day of split.days) {
           for (const pattern of day.patterns) {
-            if (DEFERRED.has(pattern)) continue;
             // A style that does not program a pattern is not a catalog gap.
             if ((style.patternEmphasis[pattern] ?? 0) === 0) continue;
             if (!pool.some((e) => e.pattern === pattern)) {
