@@ -26,7 +26,7 @@ import { generate, CoverageError } from '../engine/index.js';
 import { rankSubstitutes } from '../engine/substitution.js';
 import { allSetGroups, setGroupAt } from '../engine/blocks.js';
 import * as db from '../storage/db.js';
-import { emptyState, putPlan, toExportJSON, fromImportJSON } from '../storage/state.js';
+import { emptyState, putPlan, toExportJSON, fromImportJSON, toCSV } from '../storage/state.js';
 
 const PREF_PROFILE = 'pref:equipmentProfile';
 const DEFAULT_PROFILE = 'home-garage';
@@ -149,6 +149,7 @@ export function mount(root, defs) {
         <div class="storage-actions">
           <button type="button" id="export" class="ghost">Export backup</button>
           <button type="button" id="import" class="ghost">Import backup</button>
+          <button type="button" id="export-csv" class="ghost">Export history CSV</button>
           <input type="file" id="import-file" accept="application/json,.json" hidden />
         </div>
         <p id="storage-status" class="note" role="status"></p>
@@ -208,6 +209,32 @@ export function mount(root, defs) {
         storageNote = 'Backup exported.';
       } catch (err) {
         storageNote = `Export failed: ${err.message}`;
+      }
+      paintStatus();
+    });
+  });
+
+  // Generic CSV, for spreadsheets and other tools (#26). Not a backup: it holds
+  // imported history only, and importing it back is not supported. The backup is
+  // the JSON envelope above.
+  root.querySelector('#export-csv').addEventListener('click', () => {
+    flushSave().then(() => {
+      const state = persisted ?? emptyState();
+      if (!state.importedSets.length) {
+        storageNote = 'No imported history to export yet.';
+        paintStatus();
+        return;
+      }
+      try {
+        const url = URL.createObjectURL(new Blob([toCSV(state)], { type: 'text/csv' }));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `training-history-${new Date().toISOString().slice(0, 10)}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+        storageNote = `Exported ${state.importedSets.length} sets to CSV.`;
+      } catch (err) {
+        storageNote = `CSV export failed: ${err.message}`;
       }
       paintStatus();
     });
