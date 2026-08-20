@@ -41,9 +41,8 @@ upgrade on import and never downgrade (MIGRATIONS.md rule 2).
 ## 2. Normalised completed-set record
 
 One row per completed set, in `importedSets`. **This is the shape #24 must write
-and nothing else may invent.** Today `state.js` validates `importedSets` only as
-"an array", so whatever the first importer writes becomes the format by accident.
-That is what this section exists to prevent.
+and nothing else may invent.** `validateImportedSet()` in `state.js` enforces it;
+an unknown field throws rather than being persisted quietly.
 
 ```js
 {
@@ -60,8 +59,8 @@ That is what this section exists to prevent.
   setIndex: 1,                 // order within that exercise on that date
 
   // --- what was done. every field nullable ---------------------------------
-  weight: 100,
-  weightUnit: 'kg',            // 'kg' | 'lb' — as logged, never converted
+  weight: 225,
+  weightUnit: 'lb',            // 'kg' | 'lb' — the unit the athlete LOGGED
   reps: 3,
   seconds: null,
   distance: null,
@@ -83,6 +82,10 @@ e1RM from `exerciseId`, so a null row contributes nothing to progression.** That
 is correct — a set that cannot be attributed to a lift must not influence what
 the athlete is told to lift — but it means an unresolved backlog quietly starves
 the maxes. **The review count must be visible in the UI**, not discoverable.
+
+A row with `exerciseId: null` **and** no `sourceExerciseId` **and** no
+`sourceExerciseName` is rejected. It could never be reviewed, so it is not a
+reviewable row — it is an orphan.
 
 ### Resolutions live in the manifest, not on the rows
 
@@ -107,13 +110,83 @@ construction rather than by a dedupe table (ADR-031).
 
 Keyed on the FitNotes **numeric id**, not the name, because FitNotes lets the
 athlete rename any row. A name-keyed id would change under a rename and read as
-a different set. This is why `fitnotes_id` was added to the manifest.
+a different set. This is why `fitnotes_id` was added to the manifest — and it is
+why the **basic CSV export cannot be the import path**: it carries exercise names
+only, with no id and no completion flag.
 
-### Units are stored as logged
+---
 
-No conversion on import. Converting means the number displayed is not the number
-recorded, and a rounding drift would propagate into e1RM via ADR-023. Conversion
-is a display concern.
+## 2a. Units: the source has already converted, so the importer converts back
+
+**This section replaces an earlier one that said "no conversion on import." That
+instruction was written before the export was read and was wrong in a way that
+would have persisted the wrong number.**
+
+`training_log` in the FitNotes Android schema stores **`metric_weight`, always in
+kilograms**, alonga `unit` column recording what the athlete actually entered.
+Verified against the real export:
+
+| `metric_weight` | `unit` | Athlete logged |
+| --- | --- | --- |
+| 1.13398 | 2 | 2.5 lb |
+| 61.23492 | 2 | 135 lb |
+| 102.0582 | 2 | 225 lb |
+
+Exact to four decimals against `lb × 0.45359237`, and FitNotes' own basic CSV
+export confirms the pound figures in a `Weight (lbs)` column.
+
+So "store units as logged" **requires reversing the source's conversion**:
+
+```
+weight     = unit is imperial ? metric_weight / 0.45359237 : metric_weight
+weightUnit = unit is imperial ? 'lb' : 'kg'
+```
+
+Storing `metric_weight` verbatim would show an athlete who benches 225 lb a
+history of 102.0582 — a number they never entered, carrying false precision, and
+feeding ADR-023's e1RM. Rounding is required on the reversal (two decimals is
+enough to represent 2.5 lb increments exactly).
+
+### The `unit` column codes are not yet decoded
+
+The real export holds `2` on 1322 rows and `5` on one. The `MeasurementUnit`
+table does not map them, and neither value matches the 0/1 commonly described for
+this schema. Empirically:
+
+- `2` accompanies **pound** weights and one **metric** distance
+- `5` accompanies a **mile** distance
+
+That is not enough to write a mapping table from. **#24 must derive the unit
+empirically and assert it**, not trust a guessed code. The cheap, verifiable
+rule: a weight whose reversal to pounds lands on a 0.25 lb boundary while its
+kilogram value does not was logged in pounds. Only **3 completed rows** in this
+export carry distance or duration at all, so distance-unit ambiguity is bounded —
+but it must fail loudly rather than guess.
+
+---
+
+## 2b. What the source actually contains
+
+Read from the export, not assumed. Reconciles exactly with
+`data/fitnotes/fitnotes-mapping.csv`:
+
+| | Database | Manifest |
+| --- | --- | --- |
+| `exercise` rows | 149 | 149 |
+| `training_log` rows | 1323 | 1323 |
+| `is_complete = 1` | 748 | 748 |
+
+`training_log` columns the record needs: `exercise_id`, `date`, `metric_weight`,
+`reps`, `unit`, `is_complete`, `distance`, `duration_seconds`.
+
+**`is_complete` is the filter that matters.** 575 of 1323 rows are incomplete —
+templates and abandoned entries. #24 imports only `is_complete = 1`, which is
+also why the basic CSV is unusable: it exports all 1323 rows with no flag.
+
+The file is a **raw SQLite database** despite the `.fitnotes` extension. This
+export came from the iOS app (`ios_export_metadata`, version 16, build 133) and
+still ships the Android schema, `android_metadata` table included — so #24's
+"Android DB export" premise holds for both platforms.
 
 ### Which fields are populated
 
@@ -128,14 +201,14 @@ rows.
 | `time_load` | `seconds`, `weight`, `weightUnit` | no mapped row |
 | `weight_distance` | `weight`, `distance`, `distanceUnit` | no mapped row |
 
-The last two have **no FitNotes definition in this athlete's export** — they are
-loaded carries and sled work, which live only in the Trainer catalog today.
+The last two have no FitNotes definition in **this** export — they are loaded
+carries and sled work, which live only in the Trainer catalog today.
 
-**Do not read that as unreachable.** FitNotes' own schema carries distance and
-duration columns whatever this table happens to contain, and #24's scope requires
-normalising distance and units from the source. If the athlete creates a Sled
-Push in FitNotes and logs it, it arrives — unmapped, reviewable, with `distance`
-populated. The parse path for these fields is required, not optional.
+**Do not read that as unreachable.** `training_log` carries `distance` and
+`duration_seconds` columns whatever this athlete has logged, and #24's scope
+requires normalising them. If a Sled Push is created in FitNotes and logged, it
+arrives — unmapped, reviewable, with `distance` populated. The parse path is
+required, not optional.
 
 This does **not** conflict with ADR-030. That decision says the app will not
 *prescribe* distance or pace. Recording a distance already covered is history,
@@ -159,11 +232,16 @@ id,source,exerciseId,sourceExerciseId,sourceExerciseName,date,setIndex,weight,we
 
 - Empty string for null, not `0` and not `NULL`.
 - `date` is `YYYY-MM-DD`, local. No timezone conversion, ever.
-- Units are columns, never suffixes on the value. `100,kg` — not `100kg`.
+- Units are columns, never suffixes on the value. `225,lb` — not `225lb`.
 - Unresolved rows are **included**, with `exerciseId` empty. Omitting them would
   make the CSV disagree with the store.
 - Ascending by `date`, then `exerciseId`, then `setIndex`. Deterministic output
   for the same reason generation is (ADR-002): a diffable file.
+- RFC 4180 quoting. `notes` is free text typed on a phone and may contain a
+  comma, a quote, or a newline.
+
+Shipped in #26 and wired to a button in the sidebar. Disabled until an import
+exists, because until then it can only produce a header.
 
 ---
 
