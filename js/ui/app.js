@@ -498,6 +498,18 @@ async function flushSave() {
  * technically satisfied.
  */
 function paintStatus() {
+  // Nothing to export until the FitNotes import lands (#24), so the button is
+  // disabled rather than left clickable and immediately apologetic. A control
+  // that cannot succeed in the current state reads as a defect.
+  const csvBtn = document.querySelector('#export-csv');
+  if (csvBtn) {
+    const rows = persisted?.importedSets?.length ?? 0;
+    csvBtn.disabled = rows === 0;
+    csvBtn.title = rows === 0
+      ? 'No imported history yet \u2014 available after a FitNotes import (#24)'
+      : `Export ${rows} imported sets as CSV`;
+  }
+
   if (!statusEl) return;
   const last = persisted?.meta?.lastImportAt;
   const parts = [];

@@ -658,3 +658,16 @@ html[data-preview='desktop'] .block-edit .intensity { grid-column: 1 / 3; }
   letter-spacing: .06em;
   text-transform: uppercase;
 }
+
+/* A disabled control must LOOK disabled. The CSV export is disabled until a
+   FitNotes import exists (#24), and without this it rendered identically to an
+   enabled button - unclickable and apparently broken, which is worse than
+   either state. Applies to every button, not just .ghost: the next disabled
+   control should not need its own rule. */
+button:disabled,
+button[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  /* Hover and active effects would still fire and imply the click registered. */
+  pointer-events: none;
+}
