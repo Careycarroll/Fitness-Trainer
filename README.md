@@ -63,7 +63,7 @@ Control flow, safety gates, and validators never become data. A dropped key in J
 | M4 Full catalog integrated with the engine | done |
 | M5 Planner UI | done — audited, not merely shipped |
 | M6 Conditioning expansion and catalog alignment | done — 16 issues closed; ADR-028/029/030 remain PROPOSED |
-| M7 Persistence and FitNotes interoperability | **next** — gated by ADR-011 |
+| M7 Persistence and FitNotes interoperability | **in progress** — gate passed; import and export remain |
 
 Verified on the current `main` branch:
 
@@ -77,7 +77,7 @@ Verified on the current `main` branch:
 - successful Vite production build and generated PWA service worker
 - offline generation confirmed on the deployed GitHub Pages build, including style and schedule changes with the network down (ADR-001)
 
-The planner and catalog are usable now, but nothing is durable. Do not trust real training history to the app until M7 passes its round-trip gate:
+Planner state is durable as of #35, and ADR-011's gate passes in a real build:
 
 ```text
 export → wipe storage → import → identical state
@@ -169,7 +169,9 @@ The M5 audit found only 19 time-scored rows, none for `hinge`, `push_h`, `push_v
 
 One thin spot remains by design: authored time-scored `hinge` rows are still a pool of one, tracked with the catalog rather than blocking the milestone.
 
-M7 then adds durable local state: profile editing, IndexedDB persistence, JSON export and import, dated plan export to FitNotes, and local import of completed FitNotes history. Persistence must fail safely.
+M7 shipped IndexedDB persistence and versioned JSON export/import together, as ADR-011 requires (#35, #11, #12). Remaining: local import of completed FitNotes history (#24), dated plan export to FitNotes 2 CSV (#25), and the equipment profile editor (#8).
+
+ADR-031 draws the boundary those depend on — this app is a planner, FitNotes is the system of record for performed work. There is no in-app set logger, imported history is replaced in full on each import rather than merged, and no raw FitNotes database is ever retained. `docs/INTERCHANGE.md` specifies the formats.
 
 ## Testing note
 
