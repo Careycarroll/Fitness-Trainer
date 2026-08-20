@@ -292,17 +292,24 @@ export class SqliteFile {
       const pointers = base + headerSize;
 
       if (type === 5) {
-        // Rightmost child first onto the stack, so cells pop in ascending order.
+        // A LIFO stack pops in REVERSE push order, so children must be pushed
+        // descending to be visited ascending. The previous version pushed the
+        // rightmost child and then cells 0..n in order, which popped them
+        // n..0 -- rows came back roughly reversed.
+        //
+        // The real export never revealed it: every table fits in one or two
+        // leaves and a single leaf is trivially in order. A synthetic table with
+        // a 120KB row, needing real interior pages, exposed it at once (#24).
         stack.push(new DataView(page.buffer, page.byteOffset + base + 8, 4).getUint32(0));
+        for (let i = cellCount - 1; i >= 0; i -= 1) {
+          const cell = new DataView(page.buffer, page.byteOffset + pointers + i * 2, 2).getUint16(0);
+          stack.push(new DataView(page.buffer, page.byteOffset + cell, 4).getUint32(0));
+        }
+        continue;
       }
 
       for (let i = 0; i < cellCount; i += 1) {
         const cell = new DataView(page.buffer, page.byteOffset + pointers + i * 2, 2).getUint16(0);
-
-        if (type === 5) {
-          stack.push(new DataView(page.buffer, page.byteOffset + cell, 4).getUint32(0));
-          continue;
-        }
 
         const [size, afterSize] = SqliteFile.varint(page, cell);
         const [rowid, afterRowid] = SqliteFile.varint(page, afterSize);
