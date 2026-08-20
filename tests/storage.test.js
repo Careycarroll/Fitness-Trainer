@@ -35,7 +35,10 @@ import {
   toExportJSON,
   fromImport,
   fromImportJSON,
-  validate
+  validate,
+  validateImportedSet,
+  toCSV,
+  CSV_COLUMNS
 } from '../js/storage/state.js';
 
 /**
@@ -55,6 +58,34 @@ const request = {
   athlete: { skillLevel: 3, hasCoaching: false, strictReps: {} },
   history: []
 };
+
+/**
+ * A conforming set record with every nullable field present. Written as a helper
+ * so a shape change is one edit rather than one per fixture - and so a test
+ * cannot accidentally assert against a row the validator would reject.
+ */
+function setRow(over = {}) {
+  return {
+    id: 'fn:1:2026-08-01:1',
+    source: 'fitnotes-import',
+    // Defaults to a RESOLVED row. Tests override exerciseId to null for the
+    // review path; a default with no identity at all is refused, correctly.
+    exerciseId: 'barbell-bench-press',
+    sourceExerciseId: 205,
+    sourceExerciseName: 'Flat Barbell Bench Press',
+    date: '2026-08-01',
+    setIndex: 1,
+    weight: null,
+    weightUnit: 'kg',
+    reps: null,
+    seconds: null,
+    distance: null,
+    distanceUnit: null,
+    rpe: null,
+    notes: null,
+    ...over
+  };
+}
 
 function planFrom(id, over = {}) {
   const req = { ...request, ...over };
@@ -85,10 +116,23 @@ function populated() {
   edited.edited = true;
   s = putPlan(s, edited);
 
+  // Conforms to docs/INTERCHANGE.md section 2. The previous fixture did not:
+  // it used `fitnotesId` where the spec says `sourceExerciseId` and `unit` where
+  // it says `weightUnit`, and carried no `source` or `setIndex`. It was written
+  // when nothing validated rows, which is precisely the accident #26 exists to
+  // prevent - the first writer defining the format. Now it cannot.
   s = replaceImportedSets(s, [
-    { id: 'fn:1', fitnotesId: 205, exerciseId: 'barbell-bench-press', date: '2026-08-01', weight: 100, reps: 3, unit: 'kg' },
-    { id: 'fn:2', fitnotesId: 205, exerciseId: 'barbell-bench-press', date: '2026-08-08', weight: 102.5, reps: 2, unit: 'kg' },
-    { id: 'fn:3', fitnotesId: 213, exerciseId: 'back-squat', date: '2026-08-08', weight: 140, reps: 1, unit: 'kg' }
+    setRow({ id: 'fn:205:2026-08-01:1', sourceExerciseId: 205, sourceExerciseName: 'Flat Barbell Bench Press',
+             exerciseId: 'barbell-bench-press', date: '2026-08-01', setIndex: 1, weight: 100, reps: 3 }),
+    setRow({ id: 'fn:205:2026-08-08:1', sourceExerciseId: 205, sourceExerciseName: 'Flat Barbell Bench Press',
+             exerciseId: 'barbell-bench-press', date: '2026-08-08', setIndex: 1, weight: 102.5, reps: 2 }),
+    setRow({ id: 'fn:213:2026-08-08:1', sourceExerciseId: 213, sourceExerciseName: 'Barbell Squat',
+             exerciseId: 'back-squat', date: '2026-08-08', setIndex: 1, weight: 140, reps: 1 }),
+    // An UNRESOLVED row. Legal, and the review mechanism (#24): it keeps both
+    // source identity fields and contributes nothing to e1RM until mapped.
+    setRow({ id: 'fn:222:2026-08-08:1', sourceExerciseId: 222, sourceExerciseName: 'Shoulder Curl',
+             exerciseId: null, date: '2026-08-08', setIndex: 1, weight: 20, reps: 8,
+             notes: 'curl into press, one movement' })
   ], '2026-08-19T09:00:00.000Z');
 
   s = appendExerciseMax(s, {
@@ -207,26 +251,133 @@ describe('imports fail closed (#35)', () => {
   });
 });
 
+describe('the normalised set record (#26)', () => {
+  test('a conforming row validates', () => {
+    assert.doesNotThrow(() => validateImportedSet(setRow({ weight: 100, reps: 3 })));
+  });
+
+  test('an unresolved row is legal and keeps its source identity', () => {
+    // #24: unmatched exercises remain reviewable and are not silently
+    // discarded. If this ever throws, the import has no review path.
+    const row = setRow({ exerciseId: null, sourceExerciseId: 222, sourceExerciseName: 'Shoulder Curl' });
+    assert.doesNotThrow(() => validateImportedSet(row));
+  });
+
+  const rejects = {
+    'an unknown field': { fitnotesId: 205 },
+    'a missing id': { id: '' },
+    'a missing source': { source: '' },
+    'a timestamp instead of a local date': { date: '2026-08-01T00:00:00.000Z' },
+    'a setIndex of zero': { setIndex: 0 },
+    'a non-integer setIndex': { setIndex: 1.5 },
+    'a weight with no unit': { weight: 100, weightUnit: null },
+    'a distance with no unit': { distance: 5, distanceUnit: null },
+    'an unknown weight unit': { weight: 100, weightUnit: 'stone' },
+    'an unknown distance unit': { distance: 5, distanceUnit: 'furlong' },
+    'a string weight': { weight: '100' },
+    'NaN reps': { reps: NaN },
+    'numeric notes': { notes: 42 },
+    'an unresolved row with no source identity': {
+      exerciseId: null, sourceExerciseId: null, sourceExerciseName: null
+    }
+  };
+
+  for (const [what, over] of Object.entries(rejects)) {
+    test(`refuses ${what}`, () => {
+      assert.throws(() => validateImportedSet(setRow(over)), StateError, `${what} was accepted`);
+    });
+  }
+
+  test('validate() checks every row, not just the array', () => {
+    // The whole point of #26: `importedSets` was validated as "an array" and
+    // nothing more, so any row shape was storable.
+    assert.throws(
+      () => validate({ ...emptyState(), importedSets: [{ id: 'x' }] }),
+      StateError,
+      'a malformed row passed whole-state validation'
+    );
+  });
+
+  test('a malformed row cannot be imported', () => {
+    const envelope = {
+      formatVersion: EXPORT_FORMAT,
+      state: { ...emptyState(), importedSets: [setRow({ weight: 100, weightUnit: null })] }
+    };
+    assert.throws(() => fromImport(envelope), StateError);
+  });
+});
+
+describe('generic CSV export (#26)', () => {
+  test('header is the documented column order', () => {
+    const [header] = toCSV(populated()).split('\n');
+    assert.equal(header, CSV_COLUMNS.join(','));
+    assert.equal(
+      header,
+      'id,source,exerciseId,sourceExerciseId,sourceExerciseName,date,setIndex,' +
+      'weight,weightUnit,reps,seconds,distance,distanceUnit,rpe,notes',
+      'the column contract changed - that is a format change, not a tidy-up'
+    );
+  });
+
+  test('one row per set, unresolved rows included', () => {
+    const state = populated();
+    const lines = toCSV(state).trim().split('\n');
+    assert.equal(lines.length, state.importedSets.length + 1, 'row count disagrees with the store');
+    assert.ok(
+      lines.some((l) => l.includes('Shoulder Curl')),
+      'the unresolved row was omitted, so the CSV disagrees with the store'
+    );
+  });
+
+  test('null is an empty field, never 0 and never NULL', () => {
+    const csv = toCSV(replaceImportedSets(emptyState(), [setRow({ reps: 5 })], '2026-08-19T00:00:00.000Z'));
+    const row = csv.trim().split('\n')[1];
+    assert.ok(!/,0,/.test(row), 'a null was written as 0');
+    assert.ok(!/NULL/i.test(row), 'a null was written as NULL');
+  });
+
+  test('free text with a comma, a quote or a newline cannot shift columns', () => {
+    // Notes are typed on a phone. An unquoted comma silently corrupts every
+    // later column of that row, which is the kind of defect a spreadsheet hides.
+    const nasty = 'went well, "felt light"\nsecond line';
+    const csv = toCSV(replaceImportedSets(
+      emptyState(), [setRow({ notes: nasty })], '2026-08-19T00:00:00.000Z'
+    ));
+    assert.ok(csv.includes('"went well, ""felt light""'), 'quoting or escaping is wrong');
+    assert.equal(csv.split('\n')[0].split(',').length, CSV_COLUMNS.length, 'header width changed');
+  });
+
+  test('output is deterministic and ordered', () => {
+    const state = populated();
+    assert.equal(toCSV(state), toCSV(state), 'CSV is not stable across two calls');
+    const dates = toCSV(state).trim().split('\n').slice(1).map((l) => l.split(',')[5]);
+    assert.deepEqual([...dates].sort(), dates, 'rows are not in ascending date order');
+  });
+});
+
 describe('ADR-031 retention rules', () => {
   test('an import replaces imported history in full, and is idempotent', () => {
     let s = populated();
-    assert.equal(s.importedSets.length, 3);
+    assert.equal(s.importedSets.length, 4);
 
     // The same export again: a no-op, which is #24's no-duplicates criterion
     // satisfied by construction rather than by a dedupe table.
     const same = [...s.importedSets];
     s = replaceImportedSets(s, same, '2026-08-19T10:00:00.000Z');
-    assert.equal(s.importedSets.length, 3, 're-import duplicated rows');
+    assert.equal(s.importedSets.length, 4, 're-import duplicated rows');
 
     // A newer export with one set edited and one deleted. Under replacement an
     // edit is a new value and a deletion is an absence; no diff logic runs.
     s = replaceImportedSets(s, [
-      { id: 'fn:1', fitnotesId: 205, exerciseId: 'barbell-bench-press', date: '2026-08-01', weight: 105, reps: 3, unit: 'kg' },
-      { id: 'fn:3', fitnotesId: 213, exerciseId: 'back-squat', date: '2026-08-08', weight: 140, reps: 1, unit: 'kg' }
+      setRow({ id: 'fn:205:2026-08-01:1', sourceExerciseId: 205, sourceExerciseName: 'Flat Barbell Bench Press',
+               exerciseId: 'barbell-bench-press', date: '2026-08-01', setIndex: 1, weight: 105, reps: 3 }),
+      setRow({ id: 'fn:213:2026-08-08:1', sourceExerciseId: 213, sourceExerciseName: 'Barbell Squat',
+               exerciseId: 'back-squat', date: '2026-08-08', setIndex: 1, weight: 140, reps: 1 })
     ], '2026-08-20T09:00:00.000Z');
 
     assert.equal(s.importedSets.length, 2, 'the deleted set survived');
-    assert.equal(s.importedSets.find((r) => r.id === 'fn:1').weight, 105, 'the edit did not land');
+    assert.equal(s.importedSets.find((r) => r.id === 'fn:205:2026-08-01:1').weight, 105,
+      'the edit did not land');
     assert.equal(s.meta.lastImportAt, '2026-08-20T09:00:00.000Z');
   });
 

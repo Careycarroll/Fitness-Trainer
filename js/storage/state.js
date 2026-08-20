@@ -153,6 +153,86 @@ export function appendExerciseMax(state, row) {
 /** ADR-023's four sources. An unknown one throws rather than being stored (fail closed). */
 const SOURCES = new Set(['entered', 'tested', 'estimated', 'estimated_low_confidence']);
 
+// ------------------------------------------------- the normalised set record
+//
+// docs/INTERCHANGE.md section 2 is the specification; this is the enforcement.
+// One row per completed set. Every measurement field is nullable because which
+// ones are populated is decided by the exercise's tracking type, not by the
+// record.
+
+/** Exactly the fields a row may carry. Anything else throws - see below. */
+const SET_FIELDS = Object.freeze([
+  'id', 'source',
+  'exerciseId', 'sourceExerciseId', 'sourceExerciseName',
+  'date', 'setIndex',
+  'weight', 'weightUnit', 'reps', 'seconds', 'distance', 'distanceUnit',
+  'rpe', 'notes'
+]);
+
+const WEIGHT_UNITS = new Set(['kg', 'lb']);
+const DISTANCE_UNITS = new Set(['km', 'mi', 'm']);
+const LOCAL_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+const isNullableNumber = (v) => v === null || (typeof v === 'number' && Number.isFinite(v));
+const isNullableString = (v) => v === null || (typeof v === 'string' && v.length > 0);
+
+/**
+ * Validate one imported set. Throws on the first problem, naming the row.
+ *
+ * UNKNOWN KEYS THROW. Ignoring an extra field lets it be persisted, then read,
+ * then depended on, without ever appearing in MIGRATIONS.md. Adding a field is
+ * now deliberate: name it here, bump STATE_VERSION, log it.
+ */
+export function validateImportedSet(row, index = 0) {
+  const at = (msg) => new StateError(`importedSets[${index}]: ${msg}`);
+
+  if (!row || typeof row !== 'object' || Array.isArray(row)) throw at('must be an object');
+
+  for (const key of Object.keys(row)) {
+    if (!SET_FIELDS.includes(key)) {
+      throw at(`unknown field ${JSON.stringify(key)}. Add it to SET_FIELDS and bump STATE_VERSION`);
+    }
+  }
+
+  if (typeof row.id !== 'string' || !row.id) throw at('id must be a non-empty string');
+  if (typeof row.source !== 'string' || !row.source) throw at('source must be a non-empty string');
+
+  // Nullable BY DESIGN. An unmapped exercise imports anyway and stays
+  // reviewable (#24); rejecting null would discard the rows that requirement
+  // exists to keep. The source identity fields are what make review possible.
+  if (row.exerciseId !== null && !(typeof row.exerciseId === 'string' && row.exerciseId))
+    throw at('exerciseId must be a catalog slug or null');
+  // Unreachable as first written: the guard called isNullableString(x ?? null),
+  // which returns TRUE for null, so the negation was always false and a row with
+  // no source identity at all was accepted. That is precisely the row that can
+  // never be reviewed. The test caught it (#26).
+  if (row.exerciseId === null && row.sourceExerciseId == null && row.sourceExerciseName == null)
+    throw at('an unresolved row must carry sourceExerciseId or sourceExerciseName, or it cannot be reviewed');
+
+  if (!(typeof row.date === 'string' && LOCAL_DATE.test(row.date)))
+    throw at(`date must be a local YYYY-MM-DD calendar date, got ${JSON.stringify(row.date)}`);
+  if (!Number.isInteger(row.setIndex) || row.setIndex < 1)
+    throw at('setIndex must be an integer >= 1');
+
+  for (const field of ['weight', 'reps', 'seconds', 'distance', 'rpe']) {
+    if (field in row && !isNullableNumber(row[field])) throw at(`${field} must be a finite number or null`);
+  }
+
+  if (row.weightUnit != null && !WEIGHT_UNITS.has(row.weightUnit))
+    throw at(`weightUnit must be kg, lb, or null, got ${JSON.stringify(row.weightUnit)}`);
+  if (row.distanceUnit != null && !DISTANCE_UNITS.has(row.distanceUnit))
+    throw at(`distanceUnit must be km, mi, m, or null, got ${JSON.stringify(row.distanceUnit)}`);
+
+  // A number without its unit is not a measurement. Units are stored AS LOGGED
+  // and never converted, so a missing one cannot be recovered later.
+  if (row.weight != null && row.weightUnit == null) throw at('weight requires weightUnit');
+  if (row.distance != null && row.distanceUnit == null) throw at('distance requires distanceUnit');
+
+  if (row.notes != null && typeof row.notes !== 'string') throw at('notes must be a string or null');
+
+  return row;
+}
+
 /** Current working max for an exercise: the latest non-superseded row, or null. */
 export function currentMax(state, exerciseId) {
   const live = state.exerciseMax.filter((r) => r.exerciseId === exerciseId && r.supersededAt == null);
@@ -268,6 +348,10 @@ export function validate(state) {
     if (!Array.isArray(state[key])) throw new StateError(`validate: ${key} must be an array`);
   }
 
+  // Every imported row, not just the array. Until this existed, whatever the
+  // first importer wrote became the format (#26).
+  state.importedSets.forEach(validateImportedSet);
+
   const seen = new Set();
   for (const plan of state.plans) {
     if (!plan || typeof plan.id !== 'string' || !plan.id) throw new StateError('validate: a plan has no id');
@@ -290,3 +374,41 @@ export function validate(state) {
 // `meta` was keyed on `key` and declared four indexes db.js does not create --
 // under a comment asserting the two could not drift. They had already drifted,
 // and nothing imported either, so nothing failed.
+
+// ---------------------------------------------------------- generic CSV (#26)
+
+/** Column order is the contract. Changing it is a format change, not a tidy-up. */
+export const CSV_COLUMNS = SET_FIELDS;
+
+/**
+ * RFC 4180. `notes` is free text typed on a phone, so a comma, a quote or a
+ * newline in it is ordinary rather than exotic - and an unquoted one silently
+ * shifts every later column of that row.
+ */
+function csvCell(value) {
+  if (value === null || value === undefined) return '';       // empty, never 0 or NULL
+  const text = String(value);
+  return /[",\n\r]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+}
+
+/**
+ * One row per completed set, for spreadsheets and migration - NOT for FitNotes,
+ * which gets its own adapter (#25). Unresolved rows are included with an empty
+ * exerciseId: omitting them would make the file disagree with the store.
+ *
+ * Deterministic order for the same reason generation is (ADR-002): a diffable
+ * file. Sorted by date, then exerciseId, then setIndex, with unresolved rows
+ * last within a date rather than first, so a null does not sort above real work.
+ */
+export function toCSV(state) {
+  const rows = [...state.importedSets].sort((a, b) =>
+    (a.date < b.date ? -1 : a.date > b.date ? 1
+      : (a.exerciseId ?? '\uffff') < (b.exerciseId ?? '\uffff') ? -1
+      : (a.exerciseId ?? '\uffff') > (b.exerciseId ?? '\uffff') ? 1
+      : a.setIndex - b.setIndex));
+
+  return [
+    CSV_COLUMNS.join(','),
+    ...rows.map((row) => CSV_COLUMNS.map((col) => csvCell(row[col])).join(','))
+  ].join('\n') + '\n';
+}
