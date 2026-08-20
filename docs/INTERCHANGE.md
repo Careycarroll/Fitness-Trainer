@@ -132,13 +132,13 @@ Verified against the real export:
 | 61.23492 | 2 | 135 lb |
 | 102.0582 | 2 | 225 lb |
 
-Exact to four decimals against `lb × 0.45359237`, and FitNotes' own basic CSV
+Exact to four decimals against `lb × 0.453592`, and FitNotes' own basic CSV
 export confirms the pound figures in a `Weight (lbs)` column.
 
 So "store units as logged" **requires reversing the source's conversion**:
 
 ```
-weight     = unit is imperial ? metric_weight / 0.45359237 : metric_weight
+weight     = unit is imperial ? metric_weight / 0.453592 : metric_weight
 weightUnit = unit is imperial ? 'lb' : 'kg'
 ```
 
