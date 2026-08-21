@@ -251,15 +251,34 @@ describe('set records', () => {
     assert.equal(s.weight, null);
   });
 
-  test('a distance row reports its unit as undecoded rather than guessing', () => {
-    // Only 3 completed rows in the real export carry distance, and the unit
-    // codes are not mapped. Reported so the caller can refuse the import.
+  test('a distance row is metres, inferred from the source and counted', () => {
+    // FitNotes' own basic CSV names the unit: the single completed distance row
+    // in the real export (rowing machine, 800, 240s) exports as
+    // `Distance Unit: m`. It is NOT decoded from `unit`, which holds 2 on that
+    // row exactly as it does on every pound-weighted row.
+    //
+    // This previously emitted 'unknown', which validateImportedSet rightly
+    // refuses -- so the import threw at save time and the UI hung mid-sentence
+    // on the first real run. An illegal placeholder is not an honest unknown.
     const out = importFitNotes(reader([
-      logRow({ metric_weight: 0, reps: 0, distance: 5 })
+      logRow({ metric_weight: 0, reps: 0, distance: 800, duration_seconds: 240 })
     ], EXERCISES), mapping());
 
-    assert.equal(out.sets[0].distanceUnit, 'unknown');
+    assert.equal(out.sets[0].distance, 800);
+    assert.equal(out.sets[0].distanceUnit, 'm');
+    assert.equal(out.sets[0].seconds, 240);
+
+    // Counted, not hidden: an export logging an outdoor run in miles would
+    // import as metres and be wrong, and this is what makes that visible.
     assert.equal(out.summary.undecodedDistance, 1);
+  });
+
+  test('a row with no distance carries no distance unit', () => {
+    // `distance: 0` is absence, not a measurement of zero. A unit without a
+    // value would fail validateImportedSet's pairing rule.
+    const out = importFitNotes(reader([logRow()], EXERCISES), mapping());
+    assert.equal(out.sets[0].distance, null);
+    assert.equal(out.sets[0].distanceUnit, null);
   });
 
   test('a non-date date throws rather than being coerced', () => {

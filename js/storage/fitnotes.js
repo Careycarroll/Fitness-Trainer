@@ -307,7 +307,19 @@ export function importFitNotes(db, mapping) {
       // The distance unit is genuinely undecoded. Only 3 completed rows in the
       // real export carry distance at all, so rather than guess a code this
       // reports what it cannot determine.
-      distanceUnit: nullIfZero(row.distance) === null ? null : 'unknown',
+      // METRES, from FitNotes' own basic CSV: the one completed distance row in
+      // this export (rowing machine, 800, 240s) exports as `Distance Unit: m`.
+      //
+      // It is not decoded from `unit`. That column holds 2 on this row, exactly
+      // as it does on every pound-weighted row, so it does not distinguish
+      // measure at all. `MeasurementUnit` does not map it either -- that table's
+      // `type` groups BODY-measurement kinds (0 unknown, 1 weight, 2 length,
+      // 3 percent, 4 BMI) and is not a foreign key from training_log.
+      //
+      // So this is an inference from one row, counted in the summary rather than
+      // hidden. A future export logging an outdoor run in miles would import as
+      // metres and be wrong; the count is what makes that visible.
+      distanceUnit: nullIfZero(row.distance) === null ? null : 'm',
       rpe: null,
       // training_log HAS NO NOTES COLUMN. Always null from this source.
       notes: null
@@ -320,7 +332,7 @@ export function importFitNotes(db, mapping) {
   // Distance rows carry `distanceUnit: 'unknown'`, which validateImportedSet
   // rejects -- correctly, since 'unknown' is not a unit. Surfaced here so the
   // caller can refuse the import rather than discovering it at save time.
-  const undecodedDistance = sets.filter((s) => s.distanceUnit === 'unknown').length;
+  const undecodedDistance = sets.filter((s) => s.distance !== null).length;
 
   return {
     sets,
