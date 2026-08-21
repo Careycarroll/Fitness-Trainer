@@ -32,7 +32,14 @@
  * ADR-023's e1RM. The factor is 0.453592 -- FitNotes' own, read off the data
  * (102.0582 / 0.453592 = 225 exactly), not the international 0.45359237.
  *
- * `notes` IS ALWAYS NULL. `training_log` has no notes column. Its 14 columns
+ * `notes` COMES FROM THE `Comment` TABLE, not from `training_log`, which has no
+ * notes column. An earlier revision of this file concluded from that absence
+ * that notes could not exist, and hardcoded null - discarding three real
+ * annotations on every import. `Comment.owner_id` is a `training_log._id`;
+ * `owner_type_id` is 1 on every observed row and any other value is ignored
+ * rather than attached to whichever set shares its number.
+ *
+ * `training_log`'s 14 columns
  * are _id, exercise_id, date, metric_weight, reps, unit,
  * routine_section_exercise_set_id, timer_auto_start, is_personal_record,
  * is_personal_record_first, is_complete, is_pending_update, distance,
@@ -238,6 +245,28 @@ export function importFitNotes(db, mapping) {
   }
 
   const log = db.table('training_log');
+
+  // Set notes, keyed on training_log._id.
+  //
+  // WRAPPED because sqlite.js throws on an unknown table by design, so that a
+  // schema change cannot read as "no data". That is right for training_log and
+  // wrong here: an export with no Comment table has no notes, which is a fact
+  // and not a fault.
+  //
+  // owner_type_id is FILTERED, not assumed. It holds 1 on all 42 rows of the
+  // real export and every owner_id resolves to a real set, but the column
+  // exists to distinguish owner KINDS - a comment on an exercise or a routine
+  // would arrive with a different type and a colliding id. Ignoring unknown
+  // types beats attaching a note to whichever set shares its number (#33).
+  const notes = new Map();
+  try {
+    for (const c of db.table('Comment')) {
+      if (c.owner_type_id !== 1) continue;
+      if (typeof c.comment === 'string' && c.comment.length) notes.set(c.owner_id, c.comment);
+    }
+  } catch {
+    // No Comment table in this export. No notes, and nothing wrong.
+  }
   const exercises = db.table('exercise');
 
   // Source names come from the DATABASE, not the manifest, so a row renamed
@@ -321,8 +350,9 @@ export function importFitNotes(db, mapping) {
       // metres and be wrong; the count is what makes that visible.
       distanceUnit: nullIfZero(row.distance) === null ? null : 'm',
       rpe: null,
-      // training_log HAS NO NOTES COLUMN. Always null from this source.
-      notes: null
+      // From the Comment table, joined on this row's _id. Null when the set
+      // carries no annotation, which is most of them.
+      notes: notes.get(row._id) ?? null
     });
   }
 

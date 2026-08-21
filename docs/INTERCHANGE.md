@@ -219,6 +219,21 @@ not planning.
 Stored verbatim if present. Nothing reads it. Deriving prescription meaning from
 free text is the kind of inference ADR-002 exists to keep out of the engine.
 
+**Where it comes from in a FitNotes export.** Not from `training_log`, which has
+no notes column — from a separate `Comment` table whose `owner_id` is a
+`training_log._id`. An earlier revision of the adapter concluded from the missing
+column that notes could not exist and hardcoded null, discarding three of the
+athlete's own annotations on every import.
+
+`owner_type_id` is 1 on all 42 rows of the real export and every `owner_id`
+resolves to a real set, but the column exists to distinguish owner KINDS, so an
+unknown value is ignored rather than attached to whichever set shares its number.
+
+`WorkoutComment` is a separate DATE-level table and is deliberately **not**
+carried on the set record: its one row in the real export is coaching context for
+a whole day, and attaching it to an arbitrary set of that day would invent an
+association the source does not make.
+
 ---
 
 ## 3. Generic CSV export
