@@ -83,6 +83,80 @@ export function gapClass(days, index) {
 }
 
 /**
+ * Choose the best-spaced `count` days from the days the athlete is AVAILABLE.
+ *
+ * Availability and frequency are different facts (#25). "I can train six days a
+ * week" and "I want four sessions" are both true at once, and forcing them to be
+ * the same number made the athlete solve the spacing puzzle by hand -- and made
+ * a 7-day request silently resolve to a 5-day split, because no 7-day template
+ * exists.
+ *
+ * EXHAUSTIVE, not greedy. At most C(7,k) combinations, so 35 in the worst case.
+ * A greedy rule would be faster and would need an argument for why its choices
+ * are good; enumerating removes the question.
+ *
+ * SCORED ON THE MINIMUM GAP, not the average. Average is gamed by clustering:
+ * mon/tue/thu and mon/wed/fri have the same mean gap across a week, but the
+ * first contains a one-day gap. Recovery cares about the worst case.
+ *
+ * Ties break on total gap, then on weekday order, so the result is stable for a
+ * given input (ADR-002).
+ */
+export function chooseTrainingDays(available, count) {
+  const pool = normalizeDays(available);
+  if (!Number.isInteger(count) || count < 1) {
+    throw new ScheduleError(`Session count must be a positive integer, got ${count}.`);
+  }
+  if (count > pool.length) {
+    throw new ScheduleError(
+      `${count} sessions requested but only ${pool.length} day(s) available ` +
+      `(${pool.join(', ')}). Add availability or reduce sessions.`
+    );
+  }
+  if (count === pool.length) return pool;
+
+  const combos = [];
+  const walk = (start, picked) => {
+    if (picked.length === count) { combos.push([...picked]); return; }
+    for (let i = start; i < pool.length; i += 1) {
+      picked.push(pool[i]);
+      walk(i + 1, picked);
+      picked.pop();
+    }
+  };
+  walk(0, []);
+
+  // Compared LEXICOGRAPHICALLY on the sorted gap list: maximise the smallest
+  // gap, then the next smallest, and so on. This is a maximin comparison and it
+  // is not the obvious one.
+  //
+  // The obvious one was wrong. Scoring on (min gap, then total) picked
+  // mon/tue/wed/thu for 4-of-7 -- four consecutive days then a four-day break.
+  // Gaps around a weekly cycle ALWAYS sum to 7 whichever days are chosen, so
+  // `total` never discriminated and the tie fell through to weekday order,
+  // which favours the earliest cluster. Both candidates also share a minimum
+  // gap of 1, so `min` alone could not separate them either:
+  //
+  //   mon/tue/wed/thu   gaps 1,1,1,4   sorted [1,1,1,4]
+  //   mon/wed/fri/sun   gaps 2,2,2,1   sorted [1,2,2,2]
+  //
+  // Lexicographic comparison prefers the second, correctly.
+  const sortedGaps = (days) =>
+    days.map((_, i) => gapDays(days, i)).sort((x, y) => x - y);
+
+  return combos
+    .map((days) => ({ days, gaps: sortedGaps(days) }))
+    .sort((a, c) => {
+      for (let i = 0; i < a.gaps.length; i += 1) {
+        if (c.gaps[i] !== a.gaps[i]) return c.gaps[i] - a.gaps[i];
+      }
+      // Identical gap profiles: earliest weekday wins, so the result is stable
+      // for a given input (ADR-002).
+      return INDEX.get(a.days[0]) - INDEX.get(c.days[0]);
+    })[0].days;
+}
+
+/**
  * Map a session index to its display weekday. Presentation only — nothing in
  * the generator may branch on this.
  */
