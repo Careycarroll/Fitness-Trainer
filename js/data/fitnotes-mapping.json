@@ -7,1043 +7,1192 @@
       "fitnotesName": "Rear Delt Dumbbell Raise",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 98,
       "fitnotesName": "Straight-Arm Cable Pushdown",
       "exerciseId": "straight-arm-pulldown",
       "tier": "alias",
-      "completedSets": 17
+      "completedSets": 17,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 99,
       "fitnotesName": "Incline Dumbbell Fly",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 100,
       "fitnotesName": "Box Jumps",
       "exerciseId": "box-jump",
       "tier": "alias",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 101,
       "fitnotesName": "Ring Dips",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 102,
       "fitnotesName": "Romanian Deadlift",
       "exerciseId": "romanian-deadlift",
       "tier": "exact/normalised",
-      "completedSets": 18
+      "completedSets": 18,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 103,
       "fitnotesName": "Pendlay Row",
       "exerciseId": "pendlay-row",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 104,
       "fitnotesName": "Behind The Neck Barbell Press",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 105,
       "fitnotesName": "Hammer Strength Row",
       "exerciseId": "machine-row",
       "tier": "alias",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 106,
       "fitnotesName": "Flat Dumbbell Bench Press",
       "exerciseId": "dumbbell-bench-press",
       "tier": "alias-manual",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 107,
       "fitnotesName": "Stationary Bike",
       "exerciseId": "cycling-stationary-bike",
       "tier": "alias",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 108,
       "fitnotesName": "Standing Calf Raise",
       "exerciseId": "standing-calf-raise",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 109,
       "fitnotesName": "Cable Overhead Triceps Extension",
       "exerciseId": "overhead-cable-triceps-extension",
       "tier": "token-set",
-      "completedSets": 36
+      "completedSets": 36,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 110,
       "fitnotesName": "Cycling (Indoor)",
       "exerciseId": "cycling-stationary-bike",
       "tier": "alias",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 111,
       "fitnotesName": "Dumbbell Preacher Curl",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 112,
       "fitnotesName": "V-Bar Push Down",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 113,
       "fitnotesName": "Split Squat",
       "exerciseId": "split-squat",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 114,
       "fitnotesName": "Pull Up",
       "exerciseId": "pull-up",
       "tier": "exact/normalised",
-      "completedSets": 4
+      "completedSets": 4,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 115,
       "fitnotesName": "Clean And Jerk",
       "exerciseId": "clean-and-jerk",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 116,
       "fitnotesName": "Dumbbell Hammer Curl",
       "exerciseId": "dumbbell-hammer-curl",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 117,
       "fitnotesName": "Decline Crunch",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 118,
       "fitnotesName": "Cable Face Pull",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 119,
       "fitnotesName": "Dumbbell Lunge",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 120,
       "fitnotesName": "Seated Calf Raise",
       "exerciseId": "seated-calf-raise",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 121,
       "fitnotesName": "Lateral Machine Raise",
       "exerciseId": "machine-lateral-raise",
       "tier": "token-set",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 122,
       "fitnotesName": "Smith Machine Shrug",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 123,
       "fitnotesName": "Flat Dumbbell Fly",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 124,
       "fitnotesName": "Elliptical Trainer",
       "exerciseId": "elliptical-trainer",
       "tier": "alias",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 125,
       "fitnotesName": "Dumbbell Overhead Triceps Extension",
       "exerciseId": "dumbbell-overhead-triceps-extension",
       "tier": "exact/normalised",
-      "completedSets": 4
+      "completedSets": 4,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 126,
       "fitnotesName": "Lying Leg Curl",
       "exerciseId": "lying-leg-curl",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 127,
       "fitnotesName": "Push Press",
       "exerciseId": "push-press",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 128,
       "fitnotesName": "Lat Pulldown",
       "exerciseId": "lat-pulldown",
       "tier": "exact/normalised",
-      "completedSets": 31
+      "completedSets": 31,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 129,
       "fitnotesName": "Neutral Grip Flat Dumbbell Bench Press",
       "exerciseId": null,
       "tier": "no-trainer-equivalent",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 130,
       "fitnotesName": "Rowing Machine",
       "exerciseId": "rowing-machine",
       "tier": "alias",
-      "completedSets": 1
+      "completedSets": 1,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 131,
       "fitnotesName": "Seated Leg Curl",
       "exerciseId": "seated-leg-curl",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 132,
       "fitnotesName": "Overhead Press",
       "exerciseId": "overhead-press",
       "tier": "exact/normalised",
-      "completedSets": 48
+      "completedSets": 48,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 133,
       "fitnotesName": "Burpees",
       "exerciseId": null,
       "tier": "no-trainer-equivalent",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 134,
       "fitnotesName": "Dumbbell Concentration Curl",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 135,
       "fitnotesName": "Side Plank",
       "exerciseId": "side-plank",
       "tier": "exact/normalised",
-      "completedSets": 1
+      "completedSets": 1,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 136,
       "fitnotesName": "Barbell Front Squat",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 137,
       "fitnotesName": "Clean",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 138,
       "fitnotesName": "Seated Machine Curl",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 139,
       "fitnotesName": "Crunch",
       "exerciseId": "crunch",
       "tier": "exact/normalised",
-      "completedSets": 5
+      "completedSets": 5,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 140,
       "fitnotesName": "One-Arm Standing Dumbbell Press",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 141,
       "fitnotesName": "Safety Bar Squat",
       "exerciseId": "safety-bar-squat",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 142,
       "fitnotesName": "Incline Hammer Strength Chest Press",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 143,
       "fitnotesName": "Reverse Barbell Curl",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 144,
       "fitnotesName": "Barbell Curl",
       "exerciseId": "barbell-curl",
       "tier": "exact/normalised",
-      "completedSets": 36
+      "completedSets": 36,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 145,
       "fitnotesName": "Sumo Deadlift",
       "exerciseId": "sumo-deadlift",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 146,
       "fitnotesName": "Bent Over Lateral Raise",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 147,
       "fitnotesName": "Barbell Shrug",
       "exerciseId": "barbell-shrug",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 148,
       "fitnotesName": "Incline Dumbbell Bench Press",
       "exerciseId": "incline-dumbbell-press",
       "tier": "alias-manual",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 149,
       "fitnotesName": "Running (Outdoor)",
       "exerciseId": "running-outdoor",
       "tier": "alias",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 150,
       "fitnotesName": "Glute-Ham Raise",
       "exerciseId": "glute-ham-raise",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 151,
       "fitnotesName": "Front Dumbbell Raise",
       "exerciseId": "dumbbell-front-raise",
       "tier": "token-set",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 152,
       "fitnotesName": "Upright Row",
       "exerciseId": "upright-row",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 153,
       "fitnotesName": "Walking",
       "exerciseId": "walking",
       "tier": "alias",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 154,
       "fitnotesName": "Rope Push Down",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 155,
       "fitnotesName": "Leg Extension",
       "exerciseId": "leg-extension",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 156,
       "fitnotesName": "Dumbbell Row",
       "exerciseId": "single-arm-dumbbell-row",
       "tier": "alias-manual",
-      "completedSets": 4
+      "completedSets": 4,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 157,
       "fitnotesName": "Power Snatch",
       "exerciseId": "power-snatch",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 158,
       "fitnotesName": "EZ-Bar Preacher Curl",
       "exerciseId": "ez-bar-preacher-curl",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 159,
       "fitnotesName": "Plank",
       "exerciseId": "plank",
       "tier": "exact/normalised",
-      "completedSets": 2
+      "completedSets": 2,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 160,
       "fitnotesName": "Close Grip Barbell Bench Press",
       "exerciseId": "close-grip-bench-press",
       "tier": "alias-manual",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 161,
       "fitnotesName": "Barbell Box Squat",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 162,
       "fitnotesName": "Deadlift",
       "exerciseId": "conventional-deadlift",
       "tier": "alias",
-      "completedSets": 18
+      "completedSets": 18,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 163,
       "fitnotesName": "Standing Dumbbell Press",
       "exerciseId": "standing-dumbbell-press",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 164,
       "fitnotesName": "Seated Incline Dumbbell Curl",
       "exerciseId": "incline-dumbbell-curl",
       "tier": "alias-manual",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 165,
       "fitnotesName": "Cable Crunch",
       "exerciseId": "cable-crunch",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 166,
       "fitnotesName": "Arnold Dumbbell Press",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 167,
       "fitnotesName": "Good Morning",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 168,
       "fitnotesName": "Reverse Barbell Lunge",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 169,
       "fitnotesName": "Smith Machine Close Grip Bench Press",
       "exerciseId": "smith-machine-close-grip-press",
       "tier": "alias-manual",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 170,
       "fitnotesName": "Deficit Deadlift",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 171,
       "fitnotesName": "Seated Dumbbell Lateral Raise",
       "exerciseId": "dumbbell-lateral-raise",
       "tier": "alias-manual",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 172,
       "fitnotesName": "T-Bar Row",
       "exerciseId": "t-bar-row",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 173,
       "fitnotesName": "Decline Barbell Bench Press",
       "exerciseId": "decline-barbell-press",
       "tier": "alias-manual",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 174,
       "fitnotesName": "Running (Treadmill)",
       "exerciseId": "running-treadmill",
       "tier": "alias",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 175,
       "fitnotesName": "Barbell Skullcrusher",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 176,
       "fitnotesName": "Barbell Glute Bridge",
       "exerciseId": "glute-bridge",
       "tier": "alias-manual",
-      "completedSets": 9
+      "completedSets": 9,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 177,
       "fitnotesName": "Yates Row",
       "exerciseId": "underhand-barbell-row",
       "tier": "alias",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 178,
       "fitnotesName": "Lateral Dumbbell Raise",
       "exerciseId": "dumbbell-lateral-raise",
       "tier": "token-set",
-      "completedSets": 23
+      "completedSets": 23,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 179,
       "fitnotesName": "Cycling (Outdoor)",
       "exerciseId": "cycling-outdoor",
       "tier": "alias",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 180,
       "fitnotesName": "Leg Press",
       "exerciseId": "leg-press",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 181,
       "fitnotesName": "Lying Triceps Extension",
       "exerciseId": "ez-bar-skullcrusher",
       "tier": "judgement",
-      "completedSets": 3
+      "completedSets": 3,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 182,
       "fitnotesName": "Seated Dumbbell Press",
       "exerciseId": "seated-dumbbell-press",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 183,
       "fitnotesName": "Neutral Chin Up",
       "exerciseId": "neutral-grip-pull-up",
       "tier": "alias",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 184,
       "fitnotesName": "Power Clean",
       "exerciseId": "power-clean",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 185,
       "fitnotesName": "Barbell Preacher Curl",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 186,
       "fitnotesName": "Hanging Leg Raise",
       "exerciseId": "hanging-leg-raise",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 187,
       "fitnotesName": "Smith Machine Overhead Press",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 188,
       "fitnotesName": "Barbell Pause Squat",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 189,
       "fitnotesName": "Seated Machine Fly",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 190,
       "fitnotesName": "Diamond Pushup",
       "exerciseId": "diamond-push-up",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 191,
       "fitnotesName": "Dumbbell Curl",
       "exerciseId": "dumbbell-curl",
       "tier": "exact/normalised",
-      "completedSets": 31
+      "completedSets": 31,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 192,
       "fitnotesName": "Rear Delt Machine Fly",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 193,
       "fitnotesName": "Rack Pull",
       "exerciseId": "rack-pull",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 194,
       "fitnotesName": "Cable Crossover",
       "exerciseId": "cable-fly",
       "tier": "alias",
-      "completedSets": 5
+      "completedSets": 5,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 195,
       "fitnotesName": "Barbell Row",
       "exerciseId": "barbell-row",
       "tier": "exact/normalised",
-      "completedSets": 42
+      "completedSets": 42,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 196,
       "fitnotesName": "Barbell Lunge",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 197,
       "fitnotesName": "Stiff-Legged Deadlift",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 198,
       "fitnotesName": "Hammer Strength Shoulder Press",
       "exerciseId": "machine-shoulder-press",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 199,
       "fitnotesName": "Seated Cable Row",
       "exerciseId": "seated-cable-row",
       "tier": "exact/normalised",
-      "completedSets": 50
+      "completedSets": 50,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 200,
       "fitnotesName": "Swimming",
       "exerciseId": null,
       "tier": "no-trainer-equivalent",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 201,
       "fitnotesName": "Incline Barbell Bench Press",
       "exerciseId": "incline-barbell-press",
       "tier": "alias-manual",
-      "completedSets": 18
+      "completedSets": 18,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 202,
       "fitnotesName": "EZ-Bar Skullcrusher",
       "exerciseId": "ez-bar-skullcrusher",
       "tier": "exact/normalised",
-      "completedSets": 2
+      "completedSets": 2,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 203,
       "fitnotesName": "Barbell Calf Raise",
       "exerciseId": "barbell-standing-calf-raise",
       "tier": "exact/normalised",
-      "completedSets": 4
+      "completedSets": 4,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 204,
       "fitnotesName": "Seated Barbell Press",
       "exerciseId": "seated-barbell-overhead-press",
       "tier": "alias-manual",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 205,
       "fitnotesName": "Flat Barbell Bench Press",
       "exerciseId": "barbell-bench-press",
       "tier": "alias",
-      "completedSets": 107
+      "completedSets": 107,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 206,
       "fitnotesName": "Parallel Bar Triceps Dips",
       "exerciseId": "triceps-dip",
       "tier": "alias-manual",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 207,
       "fitnotesName": "Bulgarian Split Squat",
       "exerciseId": "bulgarian-split-squat",
       "tier": "exact/normalised",
-      "completedSets": 22
+      "completedSets": 22,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 208,
       "fitnotesName": "Chin Up",
       "exerciseId": "chin-up",
       "tier": "exact/normalised",
-      "completedSets": 2
+      "completedSets": 2,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 209,
       "fitnotesName": "Snatch",
       "exerciseId": "snatch",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 210,
       "fitnotesName": "Cable Curl",
       "exerciseId": "cable-curl",
       "tier": "exact/normalised",
-      "completedSets": 9
+      "completedSets": 9,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 211,
       "fitnotesName": "Hanging Knee Raise",
       "exerciseId": "hanging-knee-raise",
       "tier": "exact/normalised",
-      "completedSets": 6
+      "completedSets": 6,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 212,
       "fitnotesName": "Log Press",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 213,
       "fitnotesName": "Barbell Squat",
       "exerciseId": "back-squat",
       "tier": "alias",
-      "completedSets": 48
+      "completedSets": 48,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 214,
       "fitnotesName": "Decline Hammer Strength Chest Press",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 215,
       "fitnotesName": "Pushup",
       "exerciseId": "push-up",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 216,
       "fitnotesName": "EZ-Bar Curl",
       "exerciseId": "ez-bar-curl",
       "tier": "exact/normalised",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 217,
       "fitnotesName": "Ab-Wheel Rollout",
       "exerciseId": "ab-wheel-rollout",
       "tier": "exact/normalised",
-      "completedSets": 3
+      "completedSets": 3,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 218,
       "fitnotesName": "Standing Calf Raise Machine",
       "exerciseId": "standing-calf-raise",
       "tier": "token-set",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 219,
       "fitnotesName": "Rear Dealt Barbell Raise",
       "exerciseId": "prone-incline-rear-delt-raise",
       "tier": "judgement",
-      "completedSets": 4
+      "completedSets": 4,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 220,
       "fitnotesName": "Crunch Machine",
       "exerciseId": "machine-crunch",
       "tier": "alias",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 221,
       "fitnotesName": "Lying Leg Curl Machine",
       "exerciseId": "lying-leg-curl",
       "tier": "token-set",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 222,
       "fitnotesName": "Shoulder Curl",
       "exerciseId": null,
       "tier": "no-trainer-equivalent",
-      "completedSets": 17
+      "completedSets": 17,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 223,
       "fitnotesName": "Belt Squat",
       "exerciseId": "belt-squat",
       "tier": "exact/normalised",
-      "completedSets": 5
+      "completedSets": 5,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 224,
       "fitnotesName": "Machine Shrug",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 225,
       "fitnotesName": "Leg Extension Machine",
       "exerciseId": "leg-extension",
       "tier": "token-set",
-      "completedSets": 13
+      "completedSets": 13,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 226,
       "fitnotesName": "Laying Dumbell Curl",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 227,
       "fitnotesName": "Cycling",
       "exerciseId": "cycling-outdoor",
       "tier": "alias",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 228,
       "fitnotesName": "Seated Calf Raise Machine",
       "exerciseId": "seated-calf-raise",
       "tier": "token-set",
-      "completedSets": 5
+      "completedSets": 5,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 229,
       "fitnotesName": "Hip Abduction",
       "exerciseId": "machine-hip-abduction",
       "tier": "token-set",
-      "completedSets": 12
+      "completedSets": 12,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 230,
       "fitnotesName": "Cable Crossover - Abs",
       "exerciseId": "cable-crunch",
       "tier": "judgement",
-      "completedSets": 11
+      "completedSets": 11,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 231,
       "fitnotesName": "Push Up",
       "exerciseId": "push-up",
       "tier": "exact/normalised",
-      "completedSets": 6
+      "completedSets": 6,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 232,
       "fitnotesName": "Bulgarian Split Hinge",
       "exerciseId": "b-stance-romanian-deadlift",
       "tier": "judgement",
-      "completedSets": 8
+      "completedSets": 8,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 233,
       "fitnotesName": "Dragon Flag",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 234,
       "fitnotesName": "Hip Adduction",
       "exerciseId": "machine-hip-adduction",
       "tier": "token-set",
-      "completedSets": 12
+      "completedSets": 12,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 235,
       "fitnotesName": "Sissy Squat",
       "exerciseId": "sissy-squat",
       "tier": "exact/normalised",
-      "completedSets": 7
+      "completedSets": 7,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 236,
       "fitnotesName": "Donkey Calf Raise",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 237,
       "fitnotesName": "Tibialis Extension",
       "exerciseId": "tibialis-raise",
       "tier": "alias",
-      "completedSets": 9
+      "completedSets": 9,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 238,
       "fitnotesName": "Front Barbell (Dumbell) Raise",
       "exerciseId": "dumbbell-front-raise",
       "tier": "judgement",
-      "completedSets": 4
+      "completedSets": 4,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 239,
       "fitnotesName": "Seated Leg Curl Machine",
       "exerciseId": "seated-leg-curl",
       "tier": "token-set",
-      "completedSets": 7
+      "completedSets": 7,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 240,
       "fitnotesName": "Parallel Bar Triceps Dip",
       "exerciseId": "triceps-dip",
       "tier": "alias-manual",
-      "completedSets": 6
+      "completedSets": 6,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 241,
       "fitnotesName": "Jump Rope",
       "exerciseId": "jump-rope",
       "tier": "alias",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 242,
       "fitnotesName": "Dumbell Lunge",
       "exerciseId": "reverse-lunge",
       "tier": "judgement",
-      "completedSets": 1
+      "completedSets": 1,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 243,
       "fitnotesName": "Ring Dip",
       "exerciseId": null,
       "tier": "unmatched",
-      "completedSets": 0
+      "completedSets": 0,
+      "exportPreferred": false
     },
     {
       "fitnotesId": 244,
       "fitnotesName": "Barbell Tricep Extension",
       "exerciseId": "ez-bar-overhead-extension",
       "tier": "judgement",
-      "completedSets": 3
+      "completedSets": 3,
+      "exportPreferred": true
     },
     {
       "fitnotesId": 245,
       "fitnotesName": "Cable Crossover - Under",
       "exerciseId": "low-to-high-cable-fly",
       "tier": "alias-manual",
-      "completedSets": 9
+      "completedSets": 9,
+      "exportPreferred": true
     }
   ]
 }

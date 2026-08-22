@@ -171,12 +171,48 @@ def build() -> dict:
             # what the database actually yields -- a mismatch means the manifest
             # was built from a different export.
             "completedSets": sets,
+            # Which FitNotes row a PRESCRIPTION is written to (#25). Only
+            # meaningful where several definitions resolve to one Trainer
+            # exercise; TRUE on exactly one row per resolved group.
+            "exportPreferred": (row.get("export_preferred") or "").strip().upper() == "TRUE",
         })
 
     # A single unresolved APPROVED mapping fails the build. Every name here was
     # authorised by a human against a specific issue; if one no longer resolves,
     # either the catalog was renamed or the manifest is wrong, and both need a
     # decision rather than a default.
+    # Exactly one export target per resolved Trainer exercise. Authored data with
+    # no check behind it is how the first attempt at this column marked TWO rows
+    # TRUE for ez-bar-skullcrusher: it grouped on trainer_id || trainer_name,
+    # which hold a slug on some rows and a display name on others, so one
+    # exercise became two single-row groups. The assert that was supposed to
+    # catch it compared counts derived from the same broken grouping.
+    groups: dict[str, list[dict]] = {}
+    for rec in out:
+        if rec["exerciseId"]:
+            groups.setdefault(rec["exerciseId"], []).append(rec)
+
+    bad: list[str] = []
+    for slug, members in sorted(groups.items()):
+        chosen = [m for m in members if m["exportPreferred"]]
+        if len(chosen) != 1:
+            names = ", ".join(f'{m["fitnotesName"]!r} ({m["completedSets"]} sets)' for m in members)
+            bad.append(
+                f"  {slug}: {len(chosen)} rows marked export_preferred, expected 1. "
+                f"Candidates: {names}"
+            )
+
+    if bad:
+        print(f"FAIL  {len(bad)} Trainer exercise(s) have no single export target:")
+        for line in bad:
+            print(line)
+        print()
+        print("Set export_preferred=TRUE on exactly one row per Trainer exercise in")
+        print(f"{os.path.relpath(SRC, ROOT)}. The export writes a prescription to that row,")
+        print("so two targets split one lift across two FitNotes entries and none means")
+        print("the export has nowhere to write.")
+        sys.exit(1)
+
     if unresolved:
         print(f"FAIL  {len(unresolved)} approved mapping(s) do not resolve against the catalog:")
         for line in unresolved:
