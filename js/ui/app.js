@@ -151,7 +151,21 @@ export function mount(root, defs) {
           `).join('')}
         </select>
       </label>
-      <label>Days / week
+      <fieldset class="weekdays">
+        <legend>Days I can train</legend>
+        <!-- AVAILABILITY, not frequency. These are the days training is
+             POSSIBLE; sessionsPerWeek below is how many the athlete wants. The
+             engine picks the best-spaced subset (#25), which is coach work the
+             athlete should not have to do by hand. -->
+        <label><input type="checkbox" name="availableDay" value="mon" checked /><span>Mon</span></label>
+        <label><input type="checkbox" name="availableDay" value="tue" checked /><span>Tue</span></label>
+        <label><input type="checkbox" name="availableDay" value="wed" checked /><span>Wed</span></label>
+        <label><input type="checkbox" name="availableDay" value="thu" checked /><span>Thu</span></label>
+        <label><input type="checkbox" name="availableDay" value="fri" checked /><span>Fri</span></label>
+        <label><input type="checkbox" name="availableDay" value="sat" checked /><span>Sat</span></label>
+        <label><input type="checkbox" name="availableDay" value="sun" checked /><span>Sun</span></label>
+      </fieldset>
+      <label>Sessions / week
         <input type="number" name="daysPerWeek" min="1" max="7" value="4" />
       </label>
       <label class="block-only">Block length (weeks)
@@ -193,6 +207,13 @@ export function mount(root, defs) {
     scope = form.scope.value;
     form.querySelector('.block-only').hidden = scope === 'session';
   };
+  // Sessions cannot exceed availability. The engine rejects that correctly, but
+  // discovering it after pressing Generate is a worse way to learn it.
+  for (const box of form.querySelectorAll('[name=availableDay]')) {
+    box.addEventListener('change', () => clampSessions(form));
+  }
+  clampSessions(form);
+
   form.scope.addEventListener('change', syncScope);
   syncScope();
 
@@ -392,6 +413,9 @@ export function mount(root, defs) {
       schemaVersion: 1,
       styleId: f.get('styleId'),
       daysPerWeek: Number(f.get('daysPerWeek')),
+      // The days training is possible. The engine chooses the best-spaced
+      // subset of these; it never trains on a day not listed here.
+      availableDays: f.getAll('availableDay'),
       // Single-session mode still generates a real week — see the note above.
       blockWeeks: scope === 'session' ? 1 : Number(f.get('blockWeeks')),
       equipmentProfile: f.get('equipmentProfile'),
@@ -541,12 +565,29 @@ function restoreDraft(out, form) {
 }
 
 /** Reflect a restored request back into the controls that produced it. */
+/** Hold Sessions / week at or below the number of available days. */
+function clampSessions(form) {
+  const available = form.querySelectorAll('[name=availableDay]:checked').length;
+  const input = form.daysPerWeek;
+  input.max = String(Math.max(1, available));
+  if (available > 0 && Number(input.value) > available) input.value = String(available);
+}
+
 function restoreForm(form, draft) {
   const r = draft.request;
   if (draft.scope) form.scope.value = draft.scope;
   scope = form.scope.value;
   form.styleId.value = r.styleId;
   form.daysPerWeek.value = r.daysPerWeek;
+  // Restored explicitly. Without this a stored plan reloads with the default
+  // availability, which reads as the app forgetting what the athlete picked.
+  // Plans saved before availability existed have no field, so everything is
+  // ticked - the widest honest assumption.
+  const avail = r.availableDays ?? ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+  for (const box of form.querySelectorAll('[name=availableDay]')) {
+    box.checked = avail.includes(box.value);
+  }
+  clampSessions(form);
   form.blockWeeks.value = r.blockWeeks;
   form.equipmentProfile.value = r.equipmentProfile;
   if (form.skillLevel) form.skillLevel.value = r.athlete?.skillLevel ?? 2;

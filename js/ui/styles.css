@@ -671,3 +671,67 @@ button[disabled] {
   /* Hover and active effects would still fire and imply the click registered. */
   pointer-events: none;
 }
+
+/* Weekday availability circles.
+   Overriding two global rules that apply inside the sidebar: `label` is
+   display:grid, which stacked each checkbox above its text, and `input` is
+   width:100%, which rendered the boxes as large squares. Both are scoped here
+   rather than changed globally. */
+.weekdays {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.weekdays legend {
+  padding: 0;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: .85rem;
+}
+
+.weekdays label {
+  display: inline-flex;
+  margin: 0;
+  gap: 0;
+  cursor: pointer;
+}
+
+/* Visually hidden, not display:none -- the native input keeps keyboard focus
+   and screen-reader semantics. */
+.weekdays input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.weekdays span {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  font-size: .8rem;
+  user-select: none;
+  transition: background-color .12s, border-color .12s, color .12s;
+}
+
+.weekdays input:checked + span {
+  background: var(--accent, #e5484d);
+  border-color: var(--accent, #e5484d);
+  color: #fff;
+}
+
+/* Focus must be visible on the circle, since the real input is hidden. */
+.weekdays input:focus-visible + span {
+  outline: 2px solid var(--accent, #e5484d);
+  outline-offset: 2px;
+}
