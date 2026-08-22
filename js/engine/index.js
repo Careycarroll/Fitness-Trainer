@@ -5,7 +5,7 @@
 import { assertCoverage } from './coverage.js';
 // schedule.js owns weekday logic and is the ONE definition of a valid weekday.
 // Re-checking the rules here is how two copies drift apart (#25).
-import { chooseTrainingDays } from './schedule.js';
+import { chooseTrainingDays, gapClass } from './schedule.js';
 import * as loadDomain from './loadDomain.js';
 import * as intervalDomain from './intervalDomain.js';
 
@@ -54,6 +54,13 @@ export function generate(request, defs) {
 
   assertCoverage(profile, suppliable, domainCatalog);
 
+  // Resolved from the SPLIT's session count, not daysPerWeek. Those differ:
+  // asking for 7 sessions resolves to ppl-6, so a 7-day schedule would have
+  // computed a recovery gap for a day holding no session.
+  const schedule = request.availableDays
+    ? chooseTrainingDays(request.availableDays, split.days.length)
+    : null;
+
   const weeks = [];
 
   for (let w = 0; w < request.blockWeeks; w++) {
@@ -71,7 +78,12 @@ export function generate(request, defs) {
         profile,
         request: { ...request, seed: request.seed + w * 31 },
         dayIndex,
-        week
+        week,
+        // Recovery state of this session, or null when no availability was
+        // given. ADR-015: the only thing the engine derives from weekdays.
+        gap: schedule ? gapClass(schedule, dayIndex) : null,
+        compressedAccessoryMultiplier:
+          defs.progression?.compressedAccessoryMultiplier ?? 1
       })
     );
     weeks.push({ week: w + 1, sessions });
@@ -83,9 +95,7 @@ export function generate(request, defs) {
     // spacing. Carried so the export layer can turn an ordered sequence into
     // concrete dates (#25). Null when no availability was given: the engine
     // never invents a schedule, and ADR-002 forbids it reading a clock.
-    schedule: request.availableDays
-      ? chooseTrainingDays(request.availableDays, request.daysPerWeek)
-      : null,
+    schedule,
     styleId: style.id,
     splitId: split.id,
     domain: style.domain,

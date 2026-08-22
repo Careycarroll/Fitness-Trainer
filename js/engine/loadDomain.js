@@ -63,7 +63,10 @@ const DEFAULT_COUNT = { min: 4, max: 6 };
 const MAX_TOP_COST = 5;
 const MAX_TOP_COST_COUNT = 1;
 
-export function generateSession({ style, day, catalog, profile, request, dayIndex, week }) {
+export function generateSession({
+  style, day, catalog, profile, request, dayIndex, week,
+  gap = null, compressedAccessoryMultiplier = 1
+}) {
   const rng = createRng(request.seed + dayIndex * 7919);
   const ctx = request.athlete ?? { skillLevel: 2, hasCoaching: false, strictReps: {} };
 
@@ -135,8 +138,26 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
   // unspent, because a split names 4 patterns and a real session holds more
   // work than that. This is where accessoryRatio finally means something.
   // -----------------------------------------------------------------------
+  // ADR-015's recovery gap, finally reachable. gapClass() and
+  // compressedAccessoryMultiplier have both existed since M3 and neither had
+  // ever run: schedule.js was imported by nothing.
+  //
+  // It scales the ACCESSORY SLOTS, not the sets. Accessory sets are
+  // max(2, setMin - 1) and every load style has setMin 3, so 2 * 0.75 rounds
+  // back to 2 -- multiplying sets would have shipped a no-op that reads as
+  // "less work" in output. It cannot scale `target` either, since that is the
+  // whole session and trimming it would drop the split's own patterns.
+  //
+  // Pass 1 has finished, so state.blocks.length IS the pattern coverage. Only
+  // what pass 2 would have added is reduced, and a compressed day comes out
+  // shorter rather than lighter per exercise.
+  const covered = state.blocks.length;
+  const fillTarget = gap === 'compressed'
+    ? covered + Math.round((target - covered) * compressedAccessoryMultiplier)
+    : target;
+
   let guard = 40;   // pick() is monotonic and the pool is finite; still, never spin
-  while (state.blocks.length < target && guard-- > 0) {
+  while (state.blocks.length < fillTarget && guard-- > 0) {
     const pattern = nextAccessoryPattern(style, state, allowed, dayMuscles, day.patterns);
     if (!pattern) break;
 
@@ -172,7 +193,9 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
     styleId: style.id,
     blocks: state.blocks,
     omitted: state.omitted,
-    exercisesRequested: target,
+    // Reported so a shorter day reads as intent rather than as a shortfall.
+    gap,
+    exercisesRequested: fillTarget,
     exercisesPlaced: state.blocks.length,
     fatigueUsed: state.fatigueUsed,
     fatigueBudget: style.fatigueBudget,
