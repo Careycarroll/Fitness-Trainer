@@ -114,6 +114,29 @@ a different set. This is why `fitnotes_id` was added to the manifest — and it 
 why the **basic CSV export cannot be the import path**: it carries exercise names
 only, with no id and no completion flag.
 
+#### `training_log._id` IS NOT STABLE. Never key on it.
+
+Measured: adding two sets to 3 September renumbered every later row in the table.
+The 4 September marker moved 1336 -> 1338, the 5th 1337 -> 1341, the 6th
+1338 -> 1342. FitNotes reassigns rowids to keep the log in date order, so an
+insert anywhere shifts everything after it.
+
+`sourceExerciseId` is the `exercise._id`, which is stable. `training_log._id` is
+a position, and this record deliberately never touches it. Substituting it would
+look tidier and would make every re-import after any edit read as entirely new
+history — every previously imported set gone, every set present twice under new
+ids, and ADR-023 recomputing maxes from what looks like a fresh training log.
+
+#### A zero weight is an absence, not a measurement
+
+`metric_weight = 0` yields `weight: null` and `weightUnit: null`, not `0`.
+Storing zero would assert the athlete lifted no pounds, which is a claim the
+source does not make — 42 completed rows in the real export are bodyweight work.
+
+The consequence is load-bearing for the export direction (#25): a row with no
+weight and no reps CANNOT feed ADR-023, because there is nothing to estimate
+from. That is what makes a prescription marker row inert in history.
+
 ---
 
 ## 2a. Units: the source has already converted, so the importer converts back
