@@ -1,150 +1,150 @@
-fitnotes_id,fitnotes_name,fitnotes_category,trainer_id,trainer_name,trainer_file,pattern,tracking,match_tier,action,completed_sets,log_rows,authorised_by,basis
-205,Flat Barbell Bench Press,Chest,,Barbell Bench Press,06_chest.csv,push_h,weight_reps,alias,rename,107,115,#33,
-199,Seated Cable Row,Back,,Seated Cable Row,07_back.csv,pull_h,weight_reps,exact/normalised,keep,50,84,,
-213,Barbell Squat,Legs,,Back Squat,01_quads.csv,squat,weight_reps,alias,rename,48,52,#33,
-132,Overhead Press,Shoulders,,Overhead Press,08_shoulders.csv,push_v,weight_reps,exact/normalised,keep,48,49,,
-195,Barbell Row,Back,,Barbell Row,07_back.csv,pull_h,weight_reps,exact/normalised,keep,42,50,,
-144,Barbell Curl,Biceps,,Barbell Curl,09_biceps.csv,isolation,weight_reps,exact/normalised,keep,36,57,,
-109,Cable Overhead Triceps Extension,Triceps,,Overhead Cable Triceps Extension,10_triceps.csv,isolation,weight_reps,token-set,rename,36,83,#33,
-191,Dumbbell Curl,Biceps,,Dumbbell Curl,09_biceps.csv,isolation,weight_reps,exact/normalised,keep,31,43,,
-128,Lat Pulldown,Back,,Lat Pulldown,07_back.csv,pull_v,weight_reps,exact/normalised,keep,31,44,,
-178,Lateral Dumbbell Raise,Shoulders,,Dumbbell Lateral Raise,08_shoulders.csv,isolation,weight_reps,token-set,rename,23,45,#33,
-207,Bulgarian Split Squat,Legs,,Bulgarian Split Squat,01_quads.csv,squat,weight_reps,exact/normalised,keep,22,23,,
-162,Deadlift,Back,,Conventional Deadlift,02_glutes.csv,hinge,weight_reps,alias,rename,18,32,#33,
-201,Incline Barbell Bench Press,Chest,,Incline Barbell Press,06_chest.csv,push_h,weight_reps,alias-manual,rename,18,32,#33,
-102,Romanian Deadlift,Legs,,Romanian Deadlift,03_hamstrings.csv,hinge,weight_reps,exact/normalised,keep,18,19,,
-222,Shoulder Curl,Shoulders,,,,,,no-trainer-equivalent,keep as legacy,17,22,#38,curl-to-press combo; catalog models both halves separately. Mapping to either half corrupts e1RM on both (ADR-023). Import as legacy.
-98,Straight-Arm Cable Pushdown,Back,,Straight-Arm Pulldown,07_back.csv,pull_v,weight_reps,alias,rename,17,40,#33,
-225,Leg Extension Machine,Legs,,Leg Extension,01_quads.csv,isolation,weight_reps,token-set,rename,13,20,#33,
-229,Hip Abduction,Legs,,Machine Hip Abduction,05_hips.csv,isolation,weight_reps,token-set,rename,12,12,#33,
-234,Hip Adduction,Legs,,Machine Hip Adduction,05_hips.csv,isolation,weight_reps,token-set,rename,12,12,#33,
-230,Cable Crossover - Abs,Abs,cable-crunch,,,,,judgement,rename,11,117,#38,confirmed by athlete: it is a cable crunch
-176,Barbell Glute Bridge,Legs,,Glute Bridge,02_glutes.csv,hinge,reps_only,alias-manual,rename,9,15,#33,
-245,Cable Crossover - Under,Chest,,Low-to-High Cable Fly,06_chest.csv,push_h,weight_reps,alias-manual,rename,9,27,#33,
-210,Cable Curl,Biceps,,Cable Curl,09_biceps.csv,isolation,weight_reps,exact/normalised,keep,9,9,,
-237,Tibialis Extension,Legs,,Tibialis Raise,04_calves.csv,isolation,reps_only,alias,rename,9,10,#33,
-232,Bulgarian Split Hinge,Legs,b-stance-romanian-deadlift,,,,,judgement,rename,8,8,#38,"hinged split stance, posterior chain: hinge not squat"
-239,Seated Leg Curl Machine,Legs,,Seated Leg Curl,03_hamstrings.csv,isolation,weight_reps,token-set,rename,7,9,#33,
-235,Sissy Squat,Legs,,Sissy Squat,01_quads.csv,isolation,reps_only,exact/normalised,keep,7,19,,
-211,Hanging Knee Raise,Abs,,Hanging Knee Raise,11_core.csv,core,reps_only,exact/normalised,keep,6,55,,
-240,Parallel Bar Triceps Dip,Triceps,,Triceps Dip,10_triceps.csv,push_h,reps_only,alias-manual,rename,6,7,#33,
-231,Push Up,Chest,,Push-Up,06_chest.csv,push_h,reps_only,exact/normalised,keep,6,22,,
-223,Belt Squat,Legs,,Belt Squat,01_quads.csv,squat,weight_reps,exact/normalised,keep,5,5,,
-194,Cable Crossover,Chest,,Cable Fly,06_chest.csv,push_h,weight_reps,alias,rename,5,22,#33,
-139,Crunch,Abs,,Crunch,11_core.csv,core,reps_only,exact/normalised,keep,5,26,,
-228,Seated Calf Raise Machine,Legs,,Seated Calf Raise,04_calves.csv,isolation,weight_reps,token-set,rename,5,5,#33,
-203,Barbell Calf Raise,Legs,,Barbell Standing Calf Raise,04_calves.csv,isolation,weight_reps,exact/normalised,rename,4,5,#25,"was mapped to Standing Calf Raise, a calf_machine row: wrong implement for a barbell movement. Row authored rather than approximated."
-125,Dumbbell Overhead Triceps Extension,Triceps,,Dumbbell Overhead Triceps Extension,10_triceps.csv,isolation,weight_reps,exact/normalised,keep,4,4,,
-156,Dumbbell Row,Back,,Single-Arm Dumbbell Row,07_back.csv,pull_h,weight_reps,alias-manual,rename,4,10,#33,
-238,Front Barbell (Dumbell) Raise,Shoulders,dumbbell-front-raise,,,,,judgement,rename,4,9,#38,either implement; no barbell variant in catalog
-114,Pull Up,Back,,Pull-Up,07_back.csv,pull_v,reps_only,exact/normalised,keep,4,24,,
-219,Rear Dealt Barbell Raise,Shoulders,prone-incline-rear-delt-raise,,,,,judgement,rename,4,7,#38,standing hip-hinged in practice; incline version equivalent
-217,Ab-Wheel Rollout,Abs,,Ab Wheel Rollout,11_core.csv,core,reps_only,exact/normalised,keep,3,18,,
-244,Barbell Tricep Extension,Triceps,ez-bar-overhead-extension,,,,,judgement,rename,3,18,#38,overhead position
-181,Lying Triceps Extension,Triceps,ez-bar-skullcrusher,,,,,judgement,rename,3,3,#38,"lying position; same motion, skullcrusher by definition"
-208,Chin Up,Back,,Chin-Up,07_back.csv,pull_v,reps_only,exact/normalised,keep,2,7,,
-202,EZ-Bar Skullcrusher,Triceps,,EZ-Bar Skullcrusher,10_triceps.csv,isolation,weight_reps,exact/normalised,keep,2,2,,
-159,Plank,Abs,,Plank,11_core.csv,core,time,exact/normalised,keep,2,13,,
-242,Dumbell Lunge,Legs,reverse-lunge,,,,,judgement,rename,1,7,#38,variants interchangeable for this athlete
-130,Rowing Machine,Cardio,,Rowing Machine,13_conditioning.csv,monostructural,time,alias,rename,1,1,#33,
-135,Side Plank,Abs,,Side Plank,11_core.csv,core,time,exact/normalised,keep,1,3,,
-166,Arnold Dumbbell Press,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,
-161,Barbell Box Squat,Legs,,,,,,unmatched,REVIEW,0,0,#33,
-136,Barbell Front Squat,Legs,,,,,,unmatched,REVIEW,0,0,#33,
-196,Barbell Lunge,Legs,,,,,,unmatched,REVIEW,0,0,#33,
-188,Barbell Pause Squat,Legs,,,,,,unmatched,REVIEW,0,0,#33,
-185,Barbell Preacher Curl,Biceps,,,,,,unmatched,REVIEW,0,0,#33,
-147,Barbell Shrug,Back,,Barbell Shrug,07_back.csv,isolation,weight_reps,exact/normalised,keep,0,0,,
-175,Barbell Skullcrusher,Triceps,,,,,,unmatched,REVIEW,0,0,#33,
-104,Behind The Neck Barbell Press,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,
-146,Bent Over Lateral Raise,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,
-100,Box Jumps,Cardio,,Box Jump,12_fullbody.csv,explosive,reps_only,alias,rename,0,0,#33,
-133,Burpees,Cardio,,,,,,no-trainer-equivalent,keep as legacy,0,0,#33,
-165,Cable Crunch,Abs,,Cable Crunch,11_core.csv,core,weight_reps,exact/normalised,keep,0,0,,
-118,Cable Face Pull,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,
-137,Clean,Legs,,,,,,unmatched,REVIEW,0,0,#33,
-115,Clean And Jerk,Shoulders,,Clean and Jerk,12_fullbody.csv,explosive,weight_reps,exact/normalised,keep,0,0,,
-160,Close Grip Barbell Bench Press,Triceps,,Close-Grip Bench Press,10_triceps.csv,push_h,weight_reps,alias-manual,rename,0,0,#33,
-220,Crunch Machine,Abs,,Machine Crunch,11_core.csv,core,weight_reps,alias,rename,0,0,#33,
-227,Cycling,Cardio,,Cycling - Outdoor,13_conditioning.csv,monostructural,time,alias,rename,0,0,#33,
-110,Cycling (Indoor),Cardio,,Cycling - Stationary Bike,13_conditioning.csv,monostructural,time,alias,rename,0,0,#33,
-179,Cycling (Outdoor),Cardio,,Cycling - Outdoor,13_conditioning.csv,monostructural,time,alias,rename,0,0,#33,
-173,Decline Barbell Bench Press,Chest,,Decline Barbell Press,06_chest.csv,push_h,weight_reps,alias-manual,rename,0,0,#33,
-117,Decline Crunch,Abs,,,,,,unmatched,REVIEW,0,0,#33,
-214,Decline Hammer Strength Chest Press,Chest,,,,,,unmatched,REVIEW,0,0,#33,
-170,Deficit Deadlift,Legs,,,,,,unmatched,REVIEW,0,0,#33,
-190,Diamond Pushup,Triceps,,Diamond Push-Up,10_triceps.csv,push_h,reps_only,exact/normalised,keep,0,0,,
-236,Donkey Calf Raise,Legs,,,,,,unmatched,REVIEW,0,0,#33,
-233,Dragon Flag,Abs,,,,,,unmatched,REVIEW,0,0,#33,
-134,Dumbbell Concentration Curl,Biceps,,,,,,unmatched,REVIEW,0,0,#33,
-116,Dumbbell Hammer Curl,Biceps,,Dumbbell Hammer Curl,09_biceps.csv,isolation,weight_reps,exact/normalised,keep,0,0,,
-119,Dumbbell Lunge,Legs,,,,,,unmatched,REVIEW,0,0,#33,
-111,Dumbbell Preacher Curl,Biceps,,,,,,unmatched,REVIEW,0,0,#33,
-216,EZ-Bar Curl,Biceps,,EZ-Bar Curl,09_biceps.csv,isolation,weight_reps,exact/normalised,keep,0,0,,
-158,EZ-Bar Preacher Curl,Biceps,,EZ-Bar Preacher Curl,09_biceps.csv,isolation,weight_reps,exact/normalised,keep,0,0,,
-124,Elliptical Trainer,Cardio,,Elliptical Trainer,13_conditioning.csv,monostructural,time,alias,rename,0,0,#33,
-106,Flat Dumbbell Bench Press,Chest,,Dumbbell Bench Press,06_chest.csv,push_h,weight_reps,alias-manual,rename,0,0,#33,
-123,Flat Dumbbell Fly,Chest,,,,,,unmatched,REVIEW,0,0,#33,
-151,Front Dumbbell Raise,Shoulders,,Dumbbell Front Raise,08_shoulders.csv,isolation,weight_reps,token-set,rename,0,0,#33,
-150,Glute-Ham Raise,Legs,,Glute-Ham Raise,03_hamstrings.csv,isolation,reps_only,exact/normalised,keep,0,0,,
-167,Good Morning,Back,,,,,,unmatched,REVIEW,0,0,#33,
-105,Hammer Strength Row,Back,,Machine Row,07_back.csv,pull_h,weight_reps,alias,rename,0,0,#33,
-198,Hammer Strength Shoulder Press,Shoulders,,Machine Shoulder Press,08_shoulders.csv,push_v,weight_reps,exact/normalised,keep,0,0,,
-186,Hanging Leg Raise,Abs,,Hanging Leg Raise,11_core.csv,core,reps_only,exact/normalised,keep,0,0,,
-148,Incline Dumbbell Bench Press,Chest,,Incline Dumbbell Press,06_chest.csv,push_h,weight_reps,alias-manual,rename,0,0,#33,
-99,Incline Dumbbell Fly,Chest,,,,,,unmatched,REVIEW,0,0,#33,
-142,Incline Hammer Strength Chest Press,Chest,,,,,,unmatched,REVIEW,0,0,#33,
-241,Jump Rope,Cardio,,Jump Rope,13_conditioning.csv,monostructural,time,alias,rename,0,0,#33,
-121,Lateral Machine Raise,Shoulders,,Machine Lateral Raise,08_shoulders.csv,isolation,weight_reps,token-set,rename,0,0,#33,
-226,Laying Dumbell Curl,Biceps,,,,,,unmatched,REVIEW,0,1,#33,
-155,Leg Extension,Legs,,Leg Extension,01_quads.csv,isolation,weight_reps,exact/normalised,keep,0,0,,
-180,Leg Press,Legs,,Leg Press,01_quads.csv,squat,weight_reps,exact/normalised,keep,0,0,,
-212,Log Press,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,
-126,Lying Leg Curl,Legs,,Lying Leg Curl,03_hamstrings.csv,isolation,weight_reps,exact/normalised,keep,0,0,,
-221,Lying Leg Curl Machine,Legs,,Lying Leg Curl,03_hamstrings.csv,isolation,weight_reps,token-set,rename,0,0,#33,
-224,Machine Shrug,Back,,,,,,unmatched,REVIEW,0,0,#33,
-183,Neutral Chin Up,Back,,Neutral-Grip Pull-Up,07_back.csv,pull_v,reps_only,alias,rename,0,0,#33,
-129,Neutral Grip Flat Dumbbell Bench Press,Chest,,,,,,no-trainer-equivalent,keep as legacy,0,0,#33,
-140,One-Arm Standing Dumbbell Press,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,
-206,Parallel Bar Triceps Dips,Triceps,,Triceps Dip,10_triceps.csv,push_h,reps_only,alias-manual,rename,0,0,#33,
-103,Pendlay Row,Back,,Pendlay Row,07_back.csv,pull_h,weight_reps,exact/normalised,keep,0,0,,
-184,Power Clean,Legs,,Power Clean,12_fullbody.csv,explosive,weight_reps,exact/normalised,keep,0,0,,
-157,Power Snatch,Back,,Power Snatch,12_fullbody.csv,explosive,weight_reps,exact/normalised,keep,0,0,,
-127,Push Press,Shoulders,,Push Press,08_shoulders.csv,push_v,weight_reps,exact/normalised,keep,0,0,,
-215,Pushup,Chest,,Push-Up,06_chest.csv,push_h,reps_only,exact/normalised,keep,0,0,,
-193,Rack Pull,Back,,Rack Pull,02_glutes.csv,hinge,weight_reps,exact/normalised,keep,0,0,,
-97,Rear Delt Dumbbell Raise,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,
-192,Rear Delt Machine Fly,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,
-143,Reverse Barbell Curl,Biceps,,,,,,unmatched,REVIEW,0,0,#33,
-168,Reverse Barbell Lunge,Legs,,,,,,unmatched,REVIEW,0,0,#33,
-243,Ring Dip,Triceps,,,,,,unmatched,REVIEW,0,0,#33,
-101,Ring Dips,Triceps,,,,,,unmatched,REVIEW,0,0,#33,
-154,Rope Push Down,Triceps,,,,,,unmatched,REVIEW,0,0,#33,
-149,Running (Outdoor),Cardio,,Running - Outdoor,13_conditioning.csv,monostructural,time,alias,rename,0,0,#33,
-174,Running (Treadmill),Cardio,,Running - Treadmill,13_conditioning.csv,monostructural,time,alias,rename,0,1,#33,
-141,Safety Bar Squat,Legs,,Safety Bar Squat,01_quads.csv,squat,weight_reps,exact/normalised,keep,0,0,,
-204,Seated Barbell Press,Shoulders,,Seated Barbell Overhead Press,08_shoulders.csv,push_v,weight_reps,alias-manual,rename,0,0,#33,
-120,Seated Calf Raise,Legs,,Seated Calf Raise,04_calves.csv,isolation,weight_reps,exact/normalised,keep,0,0,,
-171,Seated Dumbbell Lateral Raise,Shoulders,,Dumbbell Lateral Raise,08_shoulders.csv,isolation,weight_reps,alias-manual,rename,0,0,#33,
-182,Seated Dumbbell Press,Shoulders,,Seated Dumbbell Press,08_shoulders.csv,push_v,weight_reps,exact/normalised,keep,0,0,,
-164,Seated Incline Dumbbell Curl,Biceps,,Incline Dumbbell Curl,09_biceps.csv,isolation,weight_reps,alias-manual,rename,0,0,#33,
-131,Seated Leg Curl,Legs,,Seated Leg Curl,03_hamstrings.csv,isolation,weight_reps,exact/normalised,keep,0,0,,
-138,Seated Machine Curl,Biceps,,,,,,unmatched,REVIEW,0,0,#33,
-189,Seated Machine Fly,Chest,,,,,,unmatched,REVIEW,0,0,#33,
-169,Smith Machine Close Grip Bench Press,Triceps,,Smith Machine Close-Grip Press,10_triceps.csv,push_h,weight_reps,alias-manual,rename,0,0,#33,
-187,Smith Machine Overhead Press,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,
-122,Smith Machine Shrug,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,
-209,Snatch,Back,,Snatch,12_fullbody.csv,explosive,weight_reps,exact/normalised,keep,0,0,,
-113,Split Squat,Legs,,Split Squat,01_quads.csv,squat,weight_reps,exact/normalised,keep,0,0,,
-108,Standing Calf Raise,Legs,,Standing Calf Raise,04_calves.csv,isolation,weight_reps,exact/normalised,keep,0,0,,
-218,Standing Calf Raise Machine,Legs,,Standing Calf Raise,04_calves.csv,isolation,weight_reps,token-set,rename,0,0,#33,
-163,Standing Dumbbell Press,Shoulders,,Standing Dumbbell Press,08_shoulders.csv,push_v,weight_reps,exact/normalised,keep,0,0,,
-107,Stationary Bike,Cardio,,Cycling - Stationary Bike,13_conditioning.csv,monostructural,time,alias,rename,0,0,#33,
-197,Stiff-Legged Deadlift,Legs,,,,,,unmatched,REVIEW,0,0,#33,
-145,Sumo Deadlift,Legs,,Sumo Deadlift,02_glutes.csv,hinge,weight_reps,exact/normalised,keep,0,0,,
-200,Swimming,Cardio,,,,,,no-trainer-equivalent,keep as legacy,0,0,#33,
-172,T-Bar Row,Back,,T-Bar Row,07_back.csv,pull_h,weight_reps,exact/normalised,keep,0,0,,
-152,Upright Row,Shoulders,,Upright Row,08_shoulders.csv,pull_v,weight_reps,exact/normalised,keep,0,0,,
-112,V-Bar Push Down,Triceps,,,,,,unmatched,REVIEW,0,0,#33,
-153,Walking,Cardio,,Walking,13_conditioning.csv,monostructural,time,alias,rename,0,0,#33,
-177,Yates Row,Back,,Underhand Barbell Row,07_back.csv,pull_h,weight_reps,alias,rename,0,0,#33,
+fitnotes_id,fitnotes_name,fitnotes_category,trainer_id,trainer_name,trainer_file,pattern,tracking,match_tier,action,completed_sets,log_rows,authorised_by,basis,export_preferred
+205,Flat Barbell Bench Press,Chest,,Barbell Bench Press,06_chest.csv,push_h,weight_reps,alias,rename,107,115,#33,,TRUE
+199,Seated Cable Row,Back,,Seated Cable Row,07_back.csv,pull_h,weight_reps,exact/normalised,keep,50,84,,,TRUE
+213,Barbell Squat,Legs,,Back Squat,01_quads.csv,squat,weight_reps,alias,rename,48,52,#33,,TRUE
+132,Overhead Press,Shoulders,,Overhead Press,08_shoulders.csv,push_v,weight_reps,exact/normalised,keep,48,49,,,TRUE
+195,Barbell Row,Back,,Barbell Row,07_back.csv,pull_h,weight_reps,exact/normalised,keep,42,50,,,TRUE
+144,Barbell Curl,Biceps,,Barbell Curl,09_biceps.csv,isolation,weight_reps,exact/normalised,keep,36,57,,,TRUE
+109,Cable Overhead Triceps Extension,Triceps,,Overhead Cable Triceps Extension,10_triceps.csv,isolation,weight_reps,token-set,rename,36,83,#33,,TRUE
+191,Dumbbell Curl,Biceps,,Dumbbell Curl,09_biceps.csv,isolation,weight_reps,exact/normalised,keep,31,43,,,TRUE
+128,Lat Pulldown,Back,,Lat Pulldown,07_back.csv,pull_v,weight_reps,exact/normalised,keep,31,44,,,TRUE
+178,Lateral Dumbbell Raise,Shoulders,,Dumbbell Lateral Raise,08_shoulders.csv,isolation,weight_reps,token-set,rename,23,45,#33,,TRUE
+207,Bulgarian Split Squat,Legs,,Bulgarian Split Squat,01_quads.csv,squat,weight_reps,exact/normalised,keep,22,23,,,TRUE
+162,Deadlift,Back,,Conventional Deadlift,02_glutes.csv,hinge,weight_reps,alias,rename,18,32,#33,,TRUE
+201,Incline Barbell Bench Press,Chest,,Incline Barbell Press,06_chest.csv,push_h,weight_reps,alias-manual,rename,18,32,#33,,TRUE
+102,Romanian Deadlift,Legs,,Romanian Deadlift,03_hamstrings.csv,hinge,weight_reps,exact/normalised,keep,18,19,,,TRUE
+222,Shoulder Curl,Shoulders,,,,,,no-trainer-equivalent,keep as legacy,17,22,#38,curl-to-press combo; catalog models both halves separately. Mapping to either half corrupts e1RM on both (ADR-023). Import as legacy.,
+98,Straight-Arm Cable Pushdown,Back,,Straight-Arm Pulldown,07_back.csv,pull_v,weight_reps,alias,rename,17,40,#33,,TRUE
+225,Leg Extension Machine,Legs,,Leg Extension,01_quads.csv,isolation,weight_reps,token-set,rename,13,20,#33,,TRUE
+229,Hip Abduction,Legs,,Machine Hip Abduction,05_hips.csv,isolation,weight_reps,token-set,rename,12,12,#33,,TRUE
+234,Hip Adduction,Legs,,Machine Hip Adduction,05_hips.csv,isolation,weight_reps,token-set,rename,12,12,#33,,TRUE
+230,Cable Crossover - Abs,Abs,cable-crunch,,,,,judgement,rename,11,117,#38,confirmed by athlete: it is a cable crunch,TRUE
+176,Barbell Glute Bridge,Legs,,Glute Bridge,02_glutes.csv,hinge,reps_only,alias-manual,rename,9,15,#33,,TRUE
+245,Cable Crossover - Under,Chest,,Low-to-High Cable Fly,06_chest.csv,push_h,weight_reps,alias-manual,rename,9,27,#33,,TRUE
+210,Cable Curl,Biceps,,Cable Curl,09_biceps.csv,isolation,weight_reps,exact/normalised,keep,9,9,,,TRUE
+237,Tibialis Extension,Legs,,Tibialis Raise,04_calves.csv,isolation,reps_only,alias,rename,9,10,#33,,TRUE
+232,Bulgarian Split Hinge,Legs,b-stance-romanian-deadlift,,,,,judgement,rename,8,8,#38,"hinged split stance, posterior chain: hinge not squat",TRUE
+239,Seated Leg Curl Machine,Legs,,Seated Leg Curl,03_hamstrings.csv,isolation,weight_reps,token-set,rename,7,9,#33,,TRUE
+235,Sissy Squat,Legs,,Sissy Squat,01_quads.csv,isolation,reps_only,exact/normalised,keep,7,19,,,TRUE
+211,Hanging Knee Raise,Abs,,Hanging Knee Raise,11_core.csv,core,reps_only,exact/normalised,keep,6,55,,,TRUE
+240,Parallel Bar Triceps Dip,Triceps,,Triceps Dip,10_triceps.csv,push_h,reps_only,alias-manual,rename,6,7,#33,,TRUE
+231,Push Up,Chest,,Push-Up,06_chest.csv,push_h,reps_only,exact/normalised,keep,6,22,,,TRUE
+223,Belt Squat,Legs,,Belt Squat,01_quads.csv,squat,weight_reps,exact/normalised,keep,5,5,,,TRUE
+194,Cable Crossover,Chest,,Cable Fly,06_chest.csv,push_h,weight_reps,alias,rename,5,22,#33,,TRUE
+139,Crunch,Abs,,Crunch,11_core.csv,core,reps_only,exact/normalised,keep,5,26,,,TRUE
+228,Seated Calf Raise Machine,Legs,,Seated Calf Raise,04_calves.csv,isolation,weight_reps,token-set,rename,5,5,#33,,TRUE
+203,Barbell Calf Raise,Legs,,Barbell Standing Calf Raise,04_calves.csv,isolation,weight_reps,exact/normalised,rename,4,5,#25,"was mapped to Standing Calf Raise, a calf_machine row: wrong implement for a barbell movement. Row authored rather than approximated.",TRUE
+125,Dumbbell Overhead Triceps Extension,Triceps,,Dumbbell Overhead Triceps Extension,10_triceps.csv,isolation,weight_reps,exact/normalised,keep,4,4,,,TRUE
+156,Dumbbell Row,Back,,Single-Arm Dumbbell Row,07_back.csv,pull_h,weight_reps,alias-manual,rename,4,10,#33,,TRUE
+238,Front Barbell (Dumbell) Raise,Shoulders,dumbbell-front-raise,,,,,judgement,rename,4,9,#38,either implement; no barbell variant in catalog,TRUE
+114,Pull Up,Back,,Pull-Up,07_back.csv,pull_v,reps_only,exact/normalised,keep,4,24,,,TRUE
+219,Rear Dealt Barbell Raise,Shoulders,prone-incline-rear-delt-raise,,,,,judgement,rename,4,7,#38,standing hip-hinged in practice; incline version equivalent,TRUE
+217,Ab-Wheel Rollout,Abs,,Ab Wheel Rollout,11_core.csv,core,reps_only,exact/normalised,keep,3,18,,,TRUE
+244,Barbell Tricep Extension,Triceps,ez-bar-overhead-extension,,,,,judgement,rename,3,18,#38,overhead position,TRUE
+181,Lying Triceps Extension,Triceps,ez-bar-skullcrusher,,,,,judgement,rename,3,3,#38,"lying position; same motion, skullcrusher by definition",FALSE
+208,Chin Up,Back,,Chin-Up,07_back.csv,pull_v,reps_only,exact/normalised,keep,2,7,,,TRUE
+202,EZ-Bar Skullcrusher,Triceps,,EZ-Bar Skullcrusher,10_triceps.csv,isolation,weight_reps,exact/normalised,keep,2,2,,,TRUE
+159,Plank,Abs,,Plank,11_core.csv,core,time,exact/normalised,keep,2,13,,,TRUE
+242,Dumbell Lunge,Legs,reverse-lunge,,,,,judgement,rename,1,7,#38,variants interchangeable for this athlete,TRUE
+130,Rowing Machine,Cardio,,Rowing Machine,13_conditioning.csv,monostructural,time,alias,rename,1,1,#33,,TRUE
+135,Side Plank,Abs,,Side Plank,11_core.csv,core,time,exact/normalised,keep,1,3,,,TRUE
+166,Arnold Dumbbell Press,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,,
+161,Barbell Box Squat,Legs,,,,,,unmatched,REVIEW,0,0,#33,,
+136,Barbell Front Squat,Legs,,,,,,unmatched,REVIEW,0,0,#33,,
+196,Barbell Lunge,Legs,,,,,,unmatched,REVIEW,0,0,#33,,
+188,Barbell Pause Squat,Legs,,,,,,unmatched,REVIEW,0,0,#33,,
+185,Barbell Preacher Curl,Biceps,,,,,,unmatched,REVIEW,0,0,#33,,
+147,Barbell Shrug,Back,,Barbell Shrug,07_back.csv,isolation,weight_reps,exact/normalised,keep,0,0,,,TRUE
+175,Barbell Skullcrusher,Triceps,,,,,,unmatched,REVIEW,0,0,#33,,
+104,Behind The Neck Barbell Press,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,,
+146,Bent Over Lateral Raise,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,,
+100,Box Jumps,Cardio,,Box Jump,12_fullbody.csv,explosive,reps_only,alias,rename,0,0,#33,,TRUE
+133,Burpees,Cardio,,,,,,no-trainer-equivalent,keep as legacy,0,0,#33,,
+165,Cable Crunch,Abs,,Cable Crunch,11_core.csv,core,weight_reps,exact/normalised,keep,0,0,,,FALSE
+118,Cable Face Pull,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,,
+137,Clean,Legs,,,,,,unmatched,REVIEW,0,0,#33,,
+115,Clean And Jerk,Shoulders,,Clean and Jerk,12_fullbody.csv,explosive,weight_reps,exact/normalised,keep,0,0,,,TRUE
+160,Close Grip Barbell Bench Press,Triceps,,Close-Grip Bench Press,10_triceps.csv,push_h,weight_reps,alias-manual,rename,0,0,#33,,TRUE
+220,Crunch Machine,Abs,,Machine Crunch,11_core.csv,core,weight_reps,alias,rename,0,0,#33,,TRUE
+227,Cycling,Cardio,,Cycling - Outdoor,13_conditioning.csv,monostructural,time,alias,rename,0,0,#33,,FALSE
+110,Cycling (Indoor),Cardio,,Cycling - Stationary Bike,13_conditioning.csv,monostructural,time,alias,rename,0,0,#33,,FALSE
+179,Cycling (Outdoor),Cardio,,Cycling - Outdoor,13_conditioning.csv,monostructural,time,alias,rename,0,0,#33,,TRUE
+173,Decline Barbell Bench Press,Chest,,Decline Barbell Press,06_chest.csv,push_h,weight_reps,alias-manual,rename,0,0,#33,,TRUE
+117,Decline Crunch,Abs,,,,,,unmatched,REVIEW,0,0,#33,,
+214,Decline Hammer Strength Chest Press,Chest,,,,,,unmatched,REVIEW,0,0,#33,,
+170,Deficit Deadlift,Legs,,,,,,unmatched,REVIEW,0,0,#33,,
+190,Diamond Pushup,Triceps,,Diamond Push-Up,10_triceps.csv,push_h,reps_only,exact/normalised,keep,0,0,,,TRUE
+236,Donkey Calf Raise,Legs,,,,,,unmatched,REVIEW,0,0,#33,,
+233,Dragon Flag,Abs,,,,,,unmatched,REVIEW,0,0,#33,,
+134,Dumbbell Concentration Curl,Biceps,,,,,,unmatched,REVIEW,0,0,#33,,
+116,Dumbbell Hammer Curl,Biceps,,Dumbbell Hammer Curl,09_biceps.csv,isolation,weight_reps,exact/normalised,keep,0,0,,,TRUE
+119,Dumbbell Lunge,Legs,,,,,,unmatched,REVIEW,0,0,#33,,
+111,Dumbbell Preacher Curl,Biceps,,,,,,unmatched,REVIEW,0,0,#33,,
+216,EZ-Bar Curl,Biceps,,EZ-Bar Curl,09_biceps.csv,isolation,weight_reps,exact/normalised,keep,0,0,,,TRUE
+158,EZ-Bar Preacher Curl,Biceps,,EZ-Bar Preacher Curl,09_biceps.csv,isolation,weight_reps,exact/normalised,keep,0,0,,,TRUE
+124,Elliptical Trainer,Cardio,,Elliptical Trainer,13_conditioning.csv,monostructural,time,alias,rename,0,0,#33,,TRUE
+106,Flat Dumbbell Bench Press,Chest,,Dumbbell Bench Press,06_chest.csv,push_h,weight_reps,alias-manual,rename,0,0,#33,,TRUE
+123,Flat Dumbbell Fly,Chest,,,,,,unmatched,REVIEW,0,0,#33,,
+151,Front Dumbbell Raise,Shoulders,,Dumbbell Front Raise,08_shoulders.csv,isolation,weight_reps,token-set,rename,0,0,#33,,FALSE
+150,Glute-Ham Raise,Legs,,Glute-Ham Raise,03_hamstrings.csv,isolation,reps_only,exact/normalised,keep,0,0,,,TRUE
+167,Good Morning,Back,,,,,,unmatched,REVIEW,0,0,#33,,
+105,Hammer Strength Row,Back,,Machine Row,07_back.csv,pull_h,weight_reps,alias,rename,0,0,#33,,TRUE
+198,Hammer Strength Shoulder Press,Shoulders,,Machine Shoulder Press,08_shoulders.csv,push_v,weight_reps,exact/normalised,keep,0,0,,,TRUE
+186,Hanging Leg Raise,Abs,,Hanging Leg Raise,11_core.csv,core,reps_only,exact/normalised,keep,0,0,,,TRUE
+148,Incline Dumbbell Bench Press,Chest,,Incline Dumbbell Press,06_chest.csv,push_h,weight_reps,alias-manual,rename,0,0,#33,,TRUE
+99,Incline Dumbbell Fly,Chest,,,,,,unmatched,REVIEW,0,0,#33,,
+142,Incline Hammer Strength Chest Press,Chest,,,,,,unmatched,REVIEW,0,0,#33,,
+241,Jump Rope,Cardio,,Jump Rope,13_conditioning.csv,monostructural,time,alias,rename,0,0,#33,,TRUE
+121,Lateral Machine Raise,Shoulders,,Machine Lateral Raise,08_shoulders.csv,isolation,weight_reps,token-set,rename,0,0,#33,,TRUE
+226,Laying Dumbell Curl,Biceps,,,,,,unmatched,REVIEW,0,1,#33,,
+155,Leg Extension,Legs,,Leg Extension,01_quads.csv,isolation,weight_reps,exact/normalised,keep,0,0,,,FALSE
+180,Leg Press,Legs,,Leg Press,01_quads.csv,squat,weight_reps,exact/normalised,keep,0,0,,,TRUE
+212,Log Press,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,,
+126,Lying Leg Curl,Legs,,Lying Leg Curl,03_hamstrings.csv,isolation,weight_reps,exact/normalised,keep,0,0,,,TRUE
+221,Lying Leg Curl Machine,Legs,,Lying Leg Curl,03_hamstrings.csv,isolation,weight_reps,token-set,rename,0,0,#33,,FALSE
+224,Machine Shrug,Back,,,,,,unmatched,REVIEW,0,0,#33,,
+183,Neutral Chin Up,Back,,Neutral-Grip Pull-Up,07_back.csv,pull_v,reps_only,alias,rename,0,0,#33,,TRUE
+129,Neutral Grip Flat Dumbbell Bench Press,Chest,,,,,,no-trainer-equivalent,keep as legacy,0,0,#33,,
+140,One-Arm Standing Dumbbell Press,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,,
+206,Parallel Bar Triceps Dips,Triceps,,Triceps Dip,10_triceps.csv,push_h,reps_only,alias-manual,rename,0,0,#33,,FALSE
+103,Pendlay Row,Back,,Pendlay Row,07_back.csv,pull_h,weight_reps,exact/normalised,keep,0,0,,,TRUE
+184,Power Clean,Legs,,Power Clean,12_fullbody.csv,explosive,weight_reps,exact/normalised,keep,0,0,,,TRUE
+157,Power Snatch,Back,,Power Snatch,12_fullbody.csv,explosive,weight_reps,exact/normalised,keep,0,0,,,TRUE
+127,Push Press,Shoulders,,Push Press,08_shoulders.csv,push_v,weight_reps,exact/normalised,keep,0,0,,,TRUE
+215,Pushup,Chest,,Push-Up,06_chest.csv,push_h,reps_only,exact/normalised,keep,0,0,,,FALSE
+193,Rack Pull,Back,,Rack Pull,02_glutes.csv,hinge,weight_reps,exact/normalised,keep,0,0,,,TRUE
+97,Rear Delt Dumbbell Raise,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,,
+192,Rear Delt Machine Fly,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,,
+143,Reverse Barbell Curl,Biceps,,,,,,unmatched,REVIEW,0,0,#33,,
+168,Reverse Barbell Lunge,Legs,,,,,,unmatched,REVIEW,0,0,#33,,
+243,Ring Dip,Triceps,,,,,,unmatched,REVIEW,0,0,#33,,
+101,Ring Dips,Triceps,,,,,,unmatched,REVIEW,0,0,#33,,
+154,Rope Push Down,Triceps,,,,,,unmatched,REVIEW,0,0,#33,,
+149,Running (Outdoor),Cardio,,Running - Outdoor,13_conditioning.csv,monostructural,time,alias,rename,0,0,#33,,TRUE
+174,Running (Treadmill),Cardio,,Running - Treadmill,13_conditioning.csv,monostructural,time,alias,rename,0,1,#33,,TRUE
+141,Safety Bar Squat,Legs,,Safety Bar Squat,01_quads.csv,squat,weight_reps,exact/normalised,keep,0,0,,,TRUE
+204,Seated Barbell Press,Shoulders,,Seated Barbell Overhead Press,08_shoulders.csv,push_v,weight_reps,alias-manual,rename,0,0,#33,,TRUE
+120,Seated Calf Raise,Legs,,Seated Calf Raise,04_calves.csv,isolation,weight_reps,exact/normalised,keep,0,0,,,FALSE
+171,Seated Dumbbell Lateral Raise,Shoulders,,Dumbbell Lateral Raise,08_shoulders.csv,isolation,weight_reps,alias-manual,rename,0,0,#33,,FALSE
+182,Seated Dumbbell Press,Shoulders,,Seated Dumbbell Press,08_shoulders.csv,push_v,weight_reps,exact/normalised,keep,0,0,,,TRUE
+164,Seated Incline Dumbbell Curl,Biceps,,Incline Dumbbell Curl,09_biceps.csv,isolation,weight_reps,alias-manual,rename,0,0,#33,,TRUE
+131,Seated Leg Curl,Legs,,Seated Leg Curl,03_hamstrings.csv,isolation,weight_reps,exact/normalised,keep,0,0,,,FALSE
+138,Seated Machine Curl,Biceps,,,,,,unmatched,REVIEW,0,0,#33,,
+189,Seated Machine Fly,Chest,,,,,,unmatched,REVIEW,0,0,#33,,
+169,Smith Machine Close Grip Bench Press,Triceps,,Smith Machine Close-Grip Press,10_triceps.csv,push_h,weight_reps,alias-manual,rename,0,0,#33,,TRUE
+187,Smith Machine Overhead Press,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,,
+122,Smith Machine Shrug,Shoulders,,,,,,unmatched,REVIEW,0,0,#33,,
+209,Snatch,Back,,Snatch,12_fullbody.csv,explosive,weight_reps,exact/normalised,keep,0,0,,,TRUE
+113,Split Squat,Legs,,Split Squat,01_quads.csv,squat,weight_reps,exact/normalised,keep,0,0,,,TRUE
+108,Standing Calf Raise,Legs,,Standing Calf Raise,04_calves.csv,isolation,weight_reps,exact/normalised,keep,0,0,,,TRUE
+218,Standing Calf Raise Machine,Legs,,Standing Calf Raise,04_calves.csv,isolation,weight_reps,token-set,rename,0,0,#33,,FALSE
+163,Standing Dumbbell Press,Shoulders,,Standing Dumbbell Press,08_shoulders.csv,push_v,weight_reps,exact/normalised,keep,0,0,,,TRUE
+107,Stationary Bike,Cardio,,Cycling - Stationary Bike,13_conditioning.csv,monostructural,time,alias,rename,0,0,#33,,TRUE
+197,Stiff-Legged Deadlift,Legs,,,,,,unmatched,REVIEW,0,0,#33,,
+145,Sumo Deadlift,Legs,,Sumo Deadlift,02_glutes.csv,hinge,weight_reps,exact/normalised,keep,0,0,,,TRUE
+200,Swimming,Cardio,,,,,,no-trainer-equivalent,keep as legacy,0,0,#33,,
+172,T-Bar Row,Back,,T-Bar Row,07_back.csv,pull_h,weight_reps,exact/normalised,keep,0,0,,,TRUE
+152,Upright Row,Shoulders,,Upright Row,08_shoulders.csv,pull_v,weight_reps,exact/normalised,keep,0,0,,,TRUE
+112,V-Bar Push Down,Triceps,,,,,,unmatched,REVIEW,0,0,#33,,
+153,Walking,Cardio,,Walking,13_conditioning.csv,monostructural,time,alias,rename,0,0,#33,,TRUE
+177,Yates Row,Back,,Underhand Barbell Row,07_back.csv,pull_h,weight_reps,alias,rename,0,0,#33,,TRUE
