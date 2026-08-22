@@ -3,6 +3,9 @@
  * No clock reads, no Math.random, no I/O. ADR-002.
  */
 import { assertCoverage } from './coverage.js';
+// schedule.js owns weekday logic and is the ONE definition of a valid weekday.
+// Re-checking the rules here is how two copies drift apart (#25).
+import { chooseTrainingDays } from './schedule.js';
 import * as loadDomain from './loadDomain.js';
 import * as intervalDomain from './intervalDomain.js';
 
@@ -76,6 +79,13 @@ export function generate(request, defs) {
 
   return {
     schemaVersion: defs.schemaVersion ?? 1,
+    // The RESOLVED training days, chosen from availability for maximum recovery
+    // spacing. Carried so the export layer can turn an ordered sequence into
+    // concrete dates (#25). Null when no availability was given: the engine
+    // never invents a schedule, and ADR-002 forbids it reading a clock.
+    schedule: request.availableDays
+      ? chooseTrainingDays(request.availableDays, request.daysPerWeek)
+      : null,
     styleId: style.id,
     splitId: split.id,
     domain: style.domain,
@@ -122,6 +132,22 @@ function validateRequest(request, defs) {
   if (!defs.equipment.some((p) => p.id === request.equipmentProfile)) throw new RequestError(`unknown equipmentProfile: ${request.equipmentProfile}`);
   if (!(request.blockWeeks >= 1 && request.blockWeeks <= 12)) throw new RequestError('blockWeeks must be 1-12');
   if (!(request.daysPerWeek >= 1 && request.daysPerWeek <= 7)) throw new RequestError('daysPerWeek must be 1-7');
+
+  // OPTIONAL, and availability is NOT frequency. `availableDays` is when the
+  // athlete COULD train; `daysPerWeek` is how many sessions they want. Both are
+  // true at once, and conflating them made the athlete solve the spacing puzzle
+  // by hand. When present, the engine picks the best-spaced subset.
+  //
+  // Absent means the program carries no weekdays, so #25 cannot compute dates
+  // for it - a missing capability rather than a fault. Every caller written
+  // before this field existed omits it and must keep working.
+  if (request.availableDays !== undefined) {
+    try {
+      chooseTrainingDays(request.availableDays, request.daysPerWeek);
+    } catch (err) {
+      throw new RequestError(`availableDays: ${err.message}`);
+    }
+  }
   if (request.exerciseCount !== undefined &&
       !(Number.isInteger(request.exerciseCount) && request.exerciseCount >= 1 && request.exerciseCount <= 14)) {
     throw new RequestError('exerciseCount must be an integer 1-14 when provided');
