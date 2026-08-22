@@ -33,7 +33,7 @@ fitnotes_id,fitnotes_name,fitnotes_category,trainer_id,trainer_name,trainer_file
 194,Cable Crossover,Chest,,Cable Fly,06_chest.csv,push_h,weight_reps,alias,rename,5,22,#33,
 139,Crunch,Abs,,Crunch,11_core.csv,core,reps_only,exact/normalised,keep,5,26,,
 228,Seated Calf Raise Machine,Legs,,Seated Calf Raise,04_calves.csv,isolation,weight_reps,token-set,rename,5,5,#33,
-203,Barbell Calf Raise,Legs,,Standing Calf Raise,04_calves.csv,isolation,weight_reps,alias-manual,rename,4,5,#33,
+203,Barbell Calf Raise,Legs,,Barbell Standing Calf Raise,04_calves.csv,isolation,weight_reps,exact/normalised,rename,4,5,#25,"was mapped to Standing Calf Raise, a calf_machine row: wrong implement for a barbell movement. Row authored rather than approximated."
 125,Dumbbell Overhead Triceps Extension,Triceps,,Dumbbell Overhead Triceps Extension,10_triceps.csv,isolation,weight_reps,exact/normalised,keep,4,4,,
 156,Dumbbell Row,Back,,Single-Arm Dumbbell Row,07_back.csv,pull_h,weight_reps,alias-manual,rename,4,10,#33,
 238,Front Barbell (Dumbell) Raise,Shoulders,dumbbell-front-raise,,,,,judgement,rename,4,9,#38,either implement; no barbell variant in catalog

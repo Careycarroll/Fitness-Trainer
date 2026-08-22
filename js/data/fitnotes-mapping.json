@@ -747,8 +747,8 @@
     {
       "fitnotesId": 203,
       "fitnotesName": "Barbell Calf Raise",
-      "exerciseId": "standing-calf-raise",
-      "tier": "alias-manual",
+      "exerciseId": "barbell-standing-calf-raise",
+      "tier": "exact/normalised",
       "completedSets": 4
     },
     {

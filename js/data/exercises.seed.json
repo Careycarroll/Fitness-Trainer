@@ -2704,6 +2704,39 @@
       "sourceFile": "04_calves.csv"
     },
     {
+      "id": "barbell-standing-calf-raise",
+      "name": "Barbell Standing Calf Raise",
+      "pattern": "isolation",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "box"
+      ],
+      "primaryMuscles": [
+        "calves"
+      ],
+      "secondaryMuscles": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "standing_calf_raise",
+      "jointLoad": [],
+      "emphasis": "stretch_bias",
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "04_calves.csv"
+    },
+    {
       "id": "smith-machine-calf-raise",
       "name": "Smith Machine Calf Raise",
       "pattern": "isolation",
