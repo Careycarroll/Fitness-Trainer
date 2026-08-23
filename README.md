@@ -21,7 +21,7 @@ npm run build     # validate, then create the production PWA build
 js/
   data/       generated catalog and other schema-validated definitions
   engine/     deterministic rules engine — pure functions, no I/O
-  storage/    IndexedDB layer — gated to M7; see ADR-011
+  storage/    IndexedDB persistence, JSON backup, FitNotes import and export
   ui/         planner interaction and rendering; no planning logic
   SPEC.md     authoritative schema contract; read before touching data
 
@@ -63,7 +63,7 @@ Control flow, safety gates, and validators never become data. A dropped key in J
 | M4 Full catalog integrated with the engine | done |
 | M5 Planner UI | done — audited, not merely shipped |
 | M6 Conditioning expansion and catalog alignment | done — 16 issues closed; ADR-028/029/030 remain PROPOSED |
-| M7 Persistence and FitNotes interoperability | **in progress** — gate passed; import and export remain |
+| M7 Persistence and FitNotes interoperability | **in progress** — persistence, import and export all shipped |
 
 Verified on the current `main` branch:
 
@@ -169,7 +169,51 @@ The M5 audit found only 19 time-scored rows, none for `hinge`, `push_h`, `push_v
 
 One thin spot remains by design: authored time-scored `hinge` rows are still a pool of one, tracked with the catalog rather than blocking the milestone.
 
-M7 shipped IndexedDB persistence and versioned JSON export/import together, as ADR-011 requires (#35, #11, #12). Remaining: local import of completed FitNotes history (#24), dated plan export to FitNotes 2 CSV (#25), and the equipment profile editor (#8).
+M7 shipped IndexedDB persistence and versioned JSON export/import together, as
+ADR-011 requires (#35, #11, #12), then the FitNotes round trip: local import of
+completed history (#24), and dated plan export to FitNotes 2 CSV (#25).
+
+Remaining: the equipment profile editor (#8), day-level notes (#50), a
+silent-session-reduction bug (#51), and round-trip verification (#36), which was
+blocked on the export and is now unblocked.
+
+### What the FitNotes work established
+
+Every one of these was measured against the athlete's own export rather than
+assumed, and several corrected an earlier guess:
+
+- **The `.fitnotes` file is a raw SQLite database.** `js/storage/sqlite.js` is a
+  hand-rolled read-only reader, verified bit-exact against the `sqlite3` CLI:
+  1323 rows, 0 value mismatches. Two real bugs in it were found by a synthetic
+  fixture built to be awkward, not by the real file, which is too simple to
+  exercise overflow pages or a multi-leaf b-tree.
+- **The basic CSV export cannot be the import path.** It carries exercise names
+  with no numeric id and no completion flag, and exports all 1323 rows.
+- **Weights arrive already converted.** `training_log.metric_weight` is always
+  kilograms; the athlete logs pounds. The importer reverses it, using FitNotes'
+  own factor of 0.453592 rather than the international 0.45359237.
+- **The `unit` column is not decoded.** It holds 2 on every completed row and
+  `MeasurementUnit` does not map it, so the unit is derived empirically and
+  asserted: 706 weighted rows all reverse to a clean 0.25 lb step, none to a
+  kilogram step.
+- **Notes live in a separate `Comment` table**, not on `training_log`. An earlier
+  revision concluded from the missing column that notes could not exist and
+  discarded three of the athlete's own annotations on every import.
+- **`training_log._id` is not stable.** Adding two sets renumbered every later
+  row. The record id is derived from `{exerciseId}:{date}:{setIndex}` and never
+  touches it.
+- **CSV import always lands `is_complete = 1`**, across every row shape tried,
+  and **auto-creates exercises** that do not yet exist. So an exported plan is
+  indistinguishable from performed work, which is why the export writes marker
+  rows with zero reps: a row with no reps cannot feed ADR-023's e1RM.
+
+### Known stale claim
+
+`data/fitnotes/README.md` states that in every many-to-one mapping group at most
+one source carries completed sets. That was true of the August export and is not
+true now: `ez-bar-skullcrusher` has two populated sources, 3 sets and 2. The
+merge-safety argument in that file needs correcting, and it is exactly the
+re-check the file itself said would be needed.
 
 ADR-031 draws the boundary those depend on — this app is a planner, FitNotes is the system of record for performed work. There is no in-app set logger, imported history is replaced in full on each import rather than merged, and no raw FitNotes database is ever retained. `docs/INTERCHANGE.md` specifies the formats.
 
