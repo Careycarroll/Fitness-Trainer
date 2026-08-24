@@ -14,7 +14,8 @@
  * gate exists to catch is a field that survives generation but not a round
  * trip.
  */
-import { validateProfile, putProfile, removeProfile } from '../js/storage/state.js';
+import { validateProfile, putProfile, removeProfile,
+  replaceImportedDayNotes, putSessionNote, notesForDate } from '../js/storage/state.js';
 import { STORES } from '../js/storage/db.js';
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
@@ -438,7 +439,12 @@ describe('ADR-031 retention rules', () => {
     // to justify itself here.
     assert.deepEqual(
       Object.keys(emptyState()).sort(),
-      ['equipmentProfiles', 'exerciseMax', 'importedSets', 'meta', 'plans', 'version']
+      // #50 adds two date-keyed text slices. `importedDayNotes` is FitNotes'
+      // data, replaced wholesale per import like importedSets; `sessionNotes` is
+      // authored by the app and durable like plans. Neither is a raw FitNotes
+      // database, which is what ruling 3 excludes.
+      ['equipmentProfiles', 'exerciseMax', 'importedDayNotes', 'importedSets',
+       'meta', 'plans', 'sessionNotes', 'version']
     );
   });
 
@@ -595,5 +601,60 @@ describe('every store round-trips through save/load (#8)', () => {
     const keys = Object.keys(emptyState()).filter((k) => k !== 'version').sort();
     assert.deepEqual(keys, [...STORES].sort(),
       'a state key with no store is silently never persisted');
+  });
+});
+
+describe('day-level notes live in two slices (#50)', () => {
+  const withNotes = () => replaceImportedDayNotes(emptyState(), [
+    { date: '2024-03-02', note: 'Go up 10lbs on row / Keep shoulder press at 75lbs' }
+  ]);
+
+  test('an import REPLACES imported notes but never authored ones', () => {
+    // The whole reason these are two slices. Imported notes are FitNotes' data
+    // and replaceable (ADR-031 ruling 2); a session instruction the app wrote is
+    // the only copy. One store would mean every import destroyed the athlete's
+    // own writing.
+    let s = putSessionNote(withNotes(), '2026-09-07', 'Deload week — leave the top set');
+    s = replaceImportedDayNotes(s, [{ date: '2025-01-01', note: 'different import' }]);
+
+    assert.equal(s.importedDayNotes.length, 1);
+    assert.equal(s.importedDayNotes[0].date, '2025-01-01', 'imported notes are replaced wholesale');
+    assert.equal(notesForDate(s, '2026-09-07').authored, 'Deload week — leave the top set',
+      'an import must not touch an authored note');
+  });
+
+  test('both notes can exist on one date and stay distinguishable', () => {
+    const s = putSessionNote(withNotes(), '2024-03-02', 'my own note');
+    const both = notesForDate(s, '2024-03-02');
+    assert.match(both.imported, /Go up 10lbs/);
+    assert.equal(both.authored, 'my own note');
+  });
+
+  test('an empty note clears rather than storing blank text', () => {
+    let s = putSessionNote(emptyState(), '2026-09-07', 'temporary');
+    s = putSessionNote(s, '2026-09-07', '   ');
+    assert.equal(s.sessionNotes.length, 0);
+    assert.equal(notesForDate(s, '2026-09-07').authored, null);
+  });
+
+  test('a malformed date is refused rather than stored unreachably', () => {
+    // A note on a date no set can share would display against nothing.
+    assert.throws(() => putSessionNote(emptyState(), '02/03/2024', 'x'), /YYYY-MM-DD/);
+    assert.throws(() => replaceImportedDayNotes(emptyState(), [{ date: 'nope', note: 'x' }]),
+      /YYYY-MM-DD/);
+  });
+
+  test('notes survive export -> import (ADR-011)', () => {
+    const s = putSessionNote(withNotes(), '2026-09-07', 'mine');
+    const round = fromImportJSON(toExportJSON(s));
+    assert.deepEqual(round.importedDayNotes, s.importedDayNotes);
+    assert.deepEqual(round.sessionNotes, s.sessionNotes);
+  });
+
+  test('nothing parses the text (ADR-002)', () => {
+    // A note is displayed, never interpreted. Stored verbatim including the
+    // characters a parser would be tempted by.
+    const raw = '3x5 @ 80% — if RPE > 8, stop. #deload';
+    assert.equal(notesForDate(putSessionNote(emptyState(), '2026-09-07', raw), '2026-09-07').authored, raw);
   });
 });

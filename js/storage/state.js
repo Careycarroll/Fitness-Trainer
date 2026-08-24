@@ -31,7 +31,7 @@
  */
 
 /** Stored-record schema. Bumping this requires a migration below and a MIGRATIONS.md entry. */
-export const STATE_VERSION = 2;
+export const STATE_VERSION = 3;
 
 /** Export envelope format. Moves with STATE_VERSION; kept separate because they need not. */
 export const EXPORT_FORMAT = 1;
@@ -54,7 +54,17 @@ export function emptyState() {
     // js/data/equipment.json and are NOT copied here -- storing them would fork
     // the catalog's own data into user state, where a later fix to a shipped
     // profile could never reach it.
-    equipmentProfiles: []
+    equipmentProfiles: [],
+    // #50. TWO slices, deliberately not one.
+    //
+    // `importedDayNotes` is FitNotes' data and is replaced wholesale on every
+    // import, exactly like importedSets (ADR-031 ruling 2).
+    //
+    // `sessionNotes` is the app's own output -- an instruction written for a
+    // session, durable, the only copy. Sharing one store would mean every
+    // import destroyed the athlete's own writing.
+    importedDayNotes: [],
+    sessionNotes: []
   };
 }
 
@@ -137,6 +147,43 @@ export function replaceImportedSets(state, sets, importedAt) {
  * that exercise rather than overwriting it, so the history of estimates
  * survives a replacement import.
  */
+/** Replace imported day notes wholesale, mirroring replaceImportedSets. */
+export function replaceImportedDayNotes(state, notes) {
+  if (!Array.isArray(notes)) throw new StateError('replaceImportedDayNotes: notes must be an array');
+  for (const [i, n] of notes.entries()) {
+    if (!n || typeof n !== 'object') throw new StateError(`importedDayNotes[${i}]: must be an object`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(n.date ?? '')) {
+      throw new StateError(`importedDayNotes[${i}]: date must be YYYY-MM-DD`);
+    }
+    if (typeof n.note !== 'string' || !n.note) {
+      throw new StateError(`importedDayNotes[${i}]: note must be a non-empty string`);
+    }
+  }
+  return { ...state, importedDayNotes: notes.map(canonical) };
+}
+
+/**
+ * Set or clear the app's own note for a date. Authored state: durable, and
+ * never touched by an import.
+ */
+export function putSessionNote(state, date, note) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date ?? '')) {
+    throw new StateError('putSessionNote: date must be YYYY-MM-DD');
+  }
+  const rest = state.sessionNotes.filter((n) => n.date !== date);
+  const text = typeof note === 'string' ? note.trim() : '';
+  const next = text ? [...rest, { date, note: text }] : rest;
+  return { ...state, sessionNotes: next.sort((a, b) => (a.date < b.date ? -1 : 1)) };
+}
+
+/** Both notes for a date, kept apart so the UI can say which is which. */
+export function notesForDate(state, date) {
+  return {
+    imported: state.importedDayNotes.find((n) => n.date === date)?.note ?? null,
+    authored: state.sessionNotes.find((n) => n.date === date)?.note ?? null
+  };
+}
+
 export function appendExerciseMax(state, row) {
   if (!row || typeof row !== 'object') throw new StateError('appendExerciseMax: row must be an object');
   for (const field of ['id', 'exerciseId', 'e1rm', 'source', 'effectiveDate']) {
@@ -324,6 +371,14 @@ const MIGRATIONS = Object.freeze({
    * here still opens in a build that predates this.
    */
   1: (s) => ({ ...s, version: 2, equipmentProfiles: [] }),
+
+  /**
+   * 2 -> 3 (#50): day-level notes, in two slices.
+   *
+   * Additive. Imported notes arrive with the next import; authored ones start
+   * empty. Nothing existing is reinterpreted.
+   */
+  2: (s) => ({ ...s, version: 3, importedDayNotes: [], sessionNotes: [] }),
 });
 
 /**
@@ -425,7 +480,8 @@ export function validate(state) {
   if (!state.meta || typeof state.meta !== 'object') throw new StateError('validate: meta must be an object');
   if (!('lastImportAt' in state.meta)) throw new StateError('validate: meta.lastImportAt missing');
 
-  for (const key of ['plans', 'importedSets', 'exerciseMax', 'equipmentProfiles']) {
+  for (const key of ['plans', 'importedSets', 'exerciseMax', 'equipmentProfiles',
+    'importedDayNotes', 'sessionNotes']) {
     if (!Array.isArray(state[key])) throw new StateError(`validate: ${key} must be an array`);
   }
 

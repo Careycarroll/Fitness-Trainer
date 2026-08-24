@@ -252,10 +252,16 @@ athlete's own annotations on every import.
 resolves to a real set, but the column exists to distinguish owner KINDS, so an
 unknown value is ignored rather than attached to whichever set shares its number.
 
-`WorkoutComment` is a separate DATE-level table and is deliberately **not**
-carried on the set record: its one row in the real export is coaching context for
-a whole day, and attaching it to an arbitrary set of that day would invent an
-association the source does not make.
+`WorkoutComment` is a separate DATE-level table and is **not** carried on the set
+record: attaching a note belonging to a whole day to an arbitrary set of that day
+would invent an association the source does not make.
+
+It **is** carried, on its own slice (#50). Imported notes land in
+`importedDayNotes` as `{date, note}` and are replaced wholesale per import like
+`importedSets`; notes the app authors live separately in `sessionNotes` and
+survive every import. This supersedes the earlier statement that the table was
+deliberately dropped — the reason it was dropped was that the set record had
+nowhere to put it, which is no longer true.
 
 ---
 

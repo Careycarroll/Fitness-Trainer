@@ -108,3 +108,24 @@ a shipped profile could never reach the copy.
 
 `db.js` needed no `upgrade()` case body: the loop creates any store named in
 `STORES` that does not exist yet.
+
+---
+
+## v2 -> v3 — day-level notes (#50)
+
+`STATE_VERSION` 2 -> 3, `DB_VERSION` 2 -> 3. `EXPORT_FORMAT` unchanged at 1.
+
+Adds `importedDayNotes: []` and `sessionNotes: []`, plus a store for each.
+
+**Migration:** `2: (s) => ({ ...s, version: 3, importedDayNotes: [], sessionNotes: [] })`.
+Additive — imported notes arrive with the next import, authored ones start empty.
+
+**Why two slices and not one.** `importedDayNotes` is FitNotes' data: replaced
+wholesale on every import, exactly like `importedSets` (ADR-031 ruling 2).
+`sessionNotes` is the app's own output — an instruction written for a session,
+durable, and the only copy. Sharing one store would mean every import destroyed
+the athlete's own writing. A test asserts an import leaves authored notes intact.
+
+Both are date-keyed `{date, note}` on a `YYYY-MM-DD` date, the same shape set
+records are validated against, so a note always joins to a day sets can share.
+Nothing parses the text (ADR-002): a note is displayed, never interpreted.

@@ -28,7 +28,8 @@ import { allSetGroups, setGroupAt } from '../engine/blocks.js';
 import * as db from '../storage/db.js';
 import {
   emptyState, putPlan, toExportJSON, fromImportJSON, toCSV, replaceImportedSets,
-  appendExerciseMax, currentMax, putProfile, removeProfile
+  appendExerciseMax, currentMax, putProfile, removeProfile,
+  replaceImportedDayNotes, notesForDate
 } from '../storage/state.js';
 import { toFitNotesCSV, planDates } from '../storage/fitnotes-export.js';
 import { SqliteFile } from '../storage/sqlite.js';
@@ -558,9 +559,10 @@ export function mount(root, defs) {
       `${s.imported} completed sets will be imported.`,
       `    ${s.resolved} matched to catalog exercises.`,
       `    ${s.unresolved} unmatched — kept and reviewable, but they do not feed progression.`,
+      ...(s.dayNotes ? [`${s.dayNotes} day ${s.dayNotes === 1 ? 'note' : 'notes'} carried across.`] : []),
       '',
       'This REPLACES all previously imported history.',
-      'Plans, settings and estimated maxes are untouched.',
+      'Plans, settings, estimated maxes and your own session notes are untouched.',
       '',
       'Continue?'
     ].join('\n'));
@@ -577,8 +579,14 @@ export function mount(root, defs) {
     // nothing repaints. That is exactly what happened on the first real import,
     // when one row carried an illegal distanceUnit. A failed import must SAY so.
     try {
-      const next = replaceImportedSets(
-        persisted ?? emptyState(), result.sets, new Date().toISOString()
+      // Sets and day notes in ONE state object, so ONE trySave writes both.
+      // Two saves could land sets without notes, leaving the two halves of a
+      // single import disagreeing with no way to tell (#50).
+      const next = replaceImportedDayNotes(
+        replaceImportedSets(
+          persisted ?? emptyState(), result.sets, new Date().toISOString()
+        ),
+        result.dayNotes
       );
 
       const { ok, error } = await db.trySave(next);
@@ -590,7 +598,8 @@ export function mount(root, defs) {
 
       persisted = next;
       importReview = result.review;
-      storageNote = `Imported ${s.imported} sets, ${s.resolved} matched.`;
+      storageNote = `Imported ${s.imported} sets, ${s.resolved} matched`
+        + (s.dayNotes ? `, ${s.dayNotes} day ${s.dayNotes === 1 ? 'note' : 'notes'}.` : '.');
     } catch (err) {
       // A row the validator refuses lands here. Nothing was written: trySave
       // validates before it opens a transaction.

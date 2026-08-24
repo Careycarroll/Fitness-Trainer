@@ -267,6 +267,37 @@ export function importFitNotes(db, mapping) {
   } catch {
     // No Comment table in this export. No notes, and nothing wrong.
   }
+  // DAY notes (#50). A separate table keyed on DATE, not on a set: one row per
+  // day, holding coaching context for the whole session -- "Go up 10lbs on row /
+  // Keep shoulder press at 75lbs" in the real export. Dropped until now because
+  // the set record has nowhere to put a note belonging to a day, and attaching
+  // it to an arbitrary set would invent an association the source does not make.
+  //
+  // Wrapped like Comment above: an export without the table has no day notes,
+  // which is a fact and not a fault.
+  //
+  // The date is FILTERED to the same YYYY-MM-DD shape set records are validated
+  // against. A note on a malformed date would attach to a day no set can share,
+  // so it would display against nothing.
+  const dayNotes = [];
+  try {
+    const seenDates = new Set();
+    for (const row of db.table('WorkoutComment')) {
+      const date = typeof row.date === 'string' ? row.date.slice(0, 10) : null;
+      if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
+      const comment = typeof row.comment === 'string' ? row.comment.trim() : '';
+      if (!comment) continue;
+      // One note per date. FitNotes' UI writes one; a duplicate would be a
+      // schema surprise, and keeping the first is stable under rowid order.
+      if (seenDates.has(date)) continue;
+      seenDates.add(date);
+      dayNotes.push({ date, note: comment });
+    }
+  } catch {
+    // No WorkoutComment table in this export.
+  }
+  dayNotes.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+
   const exercises = db.table('exercise');
 
   // Source names come from the DATABASE, not the manifest, so a row renamed
@@ -367,6 +398,7 @@ export function importFitNotes(db, mapping) {
   return {
     sets,
     review,
+    dayNotes,
     summary: {
       logRows: log.length,
       skippedIncomplete,
@@ -374,7 +406,8 @@ export function importFitNotes(db, mapping) {
       resolved,
       unresolved: sets.length - resolved,
       reviewExercises: review.length,
-      undecodedDistance
+      undecodedDistance,
+      dayNotes: dayNotes.length
     }
   };
 }

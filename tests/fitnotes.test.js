@@ -345,7 +345,10 @@ describe('unmapped exercises stay reviewable', () => {
       resolved: 1,
       unresolved: 1,
       reviewExercises: 1,
-      undecodedDistance: 0
+      undecodedDistance: 0,
+      // #50: this fixture's reader has no WorkoutComment table, which is the
+      // common case and must read as zero rather than as an error.
+      dayNotes: 0
     });
   });
 });
@@ -363,5 +366,54 @@ describe('malformed input is refused', () => {
     assert.throws(() => importFitNotes(
       reader([logRow({ exercise_id: null })], EXERCISES), mapping()
     ), ImportError);
+  });
+});
+
+describe('day notes are read, not dropped (#50)', () => {
+  const reader = (log, ex, dayNotes) => ({
+    table(name) {
+      if (name === 'training_log') return log;
+      if (name === 'exercise') return ex;
+      if (name === 'WorkoutComment') {
+        if (!dayNotes) throw new Error('no such table: WorkoutComment');
+        return dayNotes;
+      }
+      throw new Error(`no such table: ${name}`);
+    }
+  });
+
+  test('a WorkoutComment row becomes a dated note', () => {
+    const out = importFitNotes(reader([logRow({ _id: 1, exercise_id: 222 })], EXERCISES,
+      [{ date: '2024-03-02', comment: 'Go up 10lbs on row' }]), mapping());
+    assert.deepEqual(out.dayNotes, [{ date: '2024-03-02', note: 'Go up 10lbs on row' }]);
+    assert.equal(out.summary.dayNotes, 1);
+  });
+
+  test('an export with no WorkoutComment table is not an error', () => {
+    // Same rule as the Comment table: absent means no notes, not a fault.
+    const out = importFitNotes(reader([logRow({ _id: 1, exercise_id: 222 })], EXERCISES, null), mapping());
+    assert.deepEqual(out.dayNotes, []);
+  });
+
+  test('a malformed date or empty comment is skipped, not stored', () => {
+    const out = importFitNotes(reader([logRow({ _id: 1, exercise_id: 222 })], EXERCISES, [
+      { date: 'not-a-date', comment: 'unreachable' },
+      { date: '2024-03-02', comment: '   ' },
+      { date: '2024-03-03', comment: 'kept' }
+    ]), mapping());
+    assert.deepEqual(out.dayNotes.map((n) => n.date), ['2024-03-03']);
+  });
+
+  test('a datetime is narrowed to its calendar date', () => {
+    const out = importFitNotes(reader([logRow({ _id: 1, exercise_id: 222 })], EXERCISES,
+      [{ date: '2024-03-02 00:00:00', comment: 'x' }]), mapping());
+    assert.equal(out.dayNotes[0].date, '2024-03-02', 'must join to set records on the same shape');
+  });
+
+  test('notes are sorted by date, so a re-import is a genuine no-op', () => {
+    const out = importFitNotes(reader([logRow({ _id: 1, exercise_id: 222 })], EXERCISES, [
+      { date: '2024-05-01', comment: 'b' }, { date: '2024-03-02', comment: 'a' }
+    ]), mapping());
+    assert.deepEqual(out.dayNotes.map((n) => n.date), ['2024-03-02', '2024-05-01']);
   });
 });
