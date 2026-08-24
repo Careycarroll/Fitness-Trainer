@@ -50,13 +50,19 @@ risk.
 
 ## Many-to-one merge rule
 
-Ten Trainer exercises receive more than one FitNotes definition. This is what a
+Eleven Trainer exercises receive more than one FitNotes definition. This is what a
 FitNotes table looks like after years of use: the stock row survives beside the
 athlete's renamed or re-created copy.
 
-**The merge is safe here for one checkable reason: in every group, at most one
-source carries completed sets.** No two histories combine, so no estimated 1RM is
-affected.
+**The precondition for a safe merge is checkable: in every group, at most one
+source carries completed sets.** Where it holds, no two histories combine and no
+estimated 1RM is affected.
+
+**It does not hold today.** `ez-bar-skullcrusher` receives completed sets from
+two sources -- id 181 (3 sets) and id 202 (2 sets) -- and the merge rule for that
+group is undecided. Deferred to #55 and declared in `KNOWN_UNSAFE` in
+`scripts/checks/12-merge-precondition.js`; it must be resolved before #16 reads
+logged sets. Every other group still satisfies the rule.
 
 | Trainer target | FitNotes sources (sets) |
 | --- | --- |
@@ -70,16 +76,23 @@ affected.
 | Cycling - Outdoor | Cycling (0) · Cycling (Outdoor) (0) |
 | Cycling - Stationary Bike | Cycling (Indoor) (0) · Stationary Bike (0) |
 | Lying Leg Curl | Lying Leg Curl (0) · Lying Leg Curl Machine (0) |
+| **EZ-Bar Skullcrusher** | **Lying Triceps Extension (3) · EZ-Bar Skullcrusher (2)** — UNSAFE, #55 |
 
 ### This is a property of this export, not a guarantee
 
 ADR-023 computes estimated 1RM from logged sets, so two populated sources
 merging silently would change future prescriptions rather than sitting inert.
 
-**Re-check on every new export.** One set logged against `Pushup` makes that
-group unsafe. If two sources in a group ever both carry sets, the merge needs an
-explicit decision before import — combining them, keeping them separate, or
-choosing one — and that decision belongs in an issue, not in this table.
+**This is checked mechanically, not by memory.** Check 12
+(`scripts/checks/12-merge-precondition.js`) groups the built manifest by
+resolved `exerciseId` and fails when two sources in a group both carry completed
+sets. One set logged against `Pushup` makes that group unsafe and the build says
+so.
+
+A new violation needs an explicit decision before import — combine the
+histories, keep them separate, or choose one — recorded in an issue rather than
+in this table. Until then it is declared in `KNOWN_UNSAFE` with the issue that
+removes it. A stale entry fails too, so a fixed group cannot keep an exemption.
 
 ---
 
