@@ -42,6 +42,55 @@ describe('engine determinism (ADR-002)', () => {
   });
 });
 
+describe('every omission the engine emits is renderable (#51)', () => {
+  /**
+   * `renderOmitted` called `patternLabel(x.pattern).replace(...)` on a
+   * `count-not-reachable` omission, whose pattern is legitimately null -- that
+   * omission is about the session total, not any one pattern. The whole plan was
+   * refused with "can't access property replace, e is null".
+   *
+   * Reachable from bodybuilding at 5, 6 AND 7 sessions, so this long predates
+   * the #51 tie-break; changing 7 to resolve to ppl-6 only moved it onto a more
+   * plausible click. Asserted at engine level because the UI has no test that
+   * renders a session.
+   */
+  test('a null pattern is only ever paired with a session-level reason', () => {
+    const SESSION_LEVEL = new Set(['count-not-reachable', 'session-under-filled']);
+    let sawNull = false;
+
+    for (const style of defs.styles) {
+      for (const profile of defs.equipment) {
+        for (let n = 1; n <= 7; n += 1) {
+          let program;
+          try {
+            program = generate({ ...base, styleId: style.id, daysPerWeek: n,
+              equipmentProfile: profile.id, seed: 1218782818 }, defs);
+          } catch {
+            continue; // coverage and request refusals are a different contract
+          }
+          for (const week of program.weeks) {
+            for (const session of week.sessions) {
+              for (const o of session.omitted ?? []) {
+                assert.ok(o.reason, `${style.id}/${profile.id}/${n}: omission with no reason`);
+                if (o.pattern == null) {
+                  sawNull = true;
+                  assert.ok(SESSION_LEVEL.has(o.reason),
+                    `${style.id}/${profile.id}/${n}: null pattern with pattern-level ` +
+                    `reason "${o.reason}" -- the UI cannot label it`);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    assert.ok(sawNull,
+      'no null-pattern omission found anywhere -- this test is no longer exercising ' +
+      'the case that crashed, so it would pass vacuously');
+  });
+});
+
 describe('the session count the request asked for is reported (#51)', () => {
   const req = (n, styleId = 'bodybuilding') => ({ ...base, styleId, daysPerWeek: n, seed: 20260813 });
 

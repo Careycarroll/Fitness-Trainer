@@ -851,6 +851,34 @@ function paintStatus() {
   statusEl.textContent = parts.join(' ');
 }
 
+/**
+ * What the generator could not honour about the REQUEST — #51.
+ *
+ * Read straight off the program rather than held in module state: `storageNote`
+ * is cleared on every successful save, which would take this with it, and a
+ * second copy of the rule in the UI is how two copies drift apart. The engine
+ * decided this; the UI only phrases it.
+ *
+ * Same honesty mechanism as the omission report in #43: name the real cause.
+ * "You asked for 7 and got 6" without "no 7-session split template exists"
+ * reads as a bug in the app rather than a limit of the catalog, and the athlete
+ * cannot act on it.
+ *
+ * Deliberately not the word "reduced". Only one conditioning split exists, so a
+ * 1-session HIIT request resolves UPWARD to 3 — being handed two sessions you
+ * did not ask for is a recovery and time claim you never made, and it needs
+ * saying just as much.
+ */
+function sessionNoticeHtml(program) {
+  const mm = program?.sessionMismatch;
+  if (!mm) return '';
+  const verb = mm.resolved > mm.requested ? 'has' : 'has only';
+  return `<p class="request-note" role="status">You asked for ${mm.requested}
+    ${mm.requested === 1 ? 'session' : 'sessions'} a week; this program ${verb}
+    ${mm.resolved}, because ${esc(mm.reason)}. Available for this style:
+    ${mm.available.join(', ')}.</p>`;
+}
+
 function paint(out) {
   if (!current) return;
   // ONE save anchor. Every mutation path - assignment, splice, swap, remove,
@@ -874,6 +902,7 @@ function paint(out) {
         · seed <button class="ghost seed-copy" data-copy-seed="${esc(String(current.seed))}" title="${seedTitle}">${esc(seedText)}</button>
         ${seedLabel ? ` <span class="resolved-seed">(resolved: ${current.seed})</span>` : ''}
       </p>
+      ${sessionNoticeHtml(current)}
       ${editMessage}
     </div>`;
 
@@ -1045,7 +1074,10 @@ function renderOmitted(omitted = []) {
     <section class="omitted" aria-label="Omitted training patterns">
       <h4>Not included</h4>
       <ul>
-        ${omitted.map((x) => `<li><strong>${esc(patternLabel(x.pattern))}</strong> — ${esc(omitReason(x))}</li>`).join('')}
+        ${omitted.map((x) => x.pattern == null
+          ? `<li><strong>This session</strong> \u2014 ${esc(omitReason(x))}</li>`
+          : `<li><strong>${esc(patternLabel(x.pattern))}</strong> \u2014 ${esc(omitReason(x))}</li>`
+        ).join('')}
       </ul>
     </section>`;
 }
@@ -1166,6 +1198,11 @@ function patternLabel(p) {
     push_h: 'Horizontal push', push_v: 'Vertical push',
     pull_h: 'Horizontal pull', pull_v: 'Vertical pull',
   };
+  // Null is legitimate: a `count-not-reachable` omission is about the session's
+  // total, not about any one pattern, so it has no pattern to name. This used to
+  // throw on `p.replace` and refuse the WHOLE plan -- reachable from bodybuilding
+  // at 5, 6 or 7 sessions (#51).
+  if (p == null) return '';
   return NAMES[p] ?? p.replace(/_/g, ' ').replace(/^./, (c) => c.toUpperCase());
 }
 
@@ -1194,7 +1231,11 @@ function omitReason(x) {
     case 'session-under-filled':
       return `only ${x.placed} of ${x.target} exercises could be placed`;
     case 'count-not-reachable':
-      return 'the session could not reach its exercise count';
+      // Numbers, not a vague shortfall (#43). `requested` is what the style
+      // asks for, `placed` what the catalog and fatigue budget allowed.
+      return x.placed != null && x.requested != null
+        ? `only ${x.placed} of ${x.requested} exercises could be placed`
+        : 'the session could not reach its exercise count';
     default:
       return x.reason ?? 'no eligible exercise';
   }
