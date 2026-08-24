@@ -795,6 +795,29 @@ async function flushSave() {
  * appear. There are none until M8, so it lives here - visible rather than
  * technically satisfied.
  */
+/**
+ * Group unmapped imported sets into one review row per source exercise (#57).
+ *
+ * Pure and exported so the queue can be asserted without a DOM. It previously
+ * lived inside `if (csvBtn)` in paintStatus, where nothing could reach it.
+ */
+export function buildReviewQueue(importedSets = []) {
+  const byId = new Map();
+  for (const r of importedSets) {
+    if (r.exerciseId !== null) continue;
+    const key = r.sourceExerciseId ?? r.sourceExerciseName;
+    const seen = byId.get(key);
+    if (seen) { seen.sets += 1; continue; }
+    byId.set(key, {
+      fitnotesId: r.sourceExerciseId,
+      sourceExerciseName: r.sourceExerciseName,
+      tier: null,
+      sets: 1
+    });
+  }
+  return [...byId.values()].sort((a, b) => b.sets - a.sets);
+}
+
 function paintStatus() {
   // Live rows only. A superseded row is history, not the current answer, and
   // showing both would read as two conflicting maxes for one lift.
@@ -809,30 +832,22 @@ function paintStatus() {
       : 'No maxes entered yet.';
   }
 
+  const rows = persisted?.importedSets?.length ?? 0;
+
+  // Rebuilt from stored rows on load, so the queue survives a reload rather
+  // than existing only in the session that imported. NOT conditional on the
+  // export button: this block used to sit inside `if (csvBtn)`, so a markup
+  // change that dropped #export-csv would have silently stopped unmapped sets
+  // being reviewable (#57). The review queue has nothing to do with CSV export.
+  if (!importReview.length && rows) {
+    importReview = buildReviewQueue(persisted.importedSets);
+  }
+
   // Nothing to export until the FitNotes import lands (#24), so the button is
   // disabled rather than left clickable and immediately apologetic. A control
   // that cannot succeed in the current state reads as a defect.
   const csvBtn = document.querySelector('#export-csv');
   if (csvBtn) {
-    const rows = persisted?.importedSets?.length ?? 0;
-  // Rebuilt from stored rows on load, so the queue survives a reload rather
-  // than existing only in the session that imported.
-  if (!importReview.length && rows) {
-    const byId = new Map();
-    for (const r of persisted.importedSets) {
-      if (r.exerciseId !== null) continue;
-      const key = r.sourceExerciseId ?? r.sourceExerciseName;
-      const seen = byId.get(key);
-      if (seen) { seen.sets += 1; continue; }
-      byId.set(key, {
-        fitnotesId: r.sourceExerciseId,
-        sourceExerciseName: r.sourceExerciseName,
-        tier: null,
-        sets: 1
-      });
-    }
-    importReview = [...byId.values()].sort((a, b) => b.sets - a.sets);
-  }
     csvBtn.disabled = rows === 0;
     csvBtn.title = rows === 0
       ? 'No imported history yet \u2014 available after a FitNotes import (#24)'

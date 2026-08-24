@@ -19,7 +19,8 @@ import assert from 'node:assert/strict';
 import { generate, CoverageError, RequestError } from '../js/engine/index.js';
 import { defs } from '../js/engine/defs.js';
 import {
-  renderSession, renderOmitted, sessionNoticeHtml, emptySession, patternLabel, omitReason
+  renderSession, renderOmitted, sessionNoticeHtml, emptySession, patternLabel, omitReason,
+  buildReviewQueue
 } from '../js/ui/app.js';
 
 const WEEKDAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
@@ -142,5 +143,38 @@ describe('the UI renders every program the engine can produce (#56)', () => {
     const html = emptySession({ blocks: [], omitted: [{ pattern: 'hinge', reason: 'equipment' }] });
     assert.match(html, /Nothing could be prescribed/);
     assert.match(html, /equipment profile/);
+  });
+});
+
+describe('the unmapped-import review queue (#57)', () => {
+  // Extracted from inside `if (csvBtn)` in paintStatus, where a markup change
+  // dropping #export-csv would have silently stopped the queue rebuilding on
+  // reload. Untestable in that position, which is why it went unnoticed.
+  const set = (o) => ({ exerciseId: null, sourceExerciseId: null, sourceExerciseName: null, ...o });
+
+  test('mapped rows are excluded; unmapped rows group by source', () => {
+    const q = buildReviewQueue([
+      set({ sourceExerciseId: 181, sourceExerciseName: 'Lying Triceps Extension' }),
+      set({ sourceExerciseId: 181, sourceExerciseName: 'Lying Triceps Extension' }),
+      set({ sourceExerciseId: 202, sourceExerciseName: 'EZ-Bar Skullcrusher' }),
+      set({ exerciseId: 'barbell-bench-press', sourceExerciseId: 1, sourceExerciseName: 'Bench' })
+    ]);
+    assert.equal(q.length, 2, 'a resolved row is not awaiting review');
+    assert.deepEqual(q.map((r) => r.sets), [2, 1], 'ordered by set count, descending');
+    assert.equal(q[0].fitnotesId, 181);
+  });
+
+  test('a row with no source id groups on its name', () => {
+    const q = buildReviewQueue([
+      set({ sourceExerciseName: 'Mystery Lift' }),
+      set({ sourceExerciseName: 'Mystery Lift' })
+    ]);
+    assert.equal(q.length, 1);
+    assert.equal(q[0].sets, 2);
+  });
+
+  test('no imported sets yields an empty queue rather than throwing', () => {
+    assert.deepEqual(buildReviewQueue([]), []);
+    assert.deepEqual(buildReviewQueue(), []);
   });
 });
