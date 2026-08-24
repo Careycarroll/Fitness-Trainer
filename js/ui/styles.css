@@ -791,3 +791,18 @@ button[disabled] {
   flex: 1; text-align: left; text-transform: capitalize; white-space: nowrap;
 }
 .token-list .tag { font-size: 0.65rem; opacity: 0.6; }
+
+/* Day-level notes (#50). Imported and authored are visually distinct: one is
+   what FitNotes recorded, the other is an instruction you wrote. */
+.date-list .day-note {
+  flex-basis: 100%; font-size: 0.75rem; font-style: italic;
+  opacity: 0.75; padding-left: 0.25rem;
+}
+.date-list .day-note.imported::before { content: 'FitNotes: '; font-style: normal; opacity: 0.6; }
+.date-list .day-note-input {
+  flex-basis: 100%; font-size: 0.75rem; margin-top: 0.15rem;
+  padding: 0.15rem 0.3rem; background: transparent; color: inherit;
+  border: 1px solid transparent; border-radius: 3px;
+}
+.date-list .day-note-input:hover,
+.date-list .day-note-input:focus { border-color: var(--line, #3a3a3a); }

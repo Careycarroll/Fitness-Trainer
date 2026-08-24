@@ -29,7 +29,7 @@ import * as db from '../storage/db.js';
 import {
   emptyState, putPlan, toExportJSON, fromImportJSON, toCSV, replaceImportedSets,
   appendExerciseMax, currentMax, putProfile, removeProfile,
-  replaceImportedDayNotes, notesForDate
+  replaceImportedDayNotes, notesForDate, putSessionNote
 } from '../storage/state.js';
 import { toFitNotesCSV, planDates } from '../storage/fitnotes-export.js';
 import { SqliteFile } from '../storage/sqlite.js';
@@ -344,7 +344,17 @@ export function mount(root, defs) {
     paintStatus();
   });
 
-  root.querySelector('#date-preview').addEventListener('change', (e) => {
+  root.querySelector('#date-preview').addEventListener('change', async (e) => {
+    const noteEl = e.target.closest('[data-note-date]');
+    if (noteEl) {
+      const next = putSessionNote(persisted ?? emptyState(), noteEl.dataset.noteDate, noteEl.value);
+      const { ok, error } = await db.trySave(next);
+      if (ok) persisted = next;
+      else storageNote = `Note not saved: ${error?.message ?? 'unknown'}`;
+      paintStatus();
+      return;
+    }
+
     const input = e.target.closest('[data-date-index]');
     if (!input) return;
     const i = Number(input.dataset.dateIndex);
@@ -972,9 +982,16 @@ function paintDates() {
   if (!el || !startEl) return;
   if (!current || !startEl.value) { el.innerHTML = ''; return; }
   try {
-    el.innerHTML = renderDatePreview(
-      planDates(current, startEl.value, (persisted ?? emptyState()).importedSets, dateOverrides)
-    );
+    const state = persisted ?? emptyState();
+    // Notes are attached HERE rather than inside planDates(): that function is
+    // pure and lives in storage/, and notes are a UI concern joined on the date
+    // it already computed.
+    const rows = planDates(current, startEl.value, state.importedSets, dateOverrides)
+      .map((r) => {
+        const n = notesForDate(state, r.date);
+        return { ...r, importedNote: n.imported, authoredNote: n.authored };
+      });
+    el.innerHTML = renderDatePreview(rows);
   } catch (err) {
     // A plan with no schedule has no dates. Say which, rather than rendering
     // nothing and leaving an empty panel to be read as a bug.
@@ -1340,6 +1357,27 @@ export function renderProfileEditor(choices, { name = '', editingId = null, auth
     ${authored.length ? `<p class="note">Your profiles: ${authored.map((p) => esc(p.name)).join(', ')}</p>` : ''}`;
 }
 
+/**
+ * Day-level notes against a date (#50).
+ *
+ * Imported and authored are rendered SEPARATELY and labelled. They are not the
+ * same kind of fact: an imported note is what FitNotes recorded on that day, an
+ * authored one is an instruction for a session that has not happened. Merging
+ * them into one box would make an import look like it had overwritten your
+ * writing even though it cannot.
+ *
+ * Nothing parses the text (ADR-002). It is escaped and displayed, never read.
+ */
+function dayNoteHtml(r) {
+  const imported = r.importedNote
+    ? `<span class="note day-note imported" title="From your FitNotes history">${esc(r.importedNote)}</span>`
+    : '';
+  const authored = `<input type="text" class="day-note-input" data-note-date="${esc(r.date)}"
+       value="${esc(r.authoredNote ?? '')}" placeholder="Add a note for this session"
+       aria-label="Note for ${esc(r.label)} on ${esc(r.date)}" />`;
+  return imported + authored;
+}
+
 export function renderDatePreview(rows) {
   if (!rows?.length) return '';
   const clashes = rows.filter((r) => r.collides).length;
@@ -1356,6 +1394,7 @@ export function renderDatePreview(rows) {
             ${r.collides ? '<span class="tag warn-tag" title="This date already holds imported history">history exists</span>' : ''}
             ${r.outOfOrder ? '<span class="tag warn-tag">on or before the previous session</span>' : ''}
             ${r.gapChanged ? `<span class="note gap-note">${gapNote(r)}</span>` : ''}
+            ${dayNoteHtml(r)}
           </li>`).join('')}
       </ol>
       ${rows.some((r) => r.moved) ? '<p class="note">Moved dates apply to this export only.</p>' : ''}
