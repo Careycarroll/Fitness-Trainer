@@ -14,6 +14,8 @@
  * gate exists to catch is a field that survives generation but not a round
  * trip.
  */
+import { validateProfile, putProfile, removeProfile } from '../js/storage/state.js';
+import { STORES } from '../js/storage/db.js';
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { generate } from '../js/engine/index.js';
@@ -514,5 +516,84 @@ describe('validate', () => {
 
   test('accepts a populated state', () => {
     assert.doesNotThrow(() => validate(populated()));
+  });
+});
+
+describe('authored equipment profiles (#8)', () => {
+  const SHIPPED = ['home-garage', 'commercial-gym'];
+  const mine = () => ({
+    id: 'my-gym', name: 'My Gym',
+    available: ['barbell', 'rack', 'bench'], editable: true, userDefined: true
+  });
+
+  test('a profile stores, validates and survives export -> import', () => {
+    const s = putProfile(emptyState(), mine(), SHIPPED);
+    assert.equal(s.equipmentProfiles.length, 1);
+    const round = fromImportJSON(toExportJSON(s));
+    assert.deepEqual(round.equipmentProfiles, s.equipmentProfiles,
+      'ADR-011: an authored profile must survive the round-trip gate');
+  });
+
+  test('`equipment` is refused where `available` is required', () => {
+    // THE ADR-026 defect, made unrepresentable. coverage.js ownedOf() reads
+    // `available ?? equipment` as a compatibility shim; a profile written under
+    // the wrong name would resolve to an empty owned-set at runtime while
+    // looking fine in storage.
+    assert.throws(() => validateProfile({
+      id: 'x', name: 'X', equipment: ['barbell'], userDefined: true
+    }), /unknown field "equipment"/);
+  });
+
+  test('an authored profile may not shadow a shipped id', () => {
+    // Two profiles answering to one id makes which you get depend on merge order.
+    assert.throws(() => putProfile(emptyState(), { ...mine(), id: 'home-garage' }, SHIPPED),
+      /shipped profile id/);
+  });
+
+  test('userDefined is mandatory, because check 11 keys ADR-014 on it', () => {
+    assert.throws(() => validateProfile({ id: 'x', name: 'X', available: [] }),
+      /userDefined must be true/);
+  });
+
+  test('a duplicate token is refused rather than silently deduped', () => {
+    assert.throws(() => validateProfile({ ...mine(), available: ['barbell', 'barbell'] }),
+      /duplicate token/);
+  });
+
+  test('an empty profile is legal — owning nothing is a true statement', () => {
+    const s = putProfile(emptyState(), { ...mine(), available: [] }, SHIPPED);
+    assert.deepEqual(s.equipmentProfiles[0].available, []);
+  });
+
+  test('putProfile replaces by id rather than accumulating', () => {
+    let s = putProfile(emptyState(), mine(), SHIPPED);
+    s = putProfile(s, { ...mine(), available: ['dumbbell'] }, SHIPPED);
+    assert.equal(s.equipmentProfiles.length, 1);
+    assert.deepEqual(s.equipmentProfiles[0].available, ['dumbbell']);
+  });
+
+  test('an unknown token is stored, not pruned', () => {
+    // The `rings` lesson: home-garage owns a token no exercise uses, and the
+    // catalog may catch up later. Dropping equipment the athlete owns because
+    // the catalog lags is silent data loss.
+    const s = putProfile(emptyState(), { ...mine(), available: ['barbell', 'ghd'] }, SHIPPED);
+    assert.ok(s.equipmentProfiles[0].available.includes('ghd'));
+  });
+
+  test('removing is a no-op when absent', () => {
+    assert.equal(removeProfile(emptyState(), 'nope').equipmentProfiles.length, 0);
+  });
+});
+
+describe('every store round-trips through save/load (#8)', () => {
+  // save() carried a hardcoded store list, so `equipmentProfiles` was created
+  // and read but never written: a saved profile survived until reload and then
+  // vanished. db.js needs a real IndexedDB and cannot run here, so this asserts
+  // the invariant that failed -- every key in state must be covered by STORES,
+  // which is what save() now iterates.
+  test('STORES covers every key emptyState() produces except `version`', () => {
+    const keys = Object.keys(emptyState()).filter((k) => k !== 'version').sort();
+    assert.deepEqual(keys, [...STORES].sort(),
+      'a state key with no store is silently never persisted');
   });
 });

@@ -17,7 +17,7 @@
  * `prefs` is deliberately absent. ADR-004 assigns theme and selected equipment
  * profile to `localStorage`, and app.js already does that correctly.
  */
-import { STATE_VERSION, emptyState, validate, StateError } from './state.js';
+import { STATE_VERSION, emptyState, validate, StateError, migrate } from './state.js';
 
 export const DB_NAME = 'training-planner';
 
@@ -131,26 +131,34 @@ export function open() {
  * who missed a release, and this app has no server to backfill from.
  */
 function upgrade(db, oldVersion, _transaction) {
+  if (oldVersion > DB_VERSION) {
+    throw new StorageError(
+      `database version ${oldVersion} is newer than this build understands (${DB_VERSION})`
+    );
+  }
+
+  // UNCONDITIONAL, and outside the switch. This loop used to live in `case 0:`,
+  // so it only ran when the database was created from nothing. Adding
+  // `equipmentProfiles` to STORES and bumping DB_VERSION therefore created the
+  // store for a NEW user and not for an existing one (#8): the upgrade landed on
+  // `case 1:`, which is comments, and every later transaction over STORES failed
+  // with "could not open a readonly transaction" — the app then reported stored
+  // data as unreadable and refused to hydrate.
+  //
+  // A store that is missing is missing regardless of which version we arrived
+  // from, so this is the correct place for it, and adding a store really is now
+  // just a STORES entry plus a version bump.
+  for (const name of STORES) {
+    if (!db.objectStoreNames.contains(name)) db.createObjectStore(name, { keyPath: 'id' });
+  }
+
   switch (oldVersion) {
-    case 0:
-      for (const name of STORES) {
-        if (!db.objectStoreNames.contains(name)) db.createObjectStore(name, { keyPath: 'id' });
-      }
-      break;
-
-    // case 1: -> 2 (#8) added the `equipmentProfiles` store. No case body is
-    // needed: the loop above creates any store in STORES that does not already
-    // exist, so adding the name and bumping DB_VERSION is the whole change.
-    // case 2: // -> 3. Add stores/indexes here, then bump DB_VERSION and log it
-    //   in docs/MIGRATIONS.md. Do not reshape records here; that is state.js.
-    //   falls through
-
+    // case 1: // -> 2 (#8) needed no body: the store loop above covers it.
+    // case 2: // -> 3. Indexes and record reshaping go here, then bump
+    //   DB_VERSION and log it in docs/MIGRATIONS.md. Do not reshape records
+    //   here; that is state.js.
     default:
-      if (oldVersion > DB_VERSION) {
-        throw new StorageError(
-          `database version ${oldVersion} is newer than this build understands (${DB_VERSION})`
-        );
-      }
+      break;
   }
 }
 
@@ -211,11 +219,20 @@ export async function load() {
     meta: rows.meta?.value ?? base.meta,
     plans: rows.plans?.value ?? base.plans,
     importedSets: rows.importedSets?.value ?? base.importedSets,
-    exerciseMax: rows.exerciseMax?.value ?? base.exerciseMax
+    exerciseMax: rows.exerciseMax?.value ?? base.exerciseMax,
+    // A store added by a later DB_VERSION is empty on first open, so its row is
+    // undefined rather than [] (#8). Defaulting from emptyState() is what makes
+    // adding a store additive here too.
+    equipmentProfiles: rows.equipmentProfiles?.value ?? base.equipmentProfiles
   };
 
-  validate(state);
-  return state;
+  // MIGRATE, then validate. This read the stored version and validated against
+  // it directly, so a database written by an older build failed validation
+  // instead of being upgraded -- migrate() existed and this path never called
+  // it. Found when STATE_VERSION first moved (#8).
+  const migrated = migrate(state);
+  validate(migrated);
+  return migrated;
 }
 
 /**
@@ -231,8 +248,15 @@ export async function save(state) {
   const db = await open();
 
   await run(db, STORES, 'readwrite', (tx) => {
+    // `meta` carries the version and is written by hand. EVERY OTHER store is
+    // derived from STORES -- this was a hardcoded list, so adding
+    // `equipmentProfiles` to STORES created the store, loaded from it, and never
+    // wrote to it. The profile lived in memory until reload and then vanished
+    // (#8). Three separate hardcoded copies of this list existed; the other two
+    // were in load(). Deriving it is what makes adding a store additive.
     tx.objectStore('meta').put({ id: SINGLETON, version: state.version, value: state.meta });
-    for (const name of ['plans', 'importedSets', 'exerciseMax']) {
+    for (const name of STORES) {
+      if (name === 'meta') continue;
       tx.objectStore(name).put({ id: SINGLETON, value: state[name] });
     }
   });

@@ -326,6 +326,73 @@ const MIGRATIONS = Object.freeze({
   1: (s) => ({ ...s, version: 2, equipmentProfiles: [] }),
 });
 
+/**
+ * Fields a stored equipment profile may carry (#8).
+ *
+ * `available` is the ONLY name accepted. coverage.js ownedOf() reads
+ * `available ?? equipment` as an ADR-026 shim, and that shim is why every
+ * shipped profile once resolved to an empty owned-set: two names for one field,
+ * with different halves of the code reading different ones. The editor writes
+ * one name and this refuses the other.
+ */
+const PROFILE_FIELDS = ['id', 'name', 'available', 'editable', 'userDefined'];
+
+/** Validate one authored profile. Throws on the first problem, naming it. */
+export function validateProfile(profile, index = 0) {
+  const at = (msg) => new StateError(`equipmentProfiles[${index}]: ${msg}`);
+
+  if (!profile || typeof profile !== 'object' || Array.isArray(profile)) {
+    throw at('must be an object');
+  }
+  for (const key of Object.keys(profile)) {
+    if (!PROFILE_FIELDS.includes(key)) {
+      throw at(`unknown field ${JSON.stringify(key)}. Add it to PROFILE_FIELDS and bump STATE_VERSION`);
+    }
+  }
+  if (typeof profile.id !== 'string' || !profile.id.length) throw at('id must be a non-empty string');
+  if (typeof profile.name !== 'string' || !profile.name.length) throw at('name must be a non-empty string');
+  if (!Array.isArray(profile.available)) {
+    throw at('available must be an array — this is the ADR-026 field-name trap; `equipment` is not accepted here');
+  }
+  for (const token of profile.available) {
+    if (typeof token !== 'string' || !token.length) throw at('available holds a non-string token');
+  }
+  if (new Set(profile.available).size !== profile.available.length) {
+    throw at('available holds a duplicate token');
+  }
+  // ADR-014: a user profile is exempt from build-time coverage checks precisely
+  // because it is user-defined, and check 11 keys that exemption on this flag.
+  // A stored profile without it would be held to the shipped-profile bar.
+  if (profile.userDefined !== true) throw at('userDefined must be true on a stored profile');
+  return profile;
+}
+
+/**
+ * Insert or replace an authored profile, keyed on id. Returns a new state.
+ *
+ * Deliberately refuses to shadow a shipped profile id: two profiles answering
+ * to `home-garage` would make which one you get depend on merge order.
+ */
+export function putProfile(state, profile, shippedIds = []) {
+  validateProfile(profile);
+  if (shippedIds.includes(profile.id)) {
+    throw new StateError(
+      `equipmentProfiles: "${profile.id}" is a shipped profile id. Authored profiles ` +
+      'must not shadow shipped ones — pick another name.'
+    );
+  }
+  const rest = state.equipmentProfiles.filter((p) => p.id !== profile.id);
+  return {
+    ...state,
+    equipmentProfiles: [...rest, profile].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
+  };
+}
+
+/** Remove an authored profile by id. Absent is a no-op, not an error. */
+export function removeProfile(state, id) {
+  return { ...state, equipmentProfiles: state.equipmentProfiles.filter((p) => p.id !== id) };
+}
+
 export function migrate(state) {
   let out = state;
   let guard = 0;
@@ -361,6 +428,8 @@ export function validate(state) {
   for (const key of ['plans', 'importedSets', 'exerciseMax', 'equipmentProfiles']) {
     if (!Array.isArray(state[key])) throw new StateError(`validate: ${key} must be an array`);
   }
+
+  state.equipmentProfiles.forEach((p, i) => validateProfile(p, i));
 
   // Every imported row, not just the array. Until this existed, whatever the
   // first importer wrote became the format (#26).

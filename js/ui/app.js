@@ -28,7 +28,7 @@ import { allSetGroups, setGroupAt } from '../engine/blocks.js';
 import * as db from '../storage/db.js';
 import {
   emptyState, putPlan, toExportJSON, fromImportJSON, toCSV, replaceImportedSets,
-  appendExerciseMax, currentMax
+  appendExerciseMax, currentMax, putProfile, removeProfile
 } from '../storage/state.js';
 import { toFitNotesCSV, planDates } from '../storage/fitnotes-export.js';
 import { SqliteFile } from '../storage/sqlite.js';
@@ -67,6 +67,10 @@ let hydrating = false;
 let saveTimer = null;
 /** What the sidebar says about persistence. Empty means nothing worth saying. */
 let storageNote = '';
+
+/** The SHIPPED profiles, captured before any merge. Merging into a merged
+ * list would let an authored profile become part of the baseline it is added to. */
+let shippedProfiles = [];
 
 /**
  * Session index -> moved date, for THIS export only (#54).
@@ -213,6 +217,11 @@ export function mount(root, defs) {
         <div id="import-review"></div>
       </div>
 
+      <div class="profile-panel">
+        <h3>Equipment profile</h3>
+        <div id="profile-editor"></div>
+      </div>
+
       <div class="maxes-panel">
         <h3>Known maxes</h3>
         <p class="note">
@@ -257,6 +266,7 @@ export function mount(root, defs) {
 
   form.equipmentProfile.addEventListener('change', (e) => {
     localStorage.setItem(PREF_PROFILE, e.target.value);
+    paintProfiles();
   });
 
   const preview = root.querySelector('#preview');
@@ -282,6 +292,56 @@ export function mount(root, defs) {
   const startEl = root.querySelector('#export-start');
   startEl.value = new Date().toLocaleDateString('en-CA');
   startEl.addEventListener('change', () => { dateOverrides = {}; paintDates(); });
+
+  shippedProfiles = defs.equipment;
+  // Set at MOUNT, not only on generate. paintProfiles() bails when currentDefs
+  // is null, so the editor rendered nothing until the first plan was generated
+  // -- an empty panel under a heading, which reads as a broken build (#8).
+  currentDefs = currentDefs ?? defs;
+
+  root.querySelector('#profile-editor').addEventListener('click', async (e) => {
+    const save = e.target.closest('#profile-save');
+    const del = e.target.closest('#profile-delete');
+    if (!save && !del) return;
+
+    const panel = root.querySelector('#profile-editor');
+    const base = persisted ?? emptyState();
+
+    if (del) {
+      const id = root.querySelector('[name=equipmentProfile]').value;
+      if (!window.confirm('Delete this profile? Plans already generated are unaffected.')) return;
+      const { ok, error } = await db.trySave(removeProfile(base, id));
+      storageNote = ok ? 'Profile deleted.' : `Not deleted: ${error?.message ?? 'unknown'}`;
+      if (ok) persisted = removeProfile(base, id);
+      paintStatus();
+      paintProfiles();
+      return;
+    }
+
+    const name = panel.querySelector('#profile-name').value.trim();
+    if (!name) { storageNote = 'Name the profile before saving it.'; paintStatus(); return; }
+
+    const available = [...panel.querySelectorAll('[name=token]:checked')].map((b) => b.value);
+    const profile = {
+      id: profileId(name), name, available, editable: true, userDefined: true
+    };
+
+    try {
+      // Shipped ids are passed so state.js can refuse a shadow rather than
+      // leaving resolution to depend on merge order.
+      const next = putProfile(base, profile, shippedProfiles.map((x) => x.id));
+      const { ok, error } = await db.trySave(next);
+      if (!ok) { storageNote = `Profile not saved: ${error?.message ?? 'unknown'}`; paintStatus(); return; }
+      persisted = next;
+      storageNote = `Saved "${name}" with ${available.length} items.`;
+      paintProfiles();
+      root.querySelector('[name=equipmentProfile]').value = profile.id;
+      paintProfiles();
+    } catch (err) {
+      storageNote = `Profile refused: ${err.message}`;
+    }
+    paintStatus();
+  });
 
   root.querySelector('#date-preview').addEventListener('change', (e) => {
     const input = e.target.closest('[data-date-index]');
@@ -568,6 +628,9 @@ export function mount(root, defs) {
     persisted = next;
     storageNote = 'Import complete.';
     restoreDraft(out, form);
+  // After hydration: stored profiles exist now, so the picker and editor can
+  // show them and currentDefs can carry them.
+  paintProfiles();
   });
 
   // A phone switching apps is exactly when a pending debounce dies, and ADR-004
@@ -576,6 +639,12 @@ export function mount(root, defs) {
     if (document.visibilityState === 'hidden') flushSave();
   });
 
+  // Render the editor BEFORE hydrate, and independently of it. Every other
+  // paintProfiles() call sits downstream of a hydrate() branch, so any storage
+  // failure left the panel blank under its heading -- which reads as a broken
+  // build rather than as a storage problem. The editor needs no stored data:
+  // the token list comes from the catalog.
+  paintProfiles();
   hydrate(out, form);
 
   form.addEventListener('submit', (e) => {
@@ -711,9 +780,18 @@ async function hydrate(out, form) {
     persisted = null;
     storageNote = `Stored data could not be read (${err.message}). It has been left untouched, not overwritten.`;
     paintStatus();
+    // The editor needs no stored data to render, so it must not be gated behind
+    // a successful load (#8). It was, and an unreadable store left the panel
+    // silently empty -- a blank section reads as a broken build.
+    paintProfiles();
     return;
   }
   restoreDraft(out, form);
+  // AFTER the load, not only before it. paintProfiles() runs at mount while
+  // `persisted` is still null, so it renders the shipped profiles alone; without
+  // a repaint here an authored profile was written, read back correctly, and
+  // still absent from the picker after every reload (#8).
+  paintProfiles();
 }
 
 /** Put the stored draft back on screen and back into the form. */
@@ -842,6 +920,43 @@ export function buildReviewQueue(importedSets = []) {
 }
 
 /** Refresh the destination-date preview from the plan currently on screen. */
+/**
+ * The equipment editor (#8), and the merge that makes an authored profile usable.
+ *
+ * `currentDefs.equipment` is rebuilt from shipped + authored on every paint.
+ * Without it validateRequest() refuses the profile as unknown the moment it is
+ * selected -- defs.js is a static import and knows nothing about stored state.
+ */
+function paintProfiles() {
+  const el = document.querySelector('#profile-editor');
+  if (!el || !currentDefs) return;
+
+  const authored = persisted?.equipmentProfiles ?? [];
+  currentDefs = { ...currentDefs, equipment: mergeProfiles(shippedProfiles, authored) };
+
+  const selected = document.querySelector('[name=equipmentProfile]')?.value;
+  const editing = authored.find((p) => p.id === selected) ?? null;
+  const owned = editing?.available
+    ?? currentDefs.equipment.find((p) => p.id === selected)?.available
+    ?? [];
+
+  el.innerHTML = renderProfileEditor(tokenChoices(currentDefs.exercises, owned), {
+    name: editing?.name ?? '',
+    editingId: editing?.id ?? null,
+    authored
+  });
+
+  // Keep the picker in step with what exists, preserving the selection.
+  const picker = document.querySelector('[name=equipmentProfile]');
+  if (picker) {
+    const keep = picker.value;
+    picker.innerHTML = currentDefs.equipment
+      .map((p) => `<option value="${esc(p.id)}">${esc(p.name)}${p.userDefined ? ' (yours)' : ''}</option>`)
+      .join('');
+    if (currentDefs.equipment.some((p) => p.id === keep)) picker.value = keep;
+  }
+}
+
 function paintDates() {
   const el = document.querySelector('#date-preview');
   const startEl = document.querySelector('#export-start');
@@ -1158,6 +1273,62 @@ function gapNote(r) {
       + `for full volume.`
     : `Written for a full rest day before it. It now follows the previous session `
       + `after ${days}, so it may be more work than you can recover from.`;
+}
+
+/**
+ * Every token the editor can offer (#8).
+ *
+ * The catalog's vocabulary UNION whatever the profile already owns. Deriving it
+ * from the catalog alone would silently drop a token the athlete owns but no
+ * exercise uses yet -- `rings` on home-garage is exactly that, and pruning it on
+ * first save is the kind of quiet data loss this repo keeps finding. An unused
+ * token is marked, never hidden.
+ */
+export function tokenChoices(catalog, owned = []) {
+  const used = new Map();
+  for (const ex of catalog) for (const t of ex.equipment ?? []) used.set(t, (used.get(t) ?? 0) + 1);
+  const all = new Set([...used.keys(), ...owned]);
+  return [...all].sort().map((token) => ({
+    token,
+    uses: used.get(token) ?? 0,
+    owned: owned.includes(token)
+  }));
+}
+
+/** Shipped profiles first, then authored ones. Authored may not shadow (state.js). */
+export function mergeProfiles(shipped, authored = []) {
+  const ids = new Set(shipped.map((p) => p.id));
+  return [...shipped, ...authored.filter((p) => !ids.has(p.id))];
+}
+
+/** A stable id from a display name. Collisions are resolved by the caller. */
+export function profileId(name) {
+  return String(name).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+export function renderProfileEditor(choices, { name = '', editingId = null, authored = [] } = {}) {
+  const owned = choices.filter((c) => c.owned).length;
+  return `
+    <label>Profile name
+      <input type="text" id="profile-name" value="${esc(name)}" placeholder="My Gym" />
+    </label>
+    <p class="note">${owned} of ${choices.length} selected. Presence, not quantity (ADR-014):
+    tick what you have access to, not how much of it.</p>
+    <ul class="token-list">
+      ${choices.map((c) => `
+        <li>
+          <label title="${c.uses === 0 ? 'No exercise uses this token yet' : `${c.uses} exercises`}">
+            <input type="checkbox" name="token" value="${esc(c.token)}" ${c.owned ? 'checked' : ''} />
+            <span>${esc(c.token.replace(/_/g, ' '))}</span>
+            ${c.uses === 0 ? '<span class="tag">unused</span>' : ''}
+          </label>
+        </li>`).join('')}
+    </ul>
+    <div class="storage-actions">
+      <button type="button" id="profile-save" class="ghost">${editingId ? 'Update' : 'Save'} profile</button>
+      ${editingId ? `<button type="button" id="profile-delete" class="ghost">Delete</button>` : ''}
+    </div>
+    ${authored.length ? `<p class="note">Your profiles: ${authored.map((p) => esc(p.name)).join(', ')}</p>` : ''}`;
 }
 
 export function renderDatePreview(rows) {
