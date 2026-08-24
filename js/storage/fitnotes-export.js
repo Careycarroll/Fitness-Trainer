@@ -64,6 +64,28 @@ export function addDays(iso, n) {
  * pattern; the start date says when to begin. Session 0 lands on the first
  * scheduled weekday at or after the start.
  */
+/**
+ * Whole days from `a` to `b`, both YYYY-MM-DD. Negative when b precedes a.
+ *
+ * Civil-date maths, not Date: #25 rules these are LOCAL calendar dates, and
+ * subtracting two Dates across a DST boundary is off by an hour and can round
+ * to the wrong day. Needed by #54 to measure the real gap a MOVED session lands
+ * on, which no weekday-based helper can answer.
+ */
+export function daysBetween(a, b) {
+  const n = (iso) => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) {
+      throw new ExportError(`date must be YYYY-MM-DD, got ${JSON.stringify(iso)}`);
+    }
+    const [y, m, d] = iso.split('-').map(Number);
+    const yy = m <= 2 ? y - 1 : y;
+    const mm = m <= 2 ? m + 12 : m;
+    return 365 * yy + Math.floor(yy / 4) - Math.floor(yy / 100) + Math.floor(yy / 400)
+      + Math.floor((153 * (mm - 3) + 2) / 5) + d;
+  };
+  return n(b) - n(a);
+}
+
 export function sessionDates(startDate, schedule, count) {
   if (!Array.isArray(schedule) || !schedule.length) {
     throw new ExportError('schedule is required to compute dates (#25)');
@@ -135,7 +157,7 @@ const toFive = (n) => Math.round(n / 5) * 5;
  * @param state     canonical state, read for exerciseMax only
  * @param deps      { manifest, catalog, currentMax }
  */
-export function toFitNotesCSV(program, startDate, state, { manifest, catalog, currentMax }) {
+export function toFitNotesCSV(program, startDate, state, { manifest, catalog, currentMax, dates: override }) {
   if (!program?.schedule?.length) {
     throw new ExportError(
       'This plan has no schedule, so it has no dates. Pick training days and regenerate.'
@@ -144,7 +166,16 @@ export function toFitNotesCSV(program, startDate, state, { manifest, catalog, cu
 
   const names = buildNameLookup(manifest, catalog);
   const sessions = program.weeks.flatMap((w) => w.sessions);
-  const dates = sessionDates(startDate, program.schedule, sessions.length);
+  // #54: the athlete may have moved individual sessions in the preview. An
+  // override REPLACES the computed dates rather than adjusting the start, so a
+  // single moved session does not shift the block. Length is checked because a
+  // short array would silently export undefined dates for the tail.
+  if (override && override.length !== sessions.length) {
+    throw new ExportError(
+      `${override.length} dates supplied for ${sessions.length} sessions`
+    );
+  }
+  const dates = override ?? sessionDates(startDate, program.schedule, sessions.length);
 
   const rows = [];
   const unpriced = new Set();
@@ -215,13 +246,6 @@ export function toFitNotesCSV(program, startDate, state, { manifest, catalog, cu
 }
 
 /**
- * Planned dates that already hold imported history.
- *
- * #25 requires warning before writing onto a day that already has work: the
- * export cannot tell FitNotes to replace, so rows are ADDED and a collision
- * means two sets of work on one day.
- */
-/**
  * Every destination date with the session that lands on it — #54.
  *
  * Pure, and the ONE place dates and sessions are paired. The export computed
@@ -234,7 +258,7 @@ export function toFitNotesCSV(program, startDate, state, { manifest, catalog, cu
  * export ADDS rows rather than replacing them, so a clash means two lots of work
  * on one day.
  */
-export function planDates(program, startDate, importedSets) {
+export function planDates(program, startDate, importedSets, overrides = {}) {
   const sessions = (program?.weeks ?? []).flatMap((w) => w.sessions);
   if (!sessions.length) throw new ExportError('this plan has no sessions');
 
@@ -243,16 +267,48 @@ export function planDates(program, startDate, importedSets) {
   // how two copies of a rule drift apart.
   const taken = new Set(dateCollisions(dates, importedSets));
 
-  return sessions.map((session, i) => ({
-    index: i,
-    date: dates[i],
-    weekday: WEEKDAYS[(WEEKDAYS.indexOf(program.schedule[i % program.schedule.length]))],
-    label: session.label,
-    gap: session.gap ?? null,
-    collides: taken.has(dates[i])
-  }));
+  // #54: an override moves ONE session without shifting the block.
+  const final = dates.map((d, i) => overrides[i] ?? d);
+  const clashes = new Set(dateCollisions(final, importedSets));
+
+  return sessions.map((session, i) => {
+    const date = final[i];
+    // The gap this date actually gives, versus the gap the session was BUILT
+    // under. gapClass() ran at generation time and
+    // compressedAccessoryMultiplier was applied while accessory volume was
+    // chosen (loadDomain.js), so the sets cannot be re-derived from a new date
+    // without regenerating -- which would change the exercises under an athlete
+    // who has just reviewed them. So: report the divergence, never absorb it.
+    const spacing = i === 0 ? null : daysBetween(final[i - 1], date);
+    const actualGap = spacing == null ? null : (spacing >= 2 ? 'recovered' : 'compressed');
+    const generatedGap = session.gap ?? null;
+
+    return {
+      index: i,
+      date,
+      computed: dates[i],
+      moved: date !== dates[i],
+      label: session.label,
+      gap: generatedGap,
+      actualGap,
+      // Only a real divergence, and only when both are known.
+      gapChanged: Boolean(actualGap && generatedGap && actualGap !== generatedGap),
+      spacing,
+      // Session order IS training order. A move that lands on or before the
+      // previous session is refused rather than quietly sorted.
+      outOfOrder: spacing != null && spacing <= 0,
+      collides: clashes.has(date)
+    };
+  });
 }
 
+/**
+ * Planned dates that already hold imported history.
+ *
+ * #25 requires warning before writing onto a day that already has work: the
+ * export cannot tell FitNotes to replace, so rows are ADDED and a collision
+ * means two sets of work on one day.
+ */
 export function dateCollisions(dates, importedSets) {
   const taken = new Set((importedSets ?? []).map((s) => s.date));
   return dates.filter((d) => taken.has(d));

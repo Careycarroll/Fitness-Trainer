@@ -750,3 +750,14 @@ button[disabled] {
 .date-list .date { font-variant-numeric: tabular-nums; opacity: 0.85; }
 .date-list .label { flex: 1; }
 .date-list li.collides { color: var(--warn, #e0a458); }
+
+/* A session moved off its computed date (#54). */
+.date-list .date-input {
+  font-variant-numeric: tabular-nums; font-size: 0.8rem;
+  padding: 0.1rem 0.2rem; background: transparent;
+  border: 1px solid transparent; border-radius: 3px; color: inherit;
+}
+.date-list .date-input:hover, .date-list .date-input:focus { border-color: var(--line, #3a3a3a); }
+.date-list li.moved .date-input { border-color: var(--accent, #4a9eff); }
+.date-list li.out-of-order { color: var(--danger, #e05a5a); }
+.date-list .gap-note { flex-basis: 100%; font-size: 0.75rem; opacity: 0.8; }

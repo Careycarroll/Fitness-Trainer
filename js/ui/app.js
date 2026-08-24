@@ -69,6 +69,16 @@ let saveTimer = null;
 let storageNote = '';
 
 /**
+ * Session index -> moved date, for THIS export only (#54).
+ *
+ * Deliberately not persisted. A stored date override is authored state, which
+ * means a STATE_VERSION bump, a migration, and the imported-versus-authored
+ * question #50 has not settled yet. The output is a file downloaded once; if
+ * these should outlive the tab, that is its own issue with its own migration.
+ */
+let dateOverrides = {};
+
+/**
  * Exercises the last import could not resolve, kept on screen until they are
  * mapped. NOT a flash message: ADR-023 computes e1RM from `exerciseId`, so an
  * unresolved row contributes nothing to progression while still occupying
@@ -271,7 +281,17 @@ export function mount(root, defs) {
   // fitnotes-export.js validates; toISOString() is UTC and can be a day off.
   const startEl = root.querySelector('#export-start');
   startEl.value = new Date().toLocaleDateString('en-CA');
-  startEl.addEventListener('change', paintDates);
+  startEl.addEventListener('change', () => { dateOverrides = {}; paintDates(); });
+
+  root.querySelector('#date-preview').addEventListener('change', (e) => {
+    const input = e.target.closest('[data-date-index]');
+    if (!input) return;
+    const i = Number(input.dataset.dateIndex);
+    const rows = planDates(current, startEl.value, (persisted ?? emptyState()).importedSets);
+    if (input.value === rows[i].date) delete dateOverrides[i];
+    else dateOverrides[i] = input.value;
+    paintDates();
+  });
 
   root.querySelector('#export-plan').addEventListener('click', () => {
     if (!current) {
@@ -281,10 +301,23 @@ export function mount(root, defs) {
     }
     try {
       const state = persisted ?? emptyState();
+      // Export exactly the dates on screen. Recomputing them here would mean
+      // the athlete reviewed one list and exported another.
+      const planned = planDates(current, startEl.value, state.importedSets, dateOverrides);
+      const broken = planned.filter((r) => r.outOfOrder);
+      if (broken.length) {
+        storageNote = `Session ${broken[0].index + 1} (${broken[0].label}) is dated on or `
+          + 'before the session before it. Session order is training order, so this cannot '
+          + 'be exported. Move it later, or reset it to its computed date.';
+        paintStatus();
+        return;
+      }
+
       const out = toFitNotesCSV(current, startEl.value, state, {
         manifest: mappingFile,
         catalog: currentDefs.exercises,
-        currentMax
+        currentMax,
+        dates: planned.map((r) => r.date)
       });
 
       // The collision confirm that used to sit here is gone (#54). Clashes are
@@ -577,6 +610,7 @@ export function mount(root, defs) {
     try {
       current = generate(currentRequest, currentDefs);
       paint(out);
+      dateOverrides = {};
       paintDates();
     } catch (err) {
       current = null;
@@ -815,7 +849,7 @@ function paintDates() {
   if (!current || !startEl.value) { el.innerHTML = ''; return; }
   try {
     el.innerHTML = renderDatePreview(
-      planDates(current, startEl.value, (persisted ?? emptyState()).importedSets)
+      planDates(current, startEl.value, (persisted ?? emptyState()).importedSets, dateOverrides)
     );
   } catch (err) {
     // A plan with no schedule has no dates. Say which, rather than rendering
@@ -1102,6 +1136,30 @@ function replaceSetGroup(w, s, b, g, replacementId) {
  * confirm was removed with this — the same fact stated twice, once readably and
  * once blockingly, is not two safeguards.
  */
+/**
+ * What a moved date means for the work already written — #54.
+ *
+ * The first version of this said "Written for a compressed gap; this date gives
+ * 2 days. Volume was not recalculated." That is engine vocabulary ("compressed"
+ * is a gapClass value) and it says nothing the athlete can act on. It also read
+ * as a warning in BOTH directions, when only one of them is a caution.
+ *
+ * The engine reduces accessory volume by compressedAccessoryMultiplier when a
+ * session follows the day before, so:
+ *   built compressed, now rested  -> less work than the new spacing allows
+ *   built rested, now back-to-back -> more work than the new spacing supports
+ * Only the second is a risk, and each names the fix rather than the mechanism.
+ */
+function gapNote(r) {
+  const days = `${r.spacing} day${r.spacing === 1 ? '' : 's'}`;
+  return r.gap === 'compressed'
+    ? `Written as a lighter session because it followed the day before. It now has `
+      + `${days} of rest, so it has less work than this spacing allows. Regenerate `
+      + `for full volume.`
+    : `Written for a full rest day before it. It now follows the previous session `
+      + `after ${days}, so it may be more work than you can recover from.`;
+}
+
 export function renderDatePreview(rows) {
   if (!rows?.length) return '';
   const clashes = rows.filter((r) => r.collides).length;
@@ -1111,12 +1169,16 @@ export function renderDatePreview(rows) {
       ${clashes ? `<p class="note warn">${clashes} ${clashes === 1 ? 'date already holds' : 'dates already hold'} imported history. Exporting ADDS rows rather than replacing them, so those days will hold both.</p>` : ''}
       <ol class="dates">
         ${rows.map((r) => `
-          <li${r.collides ? ' class="collides"' : ''}>
-            <span class="date">${esc(r.date)}</span>
+          <li class="${[r.collides && 'collides', r.moved && 'moved', r.outOfOrder && 'out-of-order'].filter(Boolean).join(' ')}">
+            <input type="date" class="date-input" value="${esc(r.date)}"
+                   data-date-index="${r.index}" aria-label="Date for ${esc(r.label)}" />
             <span class="label">${esc(r.label)}</span>
             ${r.collides ? '<span class="tag warn-tag" title="This date already holds imported history">history exists</span>' : ''}
+            ${r.outOfOrder ? '<span class="tag warn-tag">on or before the previous session</span>' : ''}
+            ${r.gapChanged ? `<span class="note gap-note">${gapNote(r)}</span>` : ''}
           </li>`).join('')}
       </ol>
+      ${rows.some((r) => r.moved) ? '<p class="note">Moved dates apply to this export only.</p>' : ''}
     </section>`;
 }
 

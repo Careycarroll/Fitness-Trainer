@@ -17,7 +17,9 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { generate, CoverageError, RequestError } from '../js/engine/index.js';
-import { planDates } from '../js/storage/fitnotes-export.js';
+import { planDates, toFitNotesCSV } from '../js/storage/fitnotes-export.js';
+import { emptyState, currentMax } from '../js/storage/state.js';
+import mappingFile from '../js/data/fitnotes-mapping.json' with { type: 'json' };
 import { defs } from '../js/engine/defs.js';
 import {
   renderSession, renderOmitted, sessionNoticeHtml, emptySession, patternLabel, omitReason,
@@ -239,5 +241,114 @@ describe('destination dates are previewed before export (#54)', () => {
   test('a plan with no schedule refuses rather than inventing dates', () => {
     assert.throws(() => planDates({ weeks: [{ sessions: [{ label: 'A' }] }] }, '2026-09-07', []),
       /schedule is required/);
+  });
+});
+
+describe('a moved session keeps its work and states the change (#54)', () => {
+  const plan = () => generate({
+    schemaVersion: 1, styleId: 'bodybuilding', daysPerWeek: 4,
+    availableDays: ['mon', 'wed', 'fri', 'sat'], blockWeeks: 1,
+    equipmentProfile: 'home-garage', sessionMinutes: 70, seed: 20260813,
+    athlete: { skillLevel: 2, hasCoaching: false, strictReps: {} }, history: []
+  }, defs);
+
+  test('moving one session does not shift the block', () => {
+    const rows = planDates(plan(), '2026-09-07', [], { 1: '2026-09-08' });
+    assert.equal(rows[1].date, '2026-09-08');
+    assert.ok(rows[1].moved);
+    assert.equal(rows[0].date, '2026-09-07', 'earlier sessions must not move');
+    assert.equal(rows[2].date, '2026-09-11', 'later sessions must not move');
+    assert.ok(!rows[2].moved);
+  });
+
+  test('a gap the session was not written for is reported, not absorbed', () => {
+    // compressedAccessoryMultiplier is applied during generation, so the sets
+    // cannot be re-derived from a new date without regenerating -- which would
+    // change the exercises under an athlete who just reviewed them.
+    const rows = planDates(plan(), '2026-09-07', [], { 1: '2026-09-08' });
+    assert.equal(rows[1].gap, 'recovered', 'the gap the volume was chosen under');
+    assert.equal(rows[1].actualGap, 'compressed', 'the gap this date gives');
+    assert.ok(rows[1].gapChanged);
+    assert.equal(rows[1].spacing, 1);
+  });
+
+  test('an unmoved session reports no change', () => {
+    for (const r of planDates(plan(), '2026-09-07', [])) {
+      assert.ok(!r.moved);
+      assert.ok(!r.gapChanged, `${r.label} diverges as generated — the engine disagrees with itself`);
+      assert.ok(!r.outOfOrder);
+    }
+  });
+
+  test('the first session has no measurable gap and does not pretend to', () => {
+    // Its spacing depends on whatever was trained before the block began, which
+    // the app does not know.
+    const first = planDates(plan(), '2026-09-07', [])[0];
+    assert.equal(first.spacing, null);
+    assert.equal(first.actualGap, null);
+    assert.equal(first.gapChanged, false);
+  });
+
+  test('a date on or before the previous session is flagged, never sorted', () => {
+    const rows = planDates(plan(), '2026-09-07', [], { 1: '2026-09-07' });
+    assert.ok(rows[1].outOfOrder, 'same day as the previous session');
+    assert.deepEqual(rows.map((r) => r.label), plan().weeks.flatMap((w) => w.sessions).map((x) => x.label),
+      'session order is training order and must survive a bad move');
+    assert.ok(planDates(plan(), '2026-09-07', [], { 2: '2026-09-08' })[2].outOfOrder,
+      'a date before the previous session is out of order too');
+  });
+
+  test('moving onto imported history marks the collision at the new date', () => {
+    const rows = planDates(plan(), '2026-09-07', [{ date: '2026-09-08' }], { 1: '2026-09-08' });
+    assert.ok(rows[1].collides, 'the moved date must be re-checked against history');
+    assert.ok(!rows.filter((_, i) => i !== 1).some((r) => r.collides));
+  });
+
+  test('the preview renders a moved row with its notice', () => {
+    const html = renderDatePreview(planDates(plan(), '2026-09-07', [], { 1: '2026-09-08' }));
+    assert.match(html, /class="[^"]*moved/);
+    // Plain language, and no engine vocabulary: "compressed" and "recovered"
+    // are gapClass values, not words an athlete has any reason to know.
+    assert.match(html, /follows the previous session after 1 day/);
+    assert.match(html, /more work than you can recover from/);
+    assert.doesNotMatch(html, /compressed|recovered|gapClass/,
+      'engine vocabulary must not reach the athlete');
+    assert.match(html, /this export only/);
+    assert.doesNotMatch(html, /undefined|NaN/);
+  });
+});
+
+describe('toFitNotesCSV honours the dates it is given (#54)', () => {
+  // The export path had NO tests before this. It produces the file that gets
+  // imported onto the phone, which is what #36 goes on to verify.
+  const state = emptyState();
+  const opts = { manifest: mappingFile, catalog: defs.exercises, currentMax };
+  const program = () => generate({
+    schemaVersion: 1, styleId: 'bodybuilding', daysPerWeek: 4,
+    availableDays: ['mon', 'wed', 'fri', 'sat'], blockWeeks: 1,
+    equipmentProfile: 'home-garage', sessionMinutes: 70, seed: 20260813,
+    athlete: { skillLevel: 2, hasCoaching: false, strictReps: {} }, history: []
+  }, defs);
+
+  test('without an override the dates are unchanged', () => {
+    const out = toFitNotesCSV(program(), '2026-09-07', state, opts);
+    assert.deepEqual(out.dates, ['2026-09-07', '2026-09-09', '2026-09-11', '2026-09-12']);
+    assert.ok(out.rows > 0);
+  });
+
+  test('an override replaces the dates rather than shifting the start', () => {
+    const dates = ['2026-09-07', '2026-09-08', '2026-09-11', '2026-09-12'];
+    const out = toFitNotesCSV(program(), '2026-09-07', state, { ...opts, dates });
+    assert.deepEqual(out.dates, dates);
+    assert.ok(out.csv.includes('2026-09-08'), 'the moved date must reach the file');
+  });
+
+  test('a short date array is refused rather than exporting undefined', () => {
+    assert.throws(() => toFitNotesCSV(program(), '2026-09-07', state, { ...opts, dates: ['2026-09-07'] }),
+      /1 dates supplied for 4 sessions/);
+  });
+
+  test('a plan with no schedule refuses', () => {
+    assert.throws(() => toFitNotesCSV({ weeks: [] }, '2026-09-07', state, opts), /no schedule/);
   });
 });
