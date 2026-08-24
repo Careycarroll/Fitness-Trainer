@@ -20,7 +20,9 @@ export function generate(request, defs) {
   const profile = defs.equipment.find((p) => p.id === request.equipmentProfile);
   const generator = GENERATORS[style.domain];
 
-  const split = chooseSplit(defs.splits, request.daysPerWeek, style.domain, style);
+  const { split, sessionMismatch } = chooseSplit(
+    defs.splits, request.daysPerWeek, style.domain, style
+  );
 
   // ADR-014 precondition. Checked ONCE for the whole request rather than
   // per-session: the answer cannot differ between days, and discovering it on
@@ -100,6 +102,12 @@ export function generate(request, defs) {
     splitId: split.id,
     domain: style.domain,
     seed: request.seed,
+    // #51. Carried on the program, not just shown once: an exported plan and a
+    // reloaded one must be able to say what was asked for. Null when the
+    // request was honoured -- a field permanently reading 'no mismatch' is noise.
+    requestedSessions: request.daysPerWeek,
+    resolvedSessions: split.daysPerWeek,
+    sessionMismatch,
     weeks
   };
 }
@@ -120,20 +128,56 @@ function chooseSplit(splits, daysPerWeek, domain, style) {
     .filter(Boolean);
 
   const exactPreferred = preferred.find((s) => s.daysPerWeek === daysPerWeek);
-  if (exactPreferred) return exactPreferred;
+  if (exactPreferred) return { split: exactPreferred, sessionMismatch: null };
 
   const exact = usable.find((s) => s.daysPerWeek === daysPerWeek);
-  if (exact) return exact;
+  if (exact) return { split: exact, sessionMismatch: null };
 
-  // No exact day count anywhere: take the closest preferred split if the style
-  // named any, else the closest of all. Never invent days to fill a gap -- the
-  // UI reports the mismatch instead (ADR-014).
-  const closest = (list) =>
-    list.reduce((best, s) =>
-      Math.abs(s.daysPerWeek - daysPerWeek) < Math.abs(best.daysPerWeek - daysPerWeek) ? s : best
-    );
+  // No exact day count anywhere. Never invent days to fill a gap -- but the
+  // mismatch is now RETURNED rather than assumed to be someone else's problem.
+  // The previous comment said "the UI reports the mismatch instead (ADR-014)".
+  // The UI could not: nothing was handed to it, so a 7-session request became a
+  // 5-session program in silence (#51).
+  const list = preferred.length ? preferred : usable;
+  const split = closest(list, daysPerWeek);
 
-  return preferred.length ? closest(preferred) : closest(usable);
+  return {
+    split,
+    sessionMismatch: {
+      requested: daysPerWeek,
+      resolved: split.daysPerWeek,
+      splitId: split.id,
+      // What the athlete can actually pick, so the notice says something more
+      // useful than "not that". Domain-filtered: a conditioning style must not
+      // be offered load-domain day counts it cannot have.
+      available: [...new Set(list.map((s) => s.daysPerWeek))].sort((a, b) => a - b),
+      reason: `no ${daysPerWeek}-session split template exists`
+    }
+  };
+}
+
+/**
+ * Closest split by day count, with every tie broken EXPLICITLY -- #51.
+ *
+ * `reduce` kept the first of a tie, so a 7-session request chose between
+ * body-part-5 and ppl-6 (|5-7| = |6-7| = 2) on splits.json FILE ORDER. Stable,
+ * but an accident rather than a decision.
+ *
+ * Decided: nearer day count wins; on a tie the GREATER count wins, because
+ * under-delivering sessions is the harm being reported and losing one beats
+ * losing two; on a full tie, lexicographic id, so no domain-filtered subset can
+ * depend on authoring order.
+ *
+ * Sorting a COPY. An in-place sort of `splits` would reorder the caller's
+ * definitions and make generation depend on call order, breaking ADR-002.
+ */
+function closest(list, want) {
+  return list.slice().sort((a, b) => {
+    const byDistance = Math.abs(a.daysPerWeek - want) - Math.abs(b.daysPerWeek - want);
+    if (byDistance !== 0) return byDistance;
+    if (a.daysPerWeek !== b.daysPerWeek) return b.daysPerWeek - a.daysPerWeek;
+    return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+  })[0];
 }
 
 function validateRequest(request, defs) {

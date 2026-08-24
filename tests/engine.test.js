@@ -42,6 +42,60 @@ describe('engine determinism (ADR-002)', () => {
   });
 });
 
+describe('the session count the request asked for is reported (#51)', () => {
+  const req = (n, styleId = 'bodybuilding') => ({ ...base, styleId, daysPerWeek: n, seed: 20260813 });
+
+  test('an honoured request reports no mismatch', () => {
+    const p = generate(req(4), defs);
+    assert.equal(p.sessionMismatch, null);
+    assert.equal(p.requestedSessions, 4);
+    assert.equal(p.resolvedSessions, 4);
+  });
+
+  test('7 requested: both counts and the cause are on the program', () => {
+    const p = generate(req(7), defs);
+    assert.equal(p.requestedSessions, 7);
+    assert.equal(p.resolvedSessions, 6, 'a tie must resolve to the GREATER day count');
+    assert.equal(p.splitId, 'ppl-6');
+    assert.match(p.sessionMismatch.reason, /no 7-session split template exists/);
+    assert.deepEqual(p.sessionMismatch.available, [1, 2, 3, 4, 5, 6]);
+  });
+
+  test('the resolved count is the count actually emitted', () => {
+    // The reduction was invisible because nothing compared these two numbers.
+    for (let n = 1; n <= 7; n += 1) {
+      const p = generate(req(n), defs);
+      assert.equal(p.weeks[0].sessions.length, p.resolvedSessions,
+        `${n} requested: schedule and resolvedSessions disagree`);
+    }
+  });
+
+  test('conditioning over-delivers, and says so', () => {
+    // Only conditioning-3 exists, so 1 and 2 requested resolve UPWARD. The bug
+    // is an unreported fallback, not a reduction -- a cap at 6 would miss this
+    // entirely, which is why the fix reports rather than clamps.
+    for (const n of [1, 2]) {
+      const p = generate(req(n, 'hiit'), defs);
+      assert.equal(p.resolvedSessions, 3);
+      assert.ok(p.resolvedSessions > p.requestedSessions, 'this case adds sessions');
+      assert.ok(p.sessionMismatch, `${n}-session conditioning request must report`);
+      assert.deepEqual(p.sessionMismatch.available, [3],
+        'available must be domain-filtered: load-domain counts are not on offer');
+    }
+  });
+
+  test('the tie-break does not depend on splits.json order', () => {
+    const shuffled = { ...defs, splits: defs.splits.slice().reverse() };
+    assert.equal(generate(req(7), shuffled).splitId, generate(req(7), defs).splitId);
+  });
+
+  test('reporting changed no generated work (ADR-002)', () => {
+    const a = generate(req(4), defs);
+    const b = generate(req(4), defs);
+    assert.equal(JSON.stringify(a.weeks), JSON.stringify(b.weeks));
+  });
+});
+
 describe('request contract', () => {
   test('rejects a missing seed', () => {
     const { seed, ...noSeed } = base;
