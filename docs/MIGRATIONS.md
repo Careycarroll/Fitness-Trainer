@@ -78,3 +78,33 @@ test asserts its absence.
 `STATE_VERSION`, adds a case to `migrate()` in `state.js`, and gets an entry
 below. Export files are upgraded on import and never downgraded (rule 2), so a
 file written by an older build must keep opening in a newer one.
+
+---
+
+## v1 -> v2 — user-authored equipment profiles (#8)
+
+`STATE_VERSION` 1 -> 2, `DB_VERSION` 1 -> 2. `EXPORT_FORMAT` unchanged at 1.
+
+Adds `equipmentProfiles: []` to state and an `equipmentProfiles` object store.
+
+**Migration:** `1: (s) => ({ ...s, version: 2, equipmentProfiles: [] })`. Purely
+additive — a v1 state has no profiles, so the empty array is the whole change.
+No stored value is reinterpreted and nothing can be lost.
+
+**Why the export format did not move.** The envelope did not change, and
+`fromImport()` runs `migrate()` on the state inside it. So a v1 export still
+opens here, and a file written here still opens in a build that predates this.
+Bumping `EXPORT_FORMAT` would have refused both for no gain.
+
+**Why profiles are stored state and not a preference.** ADR-004 assigns the
+*selected* profile to localStorage and that is unchanged. A profile's *contents*
+are authored: the athlete built it, the app holds the only copy, and losing it to
+a cleared browser store is the failure ADR-011 exists to prevent. That is why #8
+was moved out of M5 in the first place.
+
+Shipped profiles stay in `js/data/equipment.json` and are **not** copied into
+user state. Copying them would fork the catalog's own data, where a later fix to
+a shipped profile could never reach the copy.
+
+`db.js` needed no `upgrade()` case body: the loop creates any store named in
+`STORES` that does not exist yet.

@@ -27,7 +27,7 @@ export const DB_NAME = 'training-planner';
  * index bumps this and adds a case to `upgrade()`. Conflating them is how a
  * migration runs twice or not at all (MIGRATIONS.md rule 2).
  */
-export const DB_VERSION = 1;
+export const DB_VERSION = 2;
 
 /**
  * One row per store, `id: 'singleton'`, holding that slice of canonical state.
@@ -44,7 +44,7 @@ export const DB_VERSION = 1;
  * `exerciseId` index — that is a DB_VERSION bump and an `upgrade()` case, which
  * is exactly the seam this layout leaves open.
  */
-export const STORES = Object.freeze(['meta', 'plans', 'importedSets', 'exerciseMax']);
+export const STORES = Object.freeze(['meta', 'plans', 'importedSets', 'exerciseMax', 'equipmentProfiles']);
 
 const SINGLETON = 'singleton';
 
@@ -138,7 +138,10 @@ function upgrade(db, oldVersion, _transaction) {
       }
       break;
 
-    // case 1: // -> 2. Add stores/indexes here, then bump DB_VERSION and log it
+    // case 1: -> 2 (#8) added the `equipmentProfiles` store. No case body is
+    // needed: the loop above creates any store in STORES that does not already
+    // exist, so adding the name and bumping DB_VERSION is the whole change.
+    // case 2: // -> 3. Add stores/indexes here, then bump DB_VERSION and log it
     //   in docs/MIGRATIONS.md. Do not reshape records here; that is state.js.
     //   falls through
 

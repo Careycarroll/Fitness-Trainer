@@ -428,9 +428,15 @@ describe('ADR-031 retention rules', () => {
   test('there is no store for a raw FitNotes database', () => {
     // ADR-031 ruling 3. Asserted so that adding one is a deliberate act that
     // breaks a test, rather than a quiet convenience someone adds at import.
+    // `equipmentProfiles` (#8) is user-authored state: the athlete built it, it
+    // is the only copy, and ADR-011 is why it lives here rather than in
+    // localStorage. That is categorically different from a raw FitNotes
+    // database, which is someone else's file, reproducible from source, and
+    // excluded by ruling 3. The list stays exact so the next addition also has
+    // to justify itself here.
     assert.deepEqual(
       Object.keys(emptyState()).sort(),
-      ['exerciseMax', 'importedSets', 'meta', 'plans', 'version']
+      ['equipmentProfiles', 'exerciseMax', 'importedSets', 'meta', 'plans', 'version']
     );
   });
 

@@ -31,7 +31,7 @@
  */
 
 /** Stored-record schema. Bumping this requires a migration below and a MIGRATIONS.md entry. */
-export const STATE_VERSION = 1;
+export const STATE_VERSION = 2;
 
 /** Export envelope format. Moves with STATE_VERSION; kept separate because they need not. */
 export const EXPORT_FORMAT = 1;
@@ -49,7 +49,12 @@ export function emptyState() {
     meta: { lastImportAt: null },
     plans: [],
     importedSets: [],
-    exerciseMax: []
+    exerciseMax: [],
+    // #8. Profiles the athlete authored. Shipped profiles stay in
+    // js/data/equipment.json and are NOT copied here -- storing them would fork
+    // the catalog's own data into user state, where a later fix to a shipped
+    // profile could never reach it.
+    equipmentProfiles: []
   };
 }
 
@@ -309,7 +314,16 @@ export function fromImport(envelope) {
  * this lands, per MIGRATIONS.md.
  */
 const MIGRATIONS = Object.freeze({
-  // 1: (s) => ({ ...s, version: 2, /* ... */ }),
+  /**
+   * 1 -> 2 (#8): user-authored equipment profiles.
+   *
+   * Additive. A v1 state has none, so an empty array is the whole migration --
+   * no stored value is reinterpreted and nothing can be lost. EXPORT_FORMAT
+   * deliberately stays 1: the envelope did not change, and migrate() upgrades
+   * the state inside it, so a v1 export still imports here and a file written
+   * here still opens in a build that predates this.
+   */
+  1: (s) => ({ ...s, version: 2, equipmentProfiles: [] }),
 });
 
 export function migrate(state) {
@@ -344,7 +358,7 @@ export function validate(state) {
   if (!state.meta || typeof state.meta !== 'object') throw new StateError('validate: meta must be an object');
   if (!('lastImportAt' in state.meta)) throw new StateError('validate: meta.lastImportAt missing');
 
-  for (const key of ['plans', 'importedSets', 'exerciseMax']) {
+  for (const key of ['plans', 'importedSets', 'exerciseMax', 'equipmentProfiles']) {
     if (!Array.isArray(state[key])) throw new StateError(`validate: ${key} must be an array`);
   }
 
