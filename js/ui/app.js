@@ -869,7 +869,7 @@ function paintStatus() {
  * did not ask for is a recovery and time claim you never made, and it needs
  * saying just as much.
  */
-function sessionNoticeHtml(program) {
+export function sessionNoticeHtml(program) {
   const mm = program?.sessionMismatch;
   if (!mm) return '';
   const verb = mm.resolved > mm.requested ? 'has' : 'has only';
@@ -928,7 +928,7 @@ function paint(out) {
   `).join('');
 }
 
-function renderSession(session, w, s, style) {
+export function renderSession(session, w, s, style) {
   const groups = allSetGroups(session);
   const domainMeta = session.domain === 'load'
     ? `${session.fatigueUsed ?? groups.reduce((n, g) => n + (g.fatigueCost ?? 0), 0)} / ${session.fatigueBudget ?? style.fatigueBudget} fatigue`
@@ -1068,7 +1068,7 @@ function replaceSetGroup(w, s, b, g, replacementId) {
   group.swappedFrom = original;
 }
 
-function renderOmitted(omitted = []) {
+export function renderOmitted(omitted = []) {
   if (!omitted.length) return '';
   return `
     <section class="omitted" aria-label="Omitted training patterns">
@@ -1109,7 +1109,7 @@ function genericErrorHtml(err) {
     </article>`;
 }
 
-function blockLabel(type) {
+export function blockLabel(type) {
   return ({ superset: 'Superset', circuit: 'Circuit', amrap: 'AMRAP' })[type] ?? type;
 }
 
@@ -1117,7 +1117,7 @@ function formatNumber(value) {
   return Number.isInteger(Number(value)) ? String(Number(value)) : Number(value).toFixed(1);
 }
 
-function esc(value) {
+export function esc(value) {
   return String(value ?? '')
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
@@ -1128,7 +1128,7 @@ function esc(value) {
 
 
 /** Rounds and the time cap sit on the block (ADR-027), never on the session. */
-function sessionTiming(session) {
+export function sessionTiming(session) {
   const rounds = session.blocks.reduce((n, b) => Math.max(n, b.rounds ?? 0), 0);
   const cap = session.blocks.reduce((n, b) => Math.max(n, b.timeCapSeconds ?? 0), 0);
   return [
@@ -1141,7 +1141,7 @@ function sessionTiming(session) {
  * A session with no blocks is not an error — the engine reports the gap in
  * omitted[] and carries on (539f900). But it must say so, or it reads as broken.
  */
-function emptySession(session) {
+export function emptySession(session) {
   // Was keyed on pattern === 'monostructural' and promised the rower/bike/jump
   // rope catalog "ships in M6". It shipped in #28, so the banner told the user
   // to wait for something already installed (#43). Every reason code is
@@ -1192,7 +1192,7 @@ function paintReview() {
 
 const DASH_HTML = '\u2014';
 
-function patternLabel(p) {
+export function patternLabel(p) {
   const NAMES = {
     monostructural: 'Steady-state conditioning',
     push_h: 'Horizontal push', push_v: 'Vertical push',
@@ -1207,7 +1207,7 @@ function patternLabel(p) {
 }
 
 /** Engine reason codes are vocabulary, not prose. Translate at the boundary. */
-function omitReason(x) {
+export function omitReason(x) {
   // Keyed on the REASON, never on the pattern. The old first line returned
   // 'deferred to M6' for any monostructural omission, which stopped being
   // true when 13_conditioning.csv landed 14 rows (#28) and pre-empted every
