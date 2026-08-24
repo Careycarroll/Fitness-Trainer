@@ -221,6 +221,38 @@ export function toFitNotesCSV(program, startDate, state, { manifest, catalog, cu
  * export cannot tell FitNotes to replace, so rows are ADDED and a collision
  * means two sets of work on one day.
  */
+/**
+ * Every destination date with the session that lands on it — #54.
+ *
+ * Pure, and the ONE place dates and sessions are paired. The export computed
+ * this internally and told the athlete afterwards, in a status line, once the
+ * file was already on disk. Same computation, surfaced before the download.
+ *
+ * `gap` is read off the session, not recomputed: the engine decided it at
+ * generation time and a second opinion here is how two copies of a rule drift
+ * apart. `collides` marks a date that already holds imported history — the
+ * export ADDS rows rather than replacing them, so a clash means two lots of work
+ * on one day.
+ */
+export function planDates(program, startDate, importedSets) {
+  const sessions = (program?.weeks ?? []).flatMap((w) => w.sessions);
+  if (!sessions.length) throw new ExportError('this plan has no sessions');
+
+  const dates = sessionDates(startDate, program.schedule, sessions.length);
+  // Delegated, not reimplemented. A second copy of "what counts as a clash" is
+  // how two copies of a rule drift apart.
+  const taken = new Set(dateCollisions(dates, importedSets));
+
+  return sessions.map((session, i) => ({
+    index: i,
+    date: dates[i],
+    weekday: WEEKDAYS[(WEEKDAYS.indexOf(program.schedule[i % program.schedule.length]))],
+    label: session.label,
+    gap: session.gap ?? null,
+    collides: taken.has(dates[i])
+  }));
+}
+
 export function dateCollisions(dates, importedSets) {
   const taken = new Set((importedSets ?? []).map((s) => s.date));
   return dates.filter((d) => taken.has(d));

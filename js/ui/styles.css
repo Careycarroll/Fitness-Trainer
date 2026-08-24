@@ -735,3 +735,18 @@ button[disabled] {
   outline: 2px solid var(--accent, #e5484d);
   outline-offset: 2px;
 }
+
+/* Destination-date preview (#54). Dates the plan will export to, listed before
+   the download rather than reported after it. */
+.date-preview:empty { display: none; }
+.date-list { margin-top: 0.75rem; }
+.date-list h4 { margin: 0 0 0.35rem; font-size: 0.85rem; }
+.date-list .note.warn { color: var(--warn, #e0a458); }
+.date-list ol.dates { list-style: none; margin: 0; padding: 0; }
+.date-list ol.dates li {
+  display: flex; gap: 0.5rem; align-items: baseline;
+  padding: 0.15rem 0; font-size: 0.85rem;
+}
+.date-list .date { font-variant-numeric: tabular-nums; opacity: 0.85; }
+.date-list .label { flex: 1; }
+.date-list li.collides { color: var(--warn, #e0a458); }

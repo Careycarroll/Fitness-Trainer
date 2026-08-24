@@ -17,10 +17,11 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { generate, CoverageError, RequestError } from '../js/engine/index.js';
+import { planDates } from '../js/storage/fitnotes-export.js';
 import { defs } from '../js/engine/defs.js';
 import {
   renderSession, renderOmitted, sessionNoticeHtml, emptySession, patternLabel, omitReason,
-  buildReviewQueue
+  buildReviewQueue, renderDatePreview
 } from '../js/ui/app.js';
 
 const WEEKDAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
@@ -176,5 +177,67 @@ describe('the unmapped-import review queue (#57)', () => {
   test('no imported sets yields an empty queue rather than throwing', () => {
     assert.deepEqual(buildReviewQueue([]), []);
     assert.deepEqual(buildReviewQueue(), []);
+  });
+});
+
+describe('destination dates are previewed before export (#54)', () => {
+  // Local fixture. `base` lives in engine.test.js and is not in scope here — the
+  // first version of this block referenced it and every test using plan() threw
+  // ReferenceError rather than asserting anything.
+  const plan = (opts = {}) => generate({
+    schemaVersion: 1,
+    styleId: 'bodybuilding',
+    daysPerWeek: 4,
+    availableDays: ['mon', 'wed', 'fri', 'sat'],
+    blockWeeks: 2,
+    equipmentProfile: 'home-garage',
+    sessionMinutes: 70,
+    seed: 20260813,
+    athlete: { skillLevel: 2, hasCoaching: false, strictReps: {} },
+    history: [],
+    ...opts
+  }, defs);
+
+  test('every session gets a date, in order, with its label', () => {
+    const rows = planDates(plan(), '2026-09-07', []);
+    assert.equal(rows.length, 8, 'a 2-week 4-day block has 8 sessions');
+    assert.deepEqual(rows.map((r) => r.date), [...rows.map((r) => r.date)].sort(),
+      'dates must be chronological');
+    assert.equal(rows[0].date, '2026-09-07');
+    assert.ok(rows.every((r) => r.label), 'every row names its session');
+  });
+
+  test('a clash with imported history is marked on the row', () => {
+    const rows = planDates(plan(), '2026-09-07', [{ date: '2026-09-11' }]);
+    const hit = rows.filter((r) => r.collides);
+    assert.equal(hit.length, 1);
+    assert.equal(hit[0].date, '2026-09-11');
+  });
+
+  test('the gap is read off the session, never recomputed', () => {
+    // compressedAccessoryMultiplier is applied during generation (loadDomain),
+    // so the gap shown must be the one the sets were built under.
+    const program = plan();
+    const rows = planDates(program, '2026-09-07', []);
+    const sessions = program.weeks.flatMap((w) => w.sessions);
+    rows.forEach((r, i) => assert.equal(r.gap, sessions[i].gap));
+  });
+
+  test('the preview renders, marks clashes, and never leaks undefined', () => {
+    const html = renderDatePreview(planDates(plan(), '2026-09-07', [{ date: '2026-09-11' }]));
+    assert.match(html, /2026-09-07/);
+    assert.match(html, /class="collides"/);
+    assert.match(html, /1 date already holds/);
+    assert.doesNotMatch(html, /undefined|NaN/);
+  });
+
+  test('no rows renders nothing rather than an empty shell', () => {
+    assert.equal(renderDatePreview([]), '');
+    assert.equal(renderDatePreview(), '');
+  });
+
+  test('a plan with no schedule refuses rather than inventing dates', () => {
+    assert.throws(() => planDates({ weeks: [{ sessions: [{ label: 'A' }] }] }, '2026-09-07', []),
+      /schedule is required/);
   });
 });
