@@ -179,6 +179,13 @@ def build_record(row: dict, source: str) -> dict:
         # repsForTime and then DISCARDED, so the filter was unimplementable and
         # anything written against it silently passed every row (#53).
         "isCompound": compound,
+        # ADR-023 names `tracking_type = weight_reps` specifically, and
+        # `scoring` cannot express it: weight_reps, weight_distance and
+        # reps_only all derive to "load". Carrying isCompound alone left the
+        # anchored filter approximate -- a Zercher carry is compound, barbell,
+        # fatigueCost 3, and scored "both", so it passed. Nobody has a one-rep
+        # max for a carry.
+        "trackingType": tracking,
         "scoring": scoring,
         "timeDomain": time_domain,
         "roundsCapable": scoring != "load" or reps_for_time,

@@ -452,7 +452,7 @@ export function mount(root, defs) {
   const anchored = defs.exercises
     .filter((e) =>
       e.isCompound &&
-      e.scoring !== 'time' &&
+      e.trackingType === 'weight_reps' &&
       (e.fatigueCost ?? 0) >= 3 &&
       (e.equipment ?? []).some((t) => t === 'barbell' || t === 'trap_bar'))
     .sort((a, b) => (a.name < b.name ? -1 : 1));
