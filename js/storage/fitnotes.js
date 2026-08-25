@@ -338,10 +338,23 @@ export function importFitNotes(db, mapping) {
   const measured = complete.filter((r) => !measuresNothing(r));
   const skippedEmpty = complete.length - measured.length;
 
-  // setIndex is order within one exercise on one date. Rowid order IS insertion
-  // order here, and sqlite.js now walks the b-tree in rowid order (711c754), so
-  // the derived id is stable across re-imports -- which is what makes a
-  // replacement import a genuine no-op rather than a dedupe problem (ADR-031).
+  // setIndex is order within one exercise on one date, walked in rowid order
+  // (sqlite.js, 711c754), which is what makes the derived id stable across
+  // re-imports and a replacement import a no-op rather than a dedupe problem
+  // (ADR-031).
+  //
+  // ROWID IS NOT INSERTION ORDER. This comment used to claim it was. Measured
+  // across two real backups either side of completing two sets: FitNotes
+  // inserted the new rows mid-table and RENUMBERED every row after them by +2,
+  // so `_id` 1368 meant Pendlay Row before and a bench press set after. Nothing
+  // here reads `_id` for identity, so the ids held -- 786 unchanged, 2 added,
+  // 0 lost -- but the reason is that rowid order within one (exercise, date)
+  // group is stable and appends at the end, not that rowid records insertion.
+  //
+  // The residual risk is reordering WITHIN a group: a set inserted before an
+  // existing one on the same day would shift every later setIndex and change
+  // those ids. Not observed, and FitNotes appends, but it is the failure this
+  // scheme has rather than none.
   const seen = new Map();
   const sets = [];
   const unresolved = new Map();
