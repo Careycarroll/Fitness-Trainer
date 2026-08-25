@@ -132,6 +132,55 @@ export function sessionDates(startDate, schedule, count) {
  * from all 149 manifest rows, was created by importing a row naming it. So an
  * unmapped exercise lands as a new FitNotes row rather than failing.
  */
+/**
+ * FitNotes categories, keyed on our primary muscle (#36).
+ *
+ * The CSV import REQUIRES a non-empty Category: a probe with a blank one is
+ * refused outright ("invalid row 0"), and the same rows with "Chest" import
+ * cleanly. The shipped exporter wrote a blank on every row, so no plan has ever
+ * reached the phone -- #25's column contract was verified by READING a real
+ * export, never by feeding our own output back in.
+ *
+ * These are the eight categories FitNotes actually uses, taken from a real
+ * export rather than invented. Two joins are rulings rather than lookups:
+ * traps, upper_back and erectors file under Back, because that is where
+ * FitNotes puts shrugs and back extensions; hip_flexors, adductors and
+ * abductors file under Legs.
+ */
+const CATEGORY_BY_MUSCLE = Object.freeze({
+  chest: 'Chest',
+  lats: 'Back', mid_back: 'Back', upper_back: 'Back', traps: 'Back', erectors: 'Back',
+  quads: 'Legs', hamstrings: 'Legs', glutes: 'Legs', calves: 'Legs',
+  adductors: 'Legs', abductors: 'Legs', hip_flexors: 'Legs',
+  front_delts: 'Shoulders', side_delts: 'Shoulders', rear_delts: 'Shoulders',
+  biceps: 'Biceps', forearms: 'Biceps',
+  triceps: 'Triceps',
+  abs: 'Abs', obliques: 'Abs', neck: 'Abs'
+});
+
+/** Fallback when FitNotes has never seen the exercise. Never empty. */
+const DEFAULT_CATEGORY = 'Cardio';
+
+/**
+ * Category per catalog slug: FitNotes' own where it knows the exercise, ours
+ * derived from the primary muscle otherwise. Mirrors buildNameLookup exactly --
+ * prefer what FitNotes calls it, fall back to what we know.
+ */
+export function buildCategoryLookup(manifest, catalog) {
+  const byslug = new Map();
+  for (const row of manifest.exercises ?? []) {
+    if (row.exerciseId && row.exportPreferred && row.fitnotesCategory) {
+      byslug.set(row.exerciseId, row.fitnotesCategory);
+    }
+  }
+  for (const ex of catalog) {
+    if (byslug.has(ex.id)) continue;
+    const muscle = (ex.primaryMuscles ?? [])[0];
+    byslug.set(ex.id, CATEGORY_BY_MUSCLE[muscle] ?? DEFAULT_CATEGORY);
+  }
+  return byslug;
+}
+
 export function buildNameLookup(manifest, catalog) {
   const byslug = new Map();
   for (const row of manifest.exercises) {
@@ -165,6 +214,7 @@ export function toFitNotesCSV(program, startDate, state, { manifest, catalog, cu
   }
 
   const names = buildNameLookup(manifest, catalog);
+  const categories = buildCategoryLookup(manifest, catalog);
   const sessions = program.weeks.flatMap((w) => w.sessions);
   // #54: the athlete may have moved individual sessions in the preview. An
   // override REPLACES the computed dates rather than adjusting the start, so a
@@ -229,9 +279,13 @@ export function toFitNotesCSV(program, startDate, state, { manifest, catalog, cu
         rows.push([
           date,
           names.get(g.exerciseId) ?? g.exerciseId,
-          '',            // Category: FitNotes assigns its own; ours was ignored on import
-          '',            // Weight (kg): blank. A probe supplying both stored the lbs value
-          weight ?? '',
+          // REQUIRED. A blank category is refused with "invalid row 0" (#36).
+          categories.get(g.exerciseId) ?? DEFAULT_CATEGORY,
+          // Explicit zeros, not blanks: a real FitNotes export writes 0.00 in
+          // both weight columns on an unweighted row and never leaves them
+          // empty. Matching what it emits beats guessing what it tolerates.
+          '0.00',        // Weight (kg): the lbs column is what import reads
+          weight ?? '0.00',
           0,             // Reps: ZERO. Cannot feed e1RM, so a skipped session leaves nothing false
           '', '', '',    // Distance, Distance Unit, Time
           note,

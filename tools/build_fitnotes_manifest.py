@@ -103,8 +103,8 @@ def build() -> dict:
     with open(SRC, newline="", encoding="utf-8") as fh:
         rows = list(csv.DictReader(fh))
 
-    for column in ("fitnotes_id", "fitnotes_name", "trainer_id", "trainer_name",
-                   "match_tier", "completed_sets"):
+    for column in ("fitnotes_id", "fitnotes_name", "fitnotes_category",
+                   "trainer_id", "trainer_name", "match_tier", "completed_sets"):
         if column not in (rows[0] if rows else {}):
             sys.exit(f"FAIL  {SRC} has no {column} column")
 
@@ -175,6 +175,13 @@ def build() -> dict:
             # meaningful where several definitions resolve to one Trainer
             # exercise; TRUE on exactly one row per resolved group.
             "exportPreferred": (row.get("export_preferred") or "").strip().upper() == "TRUE",
+            # FitNotes' OWN category for this exercise (#36). The CSV export
+            # requires a non-empty Category: a probe with a blank one is refused
+            # with "invalid row 0", and the shipped exporter wrote a blank on
+            # every row, so no plan has ever imported. Carried from the source
+            # rather than derived, because FitNotes files its own exercises and
+            # guessing would put a lift in a category the athlete does not use.
+            "fitnotesCategory": (row.get("fitnotes_category") or "").strip(),
         })
 
     # A single unresolved APPROVED mapping fails the build. Every name here was

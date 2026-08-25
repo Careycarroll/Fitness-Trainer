@@ -341,6 +341,9 @@ describe('unmapped exercises stay reviewable', () => {
     assert.deepEqual(out.summary, {
       logRows: 2,
       skippedIncomplete: 0,
+      // #36: rows that measured nothing. The fixture's logRow() carries reps,
+      // so none here.
+      skippedEmpty: 0,
       imported: 2,
       resolved: 1,
       unresolved: 1,
@@ -415,5 +418,53 @@ describe('day notes are read, not dropped (#50)', () => {
       { date: '2024-05-01', comment: 'b' }, { date: '2024-03-02', comment: 'a' }
     ]), mapping());
     assert.deepEqual(out.dayNotes.map((n) => n.date), ['2024-03-02', '2024-05-01']);
+  });
+});
+
+describe('a row that measured nothing is not a set (#36)', () => {
+  // #25 exports a plan as zero-rep marker rows so it cannot be mistaken for
+  // performed work. FitNotes' CSV import lands is_complete = 1 on every row
+  // regardless -- measured against a real 27-row plan import, all complete -- so
+  // the exported plan came back as history on the next import. These rows carry
+  // null reps and null weight so they cannot feed e1RM (ADR-023), but they would
+  // count as sets for weekly volume (#44): a session that never happened.
+  const empty = (over = {}) => logRow({
+    _id: 900, exercise_id: 222, reps: 0, metric_weight: 0,
+    duration_seconds: 0, distance: 0, ...over
+  });
+
+  test('a zero-everything row is skipped and counted', () => {
+    const out = importFitNotes(reader([empty()], EXERCISES), mapping());
+    assert.equal(out.sets.length, 0);
+    assert.equal(out.summary.skippedEmpty, 1);
+    assert.equal(out.summary.skippedIncomplete, 0, 'it was complete — that is the point');
+  });
+
+  test('any single measurement keeps the row', () => {
+    for (const field of ['reps', 'metric_weight', 'duration_seconds', 'distance']) {
+      const out = importFitNotes(reader([empty({ [field]: 5 })], EXERCISES), mapping());
+      assert.equal(out.sets.length, 1, `${field} alone must keep the row`);
+    }
+  });
+
+  test('a skipped row does NOT consume a setIndex', () => {
+    // The ids are derived from setIndex and are what make a re-import a no-op
+    // (ADR-031). A skipped row taking an index would renumber the real sets on
+    // that day, so an unchanged export would import as different rows.
+    const out = importFitNotes(reader([
+      empty({ _id: 1 }),
+      logRow({ _id: 2, exercise_id: 222, reps: 5 }),
+      logRow({ _id: 3, exercise_id: 222, reps: 5 })
+    ], EXERCISES), mapping());
+    assert.deepEqual(out.sets.map((s) => s.setIndex), [1, 2],
+      'the surviving sets must be numbered from 1');
+  });
+
+  test('a whole exported plan imports as nothing', () => {
+    const plan = Array.from({ length: 6 }, (_, i) =>
+      empty({ _id: 100 + i, reps: 0, metric_weight: 0 }));
+    const out = importFitNotes(reader(plan, EXERCISES), mapping());
+    assert.equal(out.sets.length, 0);
+    assert.equal(out.summary.skippedEmpty, 6);
   });
 });

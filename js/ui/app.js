@@ -566,6 +566,14 @@ export function mount(root, defs) {
       '',
       `${s.logRows} rows in the export.`,
       `${s.skippedIncomplete} incomplete — templates and abandoned entries, not imported.`,
+      // #36. A plan exported to FitNotes comes back marked complete, so these
+      // are usually the athlete's own prescriptions returning as history. Said
+      // out loud because a silent skip of 27 rows is indistinguishable from a
+      // broken import.
+      ...(s.skippedEmpty
+        ? [`${s.skippedEmpty} with no reps, weight, time or distance — nothing was recorded, `
+           + `so they are not sets. Usually a plan you exported to FitNotes.`]
+        : []),
       `${s.imported} completed sets will be imported.`,
       `    ${s.resolved} matched to catalog exercises.`,
       `    ${s.unresolved} unmatched — kept and reviewable, but they do not feed progression.`,

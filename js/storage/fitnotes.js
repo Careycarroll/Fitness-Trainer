@@ -308,6 +308,36 @@ export function importFitNotes(db, mapping) {
   const complete = log.filter((r) => r.is_complete === 1);
   const skippedIncomplete = log.length - complete.length;
 
+  /**
+   * A row that measured NOTHING (#36).
+   *
+   * Zero reps, zero weight, zero duration and zero distance. Nothing happened
+   * that can be counted, so it is not a set whatever `is_complete` says.
+   *
+   * This is the other half of #25's marker-row design. A plan exported to
+   * FitNotes writes one zero-rep row per prescribed exercise precisely so it
+   * cannot be mistaken for performed work -- but CSV import lands
+   * `is_complete = 1` on every row regardless (measured: all 27 rows of a real
+   * plan import came back complete), so without this filter the plan re-enters
+   * as history on the next import. They carry null reps and null weight, so
+   * they cannot feed e1RM (ADR-023), but they WOULD count as sets for weekly
+   * volume (#44) -- a phantom session the athlete never performed.
+   *
+   * Applied BEFORE setIndex is assigned. A skipped row that consumed an index
+   * would shift the derived ids of the real sets on that day, and those ids are
+   * what make a replacement import a no-op rather than a dedupe problem.
+   *
+   * The collision is real but rare and self-correcting: a genuinely performed
+   * set logged with no numbers at all is indistinguishable from a marker row,
+   * and looks identical to the athlete too. One such row exists in the real
+   * export (a plank with no duration) against 1,393 rows.
+   */
+  const measuresNothing = (r) =>
+    !(r.reps > 0) && !(r.metric_weight > 0) && !(r.duration_seconds > 0) && !(r.distance > 0);
+
+  const measured = complete.filter((r) => !measuresNothing(r));
+  const skippedEmpty = complete.length - measured.length;
+
   // setIndex is order within one exercise on one date. Rowid order IS insertion
   // order here, and sqlite.js now walks the b-tree in rowid order (711c754), so
   // the derived id is stable across re-imports -- which is what makes a
@@ -316,7 +346,7 @@ export function importFitNotes(db, mapping) {
   const sets = [];
   const unresolved = new Map();
 
-  for (const row of complete) {
+  for (const row of measured) {
     const sourceExerciseId = row.exercise_id;
     const sourceExerciseName = nameById.get(sourceExerciseId) ?? null;
 
@@ -402,6 +432,7 @@ export function importFitNotes(db, mapping) {
     summary: {
       logRows: log.length,
       skippedIncomplete,
+      skippedEmpty,
       imported: sets.length,
       resolved,
       unresolved: sets.length - resolved,

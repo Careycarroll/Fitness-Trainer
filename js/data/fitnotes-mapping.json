@@ -8,7 +8,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 98,
@@ -16,7 +17,8 @@
       "exerciseId": "straight-arm-pulldown",
       "tier": "alias",
       "completedSets": 17,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 99,
@@ -24,7 +26,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Chest"
     },
     {
       "fitnotesId": 100,
@@ -32,7 +35,8 @@
       "exerciseId": "box-jump",
       "tier": "alias",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Cardio"
     },
     {
       "fitnotesId": 101,
@@ -40,7 +44,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Triceps"
     },
     {
       "fitnotesId": 102,
@@ -48,7 +53,8 @@
       "exerciseId": "romanian-deadlift",
       "tier": "exact/normalised",
       "completedSets": 18,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 103,
@@ -56,7 +62,8 @@
       "exerciseId": "pendlay-row",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 104,
@@ -64,7 +71,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 105,
@@ -72,7 +80,8 @@
       "exerciseId": "machine-row",
       "tier": "alias",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 106,
@@ -80,7 +89,8 @@
       "exerciseId": "dumbbell-bench-press",
       "tier": "alias-manual",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Chest"
     },
     {
       "fitnotesId": 107,
@@ -88,7 +98,8 @@
       "exerciseId": "cycling-stationary-bike",
       "tier": "alias",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Cardio"
     },
     {
       "fitnotesId": 108,
@@ -96,7 +107,8 @@
       "exerciseId": "standing-calf-raise",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 109,
@@ -104,7 +116,8 @@
       "exerciseId": "overhead-cable-triceps-extension",
       "tier": "token-set",
       "completedSets": 36,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Triceps"
     },
     {
       "fitnotesId": 110,
@@ -112,7 +125,8 @@
       "exerciseId": "cycling-stationary-bike",
       "tier": "alias",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Cardio"
     },
     {
       "fitnotesId": 111,
@@ -120,7 +134,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Biceps"
     },
     {
       "fitnotesId": 112,
@@ -128,7 +143,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Triceps"
     },
     {
       "fitnotesId": 113,
@@ -136,7 +152,8 @@
       "exerciseId": "split-squat",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 114,
@@ -144,7 +161,8 @@
       "exerciseId": "pull-up",
       "tier": "exact/normalised",
       "completedSets": 4,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 115,
@@ -152,7 +170,8 @@
       "exerciseId": "clean-and-jerk",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 116,
@@ -160,7 +179,8 @@
       "exerciseId": "dumbbell-hammer-curl",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Biceps"
     },
     {
       "fitnotesId": 117,
@@ -168,7 +188,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Abs"
     },
     {
       "fitnotesId": 118,
@@ -176,7 +197,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 119,
@@ -184,7 +206,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 120,
@@ -192,7 +215,8 @@
       "exerciseId": "seated-calf-raise",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 121,
@@ -200,7 +224,8 @@
       "exerciseId": "machine-lateral-raise",
       "tier": "token-set",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 122,
@@ -208,7 +233,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 123,
@@ -216,7 +242,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Chest"
     },
     {
       "fitnotesId": 124,
@@ -224,7 +251,8 @@
       "exerciseId": "elliptical-trainer",
       "tier": "alias",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Cardio"
     },
     {
       "fitnotesId": 125,
@@ -232,7 +260,8 @@
       "exerciseId": "dumbbell-overhead-triceps-extension",
       "tier": "exact/normalised",
       "completedSets": 4,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Triceps"
     },
     {
       "fitnotesId": 126,
@@ -240,7 +269,8 @@
       "exerciseId": "lying-leg-curl",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 127,
@@ -248,7 +278,8 @@
       "exerciseId": "push-press",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 128,
@@ -256,7 +287,8 @@
       "exerciseId": "lat-pulldown",
       "tier": "exact/normalised",
       "completedSets": 31,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 129,
@@ -264,7 +296,8 @@
       "exerciseId": null,
       "tier": "no-trainer-equivalent",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Chest"
     },
     {
       "fitnotesId": 130,
@@ -272,7 +305,8 @@
       "exerciseId": "rowing-machine",
       "tier": "alias",
       "completedSets": 1,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Cardio"
     },
     {
       "fitnotesId": 131,
@@ -280,7 +314,8 @@
       "exerciseId": "seated-leg-curl",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 132,
@@ -288,7 +323,8 @@
       "exerciseId": "overhead-press",
       "tier": "exact/normalised",
       "completedSets": 48,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 133,
@@ -296,7 +332,8 @@
       "exerciseId": null,
       "tier": "no-trainer-equivalent",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Cardio"
     },
     {
       "fitnotesId": 134,
@@ -304,7 +341,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Biceps"
     },
     {
       "fitnotesId": 135,
@@ -312,7 +350,8 @@
       "exerciseId": "side-plank",
       "tier": "exact/normalised",
       "completedSets": 1,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Abs"
     },
     {
       "fitnotesId": 136,
@@ -320,7 +359,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 137,
@@ -328,7 +368,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 138,
@@ -336,7 +377,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Biceps"
     },
     {
       "fitnotesId": 139,
@@ -344,7 +386,8 @@
       "exerciseId": "crunch",
       "tier": "exact/normalised",
       "completedSets": 5,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Abs"
     },
     {
       "fitnotesId": 140,
@@ -352,7 +395,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 141,
@@ -360,7 +404,8 @@
       "exerciseId": "safety-bar-squat",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 142,
@@ -368,7 +413,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Chest"
     },
     {
       "fitnotesId": 143,
@@ -376,7 +422,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Biceps"
     },
     {
       "fitnotesId": 144,
@@ -384,7 +431,8 @@
       "exerciseId": "barbell-curl",
       "tier": "exact/normalised",
       "completedSets": 36,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Biceps"
     },
     {
       "fitnotesId": 145,
@@ -392,7 +440,8 @@
       "exerciseId": "sumo-deadlift",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 146,
@@ -400,7 +449,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 147,
@@ -408,7 +458,8 @@
       "exerciseId": "barbell-shrug",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 148,
@@ -416,7 +467,8 @@
       "exerciseId": "incline-dumbbell-press",
       "tier": "alias-manual",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Chest"
     },
     {
       "fitnotesId": 149,
@@ -424,7 +476,8 @@
       "exerciseId": "running-outdoor",
       "tier": "alias",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Cardio"
     },
     {
       "fitnotesId": 150,
@@ -432,7 +485,8 @@
       "exerciseId": "glute-ham-raise",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 151,
@@ -440,7 +494,8 @@
       "exerciseId": "dumbbell-front-raise",
       "tier": "token-set",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 152,
@@ -448,7 +503,8 @@
       "exerciseId": "upright-row",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 153,
@@ -456,7 +512,8 @@
       "exerciseId": "walking",
       "tier": "alias",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Cardio"
     },
     {
       "fitnotesId": 154,
@@ -464,7 +521,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Triceps"
     },
     {
       "fitnotesId": 155,
@@ -472,7 +530,8 @@
       "exerciseId": "leg-extension",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 156,
@@ -480,7 +539,8 @@
       "exerciseId": "single-arm-dumbbell-row",
       "tier": "alias-manual",
       "completedSets": 4,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 157,
@@ -488,7 +548,8 @@
       "exerciseId": "power-snatch",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 158,
@@ -496,7 +557,8 @@
       "exerciseId": "ez-bar-preacher-curl",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Biceps"
     },
     {
       "fitnotesId": 159,
@@ -504,7 +566,8 @@
       "exerciseId": "plank",
       "tier": "exact/normalised",
       "completedSets": 2,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Abs"
     },
     {
       "fitnotesId": 160,
@@ -512,7 +575,8 @@
       "exerciseId": "close-grip-bench-press",
       "tier": "alias-manual",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Triceps"
     },
     {
       "fitnotesId": 161,
@@ -520,7 +584,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 162,
@@ -528,7 +593,8 @@
       "exerciseId": "conventional-deadlift",
       "tier": "alias",
       "completedSets": 18,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 163,
@@ -536,7 +602,8 @@
       "exerciseId": "standing-dumbbell-press",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 164,
@@ -544,7 +611,8 @@
       "exerciseId": "incline-dumbbell-curl",
       "tier": "alias-manual",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Biceps"
     },
     {
       "fitnotesId": 165,
@@ -552,7 +620,8 @@
       "exerciseId": "cable-crunch",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Abs"
     },
     {
       "fitnotesId": 166,
@@ -560,7 +629,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 167,
@@ -568,7 +638,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 168,
@@ -576,7 +647,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 169,
@@ -584,7 +656,8 @@
       "exerciseId": "smith-machine-close-grip-press",
       "tier": "alias-manual",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Triceps"
     },
     {
       "fitnotesId": 170,
@@ -592,7 +665,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 171,
@@ -600,7 +674,8 @@
       "exerciseId": "dumbbell-lateral-raise",
       "tier": "alias-manual",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 172,
@@ -608,7 +683,8 @@
       "exerciseId": "t-bar-row",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 173,
@@ -616,7 +692,8 @@
       "exerciseId": "decline-barbell-press",
       "tier": "alias-manual",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Chest"
     },
     {
       "fitnotesId": 174,
@@ -624,7 +701,8 @@
       "exerciseId": "running-treadmill",
       "tier": "alias",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Cardio"
     },
     {
       "fitnotesId": 175,
@@ -632,7 +710,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Triceps"
     },
     {
       "fitnotesId": 176,
@@ -640,7 +719,8 @@
       "exerciseId": "glute-bridge",
       "tier": "alias-manual",
       "completedSets": 9,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 177,
@@ -648,7 +728,8 @@
       "exerciseId": "underhand-barbell-row",
       "tier": "alias",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 178,
@@ -656,7 +737,8 @@
       "exerciseId": "dumbbell-lateral-raise",
       "tier": "token-set",
       "completedSets": 23,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 179,
@@ -664,7 +746,8 @@
       "exerciseId": "cycling-outdoor",
       "tier": "alias",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Cardio"
     },
     {
       "fitnotesId": 180,
@@ -672,7 +755,8 @@
       "exerciseId": "leg-press",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 181,
@@ -680,7 +764,8 @@
       "exerciseId": "ez-bar-skullcrusher",
       "tier": "judgement",
       "completedSets": 3,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Triceps"
     },
     {
       "fitnotesId": 182,
@@ -688,7 +773,8 @@
       "exerciseId": "seated-dumbbell-press",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 183,
@@ -696,7 +782,8 @@
       "exerciseId": "neutral-grip-pull-up",
       "tier": "alias",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 184,
@@ -704,7 +791,8 @@
       "exerciseId": "power-clean",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 185,
@@ -712,7 +800,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Biceps"
     },
     {
       "fitnotesId": 186,
@@ -720,7 +809,8 @@
       "exerciseId": "hanging-leg-raise",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Abs"
     },
     {
       "fitnotesId": 187,
@@ -728,7 +818,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 188,
@@ -736,7 +827,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 189,
@@ -744,7 +836,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Chest"
     },
     {
       "fitnotesId": 190,
@@ -752,7 +845,8 @@
       "exerciseId": "diamond-push-up",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Triceps"
     },
     {
       "fitnotesId": 191,
@@ -760,7 +854,8 @@
       "exerciseId": "dumbbell-curl",
       "tier": "exact/normalised",
       "completedSets": 31,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Biceps"
     },
     {
       "fitnotesId": 192,
@@ -768,7 +863,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 193,
@@ -776,7 +872,8 @@
       "exerciseId": "rack-pull",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 194,
@@ -784,7 +881,8 @@
       "exerciseId": "cable-fly",
       "tier": "alias",
       "completedSets": 5,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Chest"
     },
     {
       "fitnotesId": 195,
@@ -792,7 +890,8 @@
       "exerciseId": "barbell-row",
       "tier": "exact/normalised",
       "completedSets": 42,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 196,
@@ -800,7 +899,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 197,
@@ -808,7 +908,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 198,
@@ -816,7 +917,8 @@
       "exerciseId": "machine-shoulder-press",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 199,
@@ -824,7 +926,8 @@
       "exerciseId": "seated-cable-row",
       "tier": "exact/normalised",
       "completedSets": 50,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 200,
@@ -832,7 +935,8 @@
       "exerciseId": null,
       "tier": "no-trainer-equivalent",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Cardio"
     },
     {
       "fitnotesId": 201,
@@ -840,7 +944,8 @@
       "exerciseId": "incline-barbell-press",
       "tier": "alias-manual",
       "completedSets": 18,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Chest"
     },
     {
       "fitnotesId": 202,
@@ -848,7 +953,8 @@
       "exerciseId": "ez-bar-skullcrusher",
       "tier": "exact/normalised",
       "completedSets": 2,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Triceps"
     },
     {
       "fitnotesId": 203,
@@ -856,7 +962,8 @@
       "exerciseId": "barbell-standing-calf-raise",
       "tier": "exact/normalised",
       "completedSets": 4,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 204,
@@ -864,7 +971,8 @@
       "exerciseId": "seated-barbell-overhead-press",
       "tier": "alias-manual",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 205,
@@ -872,7 +980,8 @@
       "exerciseId": "barbell-bench-press",
       "tier": "alias",
       "completedSets": 107,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Chest"
     },
     {
       "fitnotesId": 206,
@@ -880,7 +989,8 @@
       "exerciseId": "triceps-dip",
       "tier": "alias-manual",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Triceps"
     },
     {
       "fitnotesId": 207,
@@ -888,7 +998,8 @@
       "exerciseId": "bulgarian-split-squat",
       "tier": "exact/normalised",
       "completedSets": 22,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 208,
@@ -896,7 +1007,8 @@
       "exerciseId": "chin-up",
       "tier": "exact/normalised",
       "completedSets": 2,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 209,
@@ -904,7 +1016,8 @@
       "exerciseId": "snatch",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 210,
@@ -912,7 +1025,8 @@
       "exerciseId": "cable-curl",
       "tier": "exact/normalised",
       "completedSets": 9,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Biceps"
     },
     {
       "fitnotesId": 211,
@@ -920,7 +1034,8 @@
       "exerciseId": "hanging-knee-raise",
       "tier": "exact/normalised",
       "completedSets": 6,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Abs"
     },
     {
       "fitnotesId": 212,
@@ -928,7 +1043,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 213,
@@ -936,7 +1052,8 @@
       "exerciseId": "back-squat",
       "tier": "alias",
       "completedSets": 48,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 214,
@@ -944,7 +1061,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Chest"
     },
     {
       "fitnotesId": 215,
@@ -952,7 +1070,8 @@
       "exerciseId": "push-up",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Chest"
     },
     {
       "fitnotesId": 216,
@@ -960,7 +1079,8 @@
       "exerciseId": "ez-bar-curl",
       "tier": "exact/normalised",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Biceps"
     },
     {
       "fitnotesId": 217,
@@ -968,7 +1088,8 @@
       "exerciseId": "ab-wheel-rollout",
       "tier": "exact/normalised",
       "completedSets": 3,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Abs"
     },
     {
       "fitnotesId": 218,
@@ -976,7 +1097,8 @@
       "exerciseId": "standing-calf-raise",
       "tier": "token-set",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 219,
@@ -984,7 +1106,8 @@
       "exerciseId": "prone-incline-rear-delt-raise",
       "tier": "judgement",
       "completedSets": 4,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 220,
@@ -992,7 +1115,8 @@
       "exerciseId": "machine-crunch",
       "tier": "alias",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Abs"
     },
     {
       "fitnotesId": 221,
@@ -1000,7 +1124,8 @@
       "exerciseId": "lying-leg-curl",
       "tier": "token-set",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 222,
@@ -1008,7 +1133,8 @@
       "exerciseId": null,
       "tier": "no-trainer-equivalent",
       "completedSets": 17,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 223,
@@ -1016,7 +1142,8 @@
       "exerciseId": "belt-squat",
       "tier": "exact/normalised",
       "completedSets": 5,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 224,
@@ -1024,7 +1151,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Back"
     },
     {
       "fitnotesId": 225,
@@ -1032,7 +1160,8 @@
       "exerciseId": "leg-extension",
       "tier": "token-set",
       "completedSets": 13,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 226,
@@ -1040,7 +1169,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Biceps"
     },
     {
       "fitnotesId": 227,
@@ -1048,7 +1178,8 @@
       "exerciseId": "cycling-outdoor",
       "tier": "alias",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Cardio"
     },
     {
       "fitnotesId": 228,
@@ -1056,7 +1187,8 @@
       "exerciseId": "seated-calf-raise",
       "tier": "token-set",
       "completedSets": 5,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 229,
@@ -1064,7 +1196,8 @@
       "exerciseId": "machine-hip-abduction",
       "tier": "token-set",
       "completedSets": 12,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 230,
@@ -1072,7 +1205,8 @@
       "exerciseId": "cable-crunch",
       "tier": "judgement",
       "completedSets": 11,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Abs"
     },
     {
       "fitnotesId": 231,
@@ -1080,7 +1214,8 @@
       "exerciseId": "push-up",
       "tier": "exact/normalised",
       "completedSets": 6,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Chest"
     },
     {
       "fitnotesId": 232,
@@ -1088,7 +1223,8 @@
       "exerciseId": "b-stance-romanian-deadlift",
       "tier": "judgement",
       "completedSets": 8,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 233,
@@ -1096,7 +1232,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Abs"
     },
     {
       "fitnotesId": 234,
@@ -1104,7 +1241,8 @@
       "exerciseId": "machine-hip-adduction",
       "tier": "token-set",
       "completedSets": 12,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 235,
@@ -1112,7 +1250,8 @@
       "exerciseId": "sissy-squat",
       "tier": "exact/normalised",
       "completedSets": 7,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 236,
@@ -1120,7 +1259,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 237,
@@ -1128,7 +1268,8 @@
       "exerciseId": "tibialis-raise",
       "tier": "alias",
       "completedSets": 9,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 238,
@@ -1136,7 +1277,8 @@
       "exerciseId": "dumbbell-front-raise",
       "tier": "judgement",
       "completedSets": 4,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Shoulders"
     },
     {
       "fitnotesId": 239,
@@ -1144,7 +1286,8 @@
       "exerciseId": "seated-leg-curl",
       "tier": "token-set",
       "completedSets": 7,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 240,
@@ -1152,7 +1295,8 @@
       "exerciseId": "triceps-dip",
       "tier": "alias-manual",
       "completedSets": 6,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Triceps"
     },
     {
       "fitnotesId": 241,
@@ -1160,7 +1304,8 @@
       "exerciseId": "jump-rope",
       "tier": "alias",
       "completedSets": 0,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Cardio"
     },
     {
       "fitnotesId": 242,
@@ -1168,7 +1313,8 @@
       "exerciseId": "reverse-lunge",
       "tier": "judgement",
       "completedSets": 1,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Legs"
     },
     {
       "fitnotesId": 243,
@@ -1176,7 +1322,8 @@
       "exerciseId": null,
       "tier": "unmatched",
       "completedSets": 0,
-      "exportPreferred": false
+      "exportPreferred": false,
+      "fitnotesCategory": "Triceps"
     },
     {
       "fitnotesId": 244,
@@ -1184,7 +1331,8 @@
       "exerciseId": "ez-bar-overhead-extension",
       "tier": "judgement",
       "completedSets": 3,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Triceps"
     },
     {
       "fitnotesId": 245,
@@ -1192,7 +1340,8 @@
       "exerciseId": "low-to-high-cable-fly",
       "tier": "alias-manual",
       "completedSets": 9,
-      "exportPreferred": true
+      "exportPreferred": true,
+      "fitnotesCategory": "Chest"
     }
   ]
 }
