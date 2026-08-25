@@ -123,6 +123,20 @@ function nextSeed() {
   return Math.floor(Math.random() * 2_000_000_000);
 }
 
+/**
+ * EXPERIENCE, not "skill level 1-5" (#61).
+ *
+ * The old input was a bare number anchored to nothing, and its only consequence
+ * was invisible: below 4 blocks the Olympic lifts and nothing said so. Each
+ * option now describes what the athlete can DO rather than asking for a
+ * self-rating, matching the distinction the catalog's own 14 level-4 rows make.
+ * The values still map to `technical_demand`, which is what the gate reads.
+ *
+ * This note lives here rather than as an HTML comment inside the template: an
+ * apostrophe in "catalog's" terminated the template literal and broke the build
+ * while every test stayed green, because node --test never parses that string
+ * the way esbuild does.
+ */
 export function mount(root, defs) {
   currentDefs = defs;
   root.setAttribute('aria-busy', 'false');
@@ -190,8 +204,14 @@ export function mount(root, defs) {
       <label class="block-only">Block length (weeks)
         <input type="number" name="blockWeeks" min="1" max="12" value="4" />
       </label>
-      <label>Skill level (1–5)
-        <input type="number" name="skillLevel" min="1" max="5" value="2" />
+      <label>Experience
+        <select name="skillLevel">
+          <option value="1">1 · New to lifting — little or no barbell experience</option>
+          <option value="2" selected>2 · Comfortable with the main barbell lifts</option>
+          <option value="3">3 · Confident under load; can self-correct form</option>
+          <option value="4">4 · Trains the derived lifts — power clean, push jerk, pistol</option>
+          <option value="5">5 · Full Olympic lifts to competition technique</option>
+        </select>
       </label>
       <label>Seed (number or name; blank = new draft)
         <input type="text" name="seed" placeholder="random"
@@ -696,7 +716,7 @@ export function mount(root, defs) {
       // An explicit seed reproduces a draft exactly (ADR-002). Blank means
       // "give me a different one", which is what Generate should mean by default.
       seed: seedFrom(f.get('seed')),
-      athlete: { skillLevel: Number(f.get('skillLevel')), hasCoaching: false, strictReps: {} },
+      athlete: { skillLevel: Number(f.get('skillLevel')) },
       history: []
     };
 

@@ -42,7 +42,7 @@ function* everyRequest() {
           equipmentProfile: profile.id,
           sessionMinutes: 70,
           seed: 1218782818,
-          athlete: { skillLevel: 2, hasCoaching: false, strictReps: {} },
+          athlete: { skillLevel: 2 },
           history: []
         };
       }
@@ -195,7 +195,7 @@ describe('destination dates are previewed before export (#54)', () => {
     equipmentProfile: 'home-garage',
     sessionMinutes: 70,
     seed: 20260813,
-    athlete: { skillLevel: 2, hasCoaching: false, strictReps: {} },
+    athlete: { skillLevel: 2 },
     history: [],
     ...opts
   }, defs);
@@ -249,7 +249,7 @@ describe('a moved session keeps its work and states the change (#54)', () => {
     schemaVersion: 1, styleId: 'bodybuilding', daysPerWeek: 4,
     availableDays: ['mon', 'wed', 'fri', 'sat'], blockWeeks: 1,
     equipmentProfile: 'home-garage', sessionMinutes: 70, seed: 20260813,
-    athlete: { skillLevel: 2, hasCoaching: false, strictReps: {} }, history: []
+    athlete: { skillLevel: 2 }, history: []
   }, defs);
 
   test('moving one session does not shift the block', () => {
@@ -327,7 +327,7 @@ describe('toFitNotesCSV honours the dates it is given (#54)', () => {
     schemaVersion: 1, styleId: 'bodybuilding', daysPerWeek: 4,
     availableDays: ['mon', 'wed', 'fri', 'sat'], blockWeeks: 1,
     equipmentProfile: 'home-garage', sessionMinutes: 70, seed: 20260813,
-    athlete: { skillLevel: 2, hasCoaching: false, strictReps: {} }, history: []
+    athlete: { skillLevel: 2 }, history: []
   }, defs);
 
   test('without an override the dates are unchanged', () => {

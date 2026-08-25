@@ -144,8 +144,11 @@ The engine's single entry point. Constructed by the UI, consumed by `engine/inde
   seed: 20260813,           // determinism: same request => same program (ADR-002)
   athlete: {                // REQUIRED. safety.js gates on skillLevel
     skillLevel: 3,          // 1-5; 5 admits olympic lifts
-    hasCoaching: false,
-    strictReps: {}          // exerciseId -> rep cap, athlete override
+    // hasCoaching and strictReps were removed in #61. Both were hardcoded at
+    // every call site -- false and {} -- so the gates reading them could never
+    // pass, and no catalog row referenced those gates anyway. strictReps also
+    // carried two meanings: this file documented it as a rep cap, safety.js
+    // used it as a capacity threshold. Neither was implemented.
   },
   history: []               // completed sets; populated by the FitNotes import (#24)
 }

@@ -14,30 +14,42 @@
 /** Thrown when a definition file references a gate that does not exist. Fail closed. */
 export class UnknownGateError extends Error {}
 
+/**
+ * ONE gate, and that is the honest count (#61).
+ *
+ * Two others were deleted rather than kept: `kipping-prerequisite` (5+ strict
+ * pull-ups) and `inversion-prerequisite` (8+ pike push-ups). Both read
+ * `ctx.strictReps`, which every call site hardcoded to `{}`, so both denied
+ * unconditionally -- and neither was referenced by any catalog row, so neither
+ * ever ran at all. Dead safety code that reads as a working safety system is
+ * worse than no gate: it invites the belief that a class of movement is being
+ * checked when nothing is.
+ *
+ * `strictReps` went with them, and it carried a second problem. SPEC.md
+ * documented it as `exerciseId -> rep cap, athlete override`; these gates used
+ * it as a capacity threshold. Two different features sharing one field name,
+ * neither implemented. When something genuinely needs an athlete capability,
+ * it gets a field with one meaning and a UI that can set it.
+ *
+ * Check 04 now asserts every declared gate is referenced by some catalog row,
+ * so a gate cannot go dead like this again without failing the build.
+ */
 const GATES = Object.freeze({
-  /** Olympic lifts require demonstrated technical competence, not just strength. */
+  /**
+   * Olympic lifts require demonstrated technical competence, not just strength.
+   *
+   * Level 4, flat. This used to admit level 3 WITH coaching -- and `hasCoaching`
+   * was hardcoded false at every call site, so that branch never ran and the
+   * effective threshold was always 4. The denial read "requires skill level 4+"
+   * while the real blocker was a field the UI could not set: unactionable advice
+   * wearing the shape of a rule.
+   */
   'olympic-lift': (ctx) => {
-    if (ctx.skillLevel < 3) {
-      return deny('Olympic lifts require skill level 3+. Substituting a comparable pattern.');
-    }
-    if (!ctx.hasCoaching && ctx.skillLevel < 4) {
-      return deny('Olympic lifts without coaching require skill level 4+.');
-    }
-    return allow();
-  },
-
-  /** Kipping loads the shoulder in end-range under momentum. Strict capacity comes first. */
-  'kipping-prerequisite': (ctx) => {
-    if ((ctx.strictReps?.['pull-up'] ?? 0) < 5) {
-      return deny('Kipping requires 5+ strict pull-ups first.');
-    }
-    return allow();
-  },
-
-  /** Inverted pressing: overhead capacity before load is inverted onto the shoulder. */
-  'inversion-prerequisite': (ctx) => {
-    if ((ctx.strictReps?.['pike-push-up'] ?? 0) < 8) {
-      return deny('Inverted pressing requires 8+ pike push-ups first.');
+    if ((ctx.skillLevel ?? 0) < 4) {
+      return deny(
+        'Olympic lifts need experience level 4 — confident with the derived lifts ' +
+        '(power clean, push jerk). A comparable pattern is substituted.'
+      );
     }
     return allow();
   }
@@ -56,7 +68,7 @@ export function listGates() {
 
 /**
  * @param {string|null} gateId
- * @param {object} ctx  athlete context: { skillLevel, hasCoaching, strictReps }
+ * @param {object} ctx  athlete context: { skillLevel }
  * @returns {{allowed: boolean, reason: string|null}}
  */
 export function evaluateGate(gateId, ctx) {

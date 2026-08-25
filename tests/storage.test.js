@@ -58,7 +58,7 @@ const request = {
   equipmentProfile: 'commercial-gym',
   blockWeeks: 2,
   seed: 20260813,
-  athlete: { skillLevel: 3, hasCoaching: false, strictReps: {} },
+  athlete: { skillLevel: 3 },
   history: []
 };
 

@@ -68,7 +68,7 @@ export function generateSession({
   gap = null, compressedAccessoryMultiplier = 1
 }) {
   const rng = createRng(request.seed + dayIndex * 7919);
-  const ctx = request.athlete ?? { skillLevel: 2, hasCoaching: false, strictReps: {} };
+  const ctx = request.athlete ?? { skillLevel: 2 };
 
   const available = catalog.filter(
     (e) => isAvailable(e, profile) && (e.scoring === 'load' || e.scoring === 'both')

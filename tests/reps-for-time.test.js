@@ -21,7 +21,7 @@ const timeEligible = (e) =>
 const req = (over) => ({
   schemaVersion: 1, styleId: 'strength', daysPerWeek: 4, sessionMinutes: 70,
   equipmentProfile: 'commercial-gym', blockWeeks: 2, seed: 20260813,
-  athlete: { skillLevel: 3, hasCoaching: false, strictReps: {} }, history: [], ...over,
+  athlete: { skillLevel: 3 }, history: [], ...over,
 });
 
 describe('reps-for-time derivation (#37)', () => {

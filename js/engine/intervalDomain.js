@@ -84,7 +84,7 @@ function workWindow(candidate, wr) {
 
 export function generateSession({ style, day, catalog, profile, request, dayIndex }) {
   const rng = createRng(request.seed + dayIndex * 104729);
-  const ctx = request.athlete ?? { skillLevel: 2, hasCoaching: false, strictReps: {} };
+  const ctx = request.athlete ?? { skillLevel: 2 };
 
   const available = catalog.filter(
     // ADR-009 counts reps-for-time as a time-domain mode, so compound

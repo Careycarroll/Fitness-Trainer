@@ -58,7 +58,7 @@ function everySetGroup() {
       equipmentProfile: 'commercial-gym',
       sessionMinutes: 70,
       seed: 20260812,
-      athlete: { skillLevel: 5, hasCoaching: true, strictReps: {} },
+      athlete: { skillLevel: 5 },
       history: [],
     };
 
