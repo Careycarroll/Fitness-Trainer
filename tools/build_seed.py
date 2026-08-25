@@ -140,6 +140,9 @@ def build_record(row: dict, source: str) -> dict:
     rep_low = to_int(row["default_rep_low"], "default_rep_low", slug)
     rep_high = to_int(row["default_rep_high"], "default_rep_high", slug)
     compound = to_bool(row["is_compound"])
+    if "skill_gate" not in row:
+        sys.exit(f"{slug}: no skill_gate column — data/exercises/*.csv needs the #53 migration")
+    gate = (row["skill_gate"] or "").strip() or None
     reps_for_time = tracking in REPS_FOR_TIME_TRACKING and compound
 
     if tracking in TIME_TRACKING:
@@ -171,6 +174,11 @@ def build_record(row: dict, source: str) -> dict:
         "restSeconds": to_int(row["default_rest_sec"], "default_rest_sec", slug),
         "warmupRequired": fatigue >= 4,
         "unilateral": to_bool(row["is_unilateral"]),
+        # ADR-023 anchors percentage prescription on compound + weight_reps +
+        # fatigueCost >= 3 + barbell/trap_bar. This column was parsed for
+        # repsForTime and then DISCARDED, so the filter was unimplementable and
+        # anything written against it silently passed every row (#53).
+        "isCompound": compound,
         "scoring": scoring,
         "timeDomain": time_domain,
         "roundsCapable": scoring != "load" or reps_for_time,
@@ -185,7 +193,17 @@ def build_record(row: dict, source: str) -> dict:
         # said otherwise. "M7 owns this" was true when the catalog had no
         # such rows; 13_conditioning.csv landed them in #28.
         "monostructural": derive_pattern(row) == "monostructural",
-        "skillGate": "olympic-lift" if skill == 5 else None,
+        # AUTHORED, not derived from skill (#53). This read
+        # `"olympic-lift" if skill == 5 else None`, which conflated difficulty
+        # with gate-worthiness: every skill-5 row was tagged an Olympic lift
+        # whatever the movement, and every technical skill-4 row -- power clean,
+        # push jerk, Turkish get-up -- was ungated. It held only because all four
+        # skill-5 rows happen to BE Olympic lifts. Authoring a ring muscle-up
+        # (#58) would have silently declared it an Olympic lift.
+        #
+        # ADR-012: data REFERENCES a gate, code defines it. Check 04 resolves
+        # every reference and fails on a dangling one.
+        "skillGate": gate,
         # --- pass-through, authored and already validated (ADR-026) ----------
         # Discarding these at the boundary would make ADR-020's
         # prioritize_joint_load unimplementable.

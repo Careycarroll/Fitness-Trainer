@@ -1,22 +1,22 @@
-name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,emphasis,joint_load
-Overhead Cable Triceps Extension,overhead-cable-triceps-extension,overhead_extension,strength,isolation,triceps,front_delts,cable,FALSE,1,1,10,15,60,FALSE,weight_reps,long_head,elbow
-Dumbbell Overhead Triceps Extension,dumbbell-overhead-triceps-extension,overhead_extension,strength,isolation,triceps,front_delts,dumbbell,FALSE,1,1,10,15,60,FALSE,weight_reps,long_head,elbow|shoulder
-Single-Arm Dumbbell Overhead Extension,single-arm-dumbbell-overhead-extension,overhead_extension,strength,isolation,triceps,front_delts,dumbbell,FALSE,1,1,10,15,60,TRUE,weight_reps,long_head,elbow|shoulder
-EZ-Bar Overhead Extension,ez-bar-overhead-extension,overhead_extension,strength,isolation,triceps,front_delts,ez_bar|bench,FALSE,2,2,8,15,90,FALSE,weight_reps,long_head,elbow
-Band Overhead Triceps Extension,band-overhead-triceps-extension,overhead_extension,strength,isolation,triceps,front_delts,bands,FALSE,1,1,12,20,45,FALSE,reps_only,long_head,
-Cable Triceps Pushdown,cable-triceps-pushdown,pushdown,strength,isolation,triceps,forearms,cable,FALSE,1,1,10,20,60,FALSE,weight_reps,short_head,
-Rope Triceps Pushdown,rope-triceps-pushdown,pushdown,strength,isolation,triceps,forearms,cable,FALSE,1,1,10,20,60,FALSE,weight_reps,short_head,
-Reverse-Grip Cable Pushdown,reverse-grip-cable-pushdown,pushdown,strength,isolation,triceps,forearms,cable,FALSE,1,1,12,20,60,TRUE,weight_reps,short_head,wrist
-Band Triceps Pushdown,band-triceps-pushdown,pushdown,strength,isolation,triceps,forearms,bands,FALSE,1,1,15,25,45,FALSE,reps_only,short_head,
-Machine Triceps Extension,machine-triceps-extension,pushdown,strength,isolation,triceps,forearms,plate_loaded,FALSE,1,1,10,20,60,FALSE,weight_reps,short_head,
-EZ-Bar Skullcrusher,ez-bar-skullcrusher,skullcrusher,strength,isolation,triceps,front_delts,ez_bar|bench,FALSE,2,2,8,15,90,FALSE,weight_reps,long_head,elbow
-Dumbbell Skullcrusher,dumbbell-skullcrusher,skullcrusher,strength,isolation,triceps,front_delts,dumbbell|bench,FALSE,1,2,10,15,60,FALSE,weight_reps,long_head,elbow
-Cable Lying Triceps Extension,cable-lying-triceps-extension,skullcrusher,strength,isolation,triceps,front_delts,cable|bench,FALSE,1,2,10,15,60,FALSE,weight_reps,stretch_bias,elbow
-JM Press,jm-press,close_grip_press,strength,push_h,triceps,chest|front_delts,barbell|bench|rack,TRUE,3,3,6,10,120,FALSE,weight_reps,close_grip,elbow
-Close-Grip Bench Press,close-grip-bench-press,close_grip_press,strength,push_h,triceps|chest,front_delts,barbell|bench|rack,TRUE,3,2,6,10,120,FALSE,weight_reps,close_grip,elbow|wrist
-Smith Machine Close-Grip Press,smith-machine-close-grip-press,close_grip_press,strength,push_h,triceps|chest,front_delts,smith_machine|bench,TRUE,2,1,8,12,90,FALSE,weight_reps,close_grip,elbow
-Bench Dip,bench-dip,dip,strength,push_h,triceps,chest|front_delts,bodyweight|bench,TRUE,2,1,10,20,90,FALSE,reps_only,shortened_bias,shoulder
-Weighted Bench Dip,weighted-bench-dip,dip,strength,push_h,triceps,chest|front_delts,bodyweight|bench|plate,TRUE,2,2,8,15,90,FALSE,weight_reps,shortened_bias,shoulder
-Triceps Dip,triceps-dip,dip,strength,push_h,triceps,chest|front_delts,dip_bar,TRUE,2,2,6,12,120,FALSE,reps_only,close_grip,shoulder
-Diamond Push-Up,diamond-push-up,bodyweight_extension,strength,push_h,triceps,chest|front_delts,bodyweight,TRUE,1,1,10,20,60,FALSE,reps_only,close_grip,wrist
-Suspension Triceps Extension,suspension-triceps-extension,bodyweight_extension,strength,isolation,triceps,abs|front_delts,suspension_trainer,FALSE,2,3,8,15,60,FALSE,reps_only,long_head,elbow|shoulder
+name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,emphasis,joint_load,skill_gate
+Overhead Cable Triceps Extension,overhead-cable-triceps-extension,overhead_extension,strength,isolation,triceps,front_delts,cable,FALSE,1,1,10,15,60,FALSE,weight_reps,long_head,elbow,
+Dumbbell Overhead Triceps Extension,dumbbell-overhead-triceps-extension,overhead_extension,strength,isolation,triceps,front_delts,dumbbell,FALSE,1,1,10,15,60,FALSE,weight_reps,long_head,elbow|shoulder,
+Single-Arm Dumbbell Overhead Extension,single-arm-dumbbell-overhead-extension,overhead_extension,strength,isolation,triceps,front_delts,dumbbell,FALSE,1,1,10,15,60,TRUE,weight_reps,long_head,elbow|shoulder,
+EZ-Bar Overhead Extension,ez-bar-overhead-extension,overhead_extension,strength,isolation,triceps,front_delts,ez_bar|bench,FALSE,2,2,8,15,90,FALSE,weight_reps,long_head,elbow,
+Band Overhead Triceps Extension,band-overhead-triceps-extension,overhead_extension,strength,isolation,triceps,front_delts,bands,FALSE,1,1,12,20,45,FALSE,reps_only,long_head,,
+Cable Triceps Pushdown,cable-triceps-pushdown,pushdown,strength,isolation,triceps,forearms,cable,FALSE,1,1,10,20,60,FALSE,weight_reps,short_head,,
+Rope Triceps Pushdown,rope-triceps-pushdown,pushdown,strength,isolation,triceps,forearms,cable,FALSE,1,1,10,20,60,FALSE,weight_reps,short_head,,
+Reverse-Grip Cable Pushdown,reverse-grip-cable-pushdown,pushdown,strength,isolation,triceps,forearms,cable,FALSE,1,1,12,20,60,TRUE,weight_reps,short_head,wrist,
+Band Triceps Pushdown,band-triceps-pushdown,pushdown,strength,isolation,triceps,forearms,bands,FALSE,1,1,15,25,45,FALSE,reps_only,short_head,,
+Machine Triceps Extension,machine-triceps-extension,pushdown,strength,isolation,triceps,forearms,plate_loaded,FALSE,1,1,10,20,60,FALSE,weight_reps,short_head,,
+EZ-Bar Skullcrusher,ez-bar-skullcrusher,skullcrusher,strength,isolation,triceps,front_delts,ez_bar|bench,FALSE,2,2,8,15,90,FALSE,weight_reps,long_head,elbow,
+Dumbbell Skullcrusher,dumbbell-skullcrusher,skullcrusher,strength,isolation,triceps,front_delts,dumbbell|bench,FALSE,1,2,10,15,60,FALSE,weight_reps,long_head,elbow,
+Cable Lying Triceps Extension,cable-lying-triceps-extension,skullcrusher,strength,isolation,triceps,front_delts,cable|bench,FALSE,1,2,10,15,60,FALSE,weight_reps,stretch_bias,elbow,
+JM Press,jm-press,close_grip_press,strength,push_h,triceps,chest|front_delts,barbell|bench|rack,TRUE,3,3,6,10,120,FALSE,weight_reps,close_grip,elbow,
+Close-Grip Bench Press,close-grip-bench-press,close_grip_press,strength,push_h,triceps|chest,front_delts,barbell|bench|rack,TRUE,3,2,6,10,120,FALSE,weight_reps,close_grip,elbow|wrist,
+Smith Machine Close-Grip Press,smith-machine-close-grip-press,close_grip_press,strength,push_h,triceps|chest,front_delts,smith_machine|bench,TRUE,2,1,8,12,90,FALSE,weight_reps,close_grip,elbow,
+Bench Dip,bench-dip,dip,strength,push_h,triceps,chest|front_delts,bodyweight|bench,TRUE,2,1,10,20,90,FALSE,reps_only,shortened_bias,shoulder,
+Weighted Bench Dip,weighted-bench-dip,dip,strength,push_h,triceps,chest|front_delts,bodyweight|bench|plate,TRUE,2,2,8,15,90,FALSE,weight_reps,shortened_bias,shoulder,
+Triceps Dip,triceps-dip,dip,strength,push_h,triceps,chest|front_delts,dip_bar,TRUE,2,2,6,12,120,FALSE,reps_only,close_grip,shoulder,
+Diamond Push-Up,diamond-push-up,bodyweight_extension,strength,push_h,triceps,chest|front_delts,bodyweight,TRUE,1,1,10,20,60,FALSE,reps_only,close_grip,wrist,
+Suspension Triceps Extension,suspension-triceps-extension,bodyweight_extension,strength,isolation,triceps,abs|front_delts,suspension_trainer,FALSE,2,3,8,15,60,FALSE,reps_only,long_head,elbow|shoulder,

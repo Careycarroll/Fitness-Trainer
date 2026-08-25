@@ -439,16 +439,20 @@ export function mount(root, defs) {
   // Lifts a percentage prescription can anchor to, derived from the catalog so
   // a catalog change cannot leave this list stale.
   //
-  // ADR-023's rule is compound + weight_reps + fatigueCost >= 3 + barbell or
-  // trap_bar. is_compound is NOT on the seed record -- build_seed.py drops the
-  // column -- so a filter on it silently passes everything. Excluding carry by
-  // hand stands in for it: it removes Trap Bar Farmer's Carry and Zercher
-  // Carry, which have no meaningful one-rep max. Filed separately.
+  // ADR-023's rule, now implementable as written (#53): compound + weight_reps
+  // + fatigueCost >= 3 + barbell or trap_bar. `isCompound` was parsed by
+  // build_seed.py and discarded, so this filtered on `pattern !== 'carry'` by
+  // hand to stand in for it. The real field excludes the same two carries and
+  // does it by the ADR's own criteria rather than by a guess that matched.
+  //
+  // 38 rows, where the ADR says "about twelve". The criteria are right and the
+  // estimate is stale: it was written against a smaller catalog, and 301 rows
+  // hold 38 barbell compounds. Every one is a lift with a real one-rep max.
   const maxSelect = root.querySelector('#max-exercise');
   const anchored = defs.exercises
     .filter((e) =>
+      e.isCompound &&
       e.scoring !== 'time' &&
-      e.pattern !== 'carry' &&
       (e.fatigueCost ?? 0) >= 3 &&
       (e.equipment ?? []).some((t) => t === 'barbell' || t === 'trap_bar'))
     .sort((a, b) => (a.name < b.name ? -1 : 1));

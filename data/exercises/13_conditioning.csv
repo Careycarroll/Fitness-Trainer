@@ -1,15 +1,15 @@
-name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,emphasis,joint_load
-Walking,walking,walk,conditioning,monostructural,quads|calves,glutes|hamstrings,bodyweight,TRUE,1,1,60,3600,60,FALSE,time,,
-Running - Outdoor,running-outdoor,run,conditioning,monostructural,quads|calves,glutes|hamstrings|hip_flexors,bodyweight,TRUE,3,2,60,3600,120,FALSE,time,,knee|ankle
-Running - Treadmill,running-treadmill,run,conditioning,monostructural,quads|calves,glutes|hamstrings|hip_flexors,treadmill,TRUE,3,2,60,3600,120,FALSE,time,,knee|ankle
-Cycling - Outdoor,cycling-outdoor,cycle,conditioning,monostructural,quads|glutes,hamstrings|calves,bodyweight,TRUE,2,2,60,5400,120,FALSE,time,,knee
-Cycling - Stationary Bike,cycling-stationary-bike,cycle,conditioning,monostructural,quads|glutes,hamstrings|calves,stationary_bike,TRUE,2,1,60,3600,120,FALSE,time,,knee
-Air Bike,air-bike,cycle,conditioning,monostructural,quads|glutes,lats|front_delts|hamstrings,air_bike,TRUE,3,1,20,1200,120,FALSE,time,,knee
-Rowing Machine,rowing-machine,row,conditioning,monostructural,lats|quads,glutes|hamstrings|biceps|erectors,rower,TRUE,3,3,60,1800,120,FALSE,time,,lower_back|knee
-Ski Erg,ski-erg,erg,conditioning,monostructural,lats|triceps,abs|glutes|erectors,ski_erg,TRUE,3,2,30,1200,120,FALSE,time,,shoulder|lower_back
-Elliptical Trainer,elliptical-trainer,erg,conditioning,monostructural,quads|glutes,hamstrings|calves|lats,elliptical,TRUE,2,1,60,3600,120,FALSE,time,,
-Stair Climber,stair-climber,step,conditioning,monostructural,quads|glutes,calves|hamstrings,stair_climber,TRUE,2,1,60,3600,120,FALSE,time,,knee
-Jump Rope,jump-rope,jump_rope,conditioning,monostructural,calves|quads,hamstrings|forearms,jump_rope,TRUE,2,3,30,300,90,FALSE,time,,ankle
-Heavy Bag Boxing,heavy-bag-boxing,boxing,conditioning,monostructural,front_delts|obliques,triceps|abs|calves,heavy_bag,TRUE,3,3,60,300,60,FALSE,time,,shoulder|wrist
-Shadow Boxing,shadow-boxing,boxing,conditioning,monostructural,front_delts|obliques,triceps|abs|calves,bodyweight,TRUE,2,2,60,300,60,FALSE,time,,shoulder
-Battle Ropes,battle-ropes,battle_rope,conditioning,monostructural,front_delts|lats,abs|forearms|biceps,battle_ropes,TRUE,3,2,15,120,90,FALSE,time,,shoulder
+name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,emphasis,joint_load,skill_gate
+Walking,walking,walk,conditioning,monostructural,quads|calves,glutes|hamstrings,bodyweight,TRUE,1,1,60,3600,60,FALSE,time,,,
+Running - Outdoor,running-outdoor,run,conditioning,monostructural,quads|calves,glutes|hamstrings|hip_flexors,bodyweight,TRUE,3,2,60,3600,120,FALSE,time,,knee|ankle,
+Running - Treadmill,running-treadmill,run,conditioning,monostructural,quads|calves,glutes|hamstrings|hip_flexors,treadmill,TRUE,3,2,60,3600,120,FALSE,time,,knee|ankle,
+Cycling - Outdoor,cycling-outdoor,cycle,conditioning,monostructural,quads|glutes,hamstrings|calves,bodyweight,TRUE,2,2,60,5400,120,FALSE,time,,knee,
+Cycling - Stationary Bike,cycling-stationary-bike,cycle,conditioning,monostructural,quads|glutes,hamstrings|calves,stationary_bike,TRUE,2,1,60,3600,120,FALSE,time,,knee,
+Air Bike,air-bike,cycle,conditioning,monostructural,quads|glutes,lats|front_delts|hamstrings,air_bike,TRUE,3,1,20,1200,120,FALSE,time,,knee,
+Rowing Machine,rowing-machine,row,conditioning,monostructural,lats|quads,glutes|hamstrings|biceps|erectors,rower,TRUE,3,3,60,1800,120,FALSE,time,,lower_back|knee,
+Ski Erg,ski-erg,erg,conditioning,monostructural,lats|triceps,abs|glutes|erectors,ski_erg,TRUE,3,2,30,1200,120,FALSE,time,,shoulder|lower_back,
+Elliptical Trainer,elliptical-trainer,erg,conditioning,monostructural,quads|glutes,hamstrings|calves|lats,elliptical,TRUE,2,1,60,3600,120,FALSE,time,,,
+Stair Climber,stair-climber,step,conditioning,monostructural,quads|glutes,calves|hamstrings,stair_climber,TRUE,2,1,60,3600,120,FALSE,time,,knee,
+Jump Rope,jump-rope,jump_rope,conditioning,monostructural,calves|quads,hamstrings|forearms,jump_rope,TRUE,2,3,30,300,90,FALSE,time,,ankle,
+Heavy Bag Boxing,heavy-bag-boxing,boxing,conditioning,monostructural,front_delts|obliques,triceps|abs|calves,heavy_bag,TRUE,3,3,60,300,60,FALSE,time,,shoulder|wrist,
+Shadow Boxing,shadow-boxing,boxing,conditioning,monostructural,front_delts|obliques,triceps|abs|calves,bodyweight,TRUE,2,2,60,300,60,FALSE,time,,shoulder,
+Battle Ropes,battle-ropes,battle_rope,conditioning,monostructural,front_delts|lats,abs|forearms|biceps,battle_ropes,TRUE,3,2,15,120,90,FALSE,time,,shoulder,

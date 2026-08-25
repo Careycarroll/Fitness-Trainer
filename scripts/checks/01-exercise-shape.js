@@ -1,6 +1,6 @@
 import { PATTERNS, LOAD_TYPES, SCORING, MUSCLES } from './_enums.js';
 
-const REQUIRED = ['id','name','pattern','loadType','equipment','primaryMuscles','secondaryMuscles','fatigueCost','skill','defaultRIR','restSeconds','warmupRequired','unilateral','scoring','timeDomain','roundsCapable','repsForTime','kipAllowed','monostructural','skillGate'];
+const REQUIRED = ['id','name','pattern','loadType','equipment','primaryMuscles','secondaryMuscles','fatigueCost','skill','defaultRIR','restSeconds','warmupRequired','unilateral','isCompound','scoring','timeDomain','roundsCapable','repsForTime','kipAllowed','monostructural','skillGate'];
 
 export default {
   id: '01', name: 'Exercise record shape & enums',
