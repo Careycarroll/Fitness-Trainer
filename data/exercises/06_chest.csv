@@ -26,3 +26,5 @@ Low-to-High Cable Fly,low-to-high-cable-fly,fly,strength,push_h,chest|front_delt
 High-to-Low Cable Fly,high-to-low-cable-fly,fly,strength,push_h,chest,front_delts,cable,FALSE,1,1,12,20,60,FALSE,weight_reps,decline,,
 Dumbbell Fly,dumbbell-fly,fly,strength,push_h,chest,front_delts,dumbbell|bench,FALSE,1,2,10,15,60,FALSE,weight_reps,stretch_bias,shoulder,
 Pec Deck,pec-deck,fly,strength,push_h,chest,front_delts,pec_deck,FALSE,1,1,10,20,60,FALSE,weight_reps,shortened_bias,shoulder,
+Ring Push-Up,ring-push-up,push_up,strength,push_h,chest,triceps|front_delts|abs,bodyweight|rings,TRUE,2,3,8,15,60,FALSE,reps_only,stretch_bias,shoulder,
+Ring Dip,ring-dip,dip,strength,push_h,chest|triceps,front_delts,rings,TRUE,2,3,5,10,120,FALSE,reps_only,decline,shoulder,

@@ -4714,6 +4714,86 @@
       "sourceFile": "06_chest.csv"
     },
     {
+      "id": "ring-push-up",
+      "name": "Ring Push-Up",
+      "pattern": "push_h",
+      "loadType": "implement",
+      "equipment": [
+        "bodyweight",
+        "rings"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "triceps",
+        "front_delts",
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "push_up",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "emphasis": "stretch_bias",
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "ring-dip",
+      "name": "Ring Dip",
+      "pattern": "push_h",
+      "loadType": "implement",
+      "equipment": [
+        "rings"
+      ],
+      "primaryMuscles": [
+        "chest",
+        "triceps"
+      ],
+      "secondaryMuscles": [
+        "front_delts"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "dip",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "emphasis": "decline",
+      "repLow": 5,
+      "repHigh": 10,
+      "sourceFile": "06_chest.csv"
+    },
+    {
       "id": "pull-up",
       "name": "Pull-Up",
       "pattern": "pull_v",
@@ -6151,6 +6231,125 @@
       "emphasis": "shortened_bias",
       "repLow": 12,
       "repHigh": 25,
+      "sourceFile": "07_back.csv"
+    },
+    {
+      "id": "ring-row",
+      "name": "Ring Row",
+      "pattern": "pull_h",
+      "loadType": "implement",
+      "equipment": [
+        "rings"
+      ],
+      "primaryMuscles": [
+        "mid_back",
+        "lats"
+      ],
+      "secondaryMuscles": [
+        "biceps",
+        "rear_delts",
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "inverted_row",
+      "jointLoad": [],
+      "emphasis": null,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "07_back.csv"
+    },
+    {
+      "id": "ring-pull-up",
+      "name": "Ring Pull-Up",
+      "pattern": "pull_v",
+      "loadType": "implement",
+      "equipment": [
+        "rings"
+      ],
+      "primaryMuscles": [
+        "lats"
+      ],
+      "secondaryMuscles": [
+        "biceps",
+        "mid_back",
+        "forearms"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "pull_up",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "emphasis": "wide_grip",
+      "repLow": 4,
+      "repHigh": 10,
+      "sourceFile": "07_back.csv"
+    },
+    {
+      "id": "ring-chin-up",
+      "name": "Ring Chin-Up",
+      "pattern": "pull_v",
+      "loadType": "implement",
+      "equipment": [
+        "rings"
+      ],
+      "primaryMuscles": [
+        "lats",
+        "biceps"
+      ],
+      "secondaryMuscles": [
+        "mid_back",
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "pull_up",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "emphasis": "close_grip",
+      "repLow": 5,
+      "repHigh": 12,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11120,6 +11319,48 @@
       "emphasis": null,
       "repLow": 20,
       "repHigh": 60,
+      "sourceFile": "12_fullbody.csv"
+    },
+    {
+      "id": "ring-muscle-up",
+      "name": "Ring Muscle-Up",
+      "pattern": "explosive",
+      "loadType": "implement",
+      "equipment": [
+        "rings"
+      ],
+      "primaryMuscles": [
+        "lats",
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "biceps",
+        "triceps",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 5,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": "ring-muscle-up",
+      "exerciseFamily": "pull_up",
+      "jointLoad": [
+        "shoulder",
+        "elbow"
+      ],
+      "emphasis": null,
+      "repLow": 2,
+      "repHigh": 5,
       "sourceFile": "12_fullbody.csv"
     },
     {

@@ -52,6 +52,30 @@ const GATES = Object.freeze({
       );
     }
     return allow();
+  },
+
+  /**
+   * The ring muscle-up transition (#58).
+   *
+   * Level 5, and this gate exists because the movement is the one place in the
+   * catalog where having the strength is not enough: the transition loads the
+   * shoulder at end range under momentum, and a false grip that slips there
+   * fails badly rather than gradually.
+   *
+   * Reads skillLevel ONLY. The obvious test is ring dip capacity, and #61
+   * deleted two gates for depending on `strictReps` -- a field no call site
+   * supplied, so those gates could never pass and nothing said so. A gate that
+   * cannot be evaluated is not a safety control. When athlete capabilities are
+   * genuinely captured, this is the first thing that should read them.
+   */
+  'ring-muscle-up': (ctx) => {
+    if ((ctx.skillLevel ?? 0) < 5) {
+      return deny(
+        'A ring muscle-up needs experience level 5 — the transition loads the ' +
+        'shoulder at end range under momentum. A ring dip or pull-up is substituted.'
+      );
+    }
+    return allow();
   }
 });
 

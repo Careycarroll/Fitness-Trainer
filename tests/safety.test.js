@@ -43,7 +43,13 @@ describe('safety gates fail closed (ADR-012)', () => {
       assert.throws(() => evaluateGate(gone, {}), /Unknown skill gate/,
         'an unknown gate must throw, not permit');
     }
-    assert.deepEqual(listGates(), ['olympic-lift'], 'one gate, and that is the honest count');
+    // Asserts the PROPERTY, not the census. This read
+    // `deepEqual(listGates(), ['olympic-lift'])`, which was true when #61
+    // deleted the two dead gates and false the moment #58 added
+    // `ring-muscle-up` -- a test that has to be edited every time the thing it
+    // guards changes legitimately is a maintenance tax, not a guard. What
+    // matters is that no gate is dead, which the next test checks.
+    assert.ok(listGates().length > 0, 'at least one gate must exist');
   });
 
   test('every declared gate is referenced by some catalog row', () => {

@@ -32,3 +32,4 @@ Sled Rope Pull,sled-rope-pull,sled,strength,locomotion,lats|mid_back,biceps|abs|
 Lateral Sled Drag,lateral-sled-drag,sled,strength,locomotion,abductors|quads,glutes|calves,sled,TRUE,2,2,20,40,90,TRUE,weight_distance,,,
 Bear Crawl,bear-crawl,crawl,strength,locomotion,abs|front_delts,quads|obliques|traps,bodyweight,TRUE,2,2,20,60,60,FALSE,time,,wrist|shoulder,
 Mountain Climber,mountain-climber,crawl,strength,locomotion,abs|hip_flexors,front_delts|quads,bodyweight,TRUE,2,2,20,60,60,FALSE,time,,wrist|shoulder,
+Ring Muscle-Up,ring-muscle-up,pull_up,strength,explosive,lats|chest,biceps|triceps|abs,rings,TRUE,4,5,2,5,180,FALSE,reps_only,,shoulder|elbow,ring-muscle-up
