@@ -11,3 +11,4 @@ coverage/
 *.bak
 *.bak2
 *.pre-remap
+import-sources/
