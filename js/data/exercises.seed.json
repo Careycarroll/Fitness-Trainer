@@ -1568,7 +1568,7 @@
       "pattern": "hinge",
       "loadType": "machine",
       "equipment": [
-        "plate_loaded"
+        "hip_thrust_machine"
       ],
       "primaryMuscles": [
         "glutes"
@@ -4021,7 +4021,7 @@
       "pattern": "push_h",
       "loadType": "machine",
       "equipment": [
-        "plate_loaded"
+        "chest_press_machine"
       ],
       "primaryMuscles": [
         "chest"
@@ -4058,7 +4058,7 @@
       "pattern": "push_h",
       "loadType": "machine",
       "equipment": [
-        "plate_loaded"
+        "incline_press_machine"
       ],
       "primaryMuscles": [
         "chest",
@@ -4913,9 +4913,9 @@
       "id": "lat-pulldown",
       "name": "Lat Pulldown",
       "pattern": "pull_v",
-      "loadType": "cable",
+      "loadType": "machine",
       "equipment": [
-        "cable"
+        "lat_pulldown"
       ],
       "primaryMuscles": [
         "lats"
@@ -4950,9 +4950,9 @@
       "id": "close-grip-lat-pulldown",
       "name": "Close-Grip Lat Pulldown",
       "pattern": "pull_v",
-      "loadType": "cable",
+      "loadType": "machine",
       "equipment": [
-        "cable"
+        "lat_pulldown"
       ],
       "primaryMuscles": [
         "lats"
@@ -4987,9 +4987,9 @@
       "id": "single-arm-lat-pulldown",
       "name": "Single-Arm Lat Pulldown",
       "pattern": "pull_v",
-      "loadType": "cable",
+      "loadType": "machine",
       "equipment": [
-        "cable"
+        "lat_pulldown"
       ],
       "primaryMuscles": [
         "lats"
@@ -5542,9 +5542,9 @@
       "id": "seated-cable-row",
       "name": "Seated Cable Row",
       "pattern": "pull_h",
-      "loadType": "cable",
+      "loadType": "machine",
       "equipment": [
-        "cable"
+        "seated_row"
       ],
       "primaryMuscles": [
         "mid_back",
@@ -5580,9 +5580,9 @@
       "id": "single-arm-cable-row",
       "name": "Single-Arm Cable Row",
       "pattern": "pull_h",
-      "loadType": "cable",
+      "loadType": "machine",
       "equipment": [
-        "cable"
+        "seated_row"
       ],
       "primaryMuscles": [
         "lats",
@@ -5734,7 +5734,7 @@
       "pattern": "pull_h",
       "loadType": "machine",
       "equipment": [
-        "plate_loaded"
+        "seated_row"
       ],
       "primaryMuscles": [
         "mid_back",
@@ -5772,7 +5772,7 @@
       "pattern": "pull_h",
       "loadType": "machine",
       "equipment": [
-        "plate_loaded"
+        "chest_supported_row"
       ],
       "primaryMuscles": [
         "upper_back",
@@ -6404,7 +6404,7 @@
       "pattern": "push_v",
       "loadType": "machine",
       "equipment": [
-        "plate_loaded"
+        "shoulder_press_machine"
       ],
       "primaryMuscles": [
         "front_delts"
@@ -6787,7 +6787,7 @@
       "pattern": "isolation",
       "loadType": "machine",
       "equipment": [
-        "plate_loaded"
+        "lateral_raise_machine"
       ],
       "primaryMuscles": [
         "side_delts"
@@ -7718,7 +7718,7 @@
       "pattern": "isolation",
       "loadType": "machine",
       "equipment": [
-        "plate_loaded"
+        "preacher_curl_machine"
       ],
       "primaryMuscles": [
         "biceps"
@@ -8315,7 +8315,7 @@
       "pattern": "isolation",
       "loadType": "machine",
       "equipment": [
-        "plate_loaded"
+        "triceps_extension_machine"
       ],
       "primaryMuscles": [
         "triceps"
@@ -9175,7 +9175,7 @@
       "pattern": "core",
       "loadType": "machine",
       "equipment": [
-        "plate_loaded"
+        "ab_crunch_machine"
       ],
       "primaryMuscles": [
         "abs"

@@ -8,7 +8,7 @@ Cable Triceps Pushdown,cable-triceps-pushdown,pushdown,strength,isolation,tricep
 Rope Triceps Pushdown,rope-triceps-pushdown,pushdown,strength,isolation,triceps,forearms,cable,FALSE,1,1,10,20,60,FALSE,weight_reps,short_head,,
 Reverse-Grip Cable Pushdown,reverse-grip-cable-pushdown,pushdown,strength,isolation,triceps,forearms,cable,FALSE,1,1,12,20,60,TRUE,weight_reps,short_head,wrist,
 Band Triceps Pushdown,band-triceps-pushdown,pushdown,strength,isolation,triceps,forearms,bands,FALSE,1,1,15,25,45,FALSE,reps_only,short_head,,
-Machine Triceps Extension,machine-triceps-extension,pushdown,strength,isolation,triceps,forearms,plate_loaded,FALSE,1,1,10,20,60,FALSE,weight_reps,short_head,,
+Machine Triceps Extension,machine-triceps-extension,pushdown,strength,isolation,triceps,forearms,triceps_extension_machine,FALSE,1,1,10,20,60,FALSE,weight_reps,short_head,,
 EZ-Bar Skullcrusher,ez-bar-skullcrusher,skullcrusher,strength,isolation,triceps,front_delts,ez_bar|bench,FALSE,2,2,8,15,90,FALSE,weight_reps,long_head,elbow,
 Dumbbell Skullcrusher,dumbbell-skullcrusher,skullcrusher,strength,isolation,triceps,front_delts,dumbbell|bench,FALSE,1,2,10,15,60,FALSE,weight_reps,long_head,elbow,
 Cable Lying Triceps Extension,cable-lying-triceps-extension,skullcrusher,strength,isolation,triceps,front_delts,cable|bench,FALSE,1,2,10,15,60,FALSE,weight_reps,stretch_bias,elbow,

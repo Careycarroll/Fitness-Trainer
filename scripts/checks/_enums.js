@@ -103,9 +103,23 @@ export const EQUIPMENT = [
   'smith_machine', 'leg_press', 'hack_squat', 'belt_squat',
   'leg_curl_machine', 'leg_extension_machine', 'calf_machine',
   'hip_abductor_machine', 'pec_deck', 'landmine', 'sled',
-  'plate_loaded',            // DEPRECATED. A loading mechanism, not an
-                             // implement: "I own a plate-loaded thing" answers
-                             // no ownership question. Retag to stations (#58).
+
+  // Stations. `plate_loaded` was removed here: it named a loading mechanism
+  // rather than an implement, so it could not answer "can you perform this?".
+  // A pulldown is a pulldown whether the stack is pin- or plate-loaded --
+  // micro-loading is quantity, which ADR-014 excludes. Under isPerformable()'s
+  // AND semantics there was no way to write "cable OR plate-loaded" on one row
+  // anyway, so a station token is the only expressible answer.
+  'lat_pulldown', 'seated_row', 'chest_supported_row',
+  'chest_press_machine',
+  'incline_press_machine',   // SPLIT from chest_press_machine deliberately. An
+                             // adjustable bench does every angle, so `bench`
+                             // stays one token -- but a flat-only machine
+                             // genuinely cannot do incline, and merging the two
+                             // would prescribe incline to a gym that has no
+                             // machine for it.
+  'shoulder_press_machine', 'lateral_raise_machine', 'preacher_curl_machine',
+  'triceps_extension_machine', 'ab_crunch_machine', 'hip_thrust_machine',
 
   // conditioning
   'treadmill', 'stationary_bike', 'air_bike', 'rower', 'ski_erg', 'elliptical',

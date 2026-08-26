@@ -9,7 +9,7 @@ Pallof Press,pallof-press,anti_rotation,strength,core,abs|obliques,side_delts,ca
 Band Pallof Press,band-pallof-press,anti_rotation,strength,core,abs|obliques,side_delts,bands,FALSE,1,2,12,20,45,TRUE,reps_only,,,
 Cable Crunch,cable-crunch,spinal_flexion,strength,core,abs,obliques,cable,FALSE,1,1,10,20,60,FALSE,weight_reps,shortened_bias,lower_back,
 Crunch,crunch,spinal_flexion,strength,core,abs,,bodyweight,FALSE,1,1,15,30,45,FALSE,reps_only,shortened_bias,neck,
-Machine Crunch,machine-crunch,spinal_flexion,strength,core,abs,,plate_loaded,FALSE,1,1,10,20,60,FALSE,weight_reps,shortened_bias,lower_back,
+Machine Crunch,machine-crunch,spinal_flexion,strength,core,abs,,ab_crunch_machine,FALSE,1,1,10,20,60,FALSE,weight_reps,shortened_bias,lower_back,
 Decline Sit-Up,decline-sit-up,spinal_flexion,strength,core,abs|hip_flexors,,bodyweight|bench,FALSE,1,1,10,20,60,FALSE,reps_only,,lower_back|neck,
 Stability Ball Crunch,stability-ball-crunch,spinal_flexion,strength,core,abs,obliques,bodyweight|stability_ball,FALSE,1,1,12,25,45,FALSE,reps_only,stretch_bias,,
 Hanging Leg Raise,hanging-leg-raise,leg_raise,strength,core,abs|hip_flexors,forearms,pullup_bar,FALSE,2,2,8,15,60,FALSE,reps_only,,shoulder|lower_back,

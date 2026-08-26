@@ -5,7 +5,7 @@ Trap Bar Deadlift,trap-bar-deadlift,deadlift,strength,hinge,glutes|quads,hamstri
 Rack Pull,rack-pull,deadlift,strength,hinge,glutes|erectors,traps|lats,barbell|rack,TRUE,4,2,3,6,180,FALSE,weight_reps,shortened_bias,lower_back,
 Dumbbell Sumo Deadlift,dumbbell-sumo-deadlift,deadlift,strength,hinge,glutes|quads,adductors|erectors,dumbbell,TRUE,3,1,8,15,120,FALSE,weight_reps,,,
 Barbell Hip Thrust,barbell-hip-thrust,hip_thrust,strength,hinge,glutes,hamstrings,barbell|bench,TRUE,3,2,8,15,120,FALSE,weight_reps,shortened_bias,,
-Machine Hip Thrust,machine-hip-thrust,hip_thrust,strength,hinge,glutes,hamstrings,plate_loaded,TRUE,3,1,8,15,120,FALSE,weight_reps,shortened_bias,,
+Machine Hip Thrust,machine-hip-thrust,hip_thrust,strength,hinge,glutes,hamstrings,hip_thrust_machine,TRUE,3,1,8,15,120,FALSE,weight_reps,shortened_bias,,
 Dumbbell Hip Thrust,dumbbell-hip-thrust,hip_thrust,strength,hinge,glutes,hamstrings,dumbbell|bench,TRUE,2,1,10,20,90,FALSE,weight_reps,shortened_bias,,
 Single-Leg Hip Thrust,single-leg-hip-thrust,hip_thrust,strength,hinge,glutes,hamstrings|abs,bodyweight|bench,TRUE,2,2,8,15,90,TRUE,reps_only,shortened_bias,,
 Glute Bridge,glute-bridge,hip_thrust,strength,hinge,glutes,hamstrings,bodyweight,FALSE,1,1,12,25,60,FALSE,reps_only,shortened_bias,,

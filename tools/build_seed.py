@@ -48,10 +48,21 @@ LOAD_TYPE_PRECEDENCE: list[tuple[str, tuple[str, ...]]] = [
     ("dumbbell",   ("dumbbell",)),
     ("kettlebell", ("kettlebell",)),
     ("cable",      ("cable",)),
+    # Stations, named by FUNCTION. `plate_loaded` is gone (#58): it described a
+    # loading mechanism, not an implement, and answered no ownership question --
+    # "I own a plate-loaded thing" says nothing about what movement it performs.
+    # Every station below stays in the `machine` bucket, so no retagged row
+    # changes loadType except the pulldown/row rows moving out of `cable`, which
+    # is deliberate: a pulldown station IS a machine.
     ("machine",    ("leg_press", "hack_squat", "belt_squat", "leg_extension_machine",
-                    "leg_curl_machine", "plate_loaded", "pec_deck",
+                    "leg_curl_machine", "pec_deck",
                     "back_extension_bench", "calf_machine", "hip_abductor_machine",
-                    "captains_chair")),
+                    "captains_chair",
+                    "lat_pulldown", "seated_row", "chest_supported_row",
+                    "chest_press_machine", "incline_press_machine",
+                    "shoulder_press_machine", "lateral_raise_machine",
+                    "preacher_curl_machine", "triceps_extension_machine",
+                    "ab_crunch_machine", "hip_thrust_machine")),
     ("band",       ("bands",)),
     ("implement",  ("sled", "med_ball", "plate", "ab_wheel", "suspension_trainer",
                     "stability_ball", "slant_board", "landmine", "platform",
