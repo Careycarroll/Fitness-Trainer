@@ -254,7 +254,7 @@ function score({ exercise, pattern, style, state, isMain, remaining, slotsLeft, 
 
   if (isMain) {
     return exercise.fatigueCost * 10 + emphasis * 2 + muscles * 8
-      - familyPenalty(state, exercise) * 3
+      - familyPenalty(state, exercise, style)
       - repeat * WEEK_REPEAT_MAIN;
   }
 
@@ -268,7 +268,7 @@ function score({ exercise, pattern, style, state, isMain, remaining, slotsLeft, 
     emphasis * 4 +
     muscles * 5 +
     fatigueFit * 3 -
-    familyPenalty(state, exercise) * 3 -
+    familyPenalty(state, exercise, style) -
     patternPenalty(state, pattern, style) * 2 -
     repeat * WEEK_REPEAT_ACCESSORY +
     // A nudge toward compounds among accessories, not a filter: an isolation row
@@ -317,8 +317,28 @@ const weekPenalty = (week, exercise) => {
   return byId + (byFamily - byId) * 0.5;
 };
 
-const familyPenalty = (state, exercise) =>
-  state.usedFamilies.get(exercise.exerciseFamily ?? exercise.id) ?? 0;
+/**
+ * How much this style resists a second row from a family already used (#66).
+ *
+ * This was a bare count multiplied by a hardcoded 3, identical for every style,
+ * and at that weight it was not a nudge but a block: measured across every
+ * style, profile and day count, a family NEVER repeated in a session. A
+ * bodybuilding quads day therefore got one bilateral squat and then five
+ * single-leg movements plus a core hold, while hack-squat, belt-squat, leg-press
+ * and leg-extension sat unused because their families were spent.
+ *
+ * patternPenalty below already had the right shape and says why:
+ *
+ *   "Repeating a PATTERN is a real programming choice, not an error ... a cost a
+ *    style can afford rather than a prohibition."
+ *
+ * That argument applies harder to families, since back squat then pause squat is
+ * the SAME family. Now per style (ADR-012: data holds values). 3 preserves the
+ * old behaviour, so powerlifting is unchanged by construction.
+ */
+const familyPenalty = (state, exercise, style) =>
+  (state.usedFamilies.get(exercise.exerciseFamily ?? exercise.id) ?? 0)
+  * (style?.familyRepeatCost ?? 3);
 
 /**
  * Repeating a PATTERN is a real programming choice, not an error: back squat then

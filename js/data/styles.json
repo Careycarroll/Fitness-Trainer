@@ -53,7 +53,9 @@
         "full-body-1",
         "full-body-2",
         "body-part-5"
-      ]
+      ],
+      "familyRepeatCost": 3,
+      "weekRepeatCost": 1
     },
     {
       "id": "bodybuilding",
@@ -106,7 +108,9 @@
         "full-body-1",
         "full-body-2",
         "body-part-5"
-      ]
+      ],
+      "familyRepeatCost": 1,
+      "weekRepeatCost": 1
     },
     {
       "id": "strength",
@@ -159,7 +163,9 @@
         "full-body-1",
         "full-body-2",
         "body-part-5"
-      ]
+      ],
+      "familyRepeatCost": 2,
+      "weekRepeatCost": 1
     },
     {
       "id": "core",
@@ -211,7 +217,9 @@
         "full-body-1",
         "full-body-2",
         "body-part-5"
-      ]
+      ],
+      "familyRepeatCost": 1,
+      "weekRepeatCost": 1
     },
     {
       "id": "hiit",
@@ -254,7 +262,9 @@
       "allowPatternRepeat": false,
       "preferredSplits": [
         "conditioning-3"
-      ]
+      ],
+      "familyRepeatCost": 2,
+      "weekRepeatCost": 1
     },
     {
       "id": "cardio",
@@ -297,7 +307,9 @@
       "allowPatternRepeat": false,
       "preferredSplits": [
         "conditioning-3"
-      ]
+      ],
+      "familyRepeatCost": 2,
+      "weekRepeatCost": 1
     },
     {
       "id": "crossfit",
@@ -340,7 +352,9 @@
       "allowPatternRepeat": false,
       "preferredSplits": [
         "conditioning-3"
-      ]
+      ],
+      "familyRepeatCost": 2,
+      "weekRepeatCost": 1
     },
     {
       "id": "athletic",
@@ -390,7 +404,9 @@
         "athletic-4",
         "full-body-3",
         "upper-lower-4"
-      ]
+      ],
+      "familyRepeatCost": 2,
+      "weekRepeatCost": 1
     }
   ]
 }
