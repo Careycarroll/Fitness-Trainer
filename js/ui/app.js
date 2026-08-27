@@ -25,6 +25,7 @@
 import { generate, CoverageError } from '../engine/index.js';
 import { rankSubstitutes } from '../engine/substitution.js';
 import { allSetGroups, setGroupAt } from '../engine/blocks.js';
+import { volumeConcerns } from '../engine/volume.js';
 import * as db from '../storage/db.js';
 import {
   emptyState, putPlan, toExportJSON, fromImportJSON, toCSV, replaceImportedSets,
@@ -1148,12 +1149,16 @@ function paint(out) {
           </button>`).join('')}
       </nav>`;
     const context = `<p class="note">Day ${visibleDay + 1} of a ${sessions.length}-day week. Switch to All weeks to see the whole block.</p>`;
-    out.innerHTML = head + tabs + context + renderSession(sessions[visibleDay], 0, visibleDay, style);
+    // Volume is a WEEK-level fact, so it is shown once above the day tabs rather
+    // than repeated per day. A single day cannot be over MRV for the week.
+    out.innerHTML = head + renderVolume(current.weeks[0].volume) + tabs + context
+      + renderSession(sessions[visibleDay], 0, visibleDay, style);
     return;
   }
 
   out.innerHTML = head + current.weeks.map((week, w) => `
     <h2 class="week">Week ${week.week}</h2>
+    ${renderVolume(week.volume)}
     ${week.sessions.map((session, s) => renderSession(session, w, s, style)).join('')}
   `).join('');
 }
@@ -1430,6 +1435,52 @@ export function renderDatePreview(rows) {
           </li>`).join('')}
       </ol>
       ${rows.some((r) => r.moved) ? '<p class="note">Moved dates apply to this export only.</p>' : ''}
+    </section>`;
+}
+
+/**
+ * Weekly sets per muscle against the landmarks (#44).
+ *
+ * REPORTED, never enforced. landmarks.json holds population estimates and says
+ * so: "wide individual variance". The athlete decides whether 24 quad sets is
+ * too many for them; the app's job is to make the number visible, which it has
+ * never been. #67 will make the landmarks editable.
+ *
+ * Only muscles outside the productive range are listed. A full 22-row table on
+ * every program is noise, and the finding is always the exceptions.
+ */
+export function renderVolume(volume) {
+  if (!volume) return '';                       // interval domain: sets are not the unit
+  const concerns = volumeConcerns(volume);
+  const total = Object.keys(volume).length;
+  if (!concerns.length) {
+    return `<p class="note">All ${total} muscle groups sit inside their productive range this week.</p>`;
+  }
+
+  // Half-sets are real here: indirect work counts 0.5, so a muscle can sit at
+  // 1.5 sets. "1 sets" reads as a bug even when the number is right.
+  const n = (v) => `${v} ${v === 1 ? 'set' : 'sets'}`;
+  const say = {
+    'over-mrv': (c) => `${n(c.total)}, past the ${c.landmark.mrv} this muscle can recover from`,
+    'above-mav': (c) => `${n(c.total)}, above the productive ceiling of ${c.landmark.mav}`,
+    'untrained': () => 'no direct or indirect work this week',
+    'below-mv': (c) => `${n(c.total)}, below the ${c.landmark.mv} that maintains it`,
+    'maintenance': (c) => `${n(c.total)} — holding, but under the ${c.landmark.mev} that grows it`,
+    'no-landmark': (c) => `${n(c.total)}, and no landmark exists for this muscle`
+  };
+
+  return `
+    <section class="volume" aria-label="Weekly volume against landmarks">
+      <h4>Weekly volume: ${concerns.length} of ${total} muscle groups outside the productive range</h4>
+      <ul>
+        ${concerns.map((c) => `
+          <li class="v-${esc(c.verdict)}">
+            <strong>${esc(c.muscle.replace(/_/g, ' '))}</strong> — ${esc((say[c.verdict] ?? say['no-landmark'])(c))}
+            ${c.indirect ? `<span class="note">(${c.direct} direct, ${c.indirect} indirect counted at half)</span>` : ''}
+          </li>`).join('')}
+      </ul>
+      <p class="note">Hard sets per week. Indirect work counts half; bracing counts nothing.
+      These are population estimates and vary widely between people.</p>
     </section>`;
 }
 
