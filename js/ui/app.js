@@ -221,7 +221,8 @@ export function mount(root, defs) {
         <button type="submit" class="primary">Generate</button>
       </form>
 
-      <div class="storage-panel">
+      <details class="storage-panel">
+        <summary>Backup, history and export</summary>
         <div class="storage-actions">
           <button type="button" id="export" class="ghost">Export backup</button>
           <button type="button" id="import" class="ghost">Import backup</button>
@@ -237,15 +238,15 @@ export function mount(root, defs) {
         </div>
         <p id="storage-status" class="note" role="status"></p>
         <div id="import-review"></div>
-      </div>
+      </details>
 
-      <div class="profile-panel">
-        <h3>Equipment profile</h3>
+      <details class="profile-panel">
+        <summary>Equipment profile</summary>
         <div id="profile-editor"></div>
-      </div>
+      </details>
 
-      <div class="maxes-panel">
-        <h3>Known maxes</h3>
+      <details class="maxes-panel">
+        <summary>Known maxes</summary>
         <p class="note">
           A percentage prescription needs a max to multiply against. Your newest
           logged session is 516 days old, well past ADR-023's 8-week resolution
@@ -261,7 +262,7 @@ export function mount(root, defs) {
         </label>
         <button type="button" id="max-save" class="ghost">Save max</button>
         <div id="max-list"></div>
-      </div>
+      </details>
     </aside>
     <section id="out" aria-live="polite"></section>
   `;

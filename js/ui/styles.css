@@ -772,7 +772,10 @@ button[disabled] {
   /* GRID, not `columns`. A multi-column layout inside a fixed-height
      overflow-y container flows into horizontal columns, so everything past the
      visible height went sideways off-screen with no way to reach it. */
-  display: grid; grid-template-columns: 1fr 1fr; gap: 0 0.5rem;
+  /* minmax(0, 1fr) so a long label cannot force its column past half the
+     container. Plain `1fr` is min-content by default, and "Chest Supported Row"
+     with nowrap then overflowed the sidebar entirely (#60). */
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 0.5rem;
   align-content: start;
 }
 .token-list li { padding: 0; font-size: 0.85rem; }
@@ -788,7 +791,10 @@ button[disabled] {
   margin: 0; padding: 0; flex: none; accent-color: var(--accent, #4a9eff);
 }
 .token-list label span:first-of-type {
-  flex: 1; text-align: left; text-transform: capitalize; white-space: nowrap;
+  /* Wraps rather than nowrap: 57 tokens include names long enough to overflow a
+     half-width column, and truncating them would hide which implement it is. */
+  flex: 1; min-width: 0; text-align: left; text-transform: capitalize;
+  overflow-wrap: break-word;
 }
 .token-list .tag { font-size: 0.65rem; opacity: 0.6; }
 
@@ -818,3 +824,33 @@ button[disabled] {
 .volume .v-over-mrv strong { color: var(--danger, #e05a5a); }
 .volume .v-untrained strong,
 .volume .v-below-mv strong { color: var(--warn, #e0a458); }
+
+/* Sidebar disclosures (#60).
+   Three panels landed in one column in a single session -- the equipment editor
+   (#8, 47 checkboxes), the date preview (#54, #50) and known maxes -- and
+   reaching anything meant scrolling past Generate. All three are
+   occasional-use, so they collapse. The form and Generate stay open, because
+   they are the reason the screen exists. */
+.planner-sidebar details {
+  border: 1px solid var(--border, #333);
+  border-radius: 6px;
+  padding: 0;
+}
+.planner-sidebar details > summary {
+  cursor: pointer;
+  padding: 10px 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  list-style: none;
+}
+.planner-sidebar details > summary::-webkit-details-marker { display: none; }
+.planner-sidebar details > summary::before {
+  content: '\25B8';
+  display: inline-block;
+  width: 1em;
+  transition: transform 120ms;
+}
+.planner-sidebar details[open] > summary::before { transform: rotate(90deg); }
+.planner-sidebar details[open] > summary { border-bottom: 1px solid var(--border, #333); }
+.planner-sidebar details > *:not(summary) { margin-inline: 12px; }
+.planner-sidebar details > *:last-child { margin-bottom: 12px; }
