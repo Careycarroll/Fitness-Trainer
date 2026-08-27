@@ -16,7 +16,9 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "adductors",
+        "adductors"
+      ],
+      "stabilises": [
         "erectors",
         "abs"
       ],
@@ -58,7 +60,9 @@
       ],
       "secondaryMuscles": [
         "glutes",
-        "upper_back",
+        "upper_back"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 4,
@@ -98,7 +102,8 @@
         "quads",
         "glutes"
       ],
-      "secondaryMuscles": [
+      "secondaryMuscles": [],
+      "stabilises": [
         "erectors",
         "abs"
       ],
@@ -139,7 +144,9 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "adductors",
+        "adductors"
+      ],
+      "stabilises": [
         "erectors"
       ],
       "fatigueCost": 4,
@@ -181,7 +188,9 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "adductors",
+        "adductors"
+      ],
+      "stabilises": [
         "erectors",
         "abs"
       ],
@@ -219,7 +228,9 @@
         "quads"
       ],
       "secondaryMuscles": [
-        "glutes",
+        "glutes"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -257,7 +268,9 @@
         "quads"
       ],
       "secondaryMuscles": [
-        "glutes",
+        "glutes"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -298,7 +311,9 @@
         "quads"
       ],
       "secondaryMuscles": [
-        "glutes",
+        "glutes"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 3,
@@ -338,7 +353,9 @@
         "quads"
       ],
       "secondaryMuscles": [
-        "glutes",
+        "glutes"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -377,7 +394,9 @@
         "quads"
       ],
       "secondaryMuscles": [
-        "glutes",
+        "glutes"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 1,
@@ -417,6 +436,7 @@
         "glutes",
         "calves"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -453,7 +473,9 @@
         "quads"
       ],
       "secondaryMuscles": [
-        "glutes",
+        "glutes"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 1,
@@ -495,6 +517,7 @@
       "secondaryMuscles": [
         "glutes"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 1,
       "defaultRIR": 2,
@@ -534,6 +557,7 @@
       "secondaryMuscles": [
         "adductors"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 1,
       "defaultRIR": 2,
@@ -571,6 +595,7 @@
       "secondaryMuscles": [
         "adductors"
       ],
+      "stabilises": [],
       "fatigueCost": 4,
       "skill": 1,
       "defaultRIR": 2,
@@ -608,6 +633,7 @@
       "secondaryMuscles": [
         "adductors"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 1,
       "defaultRIR": 2,
@@ -642,6 +668,7 @@
         "quads"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -680,6 +707,7 @@
       "secondaryMuscles": [
         "abs"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 3,
       "defaultRIR": 2,
@@ -719,6 +747,7 @@
         "abs",
         "hip_flexors"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 3,
       "defaultRIR": 2,
@@ -759,6 +788,7 @@
         "abs",
         "hip_flexors"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -797,7 +827,9 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "adductors",
+        "adductors"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 3,
@@ -838,6 +870,7 @@
         "adductors",
         "hip_flexors"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 3,
       "defaultRIR": 2,
@@ -875,7 +908,9 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "adductors",
+        "adductors"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -914,7 +949,9 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "adductors",
+        "adductors"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -954,7 +991,9 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "hamstrings",
+        "hamstrings"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -995,6 +1034,7 @@
         "hamstrings",
         "adductors"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 2,
       "defaultRIR": 2,
@@ -1034,6 +1074,7 @@
         "hamstrings",
         "calves"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -1072,6 +1113,7 @@
         "calves",
         "glutes"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 3,
       "defaultRIR": 2,
@@ -1110,7 +1152,9 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "adductors",
+        "adductors"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -1150,7 +1194,9 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "adductors",
+        "adductors"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -1189,6 +1235,7 @@
         "quads"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -1226,6 +1273,7 @@
         "glutes",
         "calves"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -1261,7 +1309,9 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "calves",
+        "calves"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 3,
@@ -1302,6 +1352,7 @@
         "hamstrings",
         "calves"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -1337,9 +1388,11 @@
         "hamstrings"
       ],
       "secondaryMuscles": [
-        "erectors",
         "lats",
         "traps"
+      ],
+      "stabilises": [
+        "erectors"
       ],
       "fatigueCost": 5,
       "skill": 3,
@@ -1379,8 +1432,10 @@
       ],
       "secondaryMuscles": [
         "adductors",
-        "erectors",
         "traps"
+      ],
+      "stabilises": [
+        "erectors"
       ],
       "fatigueCost": 5,
       "skill": 4,
@@ -1421,7 +1476,9 @@
       ],
       "secondaryMuscles": [
         "hamstrings",
-        "traps",
+        "traps"
+      ],
+      "stabilises": [
         "erectors"
       ],
       "fatigueCost": 4,
@@ -1463,6 +1520,7 @@
         "traps",
         "lats"
       ],
+      "stabilises": [],
       "fatigueCost": 4,
       "skill": 2,
       "defaultRIR": 2,
@@ -1500,7 +1558,9 @@
         "quads"
       ],
       "secondaryMuscles": [
-        "adductors",
+        "adductors"
+      ],
+      "stabilises": [
         "erectors"
       ],
       "fatigueCost": 3,
@@ -1540,6 +1600,7 @@
       "secondaryMuscles": [
         "hamstrings"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 2,
       "defaultRIR": 2,
@@ -1576,6 +1637,7 @@
       "secondaryMuscles": [
         "hamstrings"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 1,
       "defaultRIR": 2,
@@ -1613,6 +1675,7 @@
       "secondaryMuscles": [
         "hamstrings"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -1648,7 +1711,9 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "hamstrings",
+        "hamstrings"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -1687,6 +1752,7 @@
       "secondaryMuscles": [
         "hamstrings"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -1724,6 +1790,7 @@
       "secondaryMuscles": [
         "hamstrings"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -1761,6 +1828,7 @@
       "secondaryMuscles": [
         "hamstrings"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -1797,6 +1865,7 @@
       "secondaryMuscles": [
         "adductors"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -1831,7 +1900,8 @@
         "glutes",
         "hamstrings"
       ],
-      "secondaryMuscles": [
+      "secondaryMuscles": [],
+      "stabilises": [
         "erectors",
         "abs"
       ],
@@ -1871,7 +1941,8 @@
         "glutes",
         "hamstrings"
       ],
-      "secondaryMuscles": [
+      "secondaryMuscles": [],
+      "stabilises": [
         "erectors"
       ],
       "fatigueCost": 2,
@@ -1908,7 +1979,8 @@
         "glutes",
         "hamstrings"
       ],
-      "secondaryMuscles": [
+      "secondaryMuscles": [],
+      "stabilises": [
         "erectors",
         "abs"
       ],
@@ -1946,7 +2018,8 @@
         "glutes",
         "hamstrings"
       ],
-      "secondaryMuscles": [
+      "secondaryMuscles": [],
+      "stabilises": [
         "erectors"
       ],
       "fatigueCost": 2,
@@ -1985,7 +2058,8 @@
         "glutes",
         "hamstrings"
       ],
-      "secondaryMuscles": [
+      "secondaryMuscles": [],
+      "stabilises": [
         "erectors"
       ],
       "fatigueCost": 2,
@@ -2026,6 +2100,7 @@
       "secondaryMuscles": [
         "hamstrings"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -2062,6 +2137,7 @@
       "secondaryMuscles": [
         "hamstrings"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -2097,8 +2173,10 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "erectors",
         "lats"
+      ],
+      "stabilises": [
+        "erectors"
       ],
       "fatigueCost": 4,
       "skill": 2,
@@ -2137,8 +2215,10 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "erectors",
         "forearms"
+      ],
+      "stabilises": [
+        "erectors"
       ],
       "fatigueCost": 3,
       "skill": 2,
@@ -2178,8 +2258,10 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "erectors",
         "lats"
+      ],
+      "stabilises": [
+        "erectors"
       ],
       "fatigueCost": 4,
       "skill": 3,
@@ -2217,7 +2299,8 @@
         "hamstrings",
         "glutes"
       ],
-      "secondaryMuscles": [
+      "secondaryMuscles": [],
+      "stabilises": [
         "erectors",
         "abs"
       ],
@@ -2258,8 +2341,10 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "erectors",
         "lats"
+      ],
+      "stabilises": [
+        "erectors"
       ],
       "fatigueCost": 4,
       "skill": 3,
@@ -2298,8 +2383,10 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "erectors",
         "forearms"
+      ],
+      "stabilises": [
+        "erectors"
       ],
       "fatigueCost": 3,
       "skill": 2,
@@ -2339,7 +2426,9 @@
         "erectors"
       ],
       "secondaryMuscles": [
-        "glutes",
+        "glutes"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 3,
@@ -2381,6 +2470,7 @@
       "secondaryMuscles": [
         "glutes"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -2417,6 +2507,7 @@
       "secondaryMuscles": [
         "calves"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -2453,6 +2544,7 @@
       "secondaryMuscles": [
         "calves"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -2489,6 +2581,7 @@
       "secondaryMuscles": [
         "calves"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -2525,6 +2618,7 @@
       "secondaryMuscles": [
         "calves"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -2561,6 +2655,7 @@
       "secondaryMuscles": [
         "calves"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -2599,6 +2694,7 @@
         "glutes",
         "calves"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 4,
       "defaultRIR": 2,
@@ -2640,6 +2736,7 @@
         "glutes",
         "calves"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 3,
       "defaultRIR": 2,
@@ -2679,6 +2776,7 @@
         "glutes",
         "erectors"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 3,
       "defaultRIR": 2,
@@ -2718,6 +2816,7 @@
         "glutes",
         "abs"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -2756,6 +2855,7 @@
         "glutes",
         "abs"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -2790,7 +2890,8 @@
         "hamstrings",
         "glutes"
       ],
-      "secondaryMuscles": [
+      "secondaryMuscles": [],
+      "stabilises": [
         "erectors"
       ],
       "fatigueCost": 2,
@@ -2829,6 +2930,7 @@
         "calves"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -2864,6 +2966,7 @@
         "calves"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -2899,6 +3002,7 @@
         "calves"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -2934,6 +3038,7 @@
         "calves"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -2969,6 +3074,7 @@
         "calves"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -3003,6 +3109,7 @@
         "calves"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -3037,6 +3144,7 @@
         "calves"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -3073,6 +3181,7 @@
         "calves"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -3107,6 +3216,7 @@
         "calves"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -3141,6 +3251,7 @@
         "calves"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -3176,7 +3287,9 @@
         "quads"
       ],
       "secondaryMuscles": [
-        "glutes",
+        "glutes"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -3217,7 +3330,9 @@
         "quads"
       ],
       "secondaryMuscles": [
-        "glutes",
+        "glutes"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -3258,7 +3373,9 @@
         "glutes"
       ],
       "secondaryMuscles": [
-        "quads",
+        "quads"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -3299,6 +3416,7 @@
       "secondaryMuscles": [
         "glutes"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -3335,6 +3453,7 @@
       "secondaryMuscles": [
         "glutes"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -3371,6 +3490,7 @@
       "secondaryMuscles": [
         "glutes"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -3409,6 +3529,7 @@
         "abs",
         "obliques"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 3,
       "defaultRIR": 2,
@@ -3452,6 +3573,7 @@
         "abs",
         "obliques"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -3493,6 +3615,7 @@
       "secondaryMuscles": [
         "glutes"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -3529,6 +3652,7 @@
       "secondaryMuscles": [
         "glutes"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -3566,6 +3690,7 @@
       "secondaryMuscles": [
         "glutes"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -3602,6 +3727,7 @@
       "secondaryMuscles": [
         "glutes"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -3639,6 +3765,7 @@
         "glutes",
         "obliques"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -3678,6 +3805,7 @@
         "triceps",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 4,
       "skill": 3,
       "defaultRIR": 2,
@@ -3719,6 +3847,7 @@
       "secondaryMuscles": [
         "triceps"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 3,
       "defaultRIR": 2,
@@ -3760,6 +3889,7 @@
         "triceps",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 3,
       "defaultRIR": 2,
@@ -3798,6 +3928,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 2,
       "defaultRIR": 2,
@@ -3836,6 +3967,7 @@
         "triceps",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 2,
       "defaultRIR": 2,
@@ -3876,6 +4008,7 @@
         "triceps",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 2,
       "defaultRIR": 2,
@@ -3916,6 +4049,7 @@
       "secondaryMuscles": [
         "triceps"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 2,
       "defaultRIR": 2,
@@ -3956,6 +4090,7 @@
         "triceps",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -3993,6 +4128,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -4030,6 +4166,7 @@
         "triceps",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -4067,6 +4204,7 @@
       "secondaryMuscles": [
         "triceps"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -4105,6 +4243,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 3,
       "defaultRIR": 2,
@@ -4144,6 +4283,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -4181,7 +4321,9 @@
       ],
       "secondaryMuscles": [
         "triceps",
-        "front_delts",
+        "front_delts"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 1,
@@ -4220,7 +4362,9 @@
         "front_delts"
       ],
       "secondaryMuscles": [
-        "triceps",
+        "triceps"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 1,
@@ -4263,6 +4407,7 @@
         "triceps",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -4301,6 +4446,7 @@
         "triceps",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -4341,6 +4487,7 @@
         "triceps",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -4379,6 +4526,7 @@
         "triceps",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -4417,7 +4565,9 @@
       ],
       "secondaryMuscles": [
         "triceps",
-        "front_delts",
+        "front_delts"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -4459,6 +4609,7 @@
         "triceps",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -4497,8 +4648,10 @@
       ],
       "secondaryMuscles": [
         "triceps",
-        "abs",
         "obliques"
+      ],
+      "stabilises": [
+        "abs"
       ],
       "fatigueCost": 2,
       "skill": 4,
@@ -4539,6 +4692,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -4576,6 +4730,7 @@
         "front_delts"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -4614,6 +4769,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -4651,6 +4807,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -4689,6 +4846,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -4727,7 +4885,9 @@
       ],
       "secondaryMuscles": [
         "triceps",
-        "front_delts",
+        "front_delts"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -4769,6 +4929,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 3,
       "defaultRIR": 2,
@@ -4809,6 +4970,7 @@
         "mid_back",
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 2,
       "defaultRIR": 2,
@@ -4849,6 +5011,7 @@
         "biceps",
         "mid_back"
       ],
+      "stabilises": [],
       "fatigueCost": 4,
       "skill": 3,
       "defaultRIR": 2,
@@ -4887,7 +5050,9 @@
         "biceps"
       ],
       "secondaryMuscles": [
-        "mid_back",
+        "mid_back"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 3,
@@ -4929,6 +5094,7 @@
         "biceps",
         "mid_back"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 2,
       "defaultRIR": 2,
@@ -4967,6 +5133,7 @@
         "biceps",
         "mid_back"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -5004,6 +5171,7 @@
         "biceps",
         "mid_back"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -5041,6 +5209,7 @@
         "biceps",
         "mid_back"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -5078,6 +5247,7 @@
         "biceps",
         "obliques"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -5115,6 +5285,7 @@
         "biceps",
         "mid_back"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -5149,7 +5320,9 @@
         "lats"
       ],
       "secondaryMuscles": [
-        "triceps",
+        "triceps"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 1,
@@ -5192,6 +5365,7 @@
         "chest",
         "triceps"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -5230,8 +5404,10 @@
       ],
       "secondaryMuscles": [
         "biceps",
-        "erectors",
         "rear_delts"
+      ],
+      "stabilises": [
+        "erectors"
       ],
       "fatigueCost": 4,
       "skill": 3,
@@ -5270,7 +5446,9 @@
         "lats"
       ],
       "secondaryMuscles": [
-        "biceps",
+        "biceps"
+      ],
+      "stabilises": [
         "erectors"
       ],
       "fatigueCost": 4,
@@ -5310,7 +5488,9 @@
         "mid_back"
       ],
       "secondaryMuscles": [
-        "biceps",
+        "biceps"
+      ],
+      "stabilises": [
         "erectors"
       ],
       "fatigueCost": 3,
@@ -5353,7 +5533,9 @@
       ],
       "secondaryMuscles": [
         "biceps",
-        "rear_delts",
+        "rear_delts"
+      ],
+      "stabilises": [
         "erectors"
       ],
       "fatigueCost": 3,
@@ -5397,6 +5579,7 @@
         "biceps",
         "rear_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 2,
       "defaultRIR": 2,
@@ -5438,6 +5621,7 @@
         "biceps",
         "rear_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -5477,6 +5661,7 @@
         "biceps",
         "rear_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -5516,6 +5701,7 @@
         "biceps",
         "rear_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -5555,6 +5741,7 @@
         "rear_delts",
         "biceps"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -5591,8 +5778,10 @@
       ],
       "secondaryMuscles": [
         "biceps",
-        "erectors",
         "rear_delts"
+      ],
+      "stabilises": [
+        "erectors"
       ],
       "fatigueCost": 3,
       "skill": 2,
@@ -5634,6 +5823,7 @@
         "biceps",
         "rear_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -5672,6 +5862,7 @@
         "biceps",
         "obliques"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -5710,6 +5901,7 @@
         "rear_delts",
         "biceps"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -5748,6 +5940,7 @@
         "rear_delts",
         "biceps"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -5786,6 +5979,7 @@
         "biceps",
         "rear_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -5824,6 +6018,7 @@
         "biceps",
         "rear_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -5862,6 +6057,7 @@
         "rear_delts",
         "biceps"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -5899,7 +6095,9 @@
       ],
       "secondaryMuscles": [
         "biceps",
-        "rear_delts",
+        "rear_delts"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -5940,7 +6138,9 @@
       ],
       "secondaryMuscles": [
         "biceps",
-        "rear_delts",
+        "rear_delts"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -5979,7 +6179,9 @@
       ],
       "secondaryMuscles": [
         "biceps",
-        "rear_delts",
+        "rear_delts"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -6019,6 +6221,7 @@
         "forearms",
         "upper_back"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -6058,6 +6261,7 @@
         "forearms",
         "upper_back"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -6097,6 +6301,7 @@
         "forearms",
         "upper_back"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -6136,6 +6341,7 @@
         "forearms",
         "upper_back"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -6173,6 +6379,7 @@
       "secondaryMuscles": [
         "hamstrings"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -6211,6 +6418,7 @@
       "secondaryMuscles": [
         "glutes"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -6247,7 +6455,9 @@
       ],
       "secondaryMuscles": [
         "biceps",
-        "rear_delts",
+        "rear_delts"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -6288,6 +6498,7 @@
         "mid_back",
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 3,
       "defaultRIR": 2,
@@ -6325,7 +6536,9 @@
         "biceps"
       ],
       "secondaryMuscles": [
-        "mid_back",
+        "mid_back"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 3,
@@ -6366,7 +6579,9 @@
       ],
       "secondaryMuscles": [
         "triceps",
-        "chest",
+        "chest"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 4,
@@ -6411,6 +6626,7 @@
         "triceps",
         "chest"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 2,
       "defaultRIR": 2,
@@ -6449,7 +6665,9 @@
       ],
       "secondaryMuscles": [
         "triceps",
-        "quads",
+        "quads"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 4,
@@ -6493,6 +6711,7 @@
         "triceps",
         "side_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 2,
       "defaultRIR": 2,
@@ -6530,7 +6749,9 @@
       ],
       "secondaryMuscles": [
         "triceps",
-        "side_delts",
+        "side_delts"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 3,
@@ -6573,6 +6794,7 @@
       "secondaryMuscles": [
         "triceps"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 3,
       "defaultRIR": 2,
@@ -6612,6 +6834,7 @@
         "triceps",
         "side_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -6650,7 +6873,9 @@
       ],
       "secondaryMuscles": [
         "triceps",
-        "upper_back",
+        "upper_back"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -6689,8 +6914,10 @@
       ],
       "secondaryMuscles": [
         "triceps",
-        "abs",
         "obliques"
+      ],
+      "stabilises": [
+        "abs"
       ],
       "fatigueCost": 2,
       "skill": 2,
@@ -6726,7 +6953,9 @@
         "front_delts"
       ],
       "secondaryMuscles": [
-        "triceps",
+        "triceps"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -6767,7 +6996,9 @@
         "front_delts"
       ],
       "secondaryMuscles": [
-        "triceps",
+        "triceps"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -6809,6 +7040,7 @@
       "secondaryMuscles": [
         "chest"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -6847,6 +7079,7 @@
       "secondaryMuscles": [
         "chest"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -6886,6 +7119,7 @@
         "front_delts",
         "traps"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -6922,6 +7156,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -6958,6 +7193,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -6995,6 +7231,7 @@
         "front_delts",
         "traps"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7031,6 +7268,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7068,6 +7306,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -7106,6 +7345,7 @@
         "biceps",
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -7146,6 +7386,7 @@
         "mid_back",
         "traps"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7183,6 +7424,7 @@
         "mid_back",
         "traps"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7220,6 +7462,7 @@
         "mid_back",
         "traps"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7258,6 +7501,7 @@
         "mid_back",
         "traps"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7295,6 +7539,7 @@
         "mid_back",
         "traps"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7332,6 +7577,7 @@
         "mid_back",
         "traps"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7367,6 +7613,7 @@
         "neck"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7404,6 +7651,7 @@
         "neck"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7442,6 +7690,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7480,6 +7729,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7516,6 +7766,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -7552,6 +7803,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7589,6 +7841,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7628,6 +7881,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7665,6 +7919,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7702,6 +7957,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7741,6 +7997,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7779,6 +8036,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7815,6 +8073,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -7853,6 +8112,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -7889,6 +8149,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7925,6 +8186,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7961,6 +8223,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -7997,6 +8260,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -8034,6 +8298,7 @@
         "forearms",
         "abs"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 3,
       "defaultRIR": 2,
@@ -8072,6 +8337,7 @@
       "secondaryMuscles": [
         "biceps"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -8110,6 +8376,7 @@
         "forearms"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -8147,6 +8414,7 @@
         "forearms"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -8185,6 +8453,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -8223,6 +8492,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -8262,6 +8532,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -8302,6 +8573,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -8340,6 +8612,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -8376,6 +8649,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -8412,6 +8686,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -8448,6 +8723,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -8486,6 +8762,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -8522,6 +8799,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -8559,6 +8837,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -8598,6 +8877,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -8637,6 +8917,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -8678,6 +8959,7 @@
         "chest",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 3,
       "defaultRIR": 2,
@@ -8719,6 +9001,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 2,
       "defaultRIR": 2,
@@ -8760,6 +9043,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -8800,6 +9084,7 @@
         "chest",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -8841,6 +9126,7 @@
         "chest",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -8880,6 +9166,7 @@
         "chest",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -8919,6 +9206,7 @@
         "chest",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -8958,6 +9246,7 @@
         "abs",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 3,
       "defaultRIR": 2,
@@ -8998,6 +9287,7 @@
         "glutes",
         "erectors"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -9038,6 +9328,7 @@
         "glutes",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -9080,6 +9371,7 @@
         "lats",
         "hip_flexors"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 3,
       "defaultRIR": 2,
@@ -9121,6 +9413,7 @@
         "lats",
         "hip_flexors"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -9159,6 +9452,7 @@
       "secondaryMuscles": [
         "hip_flexors"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -9195,6 +9489,7 @@
       "secondaryMuscles": [
         "hip_flexors"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -9235,6 +9530,7 @@
       "secondaryMuscles": [
         "side_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -9272,6 +9568,7 @@
       "secondaryMuscles": [
         "side_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -9308,6 +9605,7 @@
       "secondaryMuscles": [
         "obliques"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -9344,6 +9642,7 @@
         "abs"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -9380,6 +9679,7 @@
         "abs"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -9418,6 +9718,7 @@
         "hip_flexors"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -9458,6 +9759,7 @@
       "secondaryMuscles": [
         "obliques"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -9495,6 +9797,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -9535,6 +9838,7 @@
       "secondaryMuscles": [
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -9572,6 +9876,7 @@
         "hip_flexors"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -9607,6 +9912,7 @@
         "hip_flexors"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -9645,6 +9951,7 @@
       "secondaryMuscles": [
         "hip_flexors"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -9682,6 +9989,7 @@
         "abs",
         "glutes"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -9724,6 +10032,7 @@
         "forearms",
         "erectors"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -9763,6 +10072,7 @@
       "secondaryMuscles": [
         "side_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 2,
       "defaultRIR": 2,
@@ -9803,6 +10113,7 @@
       "secondaryMuscles": [
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 3,
       "defaultRIR": 2,
@@ -9843,6 +10154,7 @@
       "secondaryMuscles": [
         "hip_flexors"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -9883,6 +10195,7 @@
       "secondaryMuscles": [
         "quads"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 3,
       "defaultRIR": 2,
@@ -9924,6 +10237,7 @@
       "secondaryMuscles": [
         "abs"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -9964,7 +10278,9 @@
       ],
       "secondaryMuscles": [
         "quads",
-        "side_delts",
+        "side_delts"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 3,
@@ -10008,7 +10324,9 @@
       ],
       "secondaryMuscles": [
         "quads",
-        "side_delts",
+        "side_delts"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 3,
@@ -10051,7 +10369,9 @@
       ],
       "secondaryMuscles": [
         "hamstrings",
-        "side_delts",
+        "side_delts"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 3,
@@ -10094,7 +10414,9 @@
       ],
       "secondaryMuscles": [
         "front_delts",
-        "triceps",
+        "triceps"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 4,
@@ -10137,7 +10459,9 @@
         "traps"
       ],
       "secondaryMuscles": [
-        "hamstrings",
+        "hamstrings"
+      ],
+      "stabilises": [
         "erectors",
         "abs"
       ],
@@ -10181,7 +10505,9 @@
       ],
       "secondaryMuscles": [
         "quads",
-        "hamstrings",
+        "hamstrings"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 3,
@@ -10224,7 +10550,9 @@
       ],
       "secondaryMuscles": [
         "triceps",
-        "traps",
+        "traps"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 4,
@@ -10266,7 +10594,9 @@
       ],
       "secondaryMuscles": [
         "triceps",
-        "traps",
+        "traps"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 3,
@@ -10308,8 +10638,10 @@
       ],
       "secondaryMuscles": [
         "hamstrings",
-        "erectors",
         "quads"
+      ],
+      "stabilises": [
+        "erectors"
       ],
       "fatigueCost": 3,
       "skill": 3,
@@ -10350,8 +10682,10 @@
       ],
       "secondaryMuscles": [
         "hamstrings",
-        "erectors",
         "upper_back"
+      ],
+      "stabilises": [
+        "erectors"
       ],
       "fatigueCost": 3,
       "skill": 3,
@@ -10394,6 +10728,7 @@
         "hamstrings",
         "biceps"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 3,
       "defaultRIR": 2,
@@ -10432,7 +10767,9 @@
       ],
       "secondaryMuscles": [
         "hamstrings",
-        "forearms",
+        "forearms"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -10473,7 +10810,9 @@
       ],
       "secondaryMuscles": [
         "hamstrings",
-        "front_delts",
+        "front_delts"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 3,
@@ -10515,7 +10854,9 @@
       ],
       "secondaryMuscles": [
         "hamstrings",
-        "side_delts",
+        "side_delts"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -10559,6 +10900,7 @@
         "traps",
         "quads"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 4,
       "defaultRIR": 2,
@@ -10599,6 +10941,7 @@
         "calves",
         "hamstrings"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -10639,6 +10982,7 @@
         "hamstrings",
         "calves"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 3,
       "defaultRIR": 2,
@@ -10679,6 +11023,7 @@
         "obliques",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -10717,6 +11062,7 @@
         "glutes",
         "front_delts"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -10754,7 +11100,9 @@
         "triceps"
       ],
       "secondaryMuscles": [
-        "front_delts",
+        "front_delts"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 2,
@@ -10796,6 +11144,7 @@
         "glutes",
         "erectors"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 1,
       "defaultRIR": 2,
@@ -10838,6 +11187,7 @@
         "glutes",
         "erectors"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 1,
       "defaultRIR": 2,
@@ -10880,6 +11230,7 @@
         "abs",
         "glutes"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -10922,6 +11273,7 @@
         "erectors",
         "traps"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -10964,6 +11316,7 @@
         "forearms",
         "obliques"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 3,
       "defaultRIR": 2,
@@ -11008,6 +11361,7 @@
         "erectors",
         "quads"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 2,
       "defaultRIR": 2,
@@ -11051,6 +11405,7 @@
         "lats",
         "traps"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -11093,6 +11448,7 @@
         "traps",
         "abs"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -11130,6 +11486,7 @@
         "forearms"
       ],
       "secondaryMuscles": [],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -11169,8 +11526,10 @@
       ],
       "secondaryMuscles": [
         "biceps",
-        "abs",
         "rear_delts"
+      ],
+      "stabilises": [
+        "abs"
       ],
       "fatigueCost": 2,
       "skill": 1,
@@ -11210,6 +11569,7 @@
         "glutes",
         "calves"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -11249,6 +11609,7 @@
         "obliques",
         "traps"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -11293,6 +11654,7 @@
         "front_delts",
         "quads"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -11335,7 +11697,9 @@
       ],
       "secondaryMuscles": [
         "biceps",
-        "triceps",
+        "triceps"
+      ],
+      "stabilises": [
         "abs"
       ],
       "fatigueCost": 4,
@@ -11379,6 +11743,7 @@
         "glutes",
         "hamstrings"
       ],
+      "stabilises": [],
       "fatigueCost": 1,
       "skill": 1,
       "defaultRIR": 2,
@@ -11421,6 +11786,7 @@
         "hamstrings",
         "hip_flexors"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 2,
       "defaultRIR": 2,
@@ -11466,6 +11832,7 @@
         "hamstrings",
         "hip_flexors"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 2,
       "defaultRIR": 2,
@@ -11510,6 +11877,7 @@
         "hamstrings",
         "calves"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 2,
       "defaultRIR": 2,
@@ -11553,6 +11921,7 @@
         "hamstrings",
         "calves"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -11597,6 +11966,7 @@
         "front_delts",
         "hamstrings"
       ],
+      "stabilises": [],
       "fatigueCost": 3,
       "skill": 1,
       "defaultRIR": 2,
@@ -11639,7 +12009,9 @@
       "secondaryMuscles": [
         "glutes",
         "hamstrings",
-        "biceps",
+        "biceps"
+      ],
+      "stabilises": [
         "erectors"
       ],
       "fatigueCost": 3,
@@ -11683,8 +12055,10 @@
         "triceps"
       ],
       "secondaryMuscles": [
+        "glutes"
+      ],
+      "stabilises": [
         "abs",
-        "glutes",
         "erectors"
       ],
       "fatigueCost": 3,
@@ -11732,6 +12106,7 @@
         "calves",
         "lats"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -11773,6 +12148,7 @@
         "calves",
         "hamstrings"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 1,
       "defaultRIR": 2,
@@ -11816,6 +12192,7 @@
         "hamstrings",
         "forearms"
       ],
+      "stabilises": [],
       "fatigueCost": 2,
       "skill": 3,
       "defaultRIR": 2,
@@ -11857,8 +12234,10 @@
       ],
       "secondaryMuscles": [
         "triceps",
-        "abs",
         "calves"
+      ],
+      "stabilises": [
+        "abs"
       ],
       "fatigueCost": 3,
       "skill": 3,
@@ -11902,8 +12281,10 @@
       ],
       "secondaryMuscles": [
         "triceps",
-        "abs",
         "calves"
+      ],
+      "stabilises": [
+        "abs"
       ],
       "fatigueCost": 2,
       "skill": 2,
@@ -11945,9 +12326,11 @@
         "lats"
       ],
       "secondaryMuscles": [
-        "abs",
         "forearms",
         "biceps"
+      ],
+      "stabilises": [
+        "abs"
       ],
       "fatigueCost": 3,
       "skill": 2,

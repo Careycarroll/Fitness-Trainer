@@ -3,6 +3,7 @@
  * No clock reads, no Math.random, no I/O. ADR-002.
  */
 import { assertCoverage } from './coverage.js';
+import { weeklyVolume } from './volume.js';
 // schedule.js owns weekday logic and is the ONE definition of a valid weekday.
 // Re-checking the rules here is how two copies drift apart (#25).
 import { chooseTrainingDays, gapClass } from './schedule.js';
@@ -88,7 +89,22 @@ export function generate(request, defs) {
           defs.progression?.compressedAccessoryMultiplier ?? 1
       })
     );
-    weeks.push({ week: w + 1, sessions });
+    // #44. Weekly sets per muscle against landmarks.json, which until now no
+    // generator read at all. Computed HERE because volume is a week-level fact:
+    // a session cannot know it, and asking each generator to would put the same
+    // rule in two places.
+    //
+    // REPORTED, never enforced. The landmarks are population estimates -- the
+    // file says so -- and truncating a session on a number that may be wrong
+    // for this body asserts a precision the data does not have. #67 makes them
+    // adjustable; capping an athlete's OWN number is a different argument.
+    //
+    // Null for the interval domain, which prescribes seconds rather than sets.
+    weeks.push({
+      week: w + 1,
+      sessions,
+      volume: weeklyVolume({ sessions }, defs.landmarks)
+    });
   }
 
   return {

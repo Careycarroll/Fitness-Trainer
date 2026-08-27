@@ -179,6 +179,17 @@ def build_record(row: dict, source: str) -> dict:
         "equipment": equipment,
         "primaryMuscles": split_tokens(row["primary_muscles"]),
         "secondaryMuscles": split_tokens(row["secondary_muscles"]),
+        # Muscles that BRACE rather than work through a range (#44). Recorded
+        # because it is true, counted at ZERO in weekly volume: bracing under a
+        # squat is not ab training and does not drive the hypertrophy the
+        # landmarks were measured for.
+        #
+        # Split from secondary_muscles for 97 rows. `secondaryMuscles` was
+        # carrying two meanings -- anatomical involvement on squats and
+        # deadlifts, genuine shortening work on rows and presses -- and volume
+        # counting needs it to mean one. Abs measured 33 indirect sets in a
+        # bodybuilding week, reading over MRV on bracing alone.
+        "stabilises": split_tokens(row.get("stabilises", "")),
         "fatigueCost": fatigue,
         "skill": skill,
         "defaultRIR": 2,

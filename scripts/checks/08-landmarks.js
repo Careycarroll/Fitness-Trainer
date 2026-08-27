@@ -10,7 +10,10 @@ export default {
       assert(MUSCLES.includes(m), `landmarks has unknown muscle group "${m}"`);
       assert(l.mv <= l.mev && l.mev <= l.mav && l.mav <= l.mrv, `${m}: landmarks must satisfy mv <= mev <= mav <= mrv`);
     }
-    const referenced = new Set(defs.exercises.flatMap((e) => [...e.primaryMuscles, ...e.secondaryMuscles]));
+    // stabilises included: a landmark must exist for every muscle the catalog
+    // names, even one counted at zero. An unlandmarked token is a typo (#44).
+    const referenced = new Set(defs.exercises.flatMap(
+      (e) => [...e.primaryMuscles, ...e.secondaryMuscles, ...e.stabilises]));
     for (const m of referenced) {
       assert(defs.landmarks[m] !== undefined, `muscle "${m}" is used by an exercise but has no landmark`);
     }

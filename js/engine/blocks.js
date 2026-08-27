@@ -36,6 +36,14 @@ export function makeSetGroup(exercise, fields) {
     // a UI that has to re-join against 285 rows to render a card is wrong.
     equipment: exercise.equipment,
     primaryMuscles: exercise.primaryMuscles,
+    // Added for weekly volume (#44). Indirect work is the larger share for
+    // several muscles -- biceps measure 0 direct sets and 20 indirect across a
+    // bodybuilding week -- so a consumer counting only primaries reads arms as
+    // untrained while the athlete rows and pulls four days a week.
+    secondaryMuscles: exercise.secondaryMuscles ?? [],
+    // Counted at zero in volume (#44), carried so a consumer can SHOW what a
+    // movement braces without re-joining the catalog.
+    stabilises: exercise.stabilises ?? [],
     exerciseFamily: exercise.exerciseFamily ?? null,
     fatigueCost: exercise.fatigueCost,
     unilateral: exercise.unilateral,
