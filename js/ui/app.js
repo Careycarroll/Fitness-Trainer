@@ -1102,6 +1102,60 @@ function paintStatus() {
  * did not ask for is a recovery and time claim you never made, and it needs
  * saying just as much.
  */
+/**
+ * Why this split, when the style did not ask for it — #76.
+ *
+ * `chooseSplit()` has an exit path that matches on DAY COUNT ALONE:
+ *
+ *     const exact = usable.find((s) => s.daysPerWeek === daysPerWeek);
+ *     if (exact) return { split: exact, sessionMismatch: null };
+ *
+ * The session count was honoured, so nothing was reported — but the style may
+ * never have listed this split. `ppl-6` is the only 6-day template in the
+ * catalog, so core, strength and powerlifting all land on a hypertrophy split
+ * at 6 days, and athletic lands on a split it does not list at four separate
+ * day counts. Eight of thirty combinations, all silent until now.
+ *
+ * The split is NOT changed — there is one template per day count, so refusing
+ * it would fall through to the nearest count and hand athletic at 1 day a 4-day
+ * split. This states the gap instead, which is the same move #51 made for
+ * session count.
+ *
+ * `defs` is needed for the split's display name; the id is the fallback rather
+ * than a throw, because this runs inside a render path.
+ */
+export function splitNoticeHtml(program, defs) {
+  const fit = program?.splitFit;
+  if (!fit) return '';
+
+  const nameOf = (id) =>
+    (defs?.splits ?? []).find((s) => s.id === id)?.name ?? id;
+
+  const parts = [];
+
+  if (!fit.preferred) {
+    const prefers = (fit.prefers ?? []).map(nameOf);
+    parts.push(
+      `This style does not list ${esc(nameOf(fit.splitId))} among the splits it ` +
+      `was designed around.` +
+      (prefers.length ? ` It prefers: ${esc(prefers.join(', '))}.` : '')
+    );
+  }
+
+  const weak = fit.weakDays ?? [];
+  if (weak.length) {
+    const labels = weak.map((d) => d.label).join(', ');
+    parts.push(
+      `${weak.length} of the ${fit.totalDays} days in ` +
+      `${esc(nameOf(fit.splitId))} — ${esc(labels)} — train nothing this style ` +
+      `focuses on.`
+    );
+  }
+
+  if (!parts.length) return '';
+  return `<p class="request-note" role="status">${parts.join(' ')}</p>`;
+}
+
 export function sessionNoticeHtml(program) {
   const mm = program?.sessionMismatch;
   if (!mm) return '';
@@ -1136,6 +1190,7 @@ function paint(out) {
         ${seedLabel ? ` <span class="resolved-seed">(resolved: ${current.seed})</span>` : ''}
       </p>
       ${sessionNoticeHtml(current)}
+      ${splitNoticeHtml(current, currentDefs)}
       ${editMessage}
     </div>`;
 

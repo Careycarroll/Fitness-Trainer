@@ -124,7 +124,65 @@ export function generate(request, defs) {
     requestedSessions: request.daysPerWeek,
     resolvedSessions: split.daysPerWeek,
     sessionMismatch,
+    // #76. Null when the resolved split is one the style asked for AND every
+    // day offers something it emphasises. Populated otherwise — chooseSplit()
+    // can honour the day count while handing back a split the style never
+    // listed, and until now that was reported nowhere.
+    splitFit: splitFitOf(style, split),
     weeks
+  };
+}
+
+/**
+ * How well the RESOLVED split serves the style — #76.
+ *
+ * chooseSplit() has two exit paths that return `sessionMismatch: null`. The
+ * second matches on day count alone:
+ *
+ *     const exact = usable.find((s) => s.daysPerWeek === daysPerWeek);
+ *     if (exact) return { split: exact, sessionMismatch: null };
+ *
+ * The session count was honoured, so nothing was reported — but the style may
+ * never have listed this split. `ppl-6` is the only 6-day template in the
+ * catalog, so core, strength and powerlifting all land on a hypertrophy split
+ * at 6 days, and athletic lands on a non-preferred split at four separate day
+ * counts. Eight of thirty combinations, all silent.
+ *
+ * This does NOT change which split is chosen. Ranking cannot help: there is one
+ * split per day count, so a guard that rejected the sole candidate would fall
+ * through to closest(preferred) and hand athletic at 1 day a 4-day split. The
+ * split stays; the mismatch is reported, exactly as #51 did for session count.
+ *
+ * Returns null when the split is preferred AND every day offers a pattern the
+ * style scores at EMPHASIS_FLOOR or better. A field permanently reading "no
+ * problem" is noise.
+ */
+const EMPHASIS_FLOOR = 0.3;
+
+function splitFitOf(style, split) {
+  // Only the load domain declares patternEmphasis. A time-domain style has no
+  // per-pattern opinion, so there is nothing to measure and nothing to report.
+  const emphasis = style?.patternEmphasis;
+  if (!emphasis) return null;
+
+  const days = split?.days ?? [];
+  const preferred = (style.preferredSplits ?? []).includes(split.id);
+
+  const weakDays = [];
+  for (const d of days) {
+    const best = Math.max(0, ...(d.patterns ?? []).map((p) => emphasis[p] ?? 0));
+    if (best < EMPHASIS_FLOOR) weakDays.push({ label: d.label, best });
+  }
+
+  if (preferred && weakDays.length === 0) return null;
+
+  return {
+    splitId: split.id,
+    preferred,
+    emphasisedDays: days.length - weakDays.length,
+    totalDays: days.length,
+    weakDays,
+    prefers: [...(style.preferredSplits ?? [])]
   };
 }
 

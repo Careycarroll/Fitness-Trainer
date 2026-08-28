@@ -172,9 +172,31 @@ undocumented here until #35 had to persist them.
   splitId: 'upper-lower-4',   // which split template was resolved
   domain: 'load' | 'time',    // which generator ran
   seed: 20260813,
+  splitFit: null,             // or a report — see below (#76)
   weeks: [ { week: 1, sessions: [ /* see below */ ] } ]
 }
 ```
+
+`splitFit` (#76) is `null` when the resolved split is one the style listed in
+`preferredSplits` AND every day of it offers at least one pattern the style
+scores at 0.3 or better. Otherwise it reports the gap:
+
+```js
+{
+  splitId: 'ppl-6',
+  preferred: false,           // the style never listed this split
+  emphasisedDays: 4,
+  totalDays: 6,
+  weakDays: [ { label: 'Legs A', best: 0.2 } ],
+  prefers: ['full-body-3', 'upper-lower-4']
+}
+```
+
+`chooseSplit()` can honour the requested day count while returning a split the
+style never asked for — `ppl-6` is the only 6-day template, so core, strength
+and powerlifting all resolve to it at 6 days. That path returns
+`sessionMismatch: null`, because the session count WAS honoured. `splitFit` is
+where the rest of the story goes. It does not change which split is chosen.
 
 The program is what gets persisted, not the request. `js/ui/app.js` mutates the
 program tree in place — `group[field] = value`, `setGroups.splice()`, and
