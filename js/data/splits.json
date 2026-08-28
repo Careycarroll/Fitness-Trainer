@@ -92,6 +92,14 @@
             "pull_h",
             "push_v",
             "core"
+          ],
+          "muscles": [
+            "chest",
+            "triceps",
+            "front_delts",
+            "mid_back",
+            "lats",
+            "abs"
           ]
         },
         {
@@ -101,6 +109,12 @@
             "hinge",
             "lunge",
             "core"
+          ],
+          "muscles": [
+            "quads",
+            "glutes",
+            "hamstrings",
+            "abs"
           ]
         },
         {
@@ -110,6 +124,15 @@
             "pull_v",
             "pull_h",
             "carry"
+          ],
+          "muscles": [
+            "front_delts",
+            "side_delts",
+            "rear_delts",
+            "traps",
+            "upper_back",
+            "lats",
+            "biceps"
           ]
         },
         {
@@ -119,6 +142,13 @@
             "squat",
             "lunge",
             "core"
+          ],
+          "muscles": [
+            "hamstrings",
+            "glutes",
+            "erectors",
+            "quads",
+            "obliques"
           ]
         }
       ],
@@ -326,6 +356,12 @@
             "squat",
             "hinge",
             "core"
+          ],
+          "muscles": [
+            "quads",
+            "glutes",
+            "erectors",
+            "abs"
           ]
         },
         {
@@ -335,6 +371,12 @@
             "push_h",
             "pull_h",
             "isolation"
+          ],
+          "muscles": [
+            "chest",
+            "triceps",
+            "front_delts",
+            "mid_back"
           ]
         },
         {
@@ -344,6 +386,12 @@
             "hinge",
             "squat",
             "pull_h"
+          ],
+          "muscles": [
+            "erectors",
+            "hamstrings",
+            "glutes",
+            "upper_back"
           ]
         },
         {
@@ -353,6 +401,15 @@
             "pull_v",
             "pull_h",
             "isolation"
+          ],
+          "muscles": [
+            "front_delts",
+            "side_delts",
+            "rear_delts",
+            "traps",
+            "lats",
+            "biceps",
+            "triceps"
           ]
         }
       ]

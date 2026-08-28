@@ -3516,7 +3516,7 @@
     {
       "id": "copenhagen-plank",
       "name": "Copenhagen Plank",
-      "pattern": "core",
+      "pattern": "isolation",
       "loadType": "bodyweight",
       "equipment": [
         "bodyweight",
@@ -3560,7 +3560,7 @@
     {
       "id": "short-lever-copenhagen-plank",
       "name": "Short-Lever Copenhagen Plank",
-      "pattern": "core",
+      "pattern": "isolation",
       "loadType": "bodyweight",
       "equipment": [
         "bodyweight",
@@ -10226,7 +10226,7 @@
     {
       "id": "cable-hip-flexion",
       "name": "Cable Hip Flexion",
-      "pattern": "core",
+      "pattern": "isolation",
       "loadType": "cable",
       "equipment": [
         "cable"

@@ -23,4 +23,4 @@ Cable Woodchop,cable-woodchop,rotation,strength,core,obliques|abs,side_delts,cab
 Landmine Rotation,landmine-rotation,rotation,strength,core,obliques|abs,front_delts,barbell|landmine,FALSE,2,3,8,12,60,FALSE,reps_only,,lower_back,,
 Russian Twist,russian-twist,rotation,strength,core,obliques|abs,hip_flexors,bodyweight|plate,FALSE,1,1,12,25,45,FALSE,reps_only,,lower_back,,
 L-Sit,l-sit,hip_flexor,strength,core,hip_flexors|abs,quads,bodyweight|box,FALSE,2,3,10,30,60,FALSE,time,shortened_bias,shoulder,,
-Cable Hip Flexion,cable-hip-flexion,hip_flexor,strength,core,hip_flexors,abs,cable,FALSE,1,1,10,20,60,TRUE,weight_reps,,hip,,
+Cable Hip Flexion,cable-hip-flexion,hip_flexor,strength,isolation,hip_flexors,abs,cable,FALSE,1,1,10,20,60,TRUE,weight_reps,,hip,,
