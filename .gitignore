@@ -12,3 +12,15 @@ coverage/
 *.bak2
 *.pre-remap
 import-sources/
+
+# Preset program templates (#81, M7.6).
+#
+# The MECHANISM ships; the TEMPLATES do not. Sets and reps are facts, but the
+# selection, sequencing and progression of a published program are the author's
+# expressive work, and committing one here would be redistribution.
+#
+# Templates you have lawful access to live in data/programs/ and stay local.
+# Templates authored for this repo are named example-*.json and ARE tracked.
+data/programs/*
+!data/programs/README.md
+!data/programs/example-*.json
