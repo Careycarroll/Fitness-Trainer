@@ -7,6 +7,15 @@ const base = process.env.BASE_PATH ?? '/';
 
 export default defineConfig({
   base,
+  // A visible build stamp. The reason a stale worker cost several rounds is that
+  // a stale bundle looks IDENTICAL to a broken one — the same trap as the
+  // `data-preview` simulator in #74. Render this somewhere small and the
+  // question "am I looking at the current build?" is answered by looking.
+  define: {
+    __BUILD__: JSON.stringify(
+      new Date().toISOString().slice(0, 16).replace('T', ' ') + 'Z'
+    )
+  },
   build: {
     target: 'es2022',
     outDir: 'dist',
@@ -15,6 +24,10 @@ export default defineConfig({
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
+      // js/main.js imports `virtual:pwa-register` explicitly. Without this the
+      // plugin injects its own registration as well, and two registrations for
+      // one worker is a race worth not having.
+      injectRegister: null,
       // ADR-001: app shell is cache-first. The app must open with zero network.
       workbox: {
         globPatterns: ['**/*.{js,css,html,json,svg,png,webmanifest}'],
