@@ -161,6 +161,7 @@ export function mount(root, defs) {
               <option value="desktop">Desktop</option>
             </select>
           </label>` : ''}
+        <span class="build-stamp" title="Build timestamp — if this does not change after a rebuild, you are on a stale service worker">${__BUILD__}</span>
         <button id="theme" class="ghost icon-button" aria-label="Toggle theme">◐</button>
       </div>
     </header>

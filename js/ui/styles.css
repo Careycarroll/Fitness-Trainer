@@ -854,3 +854,13 @@ button[disabled] {
 .planner-sidebar details[open] > summary { border-bottom: 1px solid var(--border, #333); }
 .planner-sidebar details > *:not(summary) { margin-inline: 12px; }
 .planner-sidebar details > *:last-child { margin-bottom: 12px; }
+
+/* Build stamp. A stale bundle looks identical to a broken one -- the same trap
+   as data-preview in #74 -- so "am I on the current build" should be answerable
+   by looking rather than by inferring from behaviour. */
+.build-stamp {
+  font-size: 0.65rem;
+  opacity: 0.45;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
