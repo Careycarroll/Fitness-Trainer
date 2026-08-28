@@ -98,20 +98,36 @@ export function generateSession({
   // Pass 1 — pattern coverage. The split is the skeleton (ADR-015): every
   // pattern the day asks for gets a slot before anything else is added.
   // -----------------------------------------------------------------------
-  for (const [i, pattern] of day.patterns.entries()) {
-    const emphasis = style.patternEmphasis[pattern] ?? 0;
+  // Pattern coverage in EMPHASIS order, not declared order.
+  //
+  // The defect test 3 names is not only that `isMain` was positional. The loop
+  // itself ran in declared order and state.blocks is insertion-ordered, so
+  // allSetGroups(session)[0] was whatever the FIRST DECLARED pattern yielded.
+  // Fixing `isMain` alone would not have moved the opening set group.
+  //
+  // body-part-5 Legs declares ["squat","lunge","core"]. Under `core`
+  // (squat 0.1, lunge 0.1, core 1.0) that put a back squat in blocks[0] of
+  // every session at every day count — 20 of the 22 test-3 failures.
+  //
+  // Declared index is the tie-break, so a style whose day patterns share an
+  // emphasis iterates exactly as before and its output is unchanged.
+  const ordered = [...day.patterns.entries()]
+    .map(([i, pattern]) => ({ i, pattern, emphasis: style.patternEmphasis[pattern] ?? 0 }))
+    .sort((a, b) => b.emphasis - a.emphasis || a.i - b.i);
+
+  for (const { pattern, emphasis } of ordered) {
     if (emphasis === 0) {
       state.omitted.push({ pattern, reason: 'style-emphasis-zero' });
       continue;
     }
 
-    // "Main" is positional: first slot, or second when the style leans hard on
-    // that pattern. A style that allows pattern repeats treats the repeat as
-    // main too — back squat then pause squat is main + variation, not an
-    // accessory that happens to squat.
+    // "Main" is now the FIRST SLOT ACTUALLY FILLED, which after the sort above
+    // is the highest-emphasis pattern that yielded a candidate. When the top
+    // pattern returns null the main slot passes down the emphasis ranking on
+    // its own — no separate fallback chain needed.
     const repeated = (state.usedPatterns.get(pattern) ?? 0) > 0;
-    const isMain = i === 0
-      || (i === 1 && emphasis >= 0.8)
+    const isMain = state.blocks.length === 0
+      || (state.blocks.length === 1 && emphasis >= 0.8)
       || (repeated && style.allowPatternRepeat === true);
 
     const chosen = pick({
@@ -158,8 +174,24 @@ export function generateSession({
 
   let guard = 40;   // pick() is monotonic and the pool is finite; still, never spin
   while (state.blocks.length < fillTarget && guard-- > 0) {
-    const pattern = nextAccessoryPattern(style, state, allowed, dayMuscles, day.patterns);
-    if (!pattern) break;
+    // #75 EDIT 3 — affordability-aware fill. slotsLeft is the same figure the
+    // pick() call below already uses; the chooser needs it to apply EDIT 2's
+    // veto when deciding whether a pattern is worth reaching for at all.
+    const pattern = nextAccessoryPattern(style, state, allowed, dayMuscles, day.patterns,
+      Math.max(1, target - state.blocks.length));
+    if (!pattern) {
+      // Previously a bare break: the session came up short and omitted[] said
+      // nothing about it. Same shortfall the pick()-returned-null branch below
+      // reports, so it is reported the same way (#43).
+      state.omitted.push({
+        pattern: null,
+        reason: 'count-not-reachable',
+        requested: target,
+        placed: state.blocks.length,
+        remaining: style.fatigueBudget - state.fatigueUsed
+      });
+      break;
+    }
 
     const chosen = pick({
       pool: allowed, pattern, style, state, rng, isMain: false, dayMuscles, week,
@@ -220,6 +252,20 @@ function pick({ pool, pattern, style, state, rng, isMain, slotsLeft, dayMuscles,
     if (e.pattern !== pattern) return false;
     if (state.usedIds.has(e.id)) return false;
     if (e.fatigueCost > remaining) return false;
+    // #75 EDIT 2 — affordability veto. A row is legal only if what is LEFT
+    // still covers every remaining slot at the cheapest possible cost of 1
+    // each. This is test 2 restated as legality rather than as a preference.
+    //
+    // At the first slot remaining === budget and slotsLeft === target, so this
+    // reduces to exactly test 2's condition, which already passes everywhere:
+    // it vetoes nothing on the main lift. Its work is in the FILL pass, where
+    // score() aims to SPEND (targetCost = remaining / slotsLeft) and nothing
+    // stopped a row that overshot and stranded the final slot. After EDIT 1
+    // all 26 test-1 failures sat at or one below full budget.
+    //
+    // At the last slot slotsLeft is 1 and it becomes `remaining - cost >= 0`,
+    // i.e. the check on the line above.
+    if (remaining - e.fatigueCost < slotsLeft - 1) return false;
     if (e.fatigueCost >= MAX_TOP_COST && state.topCostUsed >= MAX_TOP_COST_COUNT) return false;
     return true;
   });
@@ -358,8 +404,25 @@ const patternPenalty = (state, pattern, style) => {
  * patterns for volume, powerlifting at 0.30 spreads out instead of adding a
  * fourth squat.
  */
-function nextAccessoryPattern(style, state, pool, dayMuscles, dayPatterns) {
+function nextAccessoryPattern(style, state, pool, dayMuscles, dayPatterns, slotsLeft = 1) {
   const ratio = style.accessoryRatio ?? 0.4;
+
+  // #75 EDIT 3 — affordability-aware fill.
+  //
+  // This function chose WHERE to look before anything asked whether that place
+  // held anything placeable. After EDIT 2 all 13 remaining test-1 failures sat
+  // at exactly one point and one slot short: a cost-1 row would have finished
+  // the session, and one existed — under a pattern this ranking did not pick.
+  //
+  // These are pick()'s three legality conditions, in pick()'s order. They must
+  // stay in step: if this predicate is looser, pick() returns null and the fill
+  // loop stops early; if it is tighter, patterns are skipped that would have
+  // worked.
+  const remaining = style.fatigueBudget - state.fatigueUsed;
+  const affordable = (e) =>
+    e.fatigueCost <= remaining
+    && remaining - e.fatigueCost >= slotsLeft - 1
+    && !(e.fatigueCost >= MAX_TOP_COST && state.topCostUsed >= MAX_TOP_COST_COUNT);
   // The fill may only choose patterns THE DAY DECLARES (SPEC.md: muscles weight
   // selection within the day's own patterns; they never filter). Ranking all of
   // style.patternEmphasis let an unused 0.9 pattern outscore a declared one that
@@ -368,7 +431,7 @@ function nextAccessoryPattern(style, state, pool, dayMuscles, dayPatterns) {
   // than a silent widening — the shortfall is reported as count-not-reachable.
   const patterns = [...new Set(dayPatterns ?? [])]
     .filter((p) => (style.patternEmphasis[p] ?? 0) > 0)
-    .filter((p) => pool.some((e) => e.pattern === p && !state.usedIds.has(e.id)));
+    .filter((p) => pool.some((e) => e.pattern === p && !state.usedIds.has(e.id) && affordable(e)));
 
   // Among declared patterns, muscle fit still decides: what matters is whether
   // the pattern's REMAINING candidates serve the day, not whether the pattern
@@ -379,7 +442,9 @@ function nextAccessoryPattern(style, state, pool, dayMuscles, dayPatterns) {
     const used = state.usedPatterns.get(p) ?? 0;
     const fit = dayMuscles && dayMuscles.size
       ? Math.max(0, ...pool
-          .filter((e) => e.pattern === p && !state.usedIds.has(e.id))
+          // Affordable rows only — muscle fit computed over rows that cannot be
+          // placed is an argument for a pattern that will return null.
+          .filter((e) => e.pattern === p && !state.usedIds.has(e.id) && affordable(e))
           .map((e) => muscleFit(e, dayMuscles)))
       : 0;
     const s = (style.patternEmphasis[p] ?? 0) - used * (1 - ratio) * 1.5 + fit * 1.5;

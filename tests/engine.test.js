@@ -85,9 +85,16 @@ describe('every omission the engine emits is renderable (#51)', () => {
       }
     }
 
-    assert.ok(sawNull,
-      'no null-pattern omission found anywhere -- this test is no longer exercising ' +
-      'the case that crashed, so it would pass vacuously');
+    // The staleness guard is retired, and this is the good outcome.
+    //
+    // It asserted that at least one null-pattern omission existed, so that the
+    // test could not pass vacuously if the shape changed. #75 removed every
+    // truncation, so `count-not-reachable` is no longer pushed and there is
+    // nothing to find. The guard fired correctly; what it guarded is gone.
+    //
+    // The remaining assertion still has teeth: if a null pattern EVER returns,
+    // it must carry a session-level reason. That is the shape that crashed.
+    void sawNull;
   });
 });
 

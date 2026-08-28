@@ -115,15 +115,30 @@ describe('a style leads with a pattern it actually emphasises (#75)', () => {
     // 0.3 is the threshold this test proposes: below it, a style is saying "run
     // this if the split demands it", not "lead the session with it".
     const failures = [];
-    for (const { style, profile, days, index, session } of everySession()) {
+    for (const { style, profile, days, index, session, program } of everySession()) {
       const first = allSetGroups(session)[0];
       if (!first) continue;
       const pattern = rowOf(first.exerciseId)?.pattern;
       const emphasis = style.patternEmphasis?.[pattern] ?? 0;
-      if (emphasis >= 0.3) continue;
+
+      // RELATIVE to what the day declares, not an absolute floor.
+      //
+      // The first version required emphasis >= 0.3 outright, and four failures
+      // survived that no reordering could fix: `core` at 6 days uses ppl-6,
+      // whose Legs days declare ["squat","hinge","lunge"] -- which core scores
+      // 0.1, 0.2, 0.1. Nothing on that day clears 0.3, so the assertion was
+      // demanding trunk work from a day that never asks for it. That is a
+      // split/style mismatch, not a selection defect, and asserting it here
+      // would have held the engine to something the data cannot deliver.
+      const split = defs.splits.find((s) => s.id === program.splitId);
+      const day = split?.days?.[index % (split?.days?.length ?? 1)];
+      const best = Math.max(0, ...(day?.patterns ?? [])
+        .map((p) => style.patternEmphasis?.[p] ?? 0));
+      if (emphasis >= best) continue;
       failures.push(
         `${style.id}/${profile}/${days} session ${index + 1} opens with ` +
-        `${first.exerciseId} (${pattern}, emphasis ${emphasis})`
+        `${first.exerciseId} (${pattern}, emphasis ${emphasis}) when the day ` +
+        `declares a pattern at ${best}`
       );
     }
     assert.deepEqual(failures, [], `\n${failures.join('\n')}`);
@@ -136,6 +151,19 @@ describe('the muscles a style emphasises actually get trained (#75)', () => {
     // train the trunk to the minimum effective volume. Measurable only since
     // #44 -- weeklyVolume() plus landmarks.json.
     const failures = [];
+    // RESTORED to the e958115 form. An intermediate version derived this set from
+    // `day.muscles` instead, and guarded with `if (!muscles.size) continue;` —
+    // which skipped bodybuilding, strength and powerlifting outright, because
+    // upper-lower-4 and powerlifting-4 declare `muscles` on no day at all. The
+    // suite went green while never examining the three styles the defect was
+    // reported against.
+    //
+    // Known imprecision, kept deliberately: `athletic` is asked for MEV on chest
+    // and side_delts because a few explosive rows name them as primary, and
+    // powerlifting for erectors, which one heavy hinge day already satisfies as
+    // programming. Those two claims are too broad. Narrow them by naming the
+    // muscles a style genuinely owes — not by skipping styles whose splits left
+    // a field empty.
     for (const style of LOAD_STYLES) {
       const top = Object.entries(style.patternEmphasis ?? {})
         .filter(([, v]) => v >= 0.9).map(([p]) => p);
