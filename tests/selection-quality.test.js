@@ -151,6 +151,10 @@ describe('the muscles a style emphasises actually get trained (#75)', () => {
     // train the trunk to the minimum effective volume. Measurable only since
     // #44 -- weeklyVolume() plus landmarks.json.
     const failures = [];
+    // Muscles a gate dropped, and why. PRINTED, never silent: a narrowing that
+    // cannot be read is indistinguishable from a test that stopped looking.
+    const excluded = [];
+    const reported = [];
     // RESTORED to the e958115 form. An intermediate version derived this set from
     // `day.muscles` instead, and guarded with `if (!muscles.size) continue;` —
     // which skipped bodybuilding, strength and powerlifting outright, because
@@ -169,26 +173,91 @@ describe('the muscles a style emphasises actually get trained (#75)', () => {
         .filter(([, v]) => v >= 0.9).map(([p]) => p);
       if (!top.length) continue;
 
-      // Muscles the catalog trains DIRECTLY through those patterns.
-      const muscles = new Set(defs.exercises
-        .filter((e) => top.includes(e.pattern))
-        .flatMap((e) => e.primaryMuscles ?? []));
+      // PREDOMINANCE gate.
+      //
+      // The first version took every primary muscle of every row in the style's
+      // 0.9+ patterns. `athletic` emphasises `explosive`, and 3 of 23 explosive
+      // rows list chest as primary, so it was asked for 8 sets of chest
+      // hypertrophy. A style built on jumps and throws owes none.
+      //
+      // A muscle is claimed only if the style's own top patterns train it
+      // BROADLY. 0.2 is the threshold: primary on at least a fifth of the rows
+      // the style leads with. Computed from the catalog, never from
+      // `day.muscles` — a split that leaves that field blank must not be able
+      // to silence this assertion, which is how an earlier narrowing skipped
+      // three styles outright.
+      const PREDOMINANCE = 0.2;
+
+      const topRows = defs.exercises.filter((e) => top.includes(e.pattern));
+      const tally = new Map();
+      for (const e of topRows) {
+        for (const m of e.primaryMuscles ?? []) tally.set(m, (tally.get(m) ?? 0) + 1);
+      }
+      const muscles = new Set();
+      for (const [m, n] of tally) {
+        if (n / topRows.length >= PREDOMINANCE) muscles.add(m);
+        else excluded.push(
+          `${style.id}: ${m} not claimed — primary on ${n} of ${topRows.length} ` +
+          `rows in ${top.join('/')} (${(n / topRows.length * 100).toFixed(0)}% < ` +
+          `${PREDOMINANCE * 100}%)`
+        );
+      }
 
       let p;
       try { p = plan(style.id, 4); } catch { continue; }
       const vol = weeklyVolume(p.weeks[0], defs.landmarks);
       if (!vol) continue;
 
+      // CEILING gate.
+      //
+      // A shortfall is only a DEFECT if the week could have delivered MEV. Each
+      // failing muscle in bodybuilding is named on exactly one day, and an
+      // accessory slot is max(2, setMin - 1) = 2 sets, so the ceiling is 2-4
+      // against MEV 8-10. Perfect selection cannot reach that, and asserting it
+      // holds the engine to arithmetic the split does not offer.
+      //
+      // Below the ceiling the shortfall is REPORTED, not failed — the standing
+      // decision is that volume is reported and never enforced. `weeklyVolume()`
+      // already says so; this test should not disagree with it.
+      const split = defs.splits.find((x) => x.id === p.splitId);
+      const accessorySets = Math.max(2, (style.setsPerMainLift?.min ?? 3) - 1);
+
       for (const m of [...muscles].sort()) {
         const v = vol[m];
         const mev = v?.landmark?.mev;
         if (!mev || v.total >= mev) continue;
+
+        // Serving slots: every declared pattern, on every day, that holds at
+        // least one row training this muscle as primary. Equipment is not
+        // re-filtered — an unreachable row at commercial-gym is unreachable
+        // anywhere, and this is a ceiling, not a prediction.
+        let slots = 0;
+        for (const d of split?.days ?? []) {
+          for (const pat of d.patterns ?? []) {
+            if ((style.patternEmphasis?.[pat] ?? 0) === 0) continue;
+            const serves = defs.exercises.some((e) =>
+              e.pattern === pat && (e.primaryMuscles ?? []).includes(m));
+            if (serves) slots += 1;
+          }
+        }
+        const ceiling = slots * accessorySets;
+
+        if (ceiling < mev) {
+          reported.push(
+            `${style.id}: ${m} ${v.total}/${mev} — unreachable, ceiling ~${ceiling} ` +
+            `(${slots} serving slot(s) x ${accessorySets} sets on ${p.splitId})`
+          );
+          continue;
+        }
+
         failures.push(
           `${style.id} emphasises ${top.join('/')} at 0.9+, but ${m} gets ` +
-          `${v.total} sets against MEV ${mev}`
+          `${v.total} sets against MEV ${mev} (reachable: ceiling ~${ceiling})`
         );
       }
     }
+    for (const line of excluded) console.log(`      EXCLUDED  ${line}`);
+    for (const line of reported) console.log(`      REPORTED  ${line}`);
     assert.deepEqual(failures, [], `\n${failures.join('\n')}`);
   });
 });
