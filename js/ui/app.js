@@ -1281,9 +1281,17 @@ function renderSetGroup(group, w, s, b, g, domain, blockType, rounds) {
 function loadControls(p, w, s, b, g) {
   // No absolute load until logged maxes exist (M7). Percent-of-1RM is all the
   // engine can honestly prescribe, so there is no load branch to fall back to.
-  const load = p.intensityOf1RM != null
-      ? `${formatNumber(p.intensityOf1RM * 100)}% 1RM`
-      : 'load not prescribed';
+  // #78. An AUTHORED load instruction wins over the derived percentage.
+  //
+  // A preset states its own load — "50% of 10RM" — and that is a prescription
+  // the engine did not compute and must not restate as a percentage of a 1RM
+  // nobody supplied. Generated programs never set this field, so their
+  // rendering is unchanged.
+  const load = p.loadNote
+      ? p.loadNote
+      : p.intensityOf1RM != null
+        ? `${formatNumber(p.intensityOf1RM * 100)}% 1RM`
+        : 'load not prescribed';
   const intensity = [load, p.rir != null ? `RIR ${formatNumber(p.rir)}` : '', p.restSeconds != null ? `${p.restSeconds}s rest` : '']
     .filter(Boolean).join(' · ');
 

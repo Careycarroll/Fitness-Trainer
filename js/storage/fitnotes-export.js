@@ -258,21 +258,41 @@ export function toFitNotesCSV(program, startDate, state, { manifest, catalog, cu
         // Only lifts that NEED a max and lack one. Counting every weightless row
         // conflated "needs a max, has none" with "will never have one", and only
         // the first is actionable.
-        if (anchorable && !weight && pct != null) unpriced.add(g.exerciseId);
+        // #78: a row carrying an authored loadNote is not "needs a max and lacks
+        // one". It does not need one — the load is stated. Counting it would put
+        // every preset row in the unpriced list and make that list useless.
+        if (anchorable && !weight && pct != null && !g.loadNote) unpriced.add(g.exerciseId);
 
         // The note is the ONLY channel for what FitNotes has no column for.
         // Verified to round-trip verbatim through both CSV and .fitnotes.
         const scheme = g.sets != null && g.reps != null ? `${g.sets}x${g.reps}` : null;
+
+        // #78. An AUTHORED load instruction bypasses `anchorable` entirely.
+        //
+        // The gate above is right for GENERATED programs: a percentage against
+        // a lift with no measurable max is a percentage of nothing (ADR-023).
+        // A preset inverts the premise — the load is authored, so it is stated.
+        // Without this, ten of HIIT-100's twelve anchor lifts export as
+        // `10x10 · rest 40s` and the athlete has nothing to load the bar from.
+        //
+        // It REPLACES the derived figures rather than joining them. `weight` is
+        // currentMax * intensityOf1RM, a percentage the preset did not author,
+        // and two different load instructions in one cell is worse than one.
+        // Rest still prints: it is an independent fact, and in HIIT-100 the
+        // rest schedule IS the progression.
+        const authored = g.loadNote || null;
         const note = [
           // Joined, not separated: "5x5 @ 82%" is ONE prescription, where
           // "5x5 . @ 82%" read as two unrelated facts.
-          anchorable && pct != null && scheme
-            ? `${scheme} @ ${Math.round(pct * 100)}%`
-            : scheme,
-          weight ? `${weight} lb` : null,
+          authored
+            ? (scheme ? `${scheme} · ${authored}` : authored)
+            : anchorable && pct != null && scheme
+              ? `${scheme} @ ${Math.round(pct * 100)}%`
+              : scheme,
+          authored ? null : (weight ? `${weight} lb` : null),
           // RIR only where a percentage cannot apply. Constant 2 today, which is
           // #47's problem rather than this one's.
-          !anchorable && g.rir != null ? `RIR ${g.rir}` : null,
+          !authored && !anchorable && g.rir != null ? `RIR ${g.rir}` : null,
           g.restSeconds ? `rest ${g.restSeconds}s` : null
         ].filter(Boolean).join(' · ');
 
