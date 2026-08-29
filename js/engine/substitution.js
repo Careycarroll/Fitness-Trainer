@@ -46,12 +46,42 @@ function domainsCompatible(a, b) {
 }
 
 /**
+ * Does this candidate train anything the target trains? — #52.
+ *
+ * rankSubstitutes returned `limit` rows whether or not they were substitutes,
+ * so where the pool was thin it padded with whatever scored least badly:
+ *
+ *     cable-triceps-pushdown -> band-curl       (triceps vs biceps)
+ *     standing-calf-raise    -> tibialis-raise  (the antagonist)
+ *
+ * A score CEILING cannot separate these. band-curl scores 29; back-squat ->
+ * leg-press, a good substitute, scores 32. Any threshold that rejects the first
+ * rejects the second. The scores overlap, so the instrument is wrong.
+ *
+ * A shared primary muscle is a RULE rather than a tuned number, and it was
+ * measured before being kept: across the whole catalog at commercial-gym it
+ * keeps 1378 pairs and drops 157, with ZERO drops on squat, hinge, push_h,
+ * push_v, pull_h or core. It fires only on isolation, explosive, locomotion,
+ * carry, monostructural and pull_v — exactly the thin pools where score() had
+ * run out of real candidates.
+ *
+ * NOT keyed on exerciseFamily, which was the original proposal and is wrong in
+ * both directions: `wall-sit` and `jump-squat` are in the squat family and
+ * substitute for nothing, while `leg-press` and `belt-squat` are NOT in it and
+ * are exactly what you want when the rack is taken.
+ */
+const sharesPrimaryMuscle = (target, candidate) =>
+  (target.primaryMuscles ?? []).some((m) => (candidate.primaryMuscles ?? []).includes(m));
+
+/**
  * @returns {Array<{exercise: object, score: number}>} ranked ascending
  */
 export function rankSubstitutes(target, catalog, weights, profile, limit = 5) {
   return catalog
     .map((c) => ({ exercise: c, score: score(target, c, weights, profile) }))
     .filter((r) => Number.isFinite(r.score))
+    // Fewer results beats padding with something that trains a different muscle.
+    .filter((r) => sharesPrimaryMuscle(target, r.exercise))
     .sort((a, b) => a.score - b.score || a.exercise.id.localeCompare(b.exercise.id))
     .slice(0, limit);
 }

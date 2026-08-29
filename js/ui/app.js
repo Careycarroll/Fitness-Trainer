@@ -24,7 +24,7 @@
  */
 import { generate, CoverageError } from '../engine/index.js';
 import { rankSubstitutes } from '../engine/substitution.js';
-import { allSetGroups, setGroupAt } from '../engine/blocks.js';
+import { allSetGroups, setGroupAt, makeSetGroup, sessionFatigue } from '../engine/blocks.js';
 import { volumeConcerns } from '../engine/volume.js';
 import * as db from '../storage/db.js';
 import {
@@ -1340,7 +1340,23 @@ function toggleSwapList(out, button, w, s, b, g) {
   if (existing) { existing.remove(); return; }
 
   const group = setGroupAt(current.weeks[w].sessions[s], b, g);
-  const alternatives = rankSubstitutes(group.exerciseId, currentDefs, currentRequest, 5);
+
+  // #52. This call had EVERY argument wrong against
+  //     rankSubstitutes(target, catalog, weights, profile, limit)
+  // It passed a slug where an exercise object goes and the defs OBJECT where an
+  // array goes, so `catalog.map is not a function` threw before scoring ran.
+  // Clicking Swap has never once returned a substitute. The engine was fine —
+  // substitution.test.js calls it correctly and passes. Both sides were tested;
+  // the wire between them was not.
+  const target = currentDefs.exercises.find((x) => x.id === group.exerciseId);
+  if (!target) return;
+  // A missing profile is not fatal: score() guards `if (profile && ...)`, so an
+  // unresolved profile degrades to ranking by similarity alone rather than
+  // throwing inside a click handler.
+  const profile = currentDefs.equipment.find((p) => p.id === currentRequest?.equipmentProfile) ?? null;
+  const alternatives = rankSubstitutes(
+    target, currentDefs.exercises, currentDefs.substitutionWeights, profile, 5
+  );
   const list = document.createElement('ul');
   list.className = 'swap-list';
   list.innerHTML = alternatives.length
@@ -1350,22 +1366,74 @@ function toggleSwapList(out, button, w, s, b, g) {
                   data-w="${w}" data-s="${s}" data-b="${b}" data-g="${g}">
             ${esc(x.exercise.name)}
           </button>
-          <span class="meta">${formatNumber(x.score)}</span>
+          <span class="meta">${formatNumber(x.score)}${
+            x.exercise.fatigueCost > target.fatigueCost
+              ? ` · +${x.exercise.fatigueCost - target.fatigueCost} fatigue`
+              : ''
+          }</span>
         </li>`).join('')
     : '<li class="note">No compatible substitutes found.</li>';
   button.closest('.setgroup')?.append(list);
 }
 
-function replaceSetGroup(w, s, b, g, replacementId) {
-  const group = setGroupAt(current.weeks[w].sessions[s], b, g);
+/**
+ * Swap one exercise for another, keeping the prescription — #52.
+ *
+ * The previous version assigned FOUR fields: exerciseId, name, fatigueCost,
+ * warmupRequired. `pattern`, `equipment`, `primaryMuscles`, `secondaryMuscles`,
+ * `stabilises`, `exerciseFamily` and `unilateral` kept the OLD exercise's
+ * values.
+ *
+ * SPEC.md: "SetGroups carry catalog identity so consumers never re-join." So a
+ * half-replaced setGroup lies to every one of them — weeklyVolume() would count
+ * the muscles of the exercise that is no longer there, and the FitNotes
+ * exporter's `anchorable` gate would read the old equipment and price a
+ * dumbbell press as a barbell lift.
+ *
+ * It never actually fired, because the call site above always threw, so no swap
+ * ever completed. Fixing that call without this would have turned a dead button
+ * into a data-corrupting one.
+ *
+ * Identity is now rebuilt by makeSetGroup rather than assigned here, which is
+ * what ADR-027 put a constructor in blocks.js for: the next field added to a
+ * setGroup lands in one place instead of needing a second edit here. The
+ * prescription survives by destructuring the identity keys off and passing the
+ * remainder through, so sets, reps, intensityOf1RM, rir, restSeconds, role and
+ * loadNote are all carried without being enumerated.
+ *
+ * `fatigueUsed` is recomputed. It is written once at generation and the session
+ * header renders `session.fatigueUsed ?? ...`, so the fallback never runs and
+ * the figure would go stale the moment a swap landed. Recomputing makes the
+ * EXISTING line the warning: a costlier swap reads "24 / 22 fatigue" and the
+ * athlete decides. Reported, never enforced.
+ *
+ * Exported so the field copy can be pinned by a test — the same practice
+ * ui-render.test.js already uses for renderSession and sessionNoticeHtml.
+ */
+export function replaceSetGroup(w, s, b, g, replacementId) {
+  const session = current.weeks[w].sessions[s];
+  const group = setGroupAt(session, b, g);
   const replacement = currentDefs.exercises.find((x) => x.id === replacementId);
-  if (!replacement) return;
+  if (!group || !replacement) return;
+
   const original = group.swappedFrom ?? { id: group.exerciseId, name: group.name };
-  group.exerciseId = replacement.id;
-  group.name = replacement.name;
-  group.fatigueCost = replacement.fatigueCost;
-  group.warmupRequired = replacement.warmupRequired;
-  group.swappedFrom = original;
+
+  // Identity off, prescription through. Listed explicitly so a field ADDED to
+  // makeSetGroup and forgotten here shows up as an unknown key rather than
+  // being silently carried over from the exercise being replaced.
+  const {
+    exerciseId, name, pattern, equipment, primaryMuscles, secondaryMuscles,
+    stabilises, exerciseFamily, fatigueCost, unilateral, warmupRequired,
+    ...prescription
+  } = group;
+
+  const next = makeSetGroup(replacement, prescription);
+  next.swappedFrom = original;
+  session.blocks[b].setGroups[g] = next;
+
+  // The header reads this. Without recomputing it, a swap to a costlier row
+  // leaves the fatigue line reporting the figure the GENERATOR produced.
+  session.fatigueUsed = sessionFatigue(session);
 }
 
 /**
