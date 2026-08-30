@@ -96,6 +96,16 @@
       ],
       "source": "free-exercise-db"
     },
+    "battle-ropes": {
+      "steps": [
+        "Anchor the rope and take one end in each hand, standing far enough back that there is slight slack.",
+        "Set your feet shoulder-width apart and drop into a quarter squat with your chest up.",
+        "Drive alternating waves by moving your arms rapidly up and down, keeping your hips loaded and your trunk braced.",
+        "Keep the waves reaching the anchor. When they die out short of it, your working set has ended.",
+        "Work for the prescribed time or intervals."
+      ],
+      "source": "authored"
+    },
     "bench-dip": {
       "steps": [
         "For this exercise you will need to place a bench behind your back. With the bench perpendicular to your body, and while looking away from it, hold on to the bench on its edge with the hands fully extended, separated at shoulder width. The legs will be extended forward, bent at the waist and perpendicular to your torso. This will be your starting position.",
@@ -121,6 +131,16 @@
         "Keeping the weight on your heels and pushing your feet and knees out, drive upward off of the box as you lead the movement with your head. Continue upward, maintaining tightness head to toe."
       ],
       "source": "free-exercise-db"
+    },
+    "broad-jump": {
+      "steps": [
+        "Stand with feet hip-width apart behind a marked line.",
+        "Hinge at the hips, swing your arms back, and load into a quarter squat.",
+        "Jump forward as far as you can, driving your arms forward and extending fully through hips, knees and ankles.",
+        "Land on both feet with soft knees, absorbing the landing rather than sticking it rigidly.",
+        "Reset completely between reps. This is a power movement — quality over quantity, and stop the set when distance drops off."
+      ],
+      "source": "authored"
     },
     "cable-crunch": {
       "steps": [
@@ -164,6 +184,16 @@
         "Hold for a second at the contracted position and repeat for the recommended amount of repetitions."
       ],
       "source": "free-exercise-db"
+    },
+    "captains-chair-knee-raise": {
+      "steps": [
+        "Step into the captain's chair and support yourself on your forearms with your back flat against the pad.",
+        "Let your legs hang straight down, shoulders pressed down away from your ears.",
+        "Raise your knees toward your chest by curling your pelvis up, not by simply lifting your thighs.",
+        "Pause at the top, then lower slowly under control until your legs hang straight again.",
+        "No swinging. If you need momentum to start the rep, reduce the range rather than kipping into it."
+      ],
+      "source": "authored"
     },
     "chest-dip": {
       "steps": [
@@ -226,6 +256,26 @@
       ],
       "source": "free-exercise-db"
     },
+    "cycling-outdoor": {
+      "steps": [
+        "Set your saddle height so your knee is almost straight at the bottom of the pedal stroke, with a slight bend remaining.",
+        "Warm up for five minutes at an easy spin before any prescribed intensity.",
+        "Hold a cadence around 80-100 rpm, changing gear to keep the cadence steady rather than grinding.",
+        "Ride at the prescribed effort or heart rate for the prescribed time or distance.",
+        "Spin easy for a few minutes to finish."
+      ],
+      "source": "authored"
+    },
+    "cycling-stationary-bike": {
+      "steps": [
+        "Set the saddle height so your knee retains a slight bend at the bottom of the stroke.",
+        "Spin easy for five minutes to warm up.",
+        "Set the resistance so you can hold 80-100 rpm at the prescribed effort. Resistance and cadence together set the intensity — neither alone does.",
+        "Hold the prescribed effort for the prescribed time or intervals.",
+        "Reduce resistance and spin easy to finish."
+      ],
+      "source": "authored"
+    },
     "dead-bug": {
       "steps": [
         "Begin lying on your back with your hands extended above you toward the ceiling.",
@@ -237,6 +287,16 @@
         "Repeat on the opposite side, alternating until the set is complete."
       ],
       "source": "free-exercise-db"
+    },
+    "dead-hang": {
+      "steps": [
+        "Grip a pull-up bar at roughly shoulder width with an overhand grip.",
+        "Hang with your arms fully straight and your feet clear of the floor.",
+        "Let your shoulders relax up toward your ears — this is a passive hang, and the decompression is the point.",
+        "Hold for the prescribed time, breathing normally.",
+        "Step down rather than dropping, especially at the end of a long hold when your grip is spent."
+      ],
+      "source": "authored"
     },
     "drag-curl": {
       "steps": [
@@ -336,6 +396,36 @@
       ],
       "source": "free-exercise-db"
     },
+    "farmer-hold": {
+      "steps": [
+        "Set a heavy dumbbell or kettlebell on the floor at each side.",
+        "Hinge, grip both, and stand up by driving through your legs with a flat back.",
+        "Stand tall and completely still with shoulders back and down, arms hanging straight.",
+        "Hold for the prescribed time. There is no walking — this is a static grip and trunk hold.",
+        "Set the weights down under control when your grip fails, rather than dropping them from height."
+      ],
+      "source": "authored"
+    },
+    "frog-pump": {
+      "steps": [
+        "Lie on your back with the soles of your feet pressed together and your knees dropped out to the sides.",
+        "Pull your heels in toward your hips until you feel the position load the glutes rather than the hamstrings.",
+        "Drive your hips up by squeezing your glutes, keeping the soles together throughout.",
+        "Pause briefly at the top with a hard squeeze, then lower under control without resting your hips fully on the floor.",
+        "Reps are high by design — this is a pump movement, not a strength movement."
+      ],
+      "source": "authored"
+    },
+    "front-rack-carry": {
+      "steps": [
+        "Clean two kettlebells or dumbbells to your shoulders, or set a barbell across your front deltoids in a front rack position.",
+        "Keep your elbows up and forward, wrists stacked, and the weight resting on your shoulders rather than held by your arms.",
+        "Brace hard. The load sits in front of you, so your trunk is what keeps you upright.",
+        "Walk with controlled steps for the prescribed distance or time.",
+        "Breathe shallowly — the rack position restricts the ribcage, and that restriction is part of the training effect."
+      ],
+      "source": "authored"
+    },
     "glute-ham-raise": {
       "steps": [
         "Begin by adjusting the equipment to fit your body. Place your feet against the footplate in between the rollers as you lie facedown. Your knees should be just behind the pad.",
@@ -364,6 +454,16 @@
         "Repeat for the recommended amount of repetitions."
       ],
       "source": "free-exercise-db"
+    },
+    "hollow-body-hold": {
+      "steps": [
+        "Lie on your back and press your lower back flat into the floor. That contact is the position — everything else is built around keeping it.",
+        "Lift your shoulder blades off the floor and extend your arms overhead beside your ears.",
+        "Lift both legs a few inches off the floor with knees straight and toes pointed.",
+        "Hold, keeping the lower back pressed down throughout.",
+        "If your back arches off the floor, bend your knees or bring your arms to your sides until you can hold the flat position."
+      ],
+      "source": "authored"
     },
     "incline-dumbbell-press": {
       "steps": [
@@ -397,6 +497,26 @@
       ],
       "source": "free-exercise-db"
     },
+    "jump-rope": {
+      "steps": [
+        "Set the rope length by standing on the middle — the handles should reach roughly to your armpits.",
+        "Hold the handles at hip height, elbows close to your sides.",
+        "Turn the rope with your wrists, not your arms or shoulders.",
+        "Jump just high enough to clear the rope, landing softly on the balls of your feet with knees slightly bent.",
+        "Work for the prescribed time or reps, resting whenever you trip rather than rushing to restart."
+      ],
+      "source": "authored"
+    },
+    "l-sit": {
+      "steps": [
+        "Sit on the floor between parallettes, or on the floor with hands planted beside your hips.",
+        "Press down hard through your hands and lock your elbows, pushing your shoulders down away from your ears.",
+        "Lift your hips clear of the floor, then extend both legs straight out in front so your body forms an L.",
+        "Hold with legs straight and toes pointed for the prescribed time.",
+        "If you cannot clear the floor with straight legs, tuck your knees and hold that instead — it is the same skill at a shorter lever."
+      ],
+      "source": "authored"
+    },
     "leg-extension": {
       "steps": [
         "For this exercise you will need to use a leg extension machine. First choose your weight and sit on the machine with your legs under the pad (feet pointed forward) and the hands holding the side bars. This will be your starting position. Tip: You will need to adjust the pad so that it falls on top of your lower leg (just above your feet). Also, make sure that your legs form a 90-degree angle between the lower and upper leg. If the angle is less than 90-degrees then that means the knee is over the toes which in turn creates undue stress at the knee joint. If the machine is designed that way, either look for another machine or just make sure that when you start executing the exercise you stop going down once you hit the 90-degree angle.",
@@ -415,6 +535,26 @@
         "Repeat for the recommended amount of repetitions and ensure to lock the safety pins properly once you are done. You do not want that platform falling on you fully loaded."
       ],
       "source": "free-exercise-db"
+    },
+    "loaded-cossack-squat": {
+      "steps": [
+        "Stand with a wide stance, toes pointing slightly out, holding a kettlebell or dumbbell at your chest as a counterweight.",
+        "Shift your weight to one side and sit down into that hip, letting that knee bend while the opposite leg straightens.",
+        "Let the toes of the straight leg turn up as you descend. Keep the heel of the working leg planted.",
+        "Descend as far as your hips allow while keeping your chest up, then push back to the centre through the working heel.",
+        "Alternate sides, or complete all reps on one side, as prescribed."
+      ],
+      "source": "authored"
+    },
+    "long-lever-plank": {
+      "steps": [
+        "Set up in a forearm plank, then walk your elbows forward until they are ahead of your shoulders rather than under them.",
+        "The further forward your elbows, the harder the position. Start with a few inches.",
+        "Squeeze your glutes and tuck your pelvis so your lower back flattens rather than sags.",
+        "Hold for the prescribed time, breathing shallowly but continuously.",
+        "End the set when your hips start to drop. A sagging long-lever plank loads the lower back instead of the abs."
+      ],
+      "source": "authored"
     },
     "lying-leg-curl": {
       "steps": [
@@ -453,6 +593,16 @@
       ],
       "source": "free-exercise-db"
     },
+    "neck-extension": {
+      "steps": [
+        "Lie face down on a bench with your head and neck extending past the end, or kneel and brace your hands on your thighs.",
+        "If loading, hold a light plate against the back of your head with both hands, or wear a neck harness.",
+        "Lower your chin toward your chest slowly and under full control.",
+        "Extend your neck back to a neutral position — looking forward, not craning upward.",
+        "Use light load and slow tempo. This is the one place where chasing load is not worth what it risks."
+      ],
+      "source": "authored"
+    },
     "overhead-cable-curl": {
       "steps": [
         "To begin, set a weight that is comfortable on each side of the pulley machine. Note: Make sure that the amount of weight selected is the same on each side.",
@@ -464,6 +614,16 @@
       ],
       "source": "free-exercise-db"
     },
+    "overhead-carry": {
+      "steps": [
+        "Press a kettlebell, dumbbell or barbell to full lockout overhead.",
+        "Lock the elbow completely and push your shoulder up into the weight, biceps beside your ear.",
+        "Brace your trunk and keep your ribs down — do not let your lower back arch to get the weight overhead.",
+        "Walk with deliberate steps for the prescribed distance or time, eyes forward.",
+        "Lower under control at the end. If the elbow bends mid-carry, the set is done."
+      ],
+      "source": "authored"
+    },
     "pallof-press": {
       "steps": [
         "Connect a standard handle to a tower, and—if possible—position the cable to shoulder height. If not, a low pulley will suffice.",
@@ -474,6 +634,16 @@
         "At the conclusion of the set, repeat facing the other direction."
       ],
       "source": "free-exercise-db"
+    },
+    "pec-deck": {
+      "steps": [
+        "Set the seat so the handles sit at roughly chest height when you are seated with your back flat against the pad.",
+        "Take a handle in each hand with your elbows slightly bent and held at that angle throughout.",
+        "Bring the handles together in front of your chest by squeezing your chest, not by pulling with your arms.",
+        "Pause with the handles together and hold the contraction for a beat.",
+        "Return under control until you feel a stretch across the chest, stopping before your shoulders roll forward."
+      ],
+      "source": "authored"
     },
     "plank": {
       "steps": [
@@ -560,6 +730,26 @@
       ],
       "source": "free-exercise-db"
     },
+    "running-outdoor": {
+      "steps": [
+        "Start with five minutes of easy jogging before any prescribed pace work.",
+        "Run tall with a slight forward lean from the ankles, not the waist.",
+        "Aim for a cadence around 170-180 steps per minute — shorter, quicker steps rather than reaching out in front of you.",
+        "Hold the prescribed pace or effort for the prescribed time or distance.",
+        "Finish with easy jogging or walking rather than stopping abruptly."
+      ],
+      "source": "authored"
+    },
+    "safety-bar-squat": {
+      "steps": [
+        "Set the safety squat bar in a rack at upper-chest height. The cambered weight hangs in front, so it will feel heavier than a straight bar at the same load.",
+        "Step under the bar so the yoke sits across your traps and the pads rest on your shoulders. Grip the handles in front of you, or hold the rack uprights if you want a stricter upright position.",
+        "Unrack, step back, and set your stance at roughly shoulder width.",
+        "Brace, then descend under control until your hip crease passes below the top of your knee, or as deep as you can hold position.",
+        "Drive up through mid-foot. The bar's forward camber pulls you into flexion, so keep your chest actively up throughout — that resistance is the point of the tool."
+      ],
+      "source": "authored"
+    },
     "seated-calf-raise": {
       "steps": [
         "Sit on the machine and place your toes on the lower portion of the platform provided with the heels extending off. Choose the toe positioning of your choice (forward, in, or out) as per the beginning of this chapter.",
@@ -592,6 +782,26 @@
       ],
       "source": "free-exercise-db"
     },
+    "shadow-boxing": {
+      "steps": [
+        "Stand in a boxing stance: lead foot forward, weight balanced, hands up at cheek height.",
+        "Move continuously — step, pivot, and change angles rather than standing square and punching.",
+        "Throw combinations at the prescribed intensity, rotating through the hips and shoulders on each strike.",
+        "Return your hands to your guard after every punch.",
+        "Work for the prescribed rounds or time, keeping the movement continuous rather than punching in bursts and resting between."
+      ],
+      "source": "authored"
+    },
+    "short-lever-copenhagen-plank": {
+      "steps": [
+        "Lie on your side with your forearm on the floor directly under your shoulder.",
+        "Place the KNEE of your top leg on a bench, rather than the foot. The shorter lever is what makes this the regression.",
+        "Let the bottom leg hang below the bench, relaxed.",
+        "Press down through the top knee and lift your hips until your body forms a straight line from shoulder to hip.",
+        "Hold for the prescribed time. The work is in the adductor of the top leg — if you feel it only in the shoulder, your hips have dropped."
+      ],
+      "source": "authored"
+    },
     "single-arm-push-up": {
       "steps": [
         "Begin laying prone on the ground. Move yourself into a position supporting your weight on your toes and one arm. Your working arm should be placed directly under the shoulder, fully extended. Your legs should be extended, and for this movement you may need a wider base, placing your feet further apart than in a normal push-up.",
@@ -600,6 +810,26 @@
         "Descend slowly, and reverse direction be extending the arm to return to the starting position."
       ],
       "source": "free-exercise-db"
+    },
+    "ski-erg": {
+      "steps": [
+        "Stand facing the machine and grip both handles overhead with arms extended.",
+        "Rise onto the balls of your feet and load your hips back slightly.",
+        "Pull down explosively by hinging at the hips and driving both arms down past your thighs — the power comes from the hinge, not the arms.",
+        "Finish with hips extended and hands past your hips, then rise and return the handles overhead under control.",
+        "Hold the prescribed stroke rate or effort for the prescribed time or distance."
+      ],
+      "source": "authored"
+    },
+    "slant-board-squat": {
+      "steps": [
+        "Stand on a slant board with your heels elevated and toes pointing slightly out. Feet about hip to shoulder width.",
+        "Hold a dumbbell or kettlebell at your chest if loading the movement.",
+        "Descend slowly and let your knees travel forward over your toes. This is deliberate: the elevated heel is what allows the knee-dominant range this movement exists for.",
+        "Go as deep as you can while keeping your torso upright and your heels in contact with the board.",
+        "Drive back up without letting your hips shoot back — if they do, the movement has become a squat and lost its quad emphasis."
+      ],
+      "source": "authored"
     },
     "snatch": {
       "steps": [
@@ -631,6 +861,16 @@
       ],
       "source": "free-exercise-db"
     },
+    "stair-climber": {
+      "steps": [
+        "Step onto the machine and set the speed to the prescribed effort.",
+        "Stand tall and let your hands rest lightly on the rails for balance only.",
+        "Do not lean your weight onto the handrails or lock your arms against them — doing so removes most of the work.",
+        "Take full steps, driving through the whole foot rather than bouncing on the toes.",
+        "Hold the prescribed effort for the prescribed time."
+      ],
+      "source": "authored"
+    },
     "standing-calf-raise": {
       "steps": [
         "Adjust the padded lever of the calf raise machine to fit your height.",
@@ -640,6 +880,16 @@
         "Repeat for the recommended amount of repetitions."
       ],
       "source": "free-exercise-db"
+    },
+    "step-down": {
+      "steps": [
+        "Stand on a box or step with one foot, the other leg hanging free off the side.",
+        "Keeping your weight on the standing leg, lower yourself slowly by bending that knee until the heel of the free foot lightly touches the floor.",
+        "Take three seconds on the way down. The eccentric is the whole point; dropping quickly wastes the set.",
+        "Tap the floor without transferring weight onto it, then drive back up through the standing leg.",
+        "Keep your knee tracking over your second toe and your pelvis level — if the free hip drops, lower the box."
+      ],
+      "source": "authored"
     },
     "straight-arm-pulldown": {
       "steps": [
@@ -651,6 +901,16 @@
       ],
       "source": "free-exercise-db"
     },
+    "suitcase-carry": {
+      "steps": [
+        "Set a single heavy dumbbell or kettlebell on the floor at one side.",
+        "Hinge and pick it up with one hand, standing tall with the weight hanging at arm's length like a suitcase.",
+        "Keep both shoulders level and square. The entire point is resisting the sideways pull, so do not lean away from the load.",
+        "Walk for the prescribed distance or time with the free arm relaxed at your side.",
+        "Set it down, switch hands, and repeat for the same distance."
+      ],
+      "source": "authored"
+    },
     "sumo-deadlift": {
       "steps": [
         "Begin with a bar loaded on the ground. Approach the bar so that the bar intersects the middle of the feet. The feet should be set very wide, near the collars. Bend at the hips to grip the bar. The arms should be directly below the shoulders, inside the legs, and you can use a pronated grip, a mixed grip, or hook grip. Relax the shoulders, which in effect lengthens your arms.",
@@ -659,6 +919,16 @@
         "Return the weight to the ground by bending at the hips and controlling the weight on the way down."
       ],
       "source": "free-exercise-db"
+    },
+    "terminal-knee-extension": {
+      "steps": [
+        "Anchor a band at knee height and step into it so it loops behind the crease of one knee, pulling forward.",
+        "Step back until the band is taut, with the working leg slightly bent and the foot flat on the floor.",
+        "Straighten the knee against the band's pull, squeezing the quad hard at full extension.",
+        "Hold the locked position for a beat, then let the knee bend back under control.",
+        "Only the knee moves. If your hip is travelling backward, the band is too heavy."
+      ],
+      "source": "authored"
     },
     "trap-bar-deadlift": {
       "steps": [
@@ -669,6 +939,16 @@
       ],
       "source": "free-exercise-db"
     },
+    "trap-bar-farmers-carry": {
+      "steps": [
+        "Load a trap bar and stand inside it with feet hip-width apart.",
+        "Hinge, grip the handles, and stand up by driving through your legs with a flat back.",
+        "Stand tall with shoulders pulled back and down, arms hanging straight.",
+        "Walk with short, controlled steps for the prescribed distance or time, keeping your ribs down and your torso from swaying.",
+        "Set the bar down by hinging, not by rounding your back. The end of a heavy carry is where form goes."
+      ],
+      "source": "authored"
+    },
     "triceps-dip": {
       "steps": [
         "To get into the starting position, hold your body at arm's length with your arms nearly locked above the bars.",
@@ -677,6 +957,16 @@
         "Repeat the movement for the prescribed amount of repetitions."
       ],
       "source": "free-exercise-db"
+    },
+    "wall-sit": {
+      "steps": [
+        "Stand with your back flat against a wall and walk your feet forward about two feet.",
+        "Slide down the wall until your thighs are parallel to the floor and your knees are stacked over your ankles at roughly 90 degrees.",
+        "Keep your whole back in contact with the wall, arms relaxed at your sides or folded across your chest.",
+        "Hold for the prescribed time, breathing normally rather than bracing against a held breath.",
+        "Stand by pressing through your heels. Do not slide further down as you fatigue — shortening the range is ending the set early."
+      ],
+      "source": "authored"
     },
     "weighted-bench-dip": {
       "steps": [
@@ -687,6 +977,16 @@
         "Repeat for the recommended amount of repetitions."
       ],
       "source": "free-exercise-db"
+    },
+    "zercher-carry": {
+      "steps": [
+        "Set a barbell in a rack at about waist height, or deadlift it to your thighs and lower into position.",
+        "Hook both elbows under the bar so it rests in the crook of your arms, then clasp your hands together in front of your chest.",
+        "Stand tall with the bar held tight to your body and your chest up.",
+        "Walk for the prescribed distance or time, keeping your torso upright against the bar's forward pull.",
+        "It will be uncomfortable on the arms. Use a towel or sleeves if needed, but do not let the bar slide down toward your wrists."
+      ],
+      "source": "authored"
     }
   }
 }
