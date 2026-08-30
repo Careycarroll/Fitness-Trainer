@@ -1,0 +1,7 @@
+<!-- source: free-exercise-db -->
+
+# Barbell Hip Thrust
+
+1. Begin seated on the ground with a bench directly behind you. Have a loaded barbell over your legs. Using a fat bar or having a pad on the bar can greatly reduce the discomfort caused by this exercise.
+2. Roll the bar so that it is directly above your hips, and lean back against the bench so that your shoulder blades are near the top of it.
+3. Begin the movement by driving through your feet, extending your hips vertically through the bar. Your weight should be supported by your shoulder blades and your feet. Extend as far as possible, then reverse the motion to return to the starting position.
