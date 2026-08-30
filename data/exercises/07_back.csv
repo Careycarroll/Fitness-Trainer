@@ -1,41 +1,41 @@
-name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,emphasis,joint_load,skill_gate,stabilises
-Pull-Up,pull-up,pull_up,strength,pull_v,lats,biceps|mid_back|forearms,pullup_bar,TRUE,3,2,4,10,120,FALSE,reps_only,wide_grip,shoulder,,
-Weighted Pull-Up,weighted-pull-up,pull_up,strength,pull_v,lats,biceps|mid_back,pullup_bar|dip_belt,TRUE,4,3,3,8,180,FALSE,weight_reps,wide_grip,shoulder|elbow,,
-Chin-Up,chin-up,pull_up,strength,pull_v,lats|biceps,mid_back,pullup_bar,TRUE,3,2,5,12,120,FALSE,reps_only,close_grip,elbow,,abs
-Neutral-Grip Pull-Up,neutral-grip-pull-up,pull_up,strength,pull_v,lats,biceps|mid_back,pullup_bar,TRUE,3,2,5,12,120,FALSE,reps_only,,,,
-Band-Assisted Pull-Up,band-assisted-pull-up,pull_up,strength,pull_v,lats,biceps|mid_back,pullup_bar|bands,TRUE,2,2,6,15,90,FALSE,reps_only,,,,
-Lat Pulldown,lat-pulldown,pulldown,strength,pull_v,lats,biceps|mid_back,lat_pulldown,TRUE,2,1,8,15,90,FALSE,weight_reps,wide_grip,,,
-Close-Grip Lat Pulldown,close-grip-lat-pulldown,pulldown,strength,pull_v,lats,biceps|mid_back,lat_pulldown,TRUE,2,1,8,15,90,FALSE,weight_reps,close_grip,,,
-Single-Arm Lat Pulldown,single-arm-lat-pulldown,pulldown,strength,pull_v,lats,biceps|obliques,lat_pulldown,TRUE,1,1,10,15,60,TRUE,weight_reps,stretch_bias,,,
-Band Lat Pulldown,band-lat-pulldown,pulldown,strength,pull_v,lats,biceps|mid_back,bands,TRUE,1,1,12,20,60,FALSE,reps_only,,,,
-Straight-Arm Pulldown,straight-arm-pulldown,pullover,strength,pull_v,lats,triceps,cable,FALSE,1,2,10,20,60,FALSE,weight_reps,stretch_bias,shoulder,,abs
-Dumbbell Pullover,dumbbell-pullover,pullover,strength,pull_v,lats,chest|triceps,dumbbell|bench,FALSE,2,2,10,15,90,FALSE,weight_reps,stretch_bias,shoulder,,
-Barbell Row,barbell-row,barbell_row,strength,pull_h,lats|mid_back,biceps|rear_delts,barbell,TRUE,4,3,6,10,150,FALSE,weight_reps,,lower_back,,erectors
-Pendlay Row,pendlay-row,barbell_row,strength,pull_h,mid_back|lats,biceps,barbell,TRUE,4,4,4,8,150,FALSE,weight_reps,,lower_back,,erectors
-Underhand Barbell Row,underhand-barbell-row,barbell_row,strength,pull_h,lats|mid_back,biceps,barbell,TRUE,3,3,6,12,150,FALSE,weight_reps,close_grip,lower_back|elbow,,erectors
-T-Bar Row,t-bar-row,barbell_row,strength,pull_h,mid_back|lats,biceps|rear_delts,barbell|landmine,TRUE,3,2,8,12,120,FALSE,weight_reps,,lower_back,,erectors
-Landmine Row,landmine-row,barbell_row,strength,pull_h,lats|mid_back,biceps|rear_delts,barbell|landmine,TRUE,3,2,8,12,120,TRUE,weight_reps,stretch_bias,lower_back,,
-Seal Row,seal-row,barbell_row,strength,pull_h,mid_back|lats,biceps|rear_delts,barbell|bench,TRUE,2,1,8,15,90,FALSE,weight_reps,,,,
-Single-Arm Dumbbell Row,single-arm-dumbbell-row,dumbbell_row,strength,pull_h,lats|mid_back,biceps|rear_delts,dumbbell|bench,TRUE,2,1,8,15,90,TRUE,weight_reps,stretch_bias,,,
-Chest-Supported Dumbbell Row,chest-supported-dumbbell-row,dumbbell_row,strength,pull_h,mid_back|lats,biceps|rear_delts,dumbbell|bench,TRUE,2,1,8,15,90,FALSE,weight_reps,,,,
-Chest-Supported Dumbbell High Row,chest-supported-dumbbell-high-row,dumbbell_row,strength,pull_h,upper_back|lats,rear_delts|biceps,dumbbell|bench,TRUE,2,1,10,15,90,FALSE,weight_reps,,,,
-Bent-Over Dumbbell Row,bent-over-dumbbell-row,dumbbell_row,strength,pull_h,mid_back|lats,biceps|rear_delts,dumbbell,TRUE,3,2,8,15,120,FALSE,weight_reps,,lower_back,,erectors
-Seated Cable Row,seated-cable-row,cable_row,strength,pull_h,mid_back|lats,biceps|rear_delts,seated_row,TRUE,2,1,8,15,90,FALSE,weight_reps,,,,
-Single-Arm Cable Row,single-arm-cable-row,cable_row,strength,pull_h,lats|mid_back,biceps|obliques,seated_row,TRUE,1,1,10,15,60,TRUE,weight_reps,stretch_bias,,,
-Cable High Row,cable-high-row,cable_row,strength,pull_h,upper_back|lats,rear_delts|biceps,cable,TRUE,2,1,10,15,90,FALSE,weight_reps,,,,
-Band High Row,band-high-row,cable_row,strength,pull_h,upper_back|lats,rear_delts|biceps,bands,TRUE,1,1,12,20,60,FALSE,reps_only,,,,
-Band Seated Row,band-seated-row,cable_row,strength,pull_h,mid_back|lats,biceps|rear_delts,bands,TRUE,1,1,12,20,60,FALSE,reps_only,,,,
-Machine Row,machine-row,machine_row,strength,pull_h,mid_back|lats,biceps|rear_delts,seated_row,TRUE,2,1,8,15,90,FALSE,weight_reps,,,,
-Chest-Supported High Row,chest-supported-high-row,machine_row,strength,pull_h,upper_back|lats,rear_delts|biceps,chest_supported_row,TRUE,2,1,10,15,90,FALSE,weight_reps,,,,
-Inverted Row,inverted-row,inverted_row,strength,pull_h,mid_back|lats,biceps|rear_delts,barbell|rack,TRUE,2,1,8,20,90,FALSE,reps_only,,,,abs
-Feet-Elevated Inverted Row,feet-elevated-inverted-row,inverted_row,strength,pull_h,mid_back|lats,biceps|rear_delts,barbell|rack|box,TRUE,2,2,6,15,90,FALSE,reps_only,,,,abs
-Suspension Row,suspension-row,inverted_row,strength,pull_h,mid_back|lats,biceps|rear_delts,suspension_trainer,TRUE,2,2,8,15,90,FALSE,reps_only,,,,abs
-Barbell Shrug,barbell-shrug,shrug,strength,isolation,traps,forearms|upper_back,barbell,FALSE,2,1,8,15,90,FALSE,weight_reps,shortened_bias,neck,,
-Dumbbell Shrug,dumbbell-shrug,shrug,strength,isolation,traps,forearms|upper_back,dumbbell,FALSE,2,1,10,20,60,FALSE,weight_reps,shortened_bias,neck,,
-Trap Bar Shrug,trap-bar-shrug,shrug,strength,isolation,traps,forearms|upper_back,trap_bar,FALSE,2,1,8,15,90,FALSE,weight_reps,shortened_bias,neck,,
-Band Shrug,band-shrug,shrug,strength,isolation,traps,forearms|upper_back,bands,FALSE,1,1,15,25,45,FALSE,reps_only,shortened_bias,,,
-Back Extension,back-extension,back_extension,strength,hinge,erectors|glutes,hamstrings,back_extension_bench,FALSE,2,1,10,20,90,FALSE,weight_reps,shortened_bias,lower_back,,
-Superman,superman,back_extension,strength,isolation,erectors,glutes,bodyweight,FALSE,1,1,12,25,45,FALSE,reps_only,shortened_bias,,,
-Ring Row,ring-row,inverted_row,strength,pull_h,mid_back|lats,biceps|rear_delts,rings,TRUE,2,2,8,15,90,FALSE,reps_only,,,,abs
-Ring Pull-Up,ring-pull-up,pull_up,strength,pull_v,lats,biceps|mid_back|forearms,rings,TRUE,3,3,4,10,120,FALSE,reps_only,wide_grip,shoulder,,
-Ring Chin-Up,ring-chin-up,pull_up,strength,pull_v,lats|biceps,mid_back,rings,TRUE,3,3,5,12,120,FALSE,reps_only,close_grip,shoulder,,abs
+name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,rom_bias,angle,grip,head_bias,joint_load,skill_gate,stabilises
+Pull-Up,pull-up,pull_up,strength,pull_v,lats,biceps|mid_back|forearms,pullup_bar,TRUE,3,2,4,10,120,FALSE,reps_only,,,wide,,shoulder,,
+Weighted Pull-Up,weighted-pull-up,pull_up,strength,pull_v,lats,biceps|mid_back,pullup_bar|dip_belt,TRUE,4,3,3,8,180,FALSE,weight_reps,,,wide,,shoulder|elbow,,
+Chin-Up,chin-up,pull_up,strength,pull_v,lats|biceps,mid_back,pullup_bar,TRUE,3,2,5,12,120,FALSE,reps_only,,,close,,elbow,,abs
+Neutral-Grip Pull-Up,neutral-grip-pull-up,pull_up,strength,pull_v,lats,biceps|mid_back,pullup_bar,TRUE,3,2,5,12,120,FALSE,reps_only,,,,,,,
+Band-Assisted Pull-Up,band-assisted-pull-up,pull_up,strength,pull_v,lats,biceps|mid_back,pullup_bar|bands,TRUE,2,2,6,15,90,FALSE,reps_only,,,,,,,
+Lat Pulldown,lat-pulldown,pulldown,strength,pull_v,lats,biceps|mid_back,lat_pulldown,TRUE,2,1,8,15,90,FALSE,weight_reps,,,wide,,,,
+Close-Grip Lat Pulldown,close-grip-lat-pulldown,pulldown,strength,pull_v,lats,biceps|mid_back,lat_pulldown,TRUE,2,1,8,15,90,FALSE,weight_reps,,,close,,,,
+Single-Arm Lat Pulldown,single-arm-lat-pulldown,pulldown,strength,pull_v,lats,biceps|obliques,lat_pulldown,TRUE,1,1,10,15,60,TRUE,weight_reps,stretch,,,,,,
+Band Lat Pulldown,band-lat-pulldown,pulldown,strength,pull_v,lats,biceps|mid_back,bands,TRUE,1,1,12,20,60,FALSE,reps_only,,,,,,,
+Straight-Arm Pulldown,straight-arm-pulldown,pullover,strength,pull_v,lats,triceps,cable,FALSE,1,2,10,20,60,FALSE,weight_reps,stretch,,,,shoulder,,abs
+Dumbbell Pullover,dumbbell-pullover,pullover,strength,pull_v,lats,chest|triceps,dumbbell|bench,FALSE,2,2,10,15,90,FALSE,weight_reps,stretch,,,,shoulder,,
+Barbell Row,barbell-row,barbell_row,strength,pull_h,lats|mid_back,biceps|rear_delts,barbell,TRUE,4,3,6,10,150,FALSE,weight_reps,,,,,lower_back,,erectors
+Pendlay Row,pendlay-row,barbell_row,strength,pull_h,mid_back|lats,biceps,barbell,TRUE,4,4,4,8,150,FALSE,weight_reps,,,,,lower_back,,erectors
+Underhand Barbell Row,underhand-barbell-row,barbell_row,strength,pull_h,lats|mid_back,biceps,barbell,TRUE,3,3,6,12,150,FALSE,weight_reps,,,close,,lower_back|elbow,,erectors
+T-Bar Row,t-bar-row,barbell_row,strength,pull_h,mid_back|lats,biceps|rear_delts,barbell|landmine,TRUE,3,2,8,12,120,FALSE,weight_reps,,,,,lower_back,,erectors
+Landmine Row,landmine-row,barbell_row,strength,pull_h,lats|mid_back,biceps|rear_delts,barbell|landmine,TRUE,3,2,8,12,120,TRUE,weight_reps,stretch,,,,lower_back,,
+Seal Row,seal-row,barbell_row,strength,pull_h,mid_back|lats,biceps|rear_delts,barbell|bench,TRUE,2,1,8,15,90,FALSE,weight_reps,,,,,,,
+Single-Arm Dumbbell Row,single-arm-dumbbell-row,dumbbell_row,strength,pull_h,lats|mid_back,biceps|rear_delts,dumbbell|bench,TRUE,2,1,8,15,90,TRUE,weight_reps,stretch,,,,,,
+Chest-Supported Dumbbell Row,chest-supported-dumbbell-row,dumbbell_row,strength,pull_h,mid_back|lats,biceps|rear_delts,dumbbell|bench,TRUE,2,1,8,15,90,FALSE,weight_reps,,,,,,,
+Chest-Supported Dumbbell High Row,chest-supported-dumbbell-high-row,dumbbell_row,strength,pull_h,upper_back|lats,rear_delts|biceps,dumbbell|bench,TRUE,2,1,10,15,90,FALSE,weight_reps,,,,,,,
+Bent-Over Dumbbell Row,bent-over-dumbbell-row,dumbbell_row,strength,pull_h,mid_back|lats,biceps|rear_delts,dumbbell,TRUE,3,2,8,15,120,FALSE,weight_reps,,,,,lower_back,,erectors
+Seated Cable Row,seated-cable-row,cable_row,strength,pull_h,mid_back|lats,biceps|rear_delts,seated_row,TRUE,2,1,8,15,90,FALSE,weight_reps,,,,,,,
+Single-Arm Cable Row,single-arm-cable-row,cable_row,strength,pull_h,lats|mid_back,biceps|obliques,seated_row,TRUE,1,1,10,15,60,TRUE,weight_reps,stretch,,,,,,
+Cable High Row,cable-high-row,cable_row,strength,pull_h,upper_back|lats,rear_delts|biceps,cable,TRUE,2,1,10,15,90,FALSE,weight_reps,,,,,,,
+Band High Row,band-high-row,cable_row,strength,pull_h,upper_back|lats,rear_delts|biceps,bands,TRUE,1,1,12,20,60,FALSE,reps_only,,,,,,,
+Band Seated Row,band-seated-row,cable_row,strength,pull_h,mid_back|lats,biceps|rear_delts,bands,TRUE,1,1,12,20,60,FALSE,reps_only,,,,,,,
+Machine Row,machine-row,machine_row,strength,pull_h,mid_back|lats,biceps|rear_delts,seated_row,TRUE,2,1,8,15,90,FALSE,weight_reps,,,,,,,
+Chest-Supported High Row,chest-supported-high-row,machine_row,strength,pull_h,upper_back|lats,rear_delts|biceps,chest_supported_row,TRUE,2,1,10,15,90,FALSE,weight_reps,,,,,,,
+Inverted Row,inverted-row,inverted_row,strength,pull_h,mid_back|lats,biceps|rear_delts,barbell|rack,TRUE,2,1,8,20,90,FALSE,reps_only,,,,,,,abs
+Feet-Elevated Inverted Row,feet-elevated-inverted-row,inverted_row,strength,pull_h,mid_back|lats,biceps|rear_delts,barbell|rack|box,TRUE,2,2,6,15,90,FALSE,reps_only,,,,,,,abs
+Suspension Row,suspension-row,inverted_row,strength,pull_h,mid_back|lats,biceps|rear_delts,suspension_trainer,TRUE,2,2,8,15,90,FALSE,reps_only,,,,,,,abs
+Barbell Shrug,barbell-shrug,shrug,strength,isolation,traps,forearms|upper_back,barbell,FALSE,2,1,8,15,90,FALSE,weight_reps,shortened,,,,neck,,
+Dumbbell Shrug,dumbbell-shrug,shrug,strength,isolation,traps,forearms|upper_back,dumbbell,FALSE,2,1,10,20,60,FALSE,weight_reps,shortened,,,,neck,,
+Trap Bar Shrug,trap-bar-shrug,shrug,strength,isolation,traps,forearms|upper_back,trap_bar,FALSE,2,1,8,15,90,FALSE,weight_reps,shortened,,,,neck,,
+Band Shrug,band-shrug,shrug,strength,isolation,traps,forearms|upper_back,bands,FALSE,1,1,15,25,45,FALSE,reps_only,shortened,,,,,,
+Back Extension,back-extension,back_extension,strength,hinge,erectors|glutes,hamstrings,back_extension_bench,FALSE,2,1,10,20,90,FALSE,weight_reps,shortened,,,,lower_back,,
+Superman,superman,back_extension,strength,isolation,erectors,glutes,bodyweight,FALSE,1,1,12,25,45,FALSE,reps_only,shortened,,,,,,
+Ring Row,ring-row,inverted_row,strength,pull_h,mid_back|lats,biceps|rear_delts,rings,TRUE,2,2,8,15,90,FALSE,reps_only,,,,,,,abs
+Ring Pull-Up,ring-pull-up,pull_up,strength,pull_v,lats,biceps|mid_back|forearms,rings,TRUE,3,3,4,10,120,FALSE,reps_only,,,wide,,shoulder,,
+Ring Chin-Up,ring-chin-up,pull_up,strength,pull_v,lats|biceps,mid_back,rings,TRUE,3,3,5,12,120,FALSE,reps_only,,,close,,shoulder,,abs

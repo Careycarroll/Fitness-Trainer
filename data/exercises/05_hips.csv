@@ -1,14 +1,14 @@
-name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,emphasis,joint_load,skill_gate,stabilises
-Cossack Squat,cossack-squat,lateral_squat,strength,squat,adductors|quads,glutes,bodyweight,TRUE,2,3,6,12,90,TRUE,reps_only,stretch_bias,knee|hip,,abs
-Loaded Cossack Squat,loaded-cossack-squat,lateral_squat,strength,squat,adductors|quads,glutes,dumbbell,TRUE,2,3,6,10,90,TRUE,weight_reps,stretch_bias,knee|hip,,abs
-Lateral Lunge,lateral-lunge,lateral_squat,strength,squat,adductors|glutes,quads,dumbbell,TRUE,2,2,8,12,90,TRUE,weight_reps,stretch_bias,hip,,abs
-Machine Hip Adduction,machine-hip-adduction,hip_adduction,strength,isolation,adductors,glutes,hip_abductor_machine,FALSE,1,1,12,20,60,FALSE,weight_reps,shortened_bias,,,
-Cable Hip Adduction,cable-hip-adduction,hip_adduction,strength,isolation,adductors,glutes,cable,FALSE,1,1,12,20,60,TRUE,weight_reps,shortened_bias,,,
-Standing Band Hip Adduction,standing-band-hip-adduction,hip_adduction,strength,isolation,adductors,glutes,bands,FALSE,1,1,15,25,45,TRUE,reps_only,shortened_bias,,,
-Copenhagen Plank,copenhagen-plank,copenhagen,strength,isolation,adductors,abs|obliques,bodyweight|bench,FALSE,2,3,15,45,60,TRUE,time,stretch_bias,hip,,
-Short-Lever Copenhagen Plank,short-lever-copenhagen-plank,copenhagen,strength,isolation,adductors,abs|obliques,bodyweight|bench,FALSE,1,2,20,60,45,TRUE,time,,hip,,
-Machine Hip Abduction,machine-hip-abduction,hip_abduction,strength,isolation,abductors,glutes,hip_abductor_machine,FALSE,1,1,12,20,60,FALSE,weight_reps,shortened_bias,,,
-Cable Hip Abduction,cable-hip-abduction,hip_abduction,strength,isolation,abductors,glutes,cable,FALSE,1,1,12,20,60,TRUE,weight_reps,shortened_bias,,,
-Seated Band Hip Abduction,seated-band-hip-abduction,hip_abduction,strength,isolation,abductors,glutes,bands|bench,FALSE,1,1,15,25,45,FALSE,reps_only,shortened_bias,,,
-Lateral Band Walk,lateral-band-walk,band_walk,strength,isolation,abductors,glutes,bands,FALSE,1,1,10,20,45,FALSE,reps_only,,,,
-Side-Lying Hip Raise,side-lying-hip-raise,hip_abduction,strength,isolation,abductors,glutes|obliques,bodyweight,FALSE,1,1,12,25,45,TRUE,reps_only,shortened_bias,,,
+name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,rom_bias,angle,grip,head_bias,joint_load,skill_gate,stabilises
+Cossack Squat,cossack-squat,lateral_squat,strength,squat,adductors|quads,glutes,bodyweight,TRUE,2,3,6,12,90,TRUE,reps_only,stretch,,,,knee|hip,,abs
+Loaded Cossack Squat,loaded-cossack-squat,lateral_squat,strength,squat,adductors|quads,glutes,dumbbell,TRUE,2,3,6,10,90,TRUE,weight_reps,stretch,,,,knee|hip,,abs
+Lateral Lunge,lateral-lunge,lateral_squat,strength,squat,adductors|glutes,quads,dumbbell,TRUE,2,2,8,12,90,TRUE,weight_reps,stretch,,,,hip,,abs
+Machine Hip Adduction,machine-hip-adduction,hip_adduction,strength,isolation,adductors,glutes,hip_abductor_machine,FALSE,1,1,12,20,60,FALSE,weight_reps,shortened,,,,,,
+Cable Hip Adduction,cable-hip-adduction,hip_adduction,strength,isolation,adductors,glutes,cable,FALSE,1,1,12,20,60,TRUE,weight_reps,shortened,,,,,,
+Standing Band Hip Adduction,standing-band-hip-adduction,hip_adduction,strength,isolation,adductors,glutes,bands,FALSE,1,1,15,25,45,TRUE,reps_only,shortened,,,,,,
+Copenhagen Plank,copenhagen-plank,copenhagen,strength,isolation,adductors,abs|obliques,bodyweight|bench,FALSE,2,3,15,45,60,TRUE,time,stretch,,,,hip,,
+Short-Lever Copenhagen Plank,short-lever-copenhagen-plank,copenhagen,strength,isolation,adductors,abs|obliques,bodyweight|bench,FALSE,1,2,20,60,45,TRUE,time,,,,,hip,,
+Machine Hip Abduction,machine-hip-abduction,hip_abduction,strength,isolation,abductors,glutes,hip_abductor_machine,FALSE,1,1,12,20,60,FALSE,weight_reps,shortened,,,,,,
+Cable Hip Abduction,cable-hip-abduction,hip_abduction,strength,isolation,abductors,glutes,cable,FALSE,1,1,12,20,60,TRUE,weight_reps,shortened,,,,,,
+Seated Band Hip Abduction,seated-band-hip-abduction,hip_abduction,strength,isolation,abductors,glutes,bands|bench,FALSE,1,1,15,25,45,FALSE,reps_only,shortened,,,,,,
+Lateral Band Walk,lateral-band-walk,band_walk,strength,isolation,abductors,glutes,bands,FALSE,1,1,10,20,45,FALSE,reps_only,,,,,,,
+Side-Lying Hip Raise,side-lying-hip-raise,hip_abduction,strength,isolation,abductors,glutes|obliques,bodyweight,FALSE,1,1,12,25,45,TRUE,reps_only,shortened,,,,,,

@@ -70,6 +70,55 @@ LOAD_TYPE_PRECEDENCE: list[tuple[str, tuple[str, ...]]] = [
     ("bodyweight", ("bodyweight", "pullup_bar", "dip_bar", "box", "bench", "rack")),
 ]
 
+# STABILITY — an ordinal 1-5, DERIVED from loadType with an override table.
+#
+#   1 fixed_path    the path is constrained by the machine
+#   2 guided        one end is anchored; the arc is partly constrained
+#   3 free          bilateral free weight
+#   4 independent   each limb loaded separately
+#   5 unstable      the support itself moves
+#
+# ORDINAL rather than categorical, deliberately. `emphasis` failed because five
+# categorical values spanning five axes could not be ranked, so no scoring term
+# ever read it. A scale can be ranked: a style can say "prefer 3+ for the main
+# lift" and score() can act on it.
+#
+# Measured: loadType alone is correct for 256 of 307 rows. The overrides are the
+# three cases where it lies -- a smith machine is `barbell` by loadType and
+# fixed-path in reality; rings and suspension are `implement` and the least
+# stable rows in the catalog; a landmine is `barbell` and a guided arc.
+#
+# is_unilateral is NOT consulted: a dumbbell bench press is bilateral and each
+# arm still moves independently, which is exactly the property level 4 names.
+STABILITY_BY_LOAD_TYPE = {
+    "machine": 1,
+    "cable": 2,
+    "band": 2,
+    "barbell": 3,
+    "bodyweight": 3,
+    "implement": 3,
+    "none": 3,
+    "dumbbell": 4,
+    "kettlebell": 4,
+}
+
+# equipment token -> stability, checked BEFORE the loadType table. First match
+# in this order wins.
+STABILITY_OVERRIDE = [
+    (("rings", "suspension_trainer", "stability_ball"), 5),
+    (("smith_machine",), 1),
+    (("landmine",), 2),
+]
+
+
+def stability_of(load_type: str, equipment: list[str]) -> int:
+    have = set(equipment or ())
+    for tokens, value in STABILITY_OVERRIDE:
+        if have & set(tokens):
+            return value
+    return STABILITY_BY_LOAD_TYPE.get(load_type, 3)
+
+
 # Families that are unilateral-stance quad work rather than bilateral squatting.
 # ADR-026 §3: `lunge` is DERIVED here, never authored. No CSV row is edited.
 LUNGE_FAMILIES = {"lunge", "split_squat", "step_up"}
@@ -238,7 +287,23 @@ def build_record(row: dict, source: str) -> dict:
         # prioritize_joint_load unimplementable.
         "exerciseFamily": row["exercise_family"].strip(),
         "jointLoad": split_tokens(row.get("joint_load", "")),
-        "emphasis": (row.get("emphasis") or "").strip() or None,
+        # --- variant axes (#63) ------------------------------------------
+        #
+        # These replace the single `emphasis` column, which held FIVE unrelated
+        # axes in one string and was therefore unrankable: `flat` and
+        # `stretch_bias` are both true of different rows and cannot be compared.
+        # It was also lossy -- an incline curl is long-head biased AND
+        # stretch-biased, and one field could only say one.
+        #
+        # Null means NOT ASSESSED, never "neutral". Check 15 enforces the
+        # vocabularies; nothing reads these yet, and that is deliberate --
+        # a style-side preference is a separate change with its own before/after.
+        "romBias": (row.get("rom_bias") or "").strip() or None,
+        "angle": (row.get("angle") or "").strip() or None,
+        "grip": (row.get("grip") or "").strip() or None,
+        "headBias": (row.get("head_bias") or "").strip() or None,
+        # DERIVED, not authored (ADR-012). See STABILITY below.
+        "stability": stability_of(derive_load_type(equipment), equipment),
         "repLow": rep_low,
         "repHigh": rep_high,
         "sourceFile": source,

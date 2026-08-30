@@ -143,3 +143,37 @@ export const EQUIPMENT = [
  * row and then deleted from EQUIPMENT.
  */
 export const EQUIPMENT_ALIASES = {};
+
+/**
+ * VARIANT AXES (#63) — what makes one variation of a movement different from
+ * another.
+ *
+ * These replace the single `emphasis` column, which carried FIVE unrelated axes
+ * in one string: ROM position, press angle, muscle head, bar position and grip
+ * width. Nothing read it, and nothing could: `flat` and `stretch_bias` are both
+ * true of different rows and are not comparable, so no scoring term could rank
+ * them. It was lossy too — an incline curl is long-head biased AND
+ * stretch-biased, and one field held one value.
+ *
+ * NULL MEANS NOT ASSESSED, never "neutral". A row with no `angle` is not a flat
+ * press; it is a row where angle does not apply or has not been judged. Any
+ * consumer must treat null as "no opinion" rather than as a value.
+ *
+ * Same growth rule as EQUIPMENT: these lists grow with the rows that use them.
+ * A speculative value is unenforceable.
+ */
+export const ROM_BIAS = ['stretch', 'shortened'];
+export const ANGLE = ['flat', 'incline', 'decline', 'overhead'];
+export const GRIP = ['close', 'wide'];
+export const HEAD_BIAS = ['long', 'short'];
+
+/**
+ * STABILITY is an ORDINAL 1-5, DERIVED in build_seed.py rather than authored.
+ *
+ *   1 fixed_path · 2 guided · 3 free · 4 independent · 5 unstable
+ *
+ * Ordinal because `emphasis` proved the cost of categorical: five values on
+ * five axes could not be ranked, so nothing read them. A scale can be ranked.
+ */
+export const STABILITY_MIN = 1;
+export const STABILITY_MAX = 5;
