@@ -12032,7 +12032,7 @@
       "kipAllowed": null,
       "monostructural": true,
       "skillGate": null,
-      "exerciseFamily": "row",
+      "exerciseFamily": "rowing_machine",
       "jointLoad": [
         "lower_back",
         "knee"
@@ -12167,7 +12167,7 @@
       "kipAllowed": null,
       "monostructural": true,
       "skillGate": null,
-      "exerciseFamily": "step",
+      "exerciseFamily": "stair_climber",
       "jointLoad": [
         "knee"
       ],

@@ -5,10 +5,10 @@ Running - Treadmill,running-treadmill,run,conditioning,monostructural,quads|calv
 Cycling - Outdoor,cycling-outdoor,cycle,conditioning,monostructural,quads|glutes,hamstrings|calves,bodyweight,TRUE,2,2,60,5400,120,FALSE,time,,knee,,
 Cycling - Stationary Bike,cycling-stationary-bike,cycle,conditioning,monostructural,quads|glutes,hamstrings|calves,stationary_bike,TRUE,2,1,60,3600,120,FALSE,time,,knee,,
 Air Bike,air-bike,cycle,conditioning,monostructural,quads|glutes,lats|front_delts|hamstrings,air_bike,TRUE,3,1,20,1200,120,FALSE,time,,knee,,
-Rowing Machine,rowing-machine,row,conditioning,monostructural,lats|quads,glutes|hamstrings|biceps,rower,TRUE,3,3,60,1800,120,FALSE,time,,lower_back|knee,,erectors
+Rowing Machine,rowing-machine,rowing_machine,conditioning,monostructural,lats|quads,glutes|hamstrings|biceps,rower,TRUE,3,3,60,1800,120,FALSE,time,,lower_back|knee,,erectors
 Ski Erg,ski-erg,erg,conditioning,monostructural,lats|triceps,glutes,ski_erg,TRUE,3,2,30,1200,120,FALSE,time,,shoulder|lower_back,,abs|erectors
 Elliptical Trainer,elliptical-trainer,erg,conditioning,monostructural,quads|glutes,hamstrings|calves|lats,elliptical,TRUE,2,1,60,3600,120,FALSE,time,,,,
-Stair Climber,stair-climber,step,conditioning,monostructural,quads|glutes,calves|hamstrings,stair_climber,TRUE,2,1,60,3600,120,FALSE,time,,knee,,
+Stair Climber,stair-climber,stair_climber,conditioning,monostructural,quads|glutes,calves|hamstrings,stair_climber,TRUE,2,1,60,3600,120,FALSE,time,,knee,,
 Jump Rope,jump-rope,jump_rope,conditioning,monostructural,calves|quads,hamstrings|forearms,jump_rope,TRUE,2,3,30,300,90,FALSE,time,,ankle,,
 Heavy Bag Boxing,heavy-bag-boxing,boxing,conditioning,monostructural,front_delts|obliques,triceps|calves,heavy_bag,TRUE,3,3,60,300,60,FALSE,time,,shoulder|wrist,,abs
 Shadow Boxing,shadow-boxing,boxing,conditioning,monostructural,front_delts|obliques,triceps|calves,bodyweight,TRUE,2,2,60,300,60,FALSE,time,,shoulder,,abs
