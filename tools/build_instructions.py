@@ -56,6 +56,21 @@ MD_DIR = os.path.join(ROOT, "data", "exercises", "instructions")
 SEED = os.path.join(ROOT, "js", "data", "exercises.seed.json")
 OUT = os.path.join(ROOT, "js", "data", "instructions.json")
 
+# The slugs that HAVE text, as a sorted array. ~2 KB.
+#
+# js/ui/app.js needs to know whether to render a disclosure at all, and
+# renderSetGroup is SYNCHRONOUS — it cannot await the lazy chunk. Importing the
+# full instructions.json eagerly to answer a yes/no question would put ~250 KB of
+# prose on the cold-start path at full coverage. This answers it for 2 KB and
+# leaves the prose lazy.
+OUT_SLUGS = os.path.join(ROOT, "js", "data", "instruction-slugs.json")
+
+SLUGS_NOTE = (
+    "GENERATED FILE — do not edit. Built by tools/build_instructions.py. "
+    "The slugs that have instruction text, so the UI can decide whether to "
+    "render a disclosure without loading the prose."
+)
+
 NOTE = (
     "GENERATED FILE — do not edit. Built from data/exercises/instructions/*.md "
     "by tools/build_instructions.py. Edit the markdown and re-run "
@@ -163,15 +178,23 @@ def main() -> int:
     steps = sum(len(v["steps"]) for v in doc["instructions"].values())
     size = len(text.encode("utf-8")) / 1024
 
+    slugs_doc = {
+        "schemaVersion": 1,
+        "note": SLUGS_NOTE,
+        "slugs": sorted(doc["instructions"]),
+    }
+    slugs_text = serialize(slugs_doc)
+
     if args.check:
-        if not os.path.exists(OUT):
-            print(f"FAIL  {OUT} does not exist; run tools/build_instructions.py")
-            return 1
-        current = open(OUT, encoding="utf-8").read()
-        if current != text:
-            print("FAIL  instructions.json is stale — "
-                  "regenerate with `npm run build:instructions`")
-            return 1
+        for path, want, label in ((OUT, text, "instructions.json"),
+                                  (OUT_SLUGS, slugs_text, "instruction-slugs.json")):
+            if not os.path.exists(path):
+                print(f"FAIL  {path} does not exist; run tools/build_instructions.py")
+                return 1
+            if open(path, encoding="utf-8").read() != want:
+                print(f"FAIL  {label} is stale — "
+                      f"regenerate with `npm run build:instructions`")
+                return 1
         print(f"  ok    instructions.json matches source "
               f"({count} exercises, {steps} steps)")
         return 0
@@ -179,8 +202,11 @@ def main() -> int:
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as fh:
         fh.write(text)
+    with open(OUT_SLUGS, "w", encoding="utf-8") as fh:
+        fh.write(slugs_text)
     print(f"  wrote {os.path.relpath(OUT, ROOT)}  "
           f"({count} exercises, {steps} steps, {size:.0f} KB)")
+    print(f"  wrote {os.path.relpath(OUT_SLUGS, ROOT)}  ({count} slugs)")
     return 0
 
 

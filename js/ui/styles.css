@@ -864,3 +864,36 @@ button[disabled] {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
+
+/* Instruction disclosure on a setgroup card (#63).
+   NOT folded into the `.planner-sidebar details` rule above: that one is #60's
+   and is scoped to the sidebar. Widening it would restyle every future
+   disclosure in the app. This one is quieter — instructions are reference
+   material, not a control. */
+.setgroup details.howto {
+  margin-top: 6px;
+  border-top: 1px solid var(--border, #333);
+}
+.setgroup details.howto > summary {
+  cursor: pointer;
+  padding: 6px 0;
+  font-size: 0.8rem;
+  opacity: 0.7;
+  list-style: none;
+}
+.setgroup details.howto > summary::-webkit-details-marker { display: none; }
+.setgroup details.howto > summary::before {
+  content: '\25B8';
+  display: inline-block;
+  width: 1em;
+  transition: transform 120ms;
+}
+.setgroup details.howto[open] > summary::before { transform: rotate(90deg); }
+.howto-steps {
+  margin: 0 0 8px 0;
+  padding-left: 1.4em;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+.howto-steps li { margin-bottom: 4px; }
