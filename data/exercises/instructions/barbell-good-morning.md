@@ -1,0 +1,7 @@
+<!-- source: free-exercise-db -->
+
+# Good Morning
+
+1. Begin with a bar on a rack at shoulder height. Rack the bar across the rear of your shoulders as you would a power squat, not on top of your shoulders. Keep your back tight, shoulder blades pinched together, and your knees slightly bent. Step back from the rack.
+2. Begin by bending at the hips, moving them back as you bend over to near parallel. Keep your back arched and your cervical spine in proper alignment.
+3. Reverse the motion by extending through the hips with your glutes and hamstrings. Continue until you have returned to the starting position.
