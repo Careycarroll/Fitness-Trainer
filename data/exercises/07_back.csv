@@ -39,3 +39,26 @@ Superman,superman,back_extension,strength,isolation,erectors,glutes,bodyweight,F
 Ring Row,ring-row,inverted_row,strength,pull_h,mid_back|lats,biceps|rear_delts,rings,TRUE,2,2,8,15,90,FALSE,reps_only,,,,,,,abs,TRUE
 Ring Pull-Up,ring-pull-up,pull_up,strength,pull_v,lats,biceps|mid_back|forearms,rings,TRUE,3,3,4,10,120,FALSE,reps_only,,,wide,,shoulder,,,TRUE
 Ring Chin-Up,ring-chin-up,pull_up,strength,pull_v,lats|biceps,mid_back,rings,TRUE,3,3,5,12,120,FALSE,reps_only,,,close,,shoulder,,abs,TRUE
+One-Arm Landmine Row,one-arm-landmine-row,barbell_row,strength,pull_h,mid_back,lats|biceps|rear_delts,barbell|landmine,TRUE,3,3,8,12,90,TRUE,weight_reps,,,,,,,abs|obliques,FALSE
+Incline Bench Pull,incline-bench-pull,barbell_row,strength,pull_h,mid_back,lats|rear_delts|biceps,barbell|bench,TRUE,3,2,8,15,90,FALSE,weight_reps,,incline,,,,,abs,FALSE
+Smith Machine Row,smith-machine-row,barbell_row,strength,pull_h,mid_back,lats|biceps,smith_machine,TRUE,3,2,8,15,90,FALSE,weight_reps,,,,,lower_back,,erectors|abs,FALSE
+Clean Shrug,clean-shrug,shrug,strength,explosive,traps,upper_back,barbell|platform,TRUE,3,4,3,6,120,FALSE,weight_reps,,,,,,,erectors|abs,FALSE
+Snatch Shrug,snatch-shrug,shrug,strength,explosive,traps,upper_back,barbell|platform,TRUE,3,4,3,6,120,FALSE,weight_reps,,,wide,,,,erectors|abs,FALSE
+Kettlebell Row,kettlebell-row,dumbbell_row,strength,pull_h,mid_back,lats|biceps,kettlebell,TRUE,3,2,8,15,90,FALSE,weight_reps,,,,,lower_back,,erectors|abs,FALSE
+Single-Arm Kettlebell Row,single-arm-kettlebell-row,dumbbell_row,strength,pull_h,mid_back,lats|biceps,kettlebell|bench,TRUE,2,2,8,15,75,TRUE,weight_reps,,,,,,,abs|obliques,FALSE
+Renegade Row,renegade-row,dumbbell_row,strength,pull_h,mid_back,lats|abs|biceps,dumbbell,TRUE,3,4,6,12,90,TRUE,reps_only,,,,,,,abs|obliques,FALSE
+Prone Dumbbell Shrug,prone-dumbbell-shrug,shrug,strength,isolation,upper_back,traps|rear_delts,dumbbell|bench,FALSE,1,2,10,20,45,FALSE,weight_reps,shortened,,,,,,abs,FALSE
+Underhand Lat Pulldown,underhand-lat-pulldown,pulldown,strength,pull_v,lats,biceps|mid_back,lat_pulldown,TRUE,2,2,8,15,90,FALSE,weight_reps,,,,,,,abs,FALSE
+V-Bar Pulldown,v-bar-pulldown,pulldown,strength,pull_v,lats,biceps|mid_back,lat_pulldown,TRUE,2,2,8,15,90,FALSE,weight_reps,,,,,,,abs,FALSE
+Behind-Neck Pulldown,behind-neck-pulldown,pulldown,strength,pull_v,lats,upper_back|biceps,lat_pulldown,TRUE,2,4,8,15,90,FALSE,weight_reps,,,wide,,shoulder,,abs,FALSE
+Sternum Chin-Up,sternum-chin-up,pull_up,strength,pull_v,lats,biceps|mid_back,pullup_bar,TRUE,4,4,4,10,120,FALSE,reps_only,,,,,,,abs,FALSE
+Mixed-Grip Chin-Up,mixed-grip-chin-up,pull_up,strength,pull_v,lats,biceps,pullup_bar,TRUE,3,3,4,10,120,FALSE,reps_only,,,,,,,abs,FALSE
+One-Arm Chin-Up,one-arm-chin-up,pull_up,strength,pull_v,lats,biceps|mid_back,pullup_bar,TRUE,4,4,1,5,180,TRUE,reps_only,,,,,,,abs|obliques,FALSE
+Bar Muscle-Up,bar-muscle-up,pull_up,strength,explosive,lats,triceps|front_delts|abs,pullup_bar,TRUE,4,4,3,8,180,FALSE,reps_only,,,,,shoulder,,abs,FALSE
+Scapular Pull-Up,scapular-pull-up,pull_up,strength,pull_v,upper_back,traps|lats,pullup_bar,FALSE,1,2,8,15,45,FALSE,reps_only,shortened,,,,,,abs,FALSE
+Machine Iso Row,machine-iso-row,machine_row,strength,pull_h,lats,mid_back|biceps,chest_supported_row,TRUE,2,1,8,15,90,TRUE,weight_reps,,,,,,,abs,FALSE
+Smith Machine Behind-Back Shrug,smith-machine-behind-back-shrug,shrug,strength,isolation,traps,upper_back,smith_machine,FALSE,2,2,10,20,60,FALSE,weight_reps,shortened,,,,,,abs,FALSE
+Cable Shrug,cable-shrug,shrug,strength,isolation,traps,upper_back,cable,FALSE,1,1,10,20,45,FALSE,weight_reps,shortened,,,,,,abs,FALSE
+Calf Machine Shrug,calf-machine-shrug,shrug,strength,isolation,traps,upper_back,calf_machine,FALSE,1,1,10,20,45,FALSE,weight_reps,shortened,,,,,,abs,FALSE
+Sled Row,sled-row,sled_row,strength,pull_h,mid_back,lats|biceps,sled,TRUE,3,2,8,15,90,FALSE,weight_reps,,,,,,,erectors|abs,FALSE
+Bent-Arm Barbell Pullover,bent-arm-barbell-pullover,pullover,strength,pull_v,lats,chest|triceps,barbell|bench,TRUE,3,3,8,12,90,FALSE,weight_reps,stretch,,,,shoulder,,abs,FALSE

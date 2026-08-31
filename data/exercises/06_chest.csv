@@ -33,14 +33,14 @@ Neck Press,neck-press,bench_press,strength,push_h,chest,front_delts|triceps,barb
 Band Bench Press,band-bench-press,bench_press,strength,push_h,chest,front_delts|triceps,bands|bench,TRUE,2,2,10,20,60,FALSE,reps_only,,flat,,,,,abs,FALSE
 Smith Machine Decline Press,smith-machine-decline-press,bench_press,strength,push_h,chest,triceps|front_delts,smith_machine|bench,TRUE,3,2,8,15,90,FALSE,weight_reps,,decline,,,,,abs,FALSE
 Smith Machine Incline Press,smith-machine-incline-press,bench_press,strength,push_h,chest,front_delts|triceps,smith_machine|bench,TRUE,3,2,8,15,90,FALSE,weight_reps,,incline,,,,,abs,FALSE
-Machine Decline Press,machine-decline-press,chest_press_machine,strength,push_h,chest,triceps|front_delts,chest_press_machine,TRUE,3,1,8,15,90,FALSE,weight_reps,,decline,,,,,abs,FALSE
+Machine Decline Press,machine-decline-press,machine_press,strength,push_h,chest,triceps|front_delts,chest_press_machine,TRUE,3,1,8,15,90,FALSE,weight_reps,,decline,,,,,abs,FALSE
 Single-Arm Dumbbell Bench Press,single-arm-dumbbell-bench-press,dumbbell_press,strength,push_h,chest,front_delts|triceps,dumbbell|bench,TRUE,3,3,8,15,90,TRUE,weight_reps,,flat,,,,,abs|obliques,FALSE
 Neutral-Grip Dumbbell Bench Press,neutral-grip-dumbbell-bench-press,dumbbell_press,strength,push_h,chest,triceps|front_delts,dumbbell|bench,TRUE,3,2,8,15,90,FALSE,weight_reps,,flat,close,,,,abs,FALSE
 Kettlebell Floor Press,kettlebell-floor-press,dumbbell_press,strength,push_h,chest,triceps|front_delts,kettlebell,TRUE,3,3,8,15,90,TRUE,weight_reps,shortened,flat,,,,,abs,FALSE
 Cable Chest Press,cable-chest-press,cable_press,strength,push_h,chest,front_delts|triceps,cable,TRUE,2,2,10,15,75,FALSE,weight_reps,,flat,,,,,abs,FALSE
 Incline Cable Chest Press,incline-cable-chest-press,cable_press,strength,push_h,chest,front_delts|triceps,cable,TRUE,2,2,10,15,75,FALSE,weight_reps,,incline,,,,,abs,FALSE
 Standing Cable Chest Press,standing-cable-chest-press,cable_press,strength,push_h,chest,front_delts|triceps,cable,TRUE,2,3,10,15,75,FALSE,weight_reps,,flat,,,,,abs|obliques,FALSE
-Single-Arm Cable Fly,single-arm-cable-fly,cable_fly,strength,push_h,chest,front_delts,cable,FALSE,1,2,10,20,60,TRUE,weight_reps,stretch,flat,,,,,abs|obliques,FALSE
-Decline Dumbbell Fly,decline-dumbbell-fly,dumbbell_fly,strength,push_h,chest,front_delts,dumbbell|bench,FALSE,2,2,10,15,60,FALSE,weight_reps,stretch,decline,,,shoulder,,abs,FALSE
-Single-Arm Dumbbell Fly,single-arm-dumbbell-fly,dumbbell_fly,strength,push_h,chest,front_delts,dumbbell|bench,FALSE,1,2,10,20,60,TRUE,weight_reps,stretch,flat,,,shoulder,,abs|obliques,FALSE
+Single-Arm Cable Fly,single-arm-cable-fly,fly,strength,push_h,chest,front_delts,cable,FALSE,1,2,10,20,60,TRUE,weight_reps,stretch,flat,,,,,abs|obliques,FALSE
+Decline Dumbbell Fly,decline-dumbbell-fly,fly,strength,push_h,chest,front_delts,dumbbell|bench,FALSE,2,2,10,15,60,FALSE,weight_reps,stretch,decline,,,shoulder,,abs,FALSE
+Single-Arm Dumbbell Fly,single-arm-dumbbell-fly,fly,strength,push_h,chest,front_delts,dumbbell|bench,FALSE,1,2,10,20,60,TRUE,weight_reps,stretch,flat,,,shoulder,,abs|obliques,FALSE
 Svend Press,svend-press,plate_press,strength,push_h,chest,front_delts|triceps,plate,FALSE,1,2,10,20,45,FALSE,reps_only,shortened,flat,,,,,abs,FALSE

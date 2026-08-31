@@ -1,0 +1,5 @@
+<!-- source: free-exercise-db -->
+
+# One-Arm Kettlebell Row
+
+1. Place a kettlebell in front of your feet. Bend your knees slightly and then push your butt out as much as possible as you bend over to get in the starting position. Grab the kettlebell and pull it to your stomach, retracting your shoulder blade and flexing the elbow. Keep your back straight. Lower and repeat.
