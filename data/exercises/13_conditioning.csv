@@ -13,3 +13,6 @@ Jump Rope,jump-rope,jump_rope,conditioning,monostructural,calves|quads,hamstring
 Heavy Bag Boxing,heavy-bag-boxing,boxing,conditioning,monostructural,front_delts|obliques,triceps|calves,heavy_bag,TRUE,3,3,60,300,60,FALSE,time,,,,,shoulder|wrist,,abs,TRUE
 Shadow Boxing,shadow-boxing,boxing,conditioning,monostructural,front_delts|obliques,triceps|calves,bodyweight,TRUE,2,2,60,300,60,FALSE,time,,,,,shoulder,,abs,TRUE
 Battle Ropes,battle-ropes,battle_rope,conditioning,monostructural,front_delts|lats,forearms|biceps,battle_ropes,TRUE,3,2,15,120,90,FALSE,time,,,,,shoulder,,abs,TRUE
+Walking Treadmill,walking-treadmill,walk,conditioning,monostructural,quads|calves,glutes|hamstrings,treadmill,TRUE,1,1,600,2400,60,FALSE,time,,,,,,,abs,FALSE
+Recumbent Bike,recumbent-bike,cycle,conditioning,monostructural,quads,glutes|hamstrings|calves,stationary_bike,TRUE,2,1,600,2400,60,FALSE,time,,,,,,,abs,FALSE
+Step Mill,step-mill,stair_climber,conditioning,monostructural,quads|glutes,calves|hamstrings,stair_climber,TRUE,2,1,600,1800,60,FALSE,time,,,,,,,abs,FALSE

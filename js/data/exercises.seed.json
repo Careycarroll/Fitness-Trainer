@@ -21729,6 +21729,588 @@
       "sourceFile": "12_fullbody.csv"
     },
     {
+      "id": "muscle-snatch",
+      "name": "Muscle Snatch",
+      "pattern": "explosive",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "platform"
+      ],
+      "primaryMuscles": [
+        "traps"
+      ],
+      "secondaryMuscles": [
+        "front_delts",
+        "glutes"
+      ],
+      "stabilises": [
+        "abs",
+        "erectors"
+      ],
+      "fatigueCost": 3,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "snatch",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": "wide",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 3,
+      "repHigh": 6,
+      "sourceFile": "12_fullbody.csv"
+    },
+    {
+      "id": "split-snatch",
+      "name": "Split Snatch",
+      "pattern": "explosive",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "platform"
+      ],
+      "primaryMuscles": [
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "quads",
+        "front_delts",
+        "traps"
+      ],
+      "stabilises": [
+        "abs",
+        "erectors"
+      ],
+      "fatigueCost": 4,
+      "skill": 5,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": "olympic-lift",
+      "exerciseFamily": "snatch",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": "wide",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 2,
+      "repHigh": 5,
+      "sourceFile": "12_fullbody.csv"
+    },
+    {
+      "id": "power-snatch-from-blocks",
+      "name": "Power Snatch from Blocks",
+      "pattern": "explosive",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "platform",
+        "box"
+      ],
+      "primaryMuscles": [
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "quads",
+        "traps",
+        "front_delts"
+      ],
+      "stabilises": [
+        "abs",
+        "erectors"
+      ],
+      "fatigueCost": 4,
+      "skill": 5,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": "olympic-lift",
+      "exerciseFamily": "snatch",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": "wide",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 2,
+      "repHigh": 5,
+      "sourceFile": "12_fullbody.csv"
+    },
+    {
+      "id": "power-clean-from-blocks",
+      "name": "Power Clean from Blocks",
+      "pattern": "explosive",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "platform",
+        "box"
+      ],
+      "primaryMuscles": [
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "quads",
+        "traps"
+      ],
+      "stabilises": [
+        "abs",
+        "erectors"
+      ],
+      "fatigueCost": 4,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 150,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "clean",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 3,
+      "repHigh": 6,
+      "sourceFile": "12_fullbody.csv"
+    },
+    {
+      "id": "behind-neck-push-press",
+      "name": "Behind-Neck Push Press",
+      "pattern": "explosive",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "triceps",
+        "quads"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "jerk",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 3,
+      "repHigh": 8,
+      "sourceFile": "12_fullbody.csv"
+    },
+    {
+      "id": "yoke-walk",
+      "name": "Yoke Walk",
+      "pattern": "carry",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "upper_back"
+      ],
+      "secondaryMuscles": [
+        "quads",
+        "glutes",
+        "abs"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_distance",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "carry",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 20,
+      "repHigh": 40,
+      "sourceFile": "12_fullbody.csv"
+    },
+    {
+      "id": "sandbag-carry",
+      "name": "Sandbag Carry",
+      "pattern": "carry",
+      "loadType": "implement",
+      "equipment": [
+        "sandbag"
+      ],
+      "primaryMuscles": [
+        "upper_back"
+      ],
+      "secondaryMuscles": [
+        "abs",
+        "glutes"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_distance",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "carry",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 20,
+      "repHigh": 40,
+      "sourceFile": "12_fullbody.csv"
+    },
+    {
+      "id": "sandbag-load",
+      "name": "Sandbag Load",
+      "pattern": "hinge",
+      "loadType": "implement",
+      "equipment": [
+        "sandbag",
+        "platform"
+      ],
+      "primaryMuscles": [
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "erectors",
+        "upper_back",
+        "biceps"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 150,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "sandbag_lift",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 5,
+      "repHigh": 10,
+      "sourceFile": "12_fullbody.csv"
+    },
+    {
+      "id": "sandbag-shouldering",
+      "name": "Sandbag Shouldering",
+      "pattern": "explosive",
+      "loadType": "implement",
+      "equipment": [
+        "sandbag"
+      ],
+      "primaryMuscles": [
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "upper_back",
+        "erectors"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 150,
+      "warmupRequired": true,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "sandbag_lift",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 5,
+      "repHigh": 10,
+      "sourceFile": "12_fullbody.csv"
+    },
+    {
+      "id": "sled-drag-harness",
+      "name": "Sled Drag Harness",
+      "pattern": "locomotion",
+      "loadType": "implement",
+      "equipment": [
+        "sled"
+      ],
+      "primaryMuscles": [
+        "quads"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "calves"
+      ],
+      "stabilises": [
+        "abs",
+        "erectors"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_distance",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "sled",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 20,
+      "repHigh": 40,
+      "sourceFile": "12_fullbody.csv"
+    },
+    {
+      "id": "prowler-sprint",
+      "name": "Prowler Sprint",
+      "pattern": "locomotion",
+      "loadType": "implement",
+      "equipment": [
+        "sled"
+      ],
+      "primaryMuscles": [
+        "quads"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "calves"
+      ],
+      "stabilises": [
+        "abs",
+        "erectors"
+      ],
+      "fatigueCost": 4,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_distance",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "sled",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 10,
+      "repHigh": 30,
+      "sourceFile": "12_fullbody.csv"
+    },
+    {
+      "id": "single-arm-med-ball-slam",
+      "name": "Single-Arm Med Ball Slam",
+      "pattern": "explosive",
+      "loadType": "implement",
+      "equipment": [
+        "med_ball"
+      ],
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "obliques",
+        "lats"
+      ],
+      "stabilises": [
+        "abs",
+        "obliques"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "throw",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 6,
+      "repHigh": 12,
+      "sourceFile": "12_fullbody.csv"
+    },
+    {
       "id": "walking",
       "name": "Walking",
       "pattern": "monostructural",
@@ -22428,6 +23010,153 @@
       "stability": 3,
       "repLow": 15,
       "repHigh": 120,
+      "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "walking-treadmill",
+      "name": "Walking Treadmill",
+      "pattern": "monostructural",
+      "loadType": "none",
+      "equipment": [
+        "treadmill"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "calves"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "hamstrings"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "time",
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 600,
+        "maxSeconds": 2400
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": true,
+      "skillGate": null,
+      "exerciseFamily": "walk",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 600,
+      "repHigh": 2400,
+      "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "recumbent-bike",
+      "name": "Recumbent Bike",
+      "pattern": "monostructural",
+      "loadType": "none",
+      "equipment": [
+        "stationary_bike"
+      ],
+      "primaryMuscles": [
+        "quads"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "hamstrings",
+        "calves"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "time",
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 600,
+        "maxSeconds": 2400
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": true,
+      "skillGate": null,
+      "exerciseFamily": "cycle",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 600,
+      "repHigh": 2400,
+      "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "step-mill",
+      "name": "Step Mill",
+      "pattern": "monostructural",
+      "loadType": "none",
+      "equipment": [
+        "stair_climber"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "calves",
+        "hamstrings"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "time",
+      "scoring": "both",
+      "timeDomain": {
+        "minSeconds": 600,
+        "maxSeconds": 1800
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": true,
+      "skillGate": null,
+      "exerciseFamily": "stair_climber",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 600,
+      "repHigh": 1800,
       "sourceFile": "13_conditioning.csv"
     }
   ]

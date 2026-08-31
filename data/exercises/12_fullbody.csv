@@ -33,3 +33,15 @@ Lateral Sled Drag,lateral-sled-drag,sled,strength,locomotion,abductors|quads,glu
 Bear Crawl,bear-crawl,crawl,strength,locomotion,abs|front_delts,quads|obliques|traps,bodyweight,TRUE,2,2,20,60,60,FALSE,time,,,,,wrist|shoulder,,,TRUE
 Mountain Climber,mountain-climber,crawl,strength,locomotion,abs|hip_flexors,front_delts|quads,bodyweight,TRUE,2,2,20,60,60,FALSE,time,,,,,wrist|shoulder,,,TRUE
 Ring Muscle-Up,ring-muscle-up,pull_up,strength,explosive,lats|chest,biceps|triceps,rings,TRUE,4,5,2,5,180,FALSE,reps_only,,,,,shoulder|elbow,ring-muscle-up,abs,TRUE
+Muscle Snatch,muscle-snatch,snatch,strength,explosive,traps,front_delts|glutes,barbell|platform,TRUE,3,4,3,6,120,FALSE,weight_reps,,overhead,wide,,shoulder,,abs|erectors,FALSE
+Split Snatch,split-snatch,snatch,strength,explosive,glutes,quads|front_delts|traps,barbell|platform,TRUE,4,5,2,5,180,FALSE,weight_reps,,overhead,wide,,shoulder,olympic-lift,abs|erectors,FALSE
+Power Snatch from Blocks,power-snatch-from-blocks,snatch,strength,explosive,glutes,quads|traps|front_delts,barbell|platform|box,TRUE,4,5,2,5,180,FALSE,weight_reps,,overhead,wide,,shoulder,olympic-lift,abs|erectors,FALSE
+Power Clean from Blocks,power-clean-from-blocks,clean,strength,explosive,glutes,quads|traps,barbell|platform|box,TRUE,4,4,3,6,150,FALSE,weight_reps,,,,,lower_back,,abs|erectors,FALSE
+Behind-Neck Push Press,behind-neck-push-press,jerk,strength,explosive,front_delts,triceps|quads,barbell|rack,TRUE,3,4,3,8,120,FALSE,weight_reps,,overhead,,,shoulder,,abs,FALSE
+Yoke Walk,yoke-walk,carry,strength,carry,upper_back,quads|glutes|abs,barbell|rack,TRUE,4,3,20,40,180,FALSE,weight_distance,,,,,lower_back,,erectors|abs,FALSE
+Sandbag Carry,sandbag-carry,carry,strength,carry,upper_back,abs|glutes,sandbag,TRUE,3,2,20,40,120,FALSE,weight_distance,,,,,lower_back,,erectors|abs,FALSE
+Sandbag Load,sandbag-load,sandbag_lift,strength,hinge,glutes,erectors|upper_back|biceps,sandbag|platform,TRUE,4,3,5,10,150,FALSE,reps_only,,,,,lower_back,,erectors|abs,FALSE
+Sandbag Shouldering,sandbag-shouldering,sandbag_lift,strength,explosive,glutes,upper_back|erectors,sandbag,TRUE,4,3,5,10,150,TRUE,reps_only,,,,,lower_back,,erectors|abs,FALSE
+Sled Drag Harness,sled-drag-harness,sled,strength,locomotion,quads,glutes|calves,sled,TRUE,3,2,20,40,120,FALSE,weight_distance,,,,,,,abs|erectors,FALSE
+Prowler Sprint,prowler-sprint,sled,strength,locomotion,quads,glutes|calves,sled,TRUE,4,3,10,30,180,FALSE,weight_distance,,,,,,,abs|erectors,FALSE
+Single-Arm Med Ball Slam,single-arm-med-ball-slam,throw,strength,explosive,abs,obliques|lats,med_ball,TRUE,2,3,6,12,60,TRUE,reps_only,,,,,,,abs|obliques,FALSE
