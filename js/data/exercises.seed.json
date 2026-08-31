@@ -13113,6 +13113,1848 @@
       "sourceFile": "08_shoulders.csv"
     },
     {
+      "id": "behind-neck-press",
+      "name": "Behind-Neck Press",
+      "pattern": "push_v",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "side_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "overhead_press",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 6,
+      "repHigh": 10,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "bradford-press",
+      "name": "Bradford Press",
+      "pattern": "push_v",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "side_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "overhead_press",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "band-overhead-press",
+      "name": "Band Overhead Press",
+      "pattern": "push_v",
+      "loadType": "band",
+      "equipment": [
+        "bands"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "side_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "overhead_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "smith-machine-overhead-press",
+      "name": "Smith Machine Overhead Press",
+      "pattern": "push_v",
+      "loadType": "barbell",
+      "equipment": [
+        "smith_machine"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "overhead_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": null,
+      "stability": 1,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "single-arm-dumbbell-press",
+      "name": "Single-Arm Dumbbell Press",
+      "pattern": "push_v",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "side_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs",
+        "obliques"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "dumbbell_shoulder_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "neutral-grip-dumbbell-press",
+      "name": "Neutral-Grip Dumbbell Press",
+      "pattern": "push_v",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "dumbbell_shoulder_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": "close",
+      "headBias": null,
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "see-saw-press",
+      "name": "See-Saw Press",
+      "pattern": "push_v",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "side_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs",
+        "obliques"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "dumbbell_shoulder_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 16,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "kettlebell-shoulder-press",
+      "name": "Kettlebell Shoulder Press",
+      "pattern": "push_v",
+      "loadType": "kettlebell",
+      "equipment": [
+        "kettlebell"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "dumbbell_shoulder_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "kettlebell-arnold-press",
+      "name": "Kettlebell Arnold Press",
+      "pattern": "push_v",
+      "loadType": "kettlebell",
+      "equipment": [
+        "kettlebell"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "side_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "dumbbell_shoulder_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "single-arm-kettlebell-press",
+      "name": "Single-Arm Kettlebell Press",
+      "pattern": "push_v",
+      "loadType": "kettlebell",
+      "equipment": [
+        "kettlebell"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "side_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs",
+        "obliques"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "dumbbell_shoulder_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 6,
+      "repHigh": 12,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "cable-shoulder-press",
+      "name": "Cable Shoulder Press",
+      "pattern": "push_v",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 75,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "machine_shoulder_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 15,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "kettlebell-thruster",
+      "name": "Kettlebell Thruster",
+      "pattern": "push_v",
+      "loadType": "kettlebell",
+      "equipment": [
+        "kettlebell"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "quads",
+        "glutes",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "thruster",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 6,
+      "repHigh": 12,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "kettlebell-jerk",
+      "name": "Kettlebell Jerk",
+      "pattern": "explosive",
+      "loadType": "kettlebell",
+      "equipment": [
+        "kettlebell"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "triceps",
+        "quads"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "jerk",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 3,
+      "repHigh": 8,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "single-arm-kettlebell-jerk",
+      "name": "Single-Arm Kettlebell Jerk",
+      "pattern": "explosive",
+      "loadType": "kettlebell",
+      "equipment": [
+        "kettlebell"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "triceps",
+        "quads"
+      ],
+      "stabilises": [
+        "abs",
+        "obliques"
+      ],
+      "fatigueCost": 3,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "jerk",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 3,
+      "repHigh": 8,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "handstand-push-up",
+      "name": "Handstand Push-Up",
+      "pattern": "push_v",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "triceps",
+        "upper_back"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 5,
+      "defaultRIR": 2,
+      "restSeconds": 150,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": "ring-muscle-up",
+      "exerciseFamily": "pike_push_up",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 3,
+      "repHigh": 8,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "single-arm-linear-jammer",
+      "name": "Single-Arm Linear Jammer",
+      "pattern": "push_v",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "landmine"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "triceps",
+        "obliques"
+      ],
+      "stabilises": [
+        "abs",
+        "obliques"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "landmine_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 8,
+      "repHigh": 12,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "plate-front-raise",
+      "name": "Plate Front Raise",
+      "pattern": "isolation",
+      "loadType": "implement",
+      "equipment": [
+        "plate"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "front_raise",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "incline-front-raise",
+      "name": "Incline Front Raise",
+      "pattern": "isolation",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "front_raise",
+      "jointLoad": [],
+      "romBias": "stretch",
+      "angle": "incline",
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "barbell-front-raise",
+      "name": "Barbell Front Raise",
+      "pattern": "isolation",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "front_raise",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "dumbbell-scaption",
+      "name": "Dumbbell Scaption",
+      "pattern": "isolation",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "side_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "front_raise",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 12,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "seated-lateral-raise",
+      "name": "Seated Lateral Raise",
+      "pattern": "isolation",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "side_delts"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "lateral_raise",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "single-arm-lateral-raise",
+      "name": "Single-Arm Lateral Raise",
+      "pattern": "isolation",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "side_delts"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs",
+        "obliques"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "lateral_raise",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "cuban-press",
+      "name": "Cuban Press",
+      "pattern": "isolation",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "side_delts"
+      ],
+      "secondaryMuscles": [
+        "rear_delts",
+        "front_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "lateral_raise",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "barbell-incline-shoulder-raise",
+      "name": "Barbell Incline Shoulder Raise",
+      "pattern": "isolation",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "upper_back"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "front_raise",
+      "jointLoad": [],
+      "romBias": "shortened",
+      "angle": "incline",
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "dumbbell-external-rotation",
+      "name": "Dumbbell External Rotation",
+      "pattern": "isolation",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "rear_delts"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "external_rotation",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 12,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "cable-external-rotation",
+      "name": "Cable External Rotation",
+      "pattern": "isolation",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "rear_delts"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "external_rotation",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 12,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "band-external-rotation",
+      "name": "Band External Rotation",
+      "pattern": "isolation",
+      "loadType": "band",
+      "equipment": [
+        "bands"
+      ],
+      "primaryMuscles": [
+        "rear_delts"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "external_rotation",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 15,
+      "repHigh": 25,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "band-internal-rotation",
+      "name": "Band Internal Rotation",
+      "pattern": "isolation",
+      "loadType": "band",
+      "equipment": [
+        "bands"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "external_rotation",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 15,
+      "repHigh": 25,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "lying-rear-delt-raise",
+      "name": "Lying Rear Delt Raise",
+      "pattern": "pull_h",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "rear_delts"
+      ],
+      "secondaryMuscles": [
+        "upper_back"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "reverse_fly",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 12,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "single-arm-lying-rear-delt-raise",
+      "name": "Single-Arm Lying Rear Delt Raise",
+      "pattern": "pull_h",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "rear_delts"
+      ],
+      "secondaryMuscles": [
+        "upper_back"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "reverse_fly",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 12,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "seated-bent-over-rear-delt-raise",
+      "name": "Seated Bent-Over Rear Delt Raise",
+      "pattern": "pull_h",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "rear_delts"
+      ],
+      "secondaryMuscles": [
+        "upper_back"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "reverse_fly",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 12,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "band-reverse-fly",
+      "name": "Band Reverse Fly",
+      "pattern": "pull_h",
+      "loadType": "band",
+      "equipment": [
+        "bands"
+      ],
+      "primaryMuscles": [
+        "rear_delts"
+      ],
+      "secondaryMuscles": [
+        "upper_back"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "reverse_fly",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 15,
+      "repHigh": 25,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "sled-reverse-fly",
+      "name": "Sled Reverse Fly",
+      "pattern": "pull_h",
+      "loadType": "implement",
+      "equipment": [
+        "sled"
+      ],
+      "primaryMuscles": [
+        "rear_delts"
+      ],
+      "secondaryMuscles": [
+        "upper_back"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "reverse_fly",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "barbell-rear-delt-row",
+      "name": "Barbell Rear Delt Row",
+      "pattern": "pull_h",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell"
+      ],
+      "primaryMuscles": [
+        "rear_delts"
+      ],
+      "secondaryMuscles": [
+        "upper_back",
+        "mid_back"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "reverse_fly",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": "wide",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "cable-rear-delt-row",
+      "name": "Cable Rear Delt Row",
+      "pattern": "pull_h",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "rear_delts"
+      ],
+      "secondaryMuscles": [
+        "upper_back",
+        "traps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "face_pull",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "low-pulley-row-to-neck",
+      "name": "Low Pulley Row To Neck",
+      "pattern": "pull_h",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "rear_delts"
+      ],
+      "secondaryMuscles": [
+        "traps",
+        "upper_back"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "face_pull",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "dumbbell-upright-row",
+      "name": "Dumbbell Upright Row",
+      "pattern": "pull_v",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "traps"
+      ],
+      "secondaryMuscles": [
+        "side_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "upright_row",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 10,
+      "repHigh": 15,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "cable-upright-row",
+      "name": "Cable Upright Row",
+      "pattern": "pull_v",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "traps"
+      ],
+      "secondaryMuscles": [
+        "side_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "upright_row",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 15,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "band-upright-row",
+      "name": "Band Upright Row",
+      "pattern": "pull_v",
+      "loadType": "band",
+      "equipment": [
+        "bands"
+      ],
+      "primaryMuscles": [
+        "traps"
+      ],
+      "secondaryMuscles": [
+        "side_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "upright_row",
+      "jointLoad": [],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 12,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "smith-machine-upright-row",
+      "name": "Smith Machine Upright Row",
+      "pattern": "pull_v",
+      "loadType": "barbell",
+      "equipment": [
+        "smith_machine"
+      ],
+      "primaryMuscles": [
+        "traps"
+      ],
+      "secondaryMuscles": [
+        "side_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "upright_row",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 1,
+      "repLow": 10,
+      "repHigh": 15,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "sled-overhead-backward-walk",
+      "name": "Sled Overhead Backward Walk",
+      "pattern": "carry",
+      "loadType": "implement",
+      "equipment": [
+        "sled"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "upper_back",
+        "abs"
+      ],
+      "stabilises": [
+        "abs",
+        "erectors"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_distance",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "sled",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 20,
+      "repHigh": 40,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
       "id": "barbell-curl",
       "name": "Barbell Curl",
       "pattern": "isolation",
