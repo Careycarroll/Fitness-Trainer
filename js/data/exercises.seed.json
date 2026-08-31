@@ -8252,6 +8252,746 @@
       "sourceFile": "06_chest.csv"
     },
     {
+      "id": "guillotine-bench-press",
+      "name": "Guillotine Bench Press",
+      "pattern": "push_h",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "bench",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "front_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "bench_press",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": "stretch",
+      "angle": "flat",
+      "grip": "wide",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 6,
+      "repHigh": 12,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "neck-press",
+      "name": "Neck Press",
+      "pattern": "push_h",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "bench",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "front_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "bench_press",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": "stretch",
+      "angle": "flat",
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 6,
+      "repHigh": 12,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "band-bench-press",
+      "name": "Band Bench Press",
+      "pattern": "push_h",
+      "loadType": "band",
+      "equipment": [
+        "bands",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "front_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "bench_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "flat",
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "smith-machine-decline-press",
+      "name": "Smith Machine Decline Press",
+      "pattern": "push_h",
+      "loadType": "barbell",
+      "equipment": [
+        "smith_machine",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "triceps",
+        "front_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "bench_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "decline",
+      "grip": null,
+      "headBias": null,
+      "stability": 1,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "smith-machine-incline-press",
+      "name": "Smith Machine Incline Press",
+      "pattern": "push_h",
+      "loadType": "barbell",
+      "equipment": [
+        "smith_machine",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "front_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "bench_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "incline",
+      "grip": null,
+      "headBias": null,
+      "stability": 1,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "machine-decline-press",
+      "name": "Machine Decline Press",
+      "pattern": "push_h",
+      "loadType": "machine",
+      "equipment": [
+        "chest_press_machine"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "triceps",
+        "front_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "chest_press_machine",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "decline",
+      "grip": null,
+      "headBias": null,
+      "stability": 1,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "single-arm-dumbbell-bench-press",
+      "name": "Single-Arm Dumbbell Bench Press",
+      "pattern": "push_h",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "front_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs",
+        "obliques"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "dumbbell_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "flat",
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "neutral-grip-dumbbell-bench-press",
+      "name": "Neutral-Grip Dumbbell Bench Press",
+      "pattern": "push_h",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "triceps",
+        "front_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "dumbbell_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "flat",
+      "grip": "close",
+      "headBias": null,
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "kettlebell-floor-press",
+      "name": "Kettlebell Floor Press",
+      "pattern": "push_h",
+      "loadType": "kettlebell",
+      "equipment": [
+        "kettlebell"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "triceps",
+        "front_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "dumbbell_press",
+      "jointLoad": [],
+      "romBias": "shortened",
+      "angle": "flat",
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "cable-chest-press",
+      "name": "Cable Chest Press",
+      "pattern": "push_h",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "front_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 75,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "cable_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "flat",
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 15,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "incline-cable-chest-press",
+      "name": "Incline Cable Chest Press",
+      "pattern": "push_h",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "front_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 75,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "cable_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "incline",
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 15,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "standing-cable-chest-press",
+      "name": "Standing Cable Chest Press",
+      "pattern": "push_h",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "front_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs",
+        "obliques"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 75,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "cable_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "flat",
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 15,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "single-arm-cable-fly",
+      "name": "Single-Arm Cable Fly",
+      "pattern": "push_h",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "front_delts"
+      ],
+      "stabilises": [
+        "abs",
+        "obliques"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "cable_fly",
+      "jointLoad": [],
+      "romBias": "stretch",
+      "angle": "flat",
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "decline-dumbbell-fly",
+      "name": "Decline Dumbbell Fly",
+      "pattern": "push_h",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "front_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "dumbbell_fly",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": "stretch",
+      "angle": "decline",
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 10,
+      "repHigh": 15,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "single-arm-dumbbell-fly",
+      "name": "Single-Arm Dumbbell Fly",
+      "pattern": "push_h",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "front_delts"
+      ],
+      "stabilises": [
+        "abs",
+        "obliques"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "dumbbell_fly",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": "stretch",
+      "angle": "flat",
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "svend-press",
+      "name": "Svend Press",
+      "pattern": "push_h",
+      "loadType": "implement",
+      "equipment": [
+        "plate"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "front_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "plate_press",
+      "jointLoad": [],
+      "romBias": "shortened",
+      "angle": "flat",
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "06_chest.csv"
+    },
+    {
       "id": "pull-up",
       "name": "Pull-Up",
       "pattern": "pull_v",

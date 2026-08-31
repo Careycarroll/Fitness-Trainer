@@ -122,6 +122,18 @@
       ],
       "source": "authored"
     },
+    "band-bench-press": {
+      "steps": [
+        "Using a flat bench secure a band under the leg of the bench that is nearest to your head.",
+        "Once the band is secure, grab it by both handles and lie down on the bench.",
+        "Extend your arms so that you are holding the band handles in front of you at shoulder width.",
+        "Once at shoulder width, rotate your wrists forward so that the palms of your hands are facing away from you. This will be your starting position.",
+        "Bring down the handles slowly until your elbow forms a 90 degree angle. Keep full control at all times.",
+        "As you breathe out, bring the handles up using your pectoral muscles. Lock your arms in the contracted position, squeeze your chest, hold for a second and then start coming down slowly. Tip: It should take at least twice as long to go down than to come up.",
+        "Repeat the movement for the prescribed amount of repetitions of your training program."
+      ],
+      "source": "free-exercise-db"
+    },
     "band-calf-raise": {
       "steps": [
         "Grab an exercise band and stand on it with your toes making sure that the length of the band between the foot and the arms is the same for both sides.",
@@ -492,6 +504,15 @@
         "Drive up through the front leg. Complete all reps before switching sides."
       ],
       "source": "authored"
+    },
+    "cable-chest-press": {
+      "steps": [
+        "Adjust the weight to an appropriate amount and be seated, grasping the handles. Your upper arms should be about 45 degrees to the body, with your head and chest up. The elbows should be bent to about 90 degrees. This will be your starting position.",
+        "Begin by extending through the elbow, pressing the handles together straight in front of you. Keep your shoulder blades retracted as you execute the movement.",
+        "After pausing at full extension, return to th starting position, keeping tension on the cables.",
+        "You can also execute this movement with your back off the pad, at an incline or decline, or alternate hands."
+      ],
+      "source": "free-exercise-db"
     },
     "cable-crunch": {
       "steps": [
@@ -870,6 +891,16 @@
         "After a second pause, bring the bar back to the starting position as you breathe out and push the bar using your chest muscles. Lock your arms and squeeze your chest in the contracted position, hold for a second and then start coming down slowly again. Tip: It should take at least twice as long to go down than to come up).",
         "Repeat the movement for the prescribed amount of repetitions.",
         "When you are done, place the bar back in the rack."
+      ],
+      "source": "free-exercise-db"
+    },
+    "decline-dumbbell-fly": {
+      "steps": [
+        "Secure your legs at the end of the decline bench and lie down with a dumbbell on each hand on top of your thighs. The palms of your hand will be facing each other.",
+        "Once you are laying down, move the dumbbells in front of you at shoulder width. The palms of the hands should be facing each other and the arms should be perpendicular to the floor and fully extended. This will be your starting position.",
+        "With a slight bend on your elbows in order to prevent stress at the biceps tendon, lower your arms out at both sides in a wide arc until you feel a stretch on your chest. Breathe in as you perform this portion of the movement. Tip: Keep in mind that throughout the movement, the arms should remain stationary; the movement should only occur at the shoulder joint.",
+        "Return your arms back to the starting position as you squeeze your chest muscles and breathe out. Tip: Make sure to use the same arc of motion used to lower the weights.",
+        "Hold for a second at the contracted position and repeat the movement for the prescribed amount of repetitions."
       ],
       "source": "free-exercise-db"
     },
@@ -1332,6 +1363,16 @@
       ],
       "source": "free-exercise-db"
     },
+    "guillotine-bench-press": {
+      "steps": [
+        "Using a medium width grip (a grip that creates a 90-degree angle in the middle of the movement between the forearms and the upper arms), lift the bar from the rack and hold it straight over your neck with your arms locked. This will be your starting position.",
+        "As you breathe in, bring the bar down slowly until it is about 1 inch from your neck.",
+        "After a second pause, bring the bar back to the starting position as you breathe out and push the bar using your chest muscles. Lock your arms and squeeze your chest in the contracted position, hold for a second and then start coming down slowly again. It should take at least twice as long to go down than to come up.",
+        "Repeat the movement for the prescribed amount of repetitions.",
+        "When you are done, place the bar back in the rack."
+      ],
+      "source": "free-exercise-db"
+    },
     "hack-squat": {
       "steps": [
         "Place the back of your torso against the back pad of the machine and hook your shoulders under the shoulder pads provided.",
@@ -1448,6 +1489,14 @@
       ],
       "source": "free-exercise-db"
     },
+    "incline-cable-chest-press": {
+      "steps": [
+        "Adjust the weight to an appropriate amount and be seated, grasping the handles. Your upper arms should be about 45 degrees to the body, with your head and chest up. The elbows should be bent to about 90 degrees. This will be your starting position.",
+        "Begin by extending through the elbow, pressing the handles together straight in front of you. Keep your shoulder blades retracted as you execute the movement.",
+        "After pausing at full extension, return to the starting position, keeping tension on the cables."
+      ],
+      "source": "free-exercise-db"
+    },
     "incline-dumbbell-curl": {
       "steps": [
         "Sit down on an incline bench with a dumbbell in each hand being held at arms length. Tip: Keep the elbows close to the torso.This will be your starting position.",
@@ -1524,6 +1573,14 @@
         "Place kettlebell between your feet. To get in the starting position, push your butt back and look straight ahead.",
         "Clean kettlebell to your shoulder. Clean the kettlebell to your shoulders by extending through the legs and hips as you raise the kettlebell towards your shoulder. The wrist should rotate as you do so.",
         "Lower kettlebell to a hanging position between your legs while keeping the hamstrings loaded. Keep your head up at all times."
+      ],
+      "source": "free-exercise-db"
+    },
+    "kettlebell-floor-press": {
+      "steps": [
+        "Lie on the floor holding a kettlebell with one hand, with your upper arm supported by the floor. The palm should be facing in.",
+        "Press the kettlebell straight up toward the ceiling, rotating your wrist.",
+        "Lower the kettlebell back to the starting position and repeat."
       ],
       "source": "free-exercise-db"
     },
@@ -1757,6 +1814,14 @@
       ],
       "source": "free-exercise-db"
     },
+    "machine-decline-press": {
+      "steps": [
+        "Load an appropriate weight onto the pins and adjust the seat for your height. The handles should be near the bottom of the pectorals at the beginning of the motion. Your chest and head should be up and your shoulder blades retracted. This will be your starting position.",
+        "Press the handles forward by extending through the elbow.",
+        "After a brief pause at the top, return the weight just above the start position, keeping tension on the muscles by not returning the weight to the stops until the set is complete."
+      ],
+      "source": "free-exercise-db"
+    },
     "machine-hip-abduction": {
       "steps": [
         "To begin, sit down on the abductor machine and select a weight you are comfortable with. When your legs are positioned properly, grip the handles on each side. Your entire upper body (from the waist up) should be stationary. This is the starting position.",
@@ -1885,6 +1950,25 @@
         "Use light load and slow tempo. This is the one place where chasing load is not worth what it risks."
       ],
       "source": "authored"
+    },
+    "neck-press": {
+      "steps": [
+        "Lie back on a flat bench. Using a medium-width grip (a grip that creates a 90-degree angle in the middle of the movement between the forearms and the upper arms), lift the bar from the rack and hold it straight over your neck with your arms locked. This will be your starting position.",
+        "As you breathe in, come down slowly until you feel the bar on your neck.",
+        "After a second pause, bring the bar back to the starting position as you breathe out and push the bar using your chest muscles. Lock your arms and squeeze your chest in the contracted position, hold for a second and then start coming down slowly again. Tip: It should take at least twice as long to go down than to come up).",
+        "Repeat the movement for the prescribed amount of repetitions.",
+        "When you are done, place the bar back in the rack."
+      ],
+      "source": "free-exercise-db"
+    },
+    "neutral-grip-dumbbell-bench-press": {
+      "steps": [
+        "Take a dumbbell in each hand and lay back onto a flat bench. Your feet should be flat on the floor and your shoulder blades retracted.",
+        "Maintaining a neutral grip, palms facing each other, begin with your arms extended directly above you, perpendicular to the floor. This will be your starting position.",
+        "Begin the movement by flexing the elbow, lowering the upper arms to the side. Descend until the dumbbells are to your torso.",
+        "Pause, then extend the elbow and return to the starting position."
+      ],
+      "source": "free-exercise-db"
     },
     "neutral-grip-pull-up": {
       "steps": [
@@ -2458,12 +2542,45 @@
       ],
       "source": "authored"
     },
+    "single-arm-cable-fly": {
+      "steps": [
+        "Begin by moving the pulleys to the high position, select the resistance to be used, and take a handle in each hand.",
+        "Step forward in front of both pulleys with your arms extended in front of you, bringing your hands together. Your head and chest should be up as you lean forward, while your feet should be staggered. This will be your starting position.",
+        "Keeping your left arm in place, allow your right arm to extend out to the side, maintaining a slight bend at the elbow. The right arm should be perpendicular to the body at approximately shoulder level.",
+        "Return your arm back to the starting position by pulling your hand back to the midline of the body.",
+        "Hold for a second at the starting position and repeat the movement on the opposite side. Continue alternating back and forth for the prescribed number of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
     "single-arm-cable-row": {
       "steps": [
         "Attach a single handle to a high pulley and make your weight selection.",
         "Kneel in front of the cable tower, taking the cable with one hand with your arm extended. This will be your starting position.",
         "Starting with your palm facing forward, pull the weight down to your torso by flexing the elbow and retract the shoulder blade. As you do so, rotate the wrist so that at the completion of the movement, your palm is now facing you.",
         "After a brief pause, return to the starting position."
+      ],
+      "source": "free-exercise-db"
+    },
+    "single-arm-dumbbell-bench-press": {
+      "steps": [
+        "Lie down on a flat bench with a dumbbell in one hand on top of your thigh.",
+        "By using your thigh to help you get the dumbbell up, clean the dumbbell up so that you can hold it in front of you at shoulder width. Use the hand you are not lifting with to help position the dumbbell over you properly.",
+        "Once at shoulder width, rotate your wrist forward so that the palm of your hand is facing away from you. This will be your starting position.",
+        "Bring down the weights slowly to your side as you breathe in. Keep full control of the dumbbell at all times. Tip: Use the hand that you are not lifting with to help keep the dumbbell balance as you may struggle a bit at first. Only use your non-lifting hand if it is needed. Otherwise, keep it resting to the side.",
+        "As you breathe out, push the dumbbells up using your pectoral muscles. Lock your arms in the contracted position, squeeze your chest, hold for a second and then start coming down slowly. Tip: It should take at least twice as long to go down than to come up.",
+        "Repeat the movement for the prescribed amount of repetitions of your training program.",
+        "Switch arms and repeat the movement."
+      ],
+      "source": "free-exercise-db"
+    },
+    "single-arm-dumbbell-fly": {
+      "steps": [
+        "Lie down on a flat bench with a dumbbell in one hand resting on top of your thigh. The palm of your hand with the dumbbell in it should be at a neutral grip.",
+        "By using your thighs to help you get the dumbbell up, clean the dumbbell so that you can hold it in front of you with your lifting arm being fully extended. Remember to maintain a neutral grip with this exercise. Your non lifting hand should be to the side holding the flat bench for better support. This will be your starting position.",
+        "Your arm with the weight should have a slight bend on your elbow in order to prevent stress at the biceps tendon. Begin by lowering your arm with the weight in it out in a wide arc until you feel a stretch on your chest. Breathe in as you perform this portion of the movement. Tip: Keep in mind that throughout the movement, your lifting arm should remain stationary; the movement should only occur at the shoulder joint.",
+        "Return your lifting arm back to the starting position as you squeeze your chest muscles and breathe out. Tip: Make sure to use the same arc of motion used to lower the weights.",
+        "Hold for a second at the contracted position and repeat the movement for the prescribed amount of repetitions.",
+        "Switch arms and repeat the exercise."
       ],
       "source": "free-exercise-db"
     },
@@ -2645,6 +2762,26 @@
       ],
       "source": "free-exercise-db"
     },
+    "smith-machine-decline-press": {
+      "steps": [
+        "Position a decline bench in the rack so that the bar will be above your chest. Load an appropriate weight and take your place on the bench.",
+        "Rotate the bar to unhook it from the rack and fully extend your arms. Your back should be slightly arched and your shoulder blades retracted. This will be your starting position.",
+        "Begin the movement by flexing your arms, lowering the bar to your chest.",
+        "Pause briefly, and then extend your arms to push the weight back to the starting position.",
+        "After completing the desired number of repetitions, rotate the bar to rack the weight."
+      ],
+      "source": "free-exercise-db"
+    },
+    "smith-machine-incline-press": {
+      "steps": [
+        "Place an incline bench underneath the smith machine. Place the barbell at a height that you can reach when lying down and your arms are almost fully extended. Once the weight you need is selected, lie down on the incline bench and make sure your upper chest is aligned with the barbell. Using a pronated grip (palms facing forward) that is wider than shoulder width, unlock the bar from the rack and hold it straight over you with your arms locked. This will be your starting position.",
+        "As you breathe in, come down slowly until you feel the bar on your upper chest.",
+        "After a second pause, bring the bar back to the starting position as you breathe out and push the bar using your chest muscles. Lock your arms in the contracted position, hold for a second and then start coming down slowly again. Tip: It should take at least twice as long to go down than to come up.",
+        "Repeat the movement for the prescribed amount of repetitions.",
+        "When you are done, place the bar back in the rack."
+      ],
+      "source": "free-exercise-db"
+    },
     "smith-machine-reverse-calf-raise": {
       "steps": [
         "Adjust the barbell on the smith machine to fit your height and align a raised platform right under the bar.",
@@ -2763,6 +2900,15 @@
         "Keep your torso upright. Only the leg moves."
       ],
       "source": "authored"
+    },
+    "standing-cable-chest-press": {
+      "steps": [
+        "Position dual pulleys to chest height and select an appropriate weight. Stand a foot or two in front of the cables, holding one in each hand. You can stagger your stance for better stability.",
+        "Position the upper arm at a 90 degree angle with the shoulder blades together. This will be your starting position.",
+        "Keeping the rest of the body stationary, extend through the elbows to press the handles forward, drawing them together in front of you.",
+        "Pause at the top of the motion, and return to the starting position."
+      ],
+      "source": "free-exercise-db"
     },
     "standing-calf-raise": {
       "steps": [
@@ -2901,6 +3047,15 @@
         "The steeper your lean, the harder it is."
       ],
       "source": "authored"
+    },
+    "svend-press": {
+      "steps": [
+        "Begin in a standing position.",
+        "Press two lightweight plates together with your hands. Hold the plates together close to your chest to create an isometric contraction in your chest muscles. Your fingers should be pointed forward. This is your starting position.",
+        "Squeeze the plates between your palms and extend your arms directly out in front of you in a controlled motion.",
+        "Pause at the top of the motion, and then slowly return to the starting position."
+      ],
+      "source": "free-exercise-db"
     },
     "t-bar-row": {
       "steps": [
