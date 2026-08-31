@@ -1,46 +1,46 @@
-name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,rom_bias,angle,grip,head_bias,joint_load,skill_gate,stabilises,selectable
-Barbell Bench Press,barbell-bench-press,bench_press,strength,push_h,chest,triceps|front_delts,barbell|bench|rack,TRUE,4,3,3,8,180,FALSE,weight_reps,,flat,,,shoulder,,,TRUE
-Incline Barbell Press,incline-barbell-press,bench_press,strength,push_h,chest|front_delts,triceps,barbell|bench|rack,TRUE,3,3,5,10,150,FALSE,weight_reps,,incline,,,shoulder,,,TRUE
-Decline Barbell Press,decline-barbell-press,bench_press,strength,push_h,chest,triceps|front_delts,barbell|bench|rack,TRUE,3,3,6,10,150,FALSE,weight_reps,,decline,,,,,,TRUE
-Barbell Floor Press,barbell-floor-press,bench_press,strength,push_h,chest|triceps,front_delts,barbell|rack,TRUE,3,2,5,10,150,FALSE,weight_reps,shortened,,,,,,,TRUE
-Smith Machine Bench Press,smith-machine-bench-press,bench_press,strength,push_h,chest,triceps|front_delts,smith_machine|bench,TRUE,3,2,6,10,120,FALSE,weight_reps,,flat,,,shoulder,,,TRUE
-Dumbbell Bench Press,dumbbell-bench-press,dumbbell_press,strength,push_h,chest,triceps|front_delts,dumbbell|bench,TRUE,3,2,6,12,120,FALSE,weight_reps,,flat,,,shoulder,,,TRUE
-Incline Dumbbell Press,incline-dumbbell-press,dumbbell_press,strength,push_h,chest|front_delts,triceps,dumbbell|bench,TRUE,3,2,8,12,120,FALSE,weight_reps,,incline,,,shoulder,,,TRUE
-Decline Dumbbell Press,decline-dumbbell-press,dumbbell_press,strength,push_h,chest,triceps|front_delts,dumbbell|bench,TRUE,2,2,8,12,120,FALSE,weight_reps,,decline,,,,,,TRUE
-Dumbbell Floor Press,dumbbell-floor-press,dumbbell_press,strength,push_h,chest|triceps,front_delts,dumbbell,TRUE,2,1,8,12,90,FALSE,weight_reps,shortened,,,,,,,TRUE
-Machine Chest Press,machine-chest-press,machine_press,strength,push_h,chest,triceps|front_delts,chest_press_machine,TRUE,2,1,8,15,90,FALSE,weight_reps,,flat,,,,,,TRUE
-Incline Machine Press,incline-machine-press,machine_press,strength,push_h,chest|front_delts,triceps,incline_press_machine,TRUE,2,1,8,15,90,FALSE,weight_reps,,incline,,,,,,TRUE
-Weighted Dip,weighted-dip,dip,strength,push_h,chest|triceps,front_delts,dip_bar|dip_belt,TRUE,3,3,5,10,150,FALSE,weight_reps,,decline,,,shoulder,,,TRUE
-Chest Dip,chest-dip,dip,strength,push_h,chest|triceps,front_delts,dip_bar,TRUE,2,2,6,12,120,FALSE,reps_only,,decline,,,shoulder,,,TRUE
-Push-Up,push-up,push_up,strength,push_h,chest,triceps|front_delts,bodyweight,TRUE,1,1,10,25,60,FALSE,reps_only,,flat,,,,,abs,TRUE
-Feet-Elevated Push-Up,feet-elevated-push-up,push_up,strength,push_h,chest|front_delts,triceps,bodyweight|box,TRUE,1,1,8,20,60,FALSE,reps_only,,incline,,,shoulder,,abs,TRUE
-Hands-Elevated Push-Up,hands-elevated-push-up,push_up,strength,push_h,chest,triceps|front_delts,bodyweight|box,TRUE,1,1,12,30,45,FALSE,reps_only,,decline,,,,,,TRUE
-Deficit Push-Up,deficit-push-up,push_up,strength,push_h,chest,triceps|front_delts,bodyweight|dumbbell,TRUE,2,1,8,20,60,FALSE,reps_only,stretch,,,,shoulder,,,TRUE
-Band-Resisted Push-Up,band-resisted-push-up,push_up,strength,push_h,chest,triceps|front_delts,bodyweight|bands,TRUE,1,2,8,20,60,FALSE,reps_only,shortened,,,,,,,TRUE
-Weighted Push-Up,weighted-push-up,push_up,strength,push_h,chest,triceps|front_delts,bodyweight|plate,TRUE,2,2,6,15,90,FALSE,weight_reps,,flat,,,wrist,,,TRUE
-Suspension Push-Up,suspension-push-up,push_up,strength,push_h,chest,triceps|front_delts,bodyweight|suspension_trainer,TRUE,2,3,8,15,60,FALSE,reps_only,stretch,,,,shoulder,,abs,TRUE
-Plyometric Push-Up,plyometric-push-up,push_up,strength,explosive,chest,triceps|front_delts,bodyweight,TRUE,2,2,3,8,120,FALSE,reps_only,,,,,wrist|elbow,,,TRUE
-Single-Arm Push-Up,single-arm-push-up,push_up,strength,push_h,chest,triceps|obliques,bodyweight,TRUE,2,4,3,8,90,TRUE,reps_only,,,,,wrist|shoulder,,abs,TRUE
-Cable Fly,cable-fly,fly,strength,push_h,chest,front_delts,cable,FALSE,1,1,10,20,60,FALSE,weight_reps,stretch,,,,shoulder,,,TRUE
-Low-to-High Cable Fly,low-to-high-cable-fly,fly,strength,push_h,chest|front_delts,,cable,FALSE,1,1,12,20,60,FALSE,weight_reps,,incline,,,shoulder,,,TRUE
-High-to-Low Cable Fly,high-to-low-cable-fly,fly,strength,push_h,chest,front_delts,cable,FALSE,1,1,12,20,60,FALSE,weight_reps,,decline,,,,,,TRUE
-Dumbbell Fly,dumbbell-fly,fly,strength,push_h,chest,front_delts,dumbbell|bench,FALSE,1,2,10,15,60,FALSE,weight_reps,stretch,,,,shoulder,,,TRUE
-Pec Deck,pec-deck,fly,strength,push_h,chest,front_delts,pec_deck,FALSE,1,1,10,20,60,FALSE,weight_reps,shortened,,,,shoulder,,,TRUE
-Ring Push-Up,ring-push-up,push_up,strength,push_h,chest,triceps|front_delts,bodyweight|rings,TRUE,2,3,8,15,60,FALSE,reps_only,stretch,,,,shoulder,,abs,TRUE
-Ring Dip,ring-dip,dip,strength,push_h,chest|triceps,front_delts,rings,TRUE,2,3,5,10,120,FALSE,reps_only,,decline,,,shoulder,,,TRUE
-Guillotine Bench Press,guillotine-bench-press,bench_press,strength,push_h,chest,front_delts|triceps,barbell|bench|rack,TRUE,4,4,6,12,120,FALSE,weight_reps,stretch,flat,wide,,shoulder,,abs,FALSE
-Neck Press,neck-press,bench_press,strength,push_h,chest,front_delts|triceps,barbell|bench|rack,TRUE,4,4,6,12,120,FALSE,weight_reps,stretch,flat,,,shoulder,,abs,FALSE
-Band Bench Press,band-bench-press,bench_press,strength,push_h,chest,front_delts|triceps,bands|bench,TRUE,2,2,10,20,60,FALSE,reps_only,,flat,,,,,abs,FALSE
-Smith Machine Decline Press,smith-machine-decline-press,bench_press,strength,push_h,chest,triceps|front_delts,smith_machine|bench,TRUE,3,2,8,15,90,FALSE,weight_reps,,decline,,,,,abs,FALSE
-Smith Machine Incline Press,smith-machine-incline-press,bench_press,strength,push_h,chest,front_delts|triceps,smith_machine|bench,TRUE,3,2,8,15,90,FALSE,weight_reps,,incline,,,,,abs,FALSE
-Machine Decline Press,machine-decline-press,machine_press,strength,push_h,chest,triceps|front_delts,chest_press_machine,TRUE,3,1,8,15,90,FALSE,weight_reps,,decline,,,,,abs,FALSE
-Single-Arm Dumbbell Bench Press,single-arm-dumbbell-bench-press,dumbbell_press,strength,push_h,chest,front_delts|triceps,dumbbell|bench,TRUE,3,3,8,15,90,TRUE,weight_reps,,flat,,,,,abs|obliques,FALSE
-Neutral-Grip Dumbbell Bench Press,neutral-grip-dumbbell-bench-press,dumbbell_press,strength,push_h,chest,triceps|front_delts,dumbbell|bench,TRUE,3,2,8,15,90,FALSE,weight_reps,,flat,close,,,,abs,FALSE
-Kettlebell Floor Press,kettlebell-floor-press,dumbbell_press,strength,push_h,chest,triceps|front_delts,kettlebell,TRUE,3,3,8,15,90,TRUE,weight_reps,shortened,flat,,,,,abs,FALSE
-Cable Chest Press,cable-chest-press,cable_press,strength,push_h,chest,front_delts|triceps,cable,TRUE,2,2,10,15,75,FALSE,weight_reps,,flat,,,,,abs,FALSE
-Incline Cable Chest Press,incline-cable-chest-press,cable_press,strength,push_h,chest,front_delts|triceps,cable,TRUE,2,2,10,15,75,FALSE,weight_reps,,incline,,,,,abs,FALSE
-Standing Cable Chest Press,standing-cable-chest-press,cable_press,strength,push_h,chest,front_delts|triceps,cable,TRUE,2,3,10,15,75,FALSE,weight_reps,,flat,,,,,abs|obliques,FALSE
-Single-Arm Cable Fly,single-arm-cable-fly,fly,strength,push_h,chest,front_delts,cable,FALSE,1,2,10,20,60,TRUE,weight_reps,stretch,flat,,,,,abs|obliques,FALSE
-Decline Dumbbell Fly,decline-dumbbell-fly,fly,strength,push_h,chest,front_delts,dumbbell|bench,FALSE,2,2,10,15,60,FALSE,weight_reps,stretch,decline,,,shoulder,,abs,FALSE
-Single-Arm Dumbbell Fly,single-arm-dumbbell-fly,fly,strength,push_h,chest,front_delts,dumbbell|bench,FALSE,1,2,10,20,60,TRUE,weight_reps,stretch,flat,,,shoulder,,abs|obliques,FALSE
-Svend Press,svend-press,plate_press,strength,push_h,chest,front_delts|triceps,plate,FALSE,1,2,10,20,45,FALSE,reps_only,shortened,flat,,,,,abs,FALSE
+name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,rom_bias,angle,grip_width,grip_orientation,head_bias,joint_load,skill_gate,stabilises,selectable
+Barbell Bench Press,barbell-bench-press,bench_press,strength,push_h,chest,triceps|front_delts,barbell|bench|rack,TRUE,4,3,3,8,180,FALSE,weight_reps,,flat,,,,shoulder,,,TRUE
+Incline Barbell Press,incline-barbell-press,bench_press,strength,push_h,chest|front_delts,triceps,barbell|bench|rack,TRUE,3,3,5,10,150,FALSE,weight_reps,,incline,,,,shoulder,,,TRUE
+Decline Barbell Press,decline-barbell-press,bench_press,strength,push_h,chest,triceps|front_delts,barbell|bench|rack,TRUE,3,3,6,10,150,FALSE,weight_reps,,decline,,,,,,,TRUE
+Barbell Floor Press,barbell-floor-press,bench_press,strength,push_h,chest|triceps,front_delts,barbell|rack,TRUE,3,2,5,10,150,FALSE,weight_reps,shortened,,,,,,,,TRUE
+Smith Machine Bench Press,smith-machine-bench-press,bench_press,strength,push_h,chest,triceps|front_delts,smith_machine|bench,TRUE,3,2,6,10,120,FALSE,weight_reps,,flat,,,,shoulder,,,TRUE
+Dumbbell Bench Press,dumbbell-bench-press,dumbbell_press,strength,push_h,chest,triceps|front_delts,dumbbell|bench,TRUE,3,2,6,12,120,FALSE,weight_reps,,flat,,,,shoulder,,,TRUE
+Incline Dumbbell Press,incline-dumbbell-press,dumbbell_press,strength,push_h,chest|front_delts,triceps,dumbbell|bench,TRUE,3,2,8,12,120,FALSE,weight_reps,,incline,,,,shoulder,,,TRUE
+Decline Dumbbell Press,decline-dumbbell-press,dumbbell_press,strength,push_h,chest,triceps|front_delts,dumbbell|bench,TRUE,2,2,8,12,120,FALSE,weight_reps,,decline,,,,,,,TRUE
+Dumbbell Floor Press,dumbbell-floor-press,dumbbell_press,strength,push_h,chest|triceps,front_delts,dumbbell,TRUE,2,1,8,12,90,FALSE,weight_reps,shortened,,,,,,,,TRUE
+Machine Chest Press,machine-chest-press,machine_press,strength,push_h,chest,triceps|front_delts,chest_press_machine,TRUE,2,1,8,15,90,FALSE,weight_reps,,flat,,,,,,,TRUE
+Incline Machine Press,incline-machine-press,machine_press,strength,push_h,chest|front_delts,triceps,incline_press_machine,TRUE,2,1,8,15,90,FALSE,weight_reps,,incline,,,,,,,TRUE
+Weighted Dip,weighted-dip,dip,strength,push_h,chest|triceps,front_delts,dip_bar|dip_belt,TRUE,3,3,5,10,150,FALSE,weight_reps,,decline,,,,shoulder,,,TRUE
+Chest Dip,chest-dip,dip,strength,push_h,chest|triceps,front_delts,dip_bar,TRUE,2,2,6,12,120,FALSE,reps_only,,decline,,,,shoulder,,,TRUE
+Push-Up,push-up,push_up,strength,push_h,chest,triceps|front_delts,bodyweight,TRUE,1,1,10,25,60,FALSE,reps_only,,flat,,,,,,abs,TRUE
+Feet-Elevated Push-Up,feet-elevated-push-up,push_up,strength,push_h,chest|front_delts,triceps,bodyweight|box,TRUE,1,1,8,20,60,FALSE,reps_only,,incline,,,,shoulder,,abs,TRUE
+Hands-Elevated Push-Up,hands-elevated-push-up,push_up,strength,push_h,chest,triceps|front_delts,bodyweight|box,TRUE,1,1,12,30,45,FALSE,reps_only,,decline,,,,,,,TRUE
+Deficit Push-Up,deficit-push-up,push_up,strength,push_h,chest,triceps|front_delts,bodyweight|dumbbell,TRUE,2,1,8,20,60,FALSE,reps_only,stretch,,,,,shoulder,,,TRUE
+Band-Resisted Push-Up,band-resisted-push-up,push_up,strength,push_h,chest,triceps|front_delts,bodyweight|bands,TRUE,1,2,8,20,60,FALSE,reps_only,shortened,,,,,,,,TRUE
+Weighted Push-Up,weighted-push-up,push_up,strength,push_h,chest,triceps|front_delts,bodyweight|plate,TRUE,2,2,6,15,90,FALSE,weight_reps,,flat,,,,wrist,,,TRUE
+Suspension Push-Up,suspension-push-up,push_up,strength,push_h,chest,triceps|front_delts,bodyweight|suspension_trainer,TRUE,2,3,8,15,60,FALSE,reps_only,stretch,,,,,shoulder,,abs,TRUE
+Plyometric Push-Up,plyometric-push-up,push_up,strength,explosive,chest,triceps|front_delts,bodyweight,TRUE,2,2,3,8,120,FALSE,reps_only,,,,,,wrist|elbow,,,TRUE
+Single-Arm Push-Up,single-arm-push-up,push_up,strength,push_h,chest,triceps|obliques,bodyweight,TRUE,2,4,3,8,90,TRUE,reps_only,,,,,,wrist|shoulder,,abs,TRUE
+Cable Fly,cable-fly,fly,strength,push_h,chest,front_delts,cable,FALSE,1,1,10,20,60,FALSE,weight_reps,stretch,,,,,shoulder,,,TRUE
+Low-to-High Cable Fly,low-to-high-cable-fly,fly,strength,push_h,chest|front_delts,,cable,FALSE,1,1,12,20,60,FALSE,weight_reps,,incline,,,,shoulder,,,TRUE
+High-to-Low Cable Fly,high-to-low-cable-fly,fly,strength,push_h,chest,front_delts,cable,FALSE,1,1,12,20,60,FALSE,weight_reps,,decline,,,,,,,TRUE
+Dumbbell Fly,dumbbell-fly,fly,strength,push_h,chest,front_delts,dumbbell|bench,FALSE,1,2,10,15,60,FALSE,weight_reps,stretch,,,,,shoulder,,,TRUE
+Pec Deck,pec-deck,fly,strength,push_h,chest,front_delts,pec_deck,FALSE,1,1,10,20,60,FALSE,weight_reps,shortened,,,,,shoulder,,,TRUE
+Ring Push-Up,ring-push-up,push_up,strength,push_h,chest,triceps|front_delts,bodyweight|rings,TRUE,2,3,8,15,60,FALSE,reps_only,stretch,,,,,shoulder,,abs,TRUE
+Ring Dip,ring-dip,dip,strength,push_h,chest|triceps,front_delts,rings,TRUE,2,3,5,10,120,FALSE,reps_only,,decline,,,,shoulder,,,TRUE
+Guillotine Bench Press,guillotine-bench-press,bench_press,strength,push_h,chest,front_delts|triceps,barbell|bench|rack,TRUE,4,4,6,12,120,FALSE,weight_reps,stretch,flat,wide,,,shoulder,,abs,FALSE
+Neck Press,neck-press,bench_press,strength,push_h,chest,front_delts|triceps,barbell|bench|rack,TRUE,4,4,6,12,120,FALSE,weight_reps,stretch,flat,,,,shoulder,,abs,FALSE
+Band Bench Press,band-bench-press,bench_press,strength,push_h,chest,front_delts|triceps,bands|bench,TRUE,2,2,10,20,60,FALSE,reps_only,,flat,,,,,,abs,FALSE
+Smith Machine Decline Press,smith-machine-decline-press,bench_press,strength,push_h,chest,triceps|front_delts,smith_machine|bench,TRUE,3,2,8,15,90,FALSE,weight_reps,,decline,,,,,,abs,FALSE
+Smith Machine Incline Press,smith-machine-incline-press,bench_press,strength,push_h,chest,front_delts|triceps,smith_machine|bench,TRUE,3,2,8,15,90,FALSE,weight_reps,,incline,,,,,,abs,FALSE
+Machine Decline Press,machine-decline-press,machine_press,strength,push_h,chest,triceps|front_delts,chest_press_machine,TRUE,3,1,8,15,90,FALSE,weight_reps,,decline,,,,,,abs,FALSE
+Single-Arm Dumbbell Bench Press,single-arm-dumbbell-bench-press,dumbbell_press,strength,push_h,chest,front_delts|triceps,dumbbell|bench,TRUE,3,3,8,15,90,TRUE,weight_reps,,flat,,,,,,abs|obliques,FALSE
+Neutral-Grip Dumbbell Bench Press,neutral-grip-dumbbell-bench-press,dumbbell_press,strength,push_h,chest,triceps|front_delts,dumbbell|bench,TRUE,3,2,8,15,90,FALSE,weight_reps,,flat,,neutral,,,,abs,FALSE
+Kettlebell Floor Press,kettlebell-floor-press,dumbbell_press,strength,push_h,chest,triceps|front_delts,kettlebell,TRUE,3,3,8,15,90,TRUE,weight_reps,shortened,flat,,,,,,abs,FALSE
+Cable Chest Press,cable-chest-press,cable_press,strength,push_h,chest,front_delts|triceps,cable,TRUE,2,2,10,15,75,FALSE,weight_reps,,flat,,,,,,abs,FALSE
+Incline Cable Chest Press,incline-cable-chest-press,cable_press,strength,push_h,chest,front_delts|triceps,cable,TRUE,2,2,10,15,75,FALSE,weight_reps,,incline,,,,,,abs,FALSE
+Standing Cable Chest Press,standing-cable-chest-press,cable_press,strength,push_h,chest,front_delts|triceps,cable,TRUE,2,3,10,15,75,FALSE,weight_reps,,flat,,,,,,abs|obliques,FALSE
+Single-Arm Cable Fly,single-arm-cable-fly,fly,strength,push_h,chest,front_delts,cable,FALSE,1,2,10,20,60,TRUE,weight_reps,stretch,flat,,,,,,abs|obliques,FALSE
+Decline Dumbbell Fly,decline-dumbbell-fly,fly,strength,push_h,chest,front_delts,dumbbell|bench,FALSE,2,2,10,15,60,FALSE,weight_reps,stretch,decline,,,,shoulder,,abs,FALSE
+Single-Arm Dumbbell Fly,single-arm-dumbbell-fly,fly,strength,push_h,chest,front_delts,dumbbell|bench,FALSE,1,2,10,20,60,TRUE,weight_reps,stretch,flat,,,,shoulder,,abs|obliques,FALSE
+Svend Press,svend-press,plate_press,strength,push_h,chest,front_delts|triceps,plate,FALSE,1,2,10,20,45,FALSE,reps_only,shortened,flat,,,,,,abs,FALSE

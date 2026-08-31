@@ -164,7 +164,19 @@ export const EQUIPMENT_ALIASES = {};
  */
 export const ROM_BIAS = ['stretch', 'shortened'];
 export const ANGLE = ['flat', 'incline', 'decline', 'overhead'];
-export const GRIP = ['close', 'wide'];
+/**
+ * GRIP is two independent axes.
+ *
+ * WIDTH and ORIENTATION vary separately: a wide-grip pull-up is pronated AND
+ * wide, a close-grip chin-up is supinated AND close. One column could hold one
+ * fact, so `chin-up` was recorded as `close` when a chin-up is shoulder-width
+ * and its distinguishing feature is supination.
+ *
+ * NULL means STANDARD FOR THAT MOVEMENT, not unassessed. A barbell row is
+ * pronated by default and does not record it; underhand-barbell-row does.
+ */
+export const GRIP_WIDTH = ['close', 'wide'];
+export const GRIP_ORIENTATION = ['pronated', 'supinated', 'neutral', 'mixed'];
 export const HEAD_BIAS = ['long', 'short'];
 
 /**

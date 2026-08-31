@@ -1,4 +1,4 @@
-import { ROM_BIAS, ANGLE, GRIP, HEAD_BIAS, STABILITY_MIN, STABILITY_MAX } from './_enums.js';
+import { ROM_BIAS, ANGLE, GRIP_WIDTH, GRIP_ORIENTATION, HEAD_BIAS, STABILITY_MIN, STABILITY_MAX } from './_enums.js';
 
 /**
  * Check 15 — the variant axes are well-formed.
@@ -28,12 +28,13 @@ export default {
   name: 'Variant axes and derived stability',
 
   run(defs, assert) {
-    const seen = { romBias: 0, angle: 0, grip: 0, headBias: 0 };
+    const seen = { romBias: 0, angle: 0, gripWidth: 0, gripOrientation: 0, headBias: 0 };
 
     for (const ex of defs.exercises) {
       for (const [field, vocab] of [
         ['romBias', ROM_BIAS], ['angle', ANGLE],
-        ['grip', GRIP], ['headBias', HEAD_BIAS]
+        ['gripWidth', GRIP_WIDTH], ['gripOrientation', GRIP_ORIENTATION],
+        ['headBias', HEAD_BIAS]
       ]) {
         const v = ex[field];
         if (v == null) continue;

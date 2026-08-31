@@ -317,7 +317,14 @@ def build_record(row: dict, source: str) -> dict:
         # a style-side preference is a separate change with its own before/after.
         "romBias": (row.get("rom_bias") or "").strip() or None,
         "angle": (row.get("angle") or "").strip() or None,
-        "grip": (row.get("grip") or "").strip() or None,
+        # GRIP is TWO axes, not one. The single `grip` column conflated width
+        # with orientation: chin-up was recorded `close` when a chin-up is
+        # roughly shoulder-width and what distinguishes it is SUPINATION — the
+        # reason it trains biceps harder than a pull-up. Five rows were misfiled
+        # this way and twelve more implied an orientation the column could not
+        # hold. Same failure `emphasis` had, one level down.
+        "gripWidth": (row.get("grip_width") or "").strip() or None,
+        "gripOrientation": (row.get("grip_orientation") or "").strip() or None,
         "headBias": (row.get("head_bias") or "").strip() or None,
         # DERIVED, not authored (ADR-012). See STABILITY below.
         "stability": stability_of(derive_load_type(equipment), equipment),
