@@ -24,3 +24,20 @@ Landmine Rotation,landmine-rotation,rotation,strength,core,obliques|abs,front_de
 Russian Twist,russian-twist,rotation,strength,core,obliques|abs,hip_flexors,bodyweight|plate,FALSE,1,1,12,25,45,FALSE,reps_only,,,,,lower_back,,,TRUE
 L-Sit,l-sit,hip_flexor,strength,core,hip_flexors|abs,quads,bodyweight|box,FALSE,2,3,10,30,60,FALSE,time,shortened,,,,shoulder,,,TRUE
 Cable Hip Flexion,cable-hip-flexion,hip_flexor,strength,isolation,hip_flexors,abs,cable,FALSE,1,1,10,20,60,TRUE,weight_reps,,,,,hip,,,TRUE
+Barbell Ab Rollout,barbell-ab-rollout,anti_extension,strength,core,abs,obliques,barbell,FALSE,2,4,6,12,60,FALSE,reps_only,stretch,,,,lower_back,,erectors,FALSE
+Suspension Fallout,suspension-fallout,anti_extension,strength,core,abs,obliques,suspension_trainer,FALSE,2,3,8,15,60,FALSE,reps_only,stretch,,,,lower_back,,erectors,FALSE
+Sit-Up,sit-up,spinal_flexion,strength,core,abs,hip_flexors,bodyweight,FALSE,1,1,12,25,45,FALSE,reps_only,,,,,,,obliques,FALSE
+Weighted Sit-Up,weighted-sit-up,spinal_flexion,strength,core,abs,hip_flexors,bodyweight|plate,FALSE,2,2,8,15,60,FALSE,weight_reps,,,,,,,obliques,FALSE
+Cable Seated Crunch,cable-seated-crunch,spinal_flexion,strength,core,abs,,cable|bench,FALSE,1,2,10,20,45,FALSE,weight_reps,shortened,,,,,,obliques,FALSE
+Cross-Body Crunch,cross-body-crunch,spinal_flexion,strength,core,obliques,abs,bodyweight,FALSE,1,1,12,25,45,TRUE,reps_only,,,,,,,abs,FALSE
+Decline Oblique Crunch,decline-oblique-crunch,side_flexion,strength,core,obliques,abs,bodyweight|bench,FALSE,1,2,10,20,45,TRUE,reps_only,,decline,,,,,abs,FALSE
+Cable Side Bend,cable-side-bend,side_flexion,strength,core,obliques,,cable,FALSE,1,2,10,20,45,TRUE,weight_reps,stretch,,,,,,abs,FALSE
+Barbell Side Bend,barbell-side-bend,side_flexion,strength,core,obliques,,barbell,FALSE,2,2,10,20,45,FALSE,weight_reps,stretch,,,,lower_back,,abs,FALSE
+Side Jackknife,side-jackknife,side_flexion,strength,core,obliques,abs,bodyweight,FALSE,1,2,12,20,45,TRUE,reps_only,,,,,,,abs,FALSE
+Cable Reverse Crunch,cable-reverse-crunch,leg_raise,strength,core,abs,hip_flexors,cable,FALSE,2,3,10,20,60,FALSE,weight_reps,shortened,,,,,,obliques,FALSE
+Suspension Reverse Crunch,suspension-reverse-crunch,leg_raise,strength,core,abs,hip_flexors,suspension_trainer,FALSE,2,3,8,15,60,FALSE,reps_only,,,,,,,obliques,FALSE
+Stability Ball Pull-In,stability-ball-pull-in,leg_raise,strength,core,abs,hip_flexors,bodyweight|stability_ball,FALSE,2,3,10,20,60,FALSE,reps_only,,,,,,,obliques,FALSE
+Hanging Pike,hanging-pike,leg_raise,strength,core,abs,hip_flexors,pullup_bar,FALSE,3,4,5,12,90,FALSE,reps_only,shortened,,,,,,obliques,FALSE
+Standing Cable Lift,standing-cable-lift,rotation,strength,core,obliques,abs,cable,FALSE,2,3,8,15,60,TRUE,weight_reps,,,,,,,abs,FALSE
+Kettlebell Windmill,kettlebell-windmill,rotation,strength,core,obliques,abs|side_delts,kettlebell,TRUE,2,4,6,12,60,TRUE,reps_only,stretch,,,,shoulder,,abs,FALSE
+Plate Twist,plate-twist,rotation,strength,core,obliques,abs,plate,FALSE,1,1,12,25,45,FALSE,reps_only,,,,,,,abs,FALSE

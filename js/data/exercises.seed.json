@@ -19339,6 +19339,761 @@
       "sourceFile": "11_core.csv"
     },
     {
+      "id": "barbell-ab-rollout",
+      "name": "Barbell Ab Rollout",
+      "pattern": "core",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell"
+      ],
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "obliques"
+      ],
+      "stabilises": [
+        "erectors"
+      ],
+      "fatigueCost": 2,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "anti_extension",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 6,
+      "repHigh": 12,
+      "sourceFile": "11_core.csv"
+    },
+    {
+      "id": "suspension-fallout",
+      "name": "Suspension Fallout",
+      "pattern": "core",
+      "loadType": "implement",
+      "equipment": [
+        "suspension_trainer"
+      ],
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "obliques"
+      ],
+      "stabilises": [
+        "erectors"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "anti_extension",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 5,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "11_core.csv"
+    },
+    {
+      "id": "sit-up",
+      "name": "Sit-Up",
+      "pattern": "core",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "hip_flexors"
+      ],
+      "stabilises": [
+        "obliques"
+      ],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "spinal_flexion",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 12,
+      "repHigh": 25,
+      "sourceFile": "11_core.csv"
+    },
+    {
+      "id": "weighted-sit-up",
+      "name": "Weighted Sit-Up",
+      "pattern": "core",
+      "loadType": "implement",
+      "equipment": [
+        "bodyweight",
+        "plate"
+      ],
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "hip_flexors"
+      ],
+      "stabilises": [
+        "obliques"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "spinal_flexion",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "11_core.csv"
+    },
+    {
+      "id": "cable-seated-crunch",
+      "name": "Cable Seated Crunch",
+      "pattern": "core",
+      "loadType": "cable",
+      "equipment": [
+        "cable",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "obliques"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "spinal_flexion",
+      "jointLoad": [],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "11_core.csv"
+    },
+    {
+      "id": "cross-body-crunch",
+      "name": "Cross-Body Crunch",
+      "pattern": "core",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "obliques"
+      ],
+      "secondaryMuscles": [
+        "abs"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "spinal_flexion",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 12,
+      "repHigh": 25,
+      "sourceFile": "11_core.csv"
+    },
+    {
+      "id": "decline-oblique-crunch",
+      "name": "Decline Oblique Crunch",
+      "pattern": "core",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "obliques"
+      ],
+      "secondaryMuscles": [
+        "abs"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "side_flexion",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "decline",
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "11_core.csv"
+    },
+    {
+      "id": "cable-side-bend",
+      "name": "Cable Side Bend",
+      "pattern": "core",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "obliques"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "side_flexion",
+      "jointLoad": [],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "11_core.csv"
+    },
+    {
+      "id": "barbell-side-bend",
+      "name": "Barbell Side Bend",
+      "pattern": "core",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell"
+      ],
+      "primaryMuscles": [
+        "obliques"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "side_flexion",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "11_core.csv"
+    },
+    {
+      "id": "side-jackknife",
+      "name": "Side Jackknife",
+      "pattern": "core",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "obliques"
+      ],
+      "secondaryMuscles": [
+        "abs"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "side_flexion",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 12,
+      "repHigh": 20,
+      "sourceFile": "11_core.csv"
+    },
+    {
+      "id": "cable-reverse-crunch",
+      "name": "Cable Reverse Crunch",
+      "pattern": "core",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "hip_flexors"
+      ],
+      "stabilises": [
+        "obliques"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "leg_raise",
+      "jointLoad": [],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "11_core.csv"
+    },
+    {
+      "id": "suspension-reverse-crunch",
+      "name": "Suspension Reverse Crunch",
+      "pattern": "core",
+      "loadType": "implement",
+      "equipment": [
+        "suspension_trainer"
+      ],
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "hip_flexors"
+      ],
+      "stabilises": [
+        "obliques"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "leg_raise",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 5,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "11_core.csv"
+    },
+    {
+      "id": "stability-ball-pull-in",
+      "name": "Stability Ball Pull-In",
+      "pattern": "core",
+      "loadType": "implement",
+      "equipment": [
+        "bodyweight",
+        "stability_ball"
+      ],
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "hip_flexors"
+      ],
+      "stabilises": [
+        "obliques"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "leg_raise",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 5,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "11_core.csv"
+    },
+    {
+      "id": "hanging-pike",
+      "name": "Hanging Pike",
+      "pattern": "core",
+      "loadType": "bodyweight",
+      "equipment": [
+        "pullup_bar"
+      ],
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "hip_flexors"
+      ],
+      "stabilises": [
+        "obliques"
+      ],
+      "fatigueCost": 3,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "leg_raise",
+      "jointLoad": [],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 5,
+      "repHigh": 12,
+      "sourceFile": "11_core.csv"
+    },
+    {
+      "id": "standing-cable-lift",
+      "name": "Standing Cable Lift",
+      "pattern": "core",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "obliques"
+      ],
+      "secondaryMuscles": [
+        "abs"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "rotation",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "11_core.csv"
+    },
+    {
+      "id": "kettlebell-windmill",
+      "name": "Kettlebell Windmill",
+      "pattern": "core",
+      "loadType": "kettlebell",
+      "equipment": [
+        "kettlebell"
+      ],
+      "primaryMuscles": [
+        "obliques"
+      ],
+      "secondaryMuscles": [
+        "abs",
+        "side_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "rotation",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 6,
+      "repHigh": 12,
+      "sourceFile": "11_core.csv"
+    },
+    {
+      "id": "plate-twist",
+      "name": "Plate Twist",
+      "pattern": "core",
+      "loadType": "implement",
+      "equipment": [
+        "plate"
+      ],
+      "primaryMuscles": [
+        "obliques"
+      ],
+      "secondaryMuscles": [
+        "abs"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "rotation",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 12,
+      "repHigh": 25,
+      "sourceFile": "11_core.csv"
+    },
+    {
       "id": "snatch",
       "name": "Snatch",
       "pattern": "explosive",
