@@ -6190,6 +6190,178 @@
       "sourceFile": "04_calves.csv"
     },
     {
+      "id": "barbell-seated-calf-raise",
+      "name": "Barbell Seated Calf Raise",
+      "pattern": "isolation",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "bench",
+        "box"
+      ],
+      "primaryMuscles": [
+        "calves"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "seated_calf_raise",
+      "jointLoad": [],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "04_calves.csv"
+    },
+    {
+      "id": "band-calf-raise",
+      "name": "Band Calf Raise",
+      "pattern": "isolation",
+      "loadType": "band",
+      "equipment": [
+        "bands"
+      ],
+      "primaryMuscles": [
+        "calves"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "standing_calf_raise",
+      "jointLoad": [],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 12,
+      "repHigh": 25,
+      "sourceFile": "04_calves.csv"
+    },
+    {
+      "id": "donkey-calf-raise",
+      "name": "Donkey Calf Raise",
+      "pattern": "isolation",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight",
+        "box"
+      ],
+      "primaryMuscles": [
+        "calves"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "standing_calf_raise",
+      "jointLoad": [],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "04_calves.csv"
+    },
+    {
+      "id": "smith-machine-reverse-calf-raise",
+      "name": "Smith Machine Reverse Calf Raise",
+      "pattern": "isolation",
+      "loadType": "barbell",
+      "equipment": [
+        "smith_machine",
+        "box"
+      ],
+      "primaryMuscles": [
+        "calves"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "tibialis_raise",
+      "jointLoad": [],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 1,
+      "repLow": 12,
+      "repHigh": 20,
+      "sourceFile": "04_calves.csv"
+    },
+    {
       "id": "cossack-squat",
       "name": "Cossack Squat",
       "pattern": "squat",
