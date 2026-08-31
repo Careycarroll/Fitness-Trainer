@@ -20,3 +20,17 @@ Weighted Bench Dip,weighted-bench-dip,dip,strength,push_h,triceps,chest|front_de
 Triceps Dip,triceps-dip,dip,strength,push_h,triceps,chest|front_delts,dip_bar,TRUE,2,2,6,12,120,FALSE,reps_only,,,close,,shoulder,,,TRUE
 Diamond Push-Up,diamond-push-up,bodyweight_extension,strength,push_h,triceps,chest|front_delts,bodyweight,TRUE,1,1,10,20,60,FALSE,reps_only,,,close,,wrist,,,TRUE
 Suspension Triceps Extension,suspension-triceps-extension,bodyweight_extension,strength,isolation,triceps,abs|front_delts,suspension_trainer,FALSE,2,3,8,15,60,FALSE,reps_only,,,,long,elbow|shoulder,,,TRUE
+Triceps Kickback,triceps-kickback,kickback,strength,isolation,triceps,,dumbbell,FALSE,1,2,10,20,45,TRUE,weight_reps,shortened,,,long,,,abs,FALSE
+Cable Triceps Kickback,cable-triceps-kickback,kickback,strength,isolation,triceps,,cable,FALSE,1,2,10,20,45,TRUE,weight_reps,shortened,,,long,,,abs,FALSE
+Tate Press,tate-press,skullcrusher,strength,isolation,triceps,,dumbbell|bench,FALSE,2,3,8,15,60,FALSE,weight_reps,,,,,elbow,,abs,FALSE
+Decline Skullcrusher,decline-skullcrusher,skullcrusher,strength,isolation,triceps,,ez_bar|bench,FALSE,2,3,8,15,60,FALSE,weight_reps,stretch,decline,,long,elbow,,abs,FALSE
+Incline Barbell Triceps Extension,incline-barbell-triceps-extension,skullcrusher,strength,isolation,triceps,,barbell|bench,FALSE,2,3,8,15,60,FALSE,weight_reps,stretch,incline,,long,elbow,,abs,FALSE
+Band Skullcrusher,band-skullcrusher,skullcrusher,strength,isolation,triceps,,bands|bench,FALSE,1,2,12,20,45,FALSE,reps_only,,,,,,,abs,FALSE
+Barbell Overhead Triceps Extension,barbell-overhead-triceps-extension,overhead_extension,strength,isolation,triceps,,barbell,FALSE,2,3,8,15,60,FALSE,weight_reps,stretch,overhead,,long,elbow,,abs,FALSE
+Seated Dumbbell Triceps Press,seated-dumbbell-triceps-press,overhead_extension,strength,isolation,triceps,,dumbbell|bench,FALSE,2,2,8,15,60,FALSE,weight_reps,stretch,overhead,,long,,,abs,FALSE
+Kneeling Cable Triceps Extension,kneeling-cable-triceps-extension,overhead_extension,strength,isolation,triceps,,cable,FALSE,1,2,10,20,45,FALSE,weight_reps,stretch,overhead,,long,,,abs,FALSE
+Sled Overhead Triceps Extension,sled-overhead-triceps-extension,overhead_extension,strength,isolation,triceps,,sled,FALSE,2,2,10,20,60,FALSE,reps_only,,overhead,,long,,,abs,FALSE
+V-Bar Triceps Pushdown,v-bar-triceps-pushdown,pushdown,strength,isolation,triceps,,cable,FALSE,1,1,10,20,45,FALSE,weight_reps,shortened,,,short,,,abs,FALSE
+Single-Arm Cable Pushdown,single-arm-cable-pushdown,pushdown,strength,isolation,triceps,,cable,FALSE,1,2,10,20,45,TRUE,weight_reps,shortened,,,short,,,abs,FALSE
+Close-Grip Dumbbell Press,close-grip-dumbbell-press,close_grip_press,strength,push_h,triceps,chest|front_delts,dumbbell|bench,TRUE,3,2,8,15,90,FALSE,weight_reps,,flat,close,,,,abs,FALSE
+Close-Grip EZ-Bar Press,close-grip-ez-bar-press,close_grip_press,strength,push_h,triceps,chest|front_delts,ez_bar|bench,TRUE,3,2,8,15,90,FALSE,weight_reps,,flat,close,,,,abs,FALSE

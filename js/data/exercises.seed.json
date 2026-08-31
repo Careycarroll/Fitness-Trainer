@@ -17615,6 +17615,615 @@
       "sourceFile": "10_triceps.csv"
     },
     {
+      "id": "triceps-kickback",
+      "name": "Triceps Kickback",
+      "pattern": "isolation",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "kickback",
+      "jointLoad": [],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": "long",
+      "stability": 4,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
+      "id": "cable-triceps-kickback",
+      "name": "Cable Triceps Kickback",
+      "pattern": "isolation",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "kickback",
+      "jointLoad": [],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": "long",
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
+      "id": "tate-press",
+      "name": "Tate Press",
+      "pattern": "isolation",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "skullcrusher",
+      "jointLoad": [
+        "elbow"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
+      "id": "decline-skullcrusher",
+      "name": "Decline Skullcrusher",
+      "pattern": "isolation",
+      "loadType": "barbell",
+      "equipment": [
+        "ez_bar",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "skullcrusher",
+      "jointLoad": [
+        "elbow"
+      ],
+      "romBias": "stretch",
+      "angle": "decline",
+      "grip": null,
+      "headBias": "long",
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
+      "id": "incline-barbell-triceps-extension",
+      "name": "Incline Barbell Triceps Extension",
+      "pattern": "isolation",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "skullcrusher",
+      "jointLoad": [
+        "elbow"
+      ],
+      "romBias": "stretch",
+      "angle": "incline",
+      "grip": null,
+      "headBias": "long",
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
+      "id": "band-skullcrusher",
+      "name": "Band Skullcrusher",
+      "pattern": "isolation",
+      "loadType": "band",
+      "equipment": [
+        "bands",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "skullcrusher",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 12,
+      "repHigh": 20,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
+      "id": "barbell-overhead-triceps-extension",
+      "name": "Barbell Overhead Triceps Extension",
+      "pattern": "isolation",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "overhead_extension",
+      "jointLoad": [
+        "elbow"
+      ],
+      "romBias": "stretch",
+      "angle": "overhead",
+      "grip": null,
+      "headBias": "long",
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
+      "id": "seated-dumbbell-triceps-press",
+      "name": "Seated Dumbbell Triceps Press",
+      "pattern": "isolation",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "overhead_extension",
+      "jointLoad": [],
+      "romBias": "stretch",
+      "angle": "overhead",
+      "grip": null,
+      "headBias": "long",
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
+      "id": "kneeling-cable-triceps-extension",
+      "name": "Kneeling Cable Triceps Extension",
+      "pattern": "isolation",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "overhead_extension",
+      "jointLoad": [],
+      "romBias": "stretch",
+      "angle": "overhead",
+      "grip": null,
+      "headBias": "long",
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
+      "id": "sled-overhead-triceps-extension",
+      "name": "Sled Overhead Triceps Extension",
+      "pattern": "isolation",
+      "loadType": "implement",
+      "equipment": [
+        "sled"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "overhead_extension",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "overhead",
+      "grip": null,
+      "headBias": "long",
+      "stability": 3,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
+      "id": "v-bar-triceps-pushdown",
+      "name": "V-Bar Triceps Pushdown",
+      "pattern": "isolation",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "pushdown",
+      "jointLoad": [],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": "short",
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
+      "id": "single-arm-cable-pushdown",
+      "name": "Single-Arm Cable Pushdown",
+      "pattern": "isolation",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "pushdown",
+      "jointLoad": [],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": "short",
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
+      "id": "close-grip-dumbbell-press",
+      "name": "Close-Grip Dumbbell Press",
+      "pattern": "push_h",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [
+        "chest",
+        "front_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "close_grip_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "flat",
+      "grip": "close",
+      "headBias": null,
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
+      "id": "close-grip-ez-bar-press",
+      "name": "Close-Grip EZ-Bar Press",
+      "pattern": "push_h",
+      "loadType": "barbell",
+      "equipment": [
+        "ez_bar",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [
+        "chest",
+        "front_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "close_grip_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "flat",
+      "grip": "close",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
       "id": "plank",
       "name": "Plank",
       "pattern": "core",
