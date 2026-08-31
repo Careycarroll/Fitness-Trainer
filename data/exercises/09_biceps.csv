@@ -19,3 +19,23 @@ Suspension Biceps Curl,suspension-biceps-curl,bodyweight_curl,strength,isolation
 Reverse Curl,reverse-curl,reverse_curl,strength,isolation,forearms,biceps,ez_bar,FALSE,1,1,10,15,60,FALSE,weight_reps,,,,,elbow|wrist,,,TRUE
 Wrist Curl,wrist-curl,wrist_curl,strength,isolation,forearms,,dumbbell|bench,FALSE,1,1,12,25,45,FALSE,weight_reps,,,,,wrist,,,TRUE
 Reverse Wrist Curl,reverse-wrist-curl,wrist_curl,strength,isolation,forearms,,dumbbell|bench,FALSE,1,1,12,25,45,FALSE,weight_reps,,,,,wrist,,,TRUE
+Zottman Curl,zottman-curl,dumbbell_curl,strength,isolation,biceps,forearms,dumbbell,FALSE,1,3,8,15,60,FALSE,weight_reps,,,,,,,abs,FALSE
+Cross-Body Hammer Curl,cross-body-hammer-curl,hammer_curl,strength,isolation,biceps,forearms,dumbbell,FALSE,1,2,8,15,60,TRUE,weight_reps,,,,,,,abs,FALSE
+Incline Hammer Curl,incline-hammer-curl,hammer_curl,strength,isolation,biceps,forearms,dumbbell|bench,FALSE,1,2,8,15,60,FALSE,weight_reps,stretch,incline,,long,,,abs,FALSE
+Prone Incline Curl,prone-incline-curl,dumbbell_curl,strength,isolation,biceps,,dumbbell|bench,FALSE,1,2,10,15,60,FALSE,weight_reps,stretch,incline,,long,,,abs,FALSE
+Lying Supine Dumbbell Curl,lying-supine-dumbbell-curl,dumbbell_curl,strength,isolation,biceps,,dumbbell|bench,FALSE,1,2,10,15,60,FALSE,weight_reps,stretch,flat,,long,,,abs,FALSE
+Machine Biceps Curl,machine-biceps-curl,machine_curl,strength,isolation,biceps,,preacher_curl_machine,FALSE,1,1,10,20,45,FALSE,weight_reps,,,,,,,abs,FALSE
+Cable Preacher Curl,cable-preacher-curl,preacher_curl,strength,isolation,biceps,,cable|bench,FALSE,1,2,10,15,60,FALSE,weight_reps,shortened,,,short,,,abs,FALSE
+Single-Arm Preacher Curl,single-arm-preacher-curl,preacher_curl,strength,isolation,biceps,,dumbbell|bench,FALSE,1,2,10,15,60,TRUE,weight_reps,shortened,,,short,,,abs,FALSE
+Lying Cable Curl,lying-cable-curl,cable_curl,strength,isolation,biceps,,cable|bench,FALSE,1,2,10,15,60,FALSE,weight_reps,,,,,,,abs,FALSE
+Single-Arm Cable Curl,single-arm-cable-curl,cable_curl,strength,isolation,biceps,,cable,FALSE,1,2,10,15,60,TRUE,weight_reps,,,,,,,abs,FALSE
+Reverse Cable Curl,reverse-cable-curl,reverse_curl,strength,isolation,forearms,biceps,cable,FALSE,1,2,10,20,45,FALSE,weight_reps,,,,,,,abs,FALSE
+Plate Curl,plate-curl,reverse_curl,strength,isolation,forearms,biceps,plate,FALSE,1,2,10,20,45,FALSE,weight_reps,,,,,,,abs,FALSE
+Cable Wrist Curl,cable-wrist-curl,wrist_curl,strength,isolation,forearms,,cable,FALSE,1,1,12,25,45,FALSE,weight_reps,,,,,,,abs,FALSE
+Barbell Wrist Curl,barbell-wrist-curl,wrist_curl,strength,isolation,forearms,,barbell|bench,FALSE,1,1,12,25,45,FALSE,weight_reps,,,,,,,abs,FALSE
+Behind-Back Wrist Curl,behind-back-wrist-curl,wrist_curl,strength,isolation,forearms,,barbell,FALSE,1,2,12,25,45,FALSE,weight_reps,,,,,,,abs,FALSE
+Finger Curl,finger-curl,wrist_curl,strength,isolation,forearms,,barbell,FALSE,1,2,12,25,45,FALSE,weight_reps,,,,,,,abs,FALSE
+Wrist Roller,wrist-roller,wrist_roller,strength,isolation,forearms,,plate,FALSE,1,2,20,40,60,FALSE,reps_only,,,,,,,abs,FALSE
+Dumbbell Pronation,dumbbell-pronation,forearm_rotation,strength,isolation,forearms,,dumbbell|bench,FALSE,1,2,12,20,45,TRUE,weight_reps,,,,,,,abs,FALSE
+Dumbbell Supination,dumbbell-supination,forearm_rotation,strength,isolation,forearms,,dumbbell|bench,FALSE,1,2,12,20,45,TRUE,weight_reps,,,,,,,abs,FALSE
+Plate Hand Squeeze,plate-hand-squeeze,grip,strength,isolation,forearms,,plate,FALSE,1,1,15,30,45,FALSE,reps_only,,,,,,,abs,FALSE
