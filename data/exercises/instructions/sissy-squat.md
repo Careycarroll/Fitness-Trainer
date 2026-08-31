@@ -2,8 +2,10 @@
 
 # Sissy Squat
 
-1. Stand upright holding a rack or doorframe for balance, feet hip width.
-2. Rise onto the balls of your feet and let your knees travel forward as you lean your torso back.
-3. Keep a straight line from knee to shoulder throughout. The hips do not fold.
-4. Lower until you feel a strong stretch in the front of the thigh, then reverse by extending the knees.
-5. Bodyweight only until you can control the full range. This is a demanding position for the knees.
+1. Stand upright with feet hip width, holding a rack upright or doorframe with one hand for balance.
+2. Rise onto the balls of your feet and stay there for the whole set.
+3. Let your knees travel forward while leaning your torso back, keeping a straight line from knee to shoulder.
+4. The hips do NOT fold. If they do, this becomes a squat and the quads stop working.
+5. Lower until you feel a strong stretch down the front of the thigh, or until your knees are near your heels.
+6. Reverse by extending the knees, squeezing the quads as you return to upright.
+7. Bodyweight only until you can control the full range. This puts the knee in a deep flexed position under load, so build into it over weeks rather than sessions.
