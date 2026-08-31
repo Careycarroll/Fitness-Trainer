@@ -33,3 +33,39 @@ Terminal Knee Extension,terminal-knee-extension,tke,strength,isolation,quads,,ba
 Backward Sled Drag,backward-sled-drag,sled,strength,locomotion,quads,glutes|calves,sled,TRUE,2,1,20,40,90,FALSE,weight_distance,,,,,,,,TRUE
 Forward Sled Push,forward-sled-push,sled,strength,locomotion,quads|glutes,calves,sled,TRUE,3,2,20,40,120,FALSE,weight_distance,,,,,,,abs,TRUE
 Forward Sled Drag,forward-sled-drag,sled,strength,locomotion,quads|glutes,hamstrings|calves,sled,TRUE,2,1,20,40,90,FALSE,weight_distance,,,,,,,,TRUE
+Overhead Squat,overhead-squat,squat,strength,squat,quads|glutes,upper_back|abs,barbell|platform,TRUE,4,5,3,6,180,FALSE,weight_reps,stretch,,,,lower_back|shoulder,olympic-lift,erectors|abs,FALSE
+Zercher Squat,zercher-squat,squat,strength,squat,quads|glutes,upper_back|abs,barbell|rack,TRUE,4,4,5,10,150,FALSE,weight_reps,,,,,lower_back,,erectors|abs,FALSE
+Jefferson Deadlift,jefferson-deadlift,deadlift,strength,hinge,quads|glutes,hamstrings|erectors,barbell,TRUE,4,4,4,8,150,TRUE,weight_reps,,,,,lower_back,,abs,FALSE
+Frankenstein Squat,frankenstein-squat,squat,strength,squat,quads,glutes|upper_back,barbell|rack,TRUE,3,4,5,10,120,FALSE,weight_reps,,,,,knee,,erectors|abs,FALSE
+Squat Jerk,squat-jerk,jerk,strength,explosive,quads|front_delts,glutes|triceps,barbell|rack|platform,TRUE,4,5,1,3,180,FALSE,weight_reps,,,,,shoulder,olympic-lift,erectors|abs,FALSE
+Power Jerk,power-jerk,jerk,strength,explosive,front_delts|quads,triceps|glutes,barbell|rack,TRUE,4,4,1,3,180,FALSE,weight_reps,,,,,shoulder,,erectors|abs,FALSE
+Split Clean,split-clean,clean,strength,explosive,quads|glutes,traps|hamstrings,barbell|platform,TRUE,4,5,1,3,180,FALSE,weight_reps,,,,,lower_back,olympic-lift,erectors|abs,FALSE
+Clean From Blocks,clean-from-blocks,clean,strength,explosive,quads|glutes,traps|hamstrings,barbell|platform|box,TRUE,4,4,1,3,180,FALSE,weight_reps,shortened,,,,lower_back,,erectors|abs,FALSE
+Snatch Balance,snatch-balance,snatch,strength,explosive,quads|front_delts,glutes|upper_back,barbell|rack,TRUE,3,5,2,4,150,FALSE,weight_reps,,,,,shoulder,olympic-lift,erectors|abs,FALSE
+Jerk Dip,jerk-dip,jerk,strength,explosive,quads,glutes|front_delts,barbell|rack,TRUE,2,3,3,6,90,FALSE,weight_reps,shortened,,,,knee,,erectors|abs,FALSE
+Hang Clean Below The Knee,hang-clean-below-knee,clean,strength,explosive,quads|glutes,traps|hamstrings,barbell|platform,TRUE,4,5,1,3,180,FALSE,weight_reps,stretch,,,,lower_back,olympic-lift,erectors|abs,FALSE
+Snatch From Blocks,snatch-from-blocks,snatch,strength,explosive,quads|glutes,traps|front_delts,barbell|platform|box,TRUE,4,5,1,3,180,FALSE,weight_reps,shortened,,,,lower_back|shoulder,olympic-lift,erectors|abs,FALSE
+Dumbbell Squat,dumbbell-squat,squat,strength,squat,quads|glutes,hamstrings,dumbbell,TRUE,3,2,8,15,90,FALSE,weight_reps,,,,,knee,,erectors|abs,FALSE
+Plie Dumbbell Squat,plie-dumbbell-squat,squat,strength,squat,quads|adductors,glutes,dumbbell,TRUE,2,1,10,20,75,FALSE,weight_reps,stretch,,,,knee,,abs,FALSE
+Kettlebell Front Squat,kettlebell-front-squat,squat,strength,squat,quads|glutes,upper_back|abs,kettlebell,TRUE,3,3,6,12,120,FALSE,weight_reps,,,,,knee,,erectors|abs,FALSE
+Overhead Kettlebell Squat,overhead-kettlebell-squat,squat,strength,squat,quads|glutes,front_delts|abs,kettlebell,TRUE,3,4,5,10,120,TRUE,weight_reps,stretch,,,,shoulder,,erectors|abs,FALSE
+Smith Machine Squat,smith-machine-squat,machine_squat,strength,squat,quads|glutes,hamstrings,smith_machine,TRUE,4,2,6,12,150,FALSE,weight_reps,,,,,knee,,abs,FALSE
+Smith Machine Split Squat,smith-machine-split-squat,split_squat,strength,lunge,quads|glutes,hamstrings,smith_machine,TRUE,2,2,8,15,90,TRUE,weight_reps,,,,,knee,,abs,FALSE
+Cable Deadlift,cable-deadlift,deadlift,strength,hinge,quads|glutes,hamstrings|erectors,cable,TRUE,2,2,10,15,90,FALSE,weight_reps,,,,,lower_back,,erectors|abs,FALSE
+Chair Squat,chair-squat,squat,strength,squat,quads|glutes,hamstrings,bodyweight|box,TRUE,1,1,10,20,60,FALSE,reps_only,shortened,,,,knee,,abs,FALSE
+Deficit Reverse Lunge,deficit-reverse-lunge,lunge,strength,lunge,quads|glutes,hamstrings,dumbbell|box,TRUE,3,3,8,12,90,TRUE,weight_reps,stretch,,,,knee,,abs,FALSE
+Suspension Split Squat,suspension-split-squat,split_squat,strength,lunge,quads|glutes,hamstrings|abs,suspension_trainer,TRUE,2,2,8,15,75,TRUE,reps_only,stretch,,,,knee,,abs,FALSE
+Single-Leg Box Squat,single-leg-box-squat,single_leg_squat,strength,squat,quads|glutes,hamstrings,bodyweight|box,TRUE,2,3,6,12,90,TRUE,reps_only,,,,,knee,,abs,FALSE
+Weighted Sissy Squat,weighted-sissy-squat,sissy_squat,strength,isolation,quads,,bodyweight|plate,FALSE,2,4,8,15,75,FALSE,weight_reps,stretch,,,,knee,,abs,FALSE
+Weighted Jump Squat,weighted-jump-squat,jump,strength,explosive,quads|glutes,calves,dumbbell,TRUE,3,3,3,6,120,FALSE,weight_reps,,,,,knee,,erectors|abs,FALSE
+Single-Leg Leg Extension,single-leg-leg-extension,leg_extension,strength,isolation,quads,,leg_extension_machine,FALSE,1,1,10,20,60,TRUE,weight_reps,shortened,,,,knee,,,FALSE
+Narrow Stance Back Squat,narrow-stance-back-squat,squat,strength,squat,quads,glutes|hamstrings,barbell|rack,TRUE,4,3,5,10,180,FALSE,weight_reps,,,,,knee,,erectors|abs,FALSE
+Wide Stance Back Squat,wide-stance-back-squat,squat,strength,squat,quads|glutes,adductors|hamstrings,barbell|rack,TRUE,4,3,5,10,180,FALSE,weight_reps,,,,,lower_back|hip,,erectors|abs,FALSE
+Narrow Stance Hack Squat,narrow-stance-hack-squat,hack_squat,strength,squat,quads,glutes,hack_squat,TRUE,3,2,8,15,120,FALSE,weight_reps,,,,,knee,,abs,FALSE
+Barbell Step-Up,barbell-step-up,step_up,strength,lunge,quads|glutes,hamstrings,barbell|box,TRUE,3,3,6,12,120,TRUE,weight_reps,shortened,,,,knee,,erectors|abs,FALSE
+Barbell Walking Lunge,barbell-walking-lunge,lunge,strength,lunge,quads|glutes,hamstrings,barbell,TRUE,3,3,8,12,120,TRUE,weight_reps,,,,,knee,,erectors|abs,FALSE
+Bodyweight Walking Lunge,bodyweight-walking-lunge,lunge,strength,lunge,quads|glutes,hamstrings,bodyweight,TRUE,1,1,10,20,60,TRUE,reps_only,,,,,knee,,abs,FALSE
+Band Hip Flexion,band-hip-flexion,hip_flexor,strength,isolation,hip_flexors,abs,bands,FALSE,1,1,12,20,45,TRUE,reps_only,shortened,,,,hip,,,FALSE
+Smith Machine Leg Press,smith-machine-leg-press,leg_press,strength,squat,quads|glutes,hamstrings,smith_machine,TRUE,3,2,8,15,120,FALSE,weight_reps,,,,,knee,,abs,FALSE
+Kettlebell Pistol Squat,kettlebell-pistol-squat,single_leg_squat,strength,squat,quads|glutes,hamstrings|abs,kettlebell,TRUE,3,4,4,8,120,TRUE,weight_reps,stretch,,,,knee,,erectors|abs,FALSE
+Band Box Squat,band-box-squat,squat,strength,squat,quads|glutes,hamstrings,barbell|rack|box|bands,TRUE,4,4,3,6,180,FALSE,weight_reps,,,,,knee,,erectors|abs,FALSE

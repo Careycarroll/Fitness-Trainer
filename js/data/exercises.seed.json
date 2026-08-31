@@ -1546,6 +1546,1751 @@
       "sourceFile": "01_quads.csv"
     },
     {
+      "id": "overhead-squat",
+      "name": "Overhead Squat",
+      "pattern": "squat",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "platform"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "upper_back",
+        "abs"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 5,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": "olympic-lift",
+      "exerciseFamily": "squat",
+      "jointLoad": [
+        "lower_back",
+        "shoulder"
+      ],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 3,
+      "repHigh": 6,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "zercher-squat",
+      "name": "Zercher Squat",
+      "pattern": "squat",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "upper_back",
+        "abs"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 150,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "squat",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 5,
+      "repHigh": 10,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "jefferson-deadlift",
+      "name": "Jefferson Deadlift",
+      "pattern": "hinge",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings",
+        "erectors"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 150,
+      "warmupRequired": true,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "deadlift",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 4,
+      "repHigh": 8,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "frankenstein-squat",
+      "name": "Frankenstein Squat",
+      "pattern": "squat",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "quads"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "upper_back"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "squat",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 5,
+      "repHigh": 10,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "squat-jerk",
+      "name": "Squat Jerk",
+      "pattern": "explosive",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "rack",
+        "platform"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "triceps"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 5,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": "olympic-lift",
+      "exerciseFamily": "jerk",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 1,
+      "repHigh": 3,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "power-jerk",
+      "name": "Power Jerk",
+      "pattern": "explosive",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "front_delts",
+        "quads"
+      ],
+      "secondaryMuscles": [
+        "triceps",
+        "glutes"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "jerk",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 1,
+      "repHigh": 3,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "split-clean",
+      "name": "Split Clean",
+      "pattern": "explosive",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "platform"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "traps",
+        "hamstrings"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 5,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": "olympic-lift",
+      "exerciseFamily": "clean",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 1,
+      "repHigh": 3,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "clean-from-blocks",
+      "name": "Clean From Blocks",
+      "pattern": "explosive",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "platform",
+        "box"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "traps",
+        "hamstrings"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "clean",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 1,
+      "repHigh": 3,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "snatch-balance",
+      "name": "Snatch Balance",
+      "pattern": "explosive",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "upper_back"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 5,
+      "defaultRIR": 2,
+      "restSeconds": 150,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": "olympic-lift",
+      "exerciseFamily": "snatch",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 2,
+      "repHigh": 4,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "jerk-dip",
+      "name": "Jerk Dip",
+      "pattern": "explosive",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "quads"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "front_delts"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "jerk",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 3,
+      "repHigh": 6,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "hang-clean-below-knee",
+      "name": "Hang Clean Below The Knee",
+      "pattern": "explosive",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "platform"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "traps",
+        "hamstrings"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 5,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": "olympic-lift",
+      "exerciseFamily": "clean",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 1,
+      "repHigh": 3,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "snatch-from-blocks",
+      "name": "Snatch From Blocks",
+      "pattern": "explosive",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "platform",
+        "box"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "traps",
+        "front_delts"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 5,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": "olympic-lift",
+      "exerciseFamily": "snatch",
+      "jointLoad": [
+        "lower_back",
+        "shoulder"
+      ],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 1,
+      "repHigh": 3,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "dumbbell-squat",
+      "name": "Dumbbell Squat",
+      "pattern": "squat",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "squat",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "plie-dumbbell-squat",
+      "name": "Plie Dumbbell Squat",
+      "pattern": "squat",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "adductors"
+      ],
+      "secondaryMuscles": [
+        "glutes"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 75,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "squat",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "kettlebell-front-squat",
+      "name": "Kettlebell Front Squat",
+      "pattern": "squat",
+      "loadType": "kettlebell",
+      "equipment": [
+        "kettlebell"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "upper_back",
+        "abs"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "squat",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 6,
+      "repHigh": 12,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "overhead-kettlebell-squat",
+      "name": "Overhead Kettlebell Squat",
+      "pattern": "squat",
+      "loadType": "kettlebell",
+      "equipment": [
+        "kettlebell"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "front_delts",
+        "abs"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "squat",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 5,
+      "repHigh": 10,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "smith-machine-squat",
+      "name": "Smith Machine Squat",
+      "pattern": "squat",
+      "loadType": "barbell",
+      "equipment": [
+        "smith_machine"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 150,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "machine_squat",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 1,
+      "repLow": 6,
+      "repHigh": 12,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "smith-machine-split-squat",
+      "name": "Smith Machine Split Squat",
+      "pattern": "lunge",
+      "loadType": "barbell",
+      "equipment": [
+        "smith_machine"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "split_squat",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 1,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "cable-deadlift",
+      "name": "Cable Deadlift",
+      "pattern": "hinge",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings",
+        "erectors"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "deadlift",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 15,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "chair-squat",
+      "name": "Chair Squat",
+      "pattern": "squat",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight",
+        "box"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "squat",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "deficit-reverse-lunge",
+      "name": "Deficit Reverse Lunge",
+      "pattern": "lunge",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "box"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "lunge",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 12,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "suspension-split-squat",
+      "name": "Suspension Split Squat",
+      "pattern": "lunge",
+      "loadType": "implement",
+      "equipment": [
+        "suspension_trainer"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings",
+        "abs"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 75,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "split_squat",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 5,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "single-leg-box-squat",
+      "name": "Single-Leg Box Squat",
+      "pattern": "squat",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight",
+        "box"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "single_leg_squat",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 6,
+      "repHigh": 12,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "weighted-sissy-squat",
+      "name": "Weighted Sissy Squat",
+      "pattern": "isolation",
+      "loadType": "implement",
+      "equipment": [
+        "bodyweight",
+        "plate"
+      ],
+      "primaryMuscles": [
+        "quads"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 75,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "sissy_squat",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "weighted-jump-squat",
+      "name": "Weighted Jump Squat",
+      "pattern": "explosive",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "calves"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "jump",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 3,
+      "repHigh": 6,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "single-leg-leg-extension",
+      "name": "Single-Leg Leg Extension",
+      "pattern": "isolation",
+      "loadType": "machine",
+      "equipment": [
+        "leg_extension_machine"
+      ],
+      "primaryMuscles": [
+        "quads"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "leg_extension",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 1,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "narrow-stance-back-squat",
+      "name": "Narrow Stance Back Squat",
+      "pattern": "squat",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "quads"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "hamstrings"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "squat",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 5,
+      "repHigh": 10,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "wide-stance-back-squat",
+      "name": "Wide Stance Back Squat",
+      "pattern": "squat",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "adductors",
+        "hamstrings"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "squat",
+      "jointLoad": [
+        "lower_back",
+        "hip"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 5,
+      "repHigh": 10,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "narrow-stance-hack-squat",
+      "name": "Narrow Stance Hack Squat",
+      "pattern": "squat",
+      "loadType": "machine",
+      "equipment": [
+        "hack_squat"
+      ],
+      "primaryMuscles": [
+        "quads"
+      ],
+      "secondaryMuscles": [
+        "glutes"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "hack_squat",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 1,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "barbell-step-up",
+      "name": "Barbell Step-Up",
+      "pattern": "lunge",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "box"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "step_up",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 6,
+      "repHigh": 12,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "barbell-walking-lunge",
+      "name": "Barbell Walking Lunge",
+      "pattern": "lunge",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "lunge",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 12,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "bodyweight-walking-lunge",
+      "name": "Bodyweight Walking Lunge",
+      "pattern": "lunge",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "lunge",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "band-hip-flexion",
+      "name": "Band Hip Flexion",
+      "pattern": "isolation",
+      "loadType": "band",
+      "equipment": [
+        "bands"
+      ],
+      "primaryMuscles": [
+        "hip_flexors"
+      ],
+      "secondaryMuscles": [
+        "abs"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "hip_flexor",
+      "jointLoad": [
+        "hip"
+      ],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 2,
+      "repLow": 12,
+      "repHigh": 20,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "smith-machine-leg-press",
+      "name": "Smith Machine Leg Press",
+      "pattern": "squat",
+      "loadType": "barbell",
+      "equipment": [
+        "smith_machine"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "leg_press",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 1,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "kettlebell-pistol-squat",
+      "name": "Kettlebell Pistol Squat",
+      "pattern": "squat",
+      "loadType": "kettlebell",
+      "equipment": [
+        "kettlebell"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings",
+        "abs"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "single_leg_squat",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 4,
+      "repHigh": 8,
+      "sourceFile": "01_quads.csv"
+    },
+    {
+      "id": "band-box-squat",
+      "name": "Band Box Squat",
+      "pattern": "squat",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "rack",
+        "box",
+        "bands"
+      ],
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "squat",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 3,
+      "repHigh": 6,
+      "sourceFile": "01_quads.csv"
+    },
+    {
       "id": "conventional-deadlift",
       "name": "Conventional Deadlift",
       "pattern": "hinge",
