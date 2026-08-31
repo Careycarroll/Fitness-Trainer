@@ -18,3 +18,8 @@ Glute-Ham Raise,glute-ham-raise,nordic,strength,isolation,hamstrings,glutes|erec
 Sliding Leg Curl,sliding-leg-curl,sliding_curl,strength,isolation,hamstrings,glutes|abs,bodyweight,FALSE,1,2,8,15,60,FALSE,reps_only,shortened,,,,,,,TRUE
 Stability Ball Leg Curl,stability-ball-leg-curl,sliding_curl,strength,isolation,hamstrings,glutes|abs,bodyweight|stability_ball,FALSE,1,2,10,20,60,FALSE,reps_only,shortened,,,,,,,TRUE
 Single-Leg 45-Degree Hip Extension,single-leg-45-degree-hip-extension,hip_extension,strength,hinge,hamstrings|glutes,,back_extension_bench,FALSE,2,2,10,15,90,TRUE,weight_reps,,,,,lower_back,,erectors,TRUE
+Good Morning off Pins,good-morning-off-pins,good_morning,strength,hinge,hamstrings,glutes|erectors,barbell|rack,TRUE,4,4,3,8,150,FALSE,weight_reps,stretch,,,,lower_back,,erectors|abs,FALSE
+Clean Deadlift,clean-deadlift,deadlift,strength,hinge,hamstrings,glutes|erectors|traps,barbell|platform,TRUE,4,3,3,6,180,FALSE,weight_reps,,,,,lower_back,,erectors|abs,FALSE
+Snatch Deadlift,snatch-deadlift,deadlift,strength,hinge,hamstrings,glutes|erectors|traps,barbell|platform,TRUE,4,4,3,6,180,FALSE,weight_reps,stretch,,,,lower_back,,erectors|abs,FALSE
+Lunge Pass Through,lunge-pass-through,lunge,strength,lunge,hamstrings,glutes|quads|abs,kettlebell,TRUE,2,3,8,16,60,TRUE,reps_only,,,,,knee,,abs|obliques,FALSE
+Floor Glute-Ham Raise,floor-glute-ham-raise,nordic_curl,strength,hinge,hamstrings,glutes,bodyweight,FALSE,3,3,3,8,120,FALSE,reps_only,shortened,,,,knee,,erectors|abs,FALSE

@@ -5539,6 +5539,251 @@
       "sourceFile": "03_hamstrings.csv"
     },
     {
+      "id": "good-morning-off-pins",
+      "name": "Good Morning off Pins",
+      "pattern": "hinge",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "hamstrings"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "erectors"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 150,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "good_morning",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 3,
+      "repHigh": 8,
+      "sourceFile": "03_hamstrings.csv"
+    },
+    {
+      "id": "clean-deadlift",
+      "name": "Clean Deadlift",
+      "pattern": "hinge",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "platform"
+      ],
+      "primaryMuscles": [
+        "hamstrings"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "erectors",
+        "traps"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "deadlift",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 3,
+      "repHigh": 6,
+      "sourceFile": "03_hamstrings.csv"
+    },
+    {
+      "id": "snatch-deadlift",
+      "name": "Snatch Deadlift",
+      "pattern": "hinge",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "platform"
+      ],
+      "primaryMuscles": [
+        "hamstrings"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "erectors",
+        "traps"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 180,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "deadlift",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": "stretch",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 3,
+      "repHigh": 6,
+      "sourceFile": "03_hamstrings.csv"
+    },
+    {
+      "id": "lunge-pass-through",
+      "name": "Lunge Pass Through",
+      "pattern": "lunge",
+      "loadType": "kettlebell",
+      "equipment": [
+        "kettlebell"
+      ],
+      "primaryMuscles": [
+        "hamstrings"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "quads",
+        "abs"
+      ],
+      "stabilises": [
+        "abs",
+        "obliques"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "lunge",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": null,
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 16,
+      "sourceFile": "03_hamstrings.csv"
+    },
+    {
+      "id": "floor-glute-ham-raise",
+      "name": "Floor Glute-Ham Raise",
+      "pattern": "hinge",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "hamstrings"
+      ],
+      "secondaryMuscles": [
+        "glutes"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "nordic_curl",
+      "jointLoad": [
+        "knee"
+      ],
+      "romBias": "shortened",
+      "angle": null,
+      "grip": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 3,
+      "repHigh": 8,
+      "sourceFile": "03_hamstrings.csv"
+    },
+    {
       "id": "standing-calf-raise",
       "name": "Standing Calf Raise",
       "pattern": "isolation",
