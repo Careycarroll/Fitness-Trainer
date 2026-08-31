@@ -34,3 +34,6 @@ V-Bar Triceps Pushdown,v-bar-triceps-pushdown,pushdown,strength,isolation,tricep
 Single-Arm Cable Pushdown,single-arm-cable-pushdown,pushdown,strength,isolation,triceps,,cable,FALSE,1,2,10,20,45,TRUE,weight_reps,shortened,,,,short,,,abs,FALSE
 Close-Grip Dumbbell Press,close-grip-dumbbell-press,close_grip_press,strength,push_h,triceps,chest|front_delts,dumbbell|bench,TRUE,3,2,8,15,90,FALSE,weight_reps,,flat,close,,,,,abs,FALSE
 Close-Grip EZ-Bar Press,close-grip-ez-bar-press,close_grip_press,strength,push_h,triceps,chest|front_delts,ez_bar|bench,TRUE,3,2,8,15,90,FALSE,weight_reps,,flat,close,,,,,abs,FALSE
+Reverse-Grip Triceps Pushdown,reverse-grip-triceps-pushdown,pushdown,strength,isolation,triceps,,cable,FALSE,1,2,10,20,45,FALSE,weight_reps,shortened,,,supinated,short,,,abs,FALSE
+Reverse-Grip Skullcrusher,reverse-grip-skullcrusher,skullcrusher,strength,isolation,triceps,,ez_bar|bench,FALSE,2,3,8,15,60,FALSE,weight_reps,stretch,flat,,supinated,long,elbow,,abs,FALSE
+Behind-Head Triceps Extension,behind-head-triceps-extension,skullcrusher,strength,isolation,triceps,,barbell|bench,FALSE,2,3,8,15,60,FALSE,weight_reps,stretch,flat,close,pronated,long,elbow,,abs,FALSE

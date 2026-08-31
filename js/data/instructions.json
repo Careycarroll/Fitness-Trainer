@@ -566,6 +566,16 @@
       ],
       "source": "free-exercise-db"
     },
+    "behind-head-triceps-extension": {
+      "steps": [
+        "While holding a barbell or EZ Curl bar with a pronated grip (palms facing forward), lie on your back on a flat bench with your head close to the end of the bench. Tip: If you are holding a barbell grab it using a shoulder-width grip and if you are using an E-Z Bar grab it on the inner handles.",
+        "Extend your arms in front of you and slowly bring the bar back in a semi circular motion (while keeping the arms extended) to a position over your head. At the end of this step your arms should be overhead and parallel to the floor. This will be your starting position. Tip: Keep your elbows in at all times.",
+        "As you inhale, lower the bar by bending at the elbows and while keeping the upper arm stationary. Keep lowering the bar until your forearms are perpendicular to the floor.",
+        "As you exhale bring the bar back up to the starting position by pushing the bar up in a semi-circular motion until the lower arms are also parallel to the floor. Contract the triceps hard at the top of the movement for a second. Tip: Again, only the forearms should move. The upper arms should remain stationary at all times.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
     "behind-neck-press": {
       "steps": [
         "This exercise is best performed inside a squat rack for easier pick up of the bar. To begin, first set the bar on a rack that best matches your height. Once the correct height is chosen and the bar is loaded, step under the bar and place the back of your shoulders (slightly below the neck) across it.",
@@ -844,6 +854,20 @@
       ],
       "source": "free-exercise-db"
     },
+    "cable-palms-up-wrist-curl": {
+      "steps": [
+        "Put a bench in front of a low pulley machine that has a barbell or EZ Curl attachment on it.",
+        "Move the bench far enough away so that when you bring the handle to the top of your thighs tension is created on the cable due to the weight stack being moved up.",
+        "Now hold the handle with both hands, palms up, using a shoulder-width grip.",
+        "Step back and sit on the bench with your feet about shoulder width apart, firmly on the floor.",
+        "Lean forward and place the forearms on your thighs with the back of your wrists over your knees. This will be your starting position.",
+        "Lower the bar as far as possible, while inhaling and keeping a tight grip.",
+        "Now curl the bar up as high as possible while contracting the forearms. Tip: Only the wrist should move; not the forearms.",
+        "After a second contraction at the top go back to the starting position as you inhale.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
     "cable-preacher-curl": {
       "steps": [
         "Place a preacher bench about 2 feet in front of a pulley machine.",
@@ -1088,6 +1112,16 @@
       ],
       "source": "free-exercise-db"
     },
+    "close-grip-barbell-curl": {
+      "steps": [
+        "Hold a barbell with both hands, palms up and a few inches apart.",
+        "Stand with your torso straight and your head up. Your feet should be about shoulder width and your elbows close to your torso. This will be your starting position. Tip: You will keep your upper arms and elbows stationary throughout the movement.",
+        "Curl the bar up in a semicircular motion until the forearms touch your biceps. Exhale as you perform this portion of the movement and contract your biceps hard for a second at the top. Tip: Avoid bending the back or using swinging motions as you lift the weight. Only the forearms should move.",
+        "Slowly go back down to the starting position as you inhale.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
     "close-grip-bench-press": {
       "steps": [
         "Lie back on a flat bench. Using a close grip (around shoulder width), lift the bar from the rack and hold it straight over you with your arms locked. This will be your starting position.",
@@ -1105,6 +1139,16 @@
         "Grasp the dumbbell with both hands and hold it straight over your chest at arm's length. Both palms should be pressing against the underside of the sides of the dumbbell. This will be your starting position.",
         "Initiate the movement by lowering the dumbbell to your chest.",
         "Return to the starting position by extending the elbows."
+      ],
+      "source": "free-exercise-db"
+    },
+    "close-grip-ez-bar-curl": {
+      "steps": [
+        "Stand up with your torso upright while holding an E-Z Curl Bar at the closer inner handle. The palm of your hands should be facing forward and they should be slightly tilted inwards due to the shape of the bar. The elbows should be close to the torso. This will be your starting position.",
+        "While holding the upper arms stationary, curl the weights forward while contracting the biceps as you breathe out. Tip: Only the forearms should move.",
+        "Continue the movement until your biceps are fully contracted and the bar is at shoulder level. Hold the contracted position for a second and squeeze the biceps hard.",
+        "Slowly begin to bring the bar back to starting position as your breathe in.",
+        "Repeat for the recommended amount of repetitions."
       ],
       "source": "free-exercise-db"
     },
@@ -1126,6 +1170,15 @@
         "As you breathe out, bring the bar down until it touches your upper chest by drawing the shoulders and the upper arms down and back. Tip: Concentrate on squeezing the back muscles once you reach the full contracted position. The upper torso should remain stationary (only the arms should move). The forearms should do no other work except for holding the bar; therefore do not try to pull the bar down using the forearms.",
         "After a second in the contracted position, while squeezing your shoulder blades together, slowly raise the bar back to the starting position when your arms are fully extended and the lats are fully stretched. Inhale during this portion of the movement.",
         "6. Repeat this motion for the prescribed amount of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
+    "close-grip-push-up": {
+      "steps": [
+        "Lie on the floor and place your hands on an upright dumbbell. Supporting your weight on your toes and hands, keep your torso rigid and your elbows in with your arms straight. This will be your starting position.",
+        "Lower your body, allowing the elbows to flex while you inhale. Keep your body straight, not allowing your hips to rise or sag.",
+        "Press yourself back up to the starting position by extending the elbows. Breathe out as you perform this step.",
+        "After a pause at the contracted position, repeat the movement for the prescribed amount of repetitions."
       ],
       "source": "free-exercise-db"
     },
@@ -1488,6 +1541,15 @@
         "While keeping your arms locked in the bent arm position, lower the weight slowly in an arc behind your head while breathing in until you feel a stretch on the chest.",
         "At that point, bring the dumbbell back to the starting position using the arc through which the weight was lowered and exhale as you perform this movement.",
         "Hold the weight on the initial position for a second and repeat the motion for the prescribed number of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
+    "dumbbell-reverse-curl": {
+      "steps": [
+        "To begin, stand straight with a dumbbell in each hand using a pronated grip (palms facing down). Your arms should be fully extended while your feet are shoulder width apart from each other. This is the starting position.",
+        "While holding the upper arms stationary, curl the weights while contracting the biceps as you breathe out. Only the forearms should move. Continue the movement until your biceps are fully contracted and the dumbbells are at shoulder level. Hold the contracted position for a second as you squeeze the muscle.",
+        "Slowly begin to bring the dumbbells back to starting position as your breathe in.",
+        "Repeat for the recommended amount of repetitions."
       ],
       "source": "free-exercise-db"
     },
@@ -2623,6 +2685,16 @@
       ],
       "source": "free-exercise-db"
     },
+    "neutral-grip-dumbbell-curl": {
+      "steps": [
+        "Hold a dumbbell in each hand and lie back on an incline bench.",
+        "The dumbbells should be at arm's length hanging at your sides and your palms should be facing out. This will be your starting position.",
+        "Now as you exhale curl the weight outward and up while keeping your forearms in line with your side deltoids. Continue the curl until the dumbbells are at shoulder height and to the sides of your deltoids. Tip: The end of the movement should look similar to a double biceps pose.",
+        "After a second contraction at the top of the movement, start to inhale and slowly lower the weights back to the starting position using the same path used to bring them up.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
     "neutral-grip-dumbbell-press": {
       "steps": [
         "Start by having a dumbbell in each hand with your arm fully extended to the side using a neutral grip. Your feet should be shoulder width apart from each other. Now slowly lift the dumbbells up until you create a 90 degree angle with your arms. Note: Your forearms should be perpendicular to the floor. This the starting position.",
@@ -2724,6 +2796,42 @@
         "Press the cable away from your chest, fully extending both arms. You core should be tight and engaged.",
         "Hold the repetition for several seconds before returning to the starting position.",
         "At the conclusion of the set, repeat facing the other direction."
+      ],
+      "source": "free-exercise-db"
+    },
+    "palms-down-dumbbell-wrist-curl": {
+      "steps": [
+        "Start out by placing two dumbbells on one side of a flat bench.",
+        "Kneel down on both of your knees so that your body is facing the flat bench.",
+        "Use your arms to grab both of the dumbbells with a pronated grip (palms facing down) and bring them up so that your forearms are resting against the flat bench. Your wrists should be hanging over the edge.",
+        "Start out by curling your wrist upwards and exhaling.",
+        "Slowly lower your wrists back down to the starting position while inhaling.",
+        "Your forearms should be stationary as your wrist is the only movement needed to perform this exercise.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
+    "palms-in-single-arm-dumbbell-press": {
+      "steps": [
+        "Start by having a dumbbell in one hand with your arm fully extended to the side using a neutral grip. Use your other arm to hold on to an incline bench to keep your balance.",
+        "Your feet should be shoulder width apart from each other. Now slowly lift the dumbbell up until you create a 90 degree angle with your arm. Note: Your forearm should be perpendicular to the floor. Continue to maintain a neutral grip throughout the entire exercise.",
+        "Slowly lift the dumbbell up until your arm is fully extended. This the starting position.",
+        "While inhaling lower the weight down until your arm is at a 90 degree angle again.",
+        "Feel the contraction for a second and then lift the weight back up towards the starting position while exhaling. Remember to hold on to the incline bench and keep your feet positioned to keep balance during the exercise.",
+        "Repeat for the recommended amount of repetitions.",
+        "Switch arms and repeat the exercise."
+      ],
+      "source": "free-exercise-db"
+    },
+    "palms-up-dumbbell-wrist-curl": {
+      "steps": [
+        "Start out by placing two dumbbells on one side of a flat bench.",
+        "Kneel down on both of your knees so that your body is facing the flat bench.",
+        "Use your arms to grab both of the dumbbells with a supinated grip (palms up) and bring them up so that your forearms are resting against the flat bench. Your wrists should be hanging over the edge.",
+        "Start out by curling your wrist upwards and exhaling.",
+        "Slowly lower your wrists back down to the starting position while inhaling. Make sure to inhale during this part of the exercise.",
+        "Your forearms should be stationary as your wrist is the only movement needed to perform this exercise.",
+        "Repeat for the recommended amount of repetitions."
       ],
       "source": "free-exercise-db"
     },
@@ -3040,6 +3148,28 @@
       ],
       "source": "free-exercise-db"
     },
+    "reverse-fly-with-external-rotation": {
+      "steps": [
+        "To begin, lie down on an incline bench set at a 30-degree angle with the chest and stomach pressing against the incline.",
+        "Have the dumbbells in each hand with the palms facing down to the floor. Your arms should be in front of you so that they are perpendicular to the angle of the bench. Tip: Your elbows should have a slight bend. The legs should be stationary while applying pressure with the ball of your toes (your heels should not be touching the floor). This is the starting position.",
+        "Maintaining the slight bend of the elbows, move the weights out and away from each other in an arc motion while exhaling.",
+        "As you lift the weight, your wrist should externally rotate by 90-degrees so that you go from a palms down (pronated) grip to a palms facing each other (neutral) grip. Tip: Try to squeeze your shoulder blades together to get the best results from this exercise.",
+        "The arms should be elevated until they are level with the head.",
+        "Feel the contraction and slowly lower the weights back down to the starting position while inhaling.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
+    "reverse-grip-bench-press": {
+      "steps": [
+        "Lie back on a flat bench. Using a close, supinated grip (around shoulder width), lift the bar from the rack and hold it straight over you with your arms locked extended in front of you and perpendicular to the floor. This will be your starting position.",
+        "As you breathe in, come down slowly until you feel the bar on your middle chest. Tip: Make sure that as opposed to a regular bench press, you keep the elbows close to the torso at all times in order to maximize triceps involvement.",
+        "After a second pause, bring the bar back to the starting position as you breathe out and push the bar using your triceps muscles. Lock your arms in the contracted position, hold for a second and then start coming down slowly again. Tip: It should take at least twice as long to go down than to come up.",
+        "Repeat the movement for the prescribed amount of repetitions.",
+        "When you are done, place the bar back in the rack."
+      ],
+      "source": "free-exercise-db"
+    },
     "reverse-grip-cable-pushdown": {
       "steps": [
         "With your right hand, grasp a single handle attached to the high-cable pulley using a supinated (underhand; palms facing up) grip. You should be standing directly in front of the weight stack.",
@@ -3048,6 +3178,46 @@
         "Squeeze the triceps and hold for a second in this contracted position.",
         "Slowly return the handle to the starting position.",
         "Repeat for the recommended amount of repetitions and then perform the same movement with the other arm."
+      ],
+      "source": "free-exercise-db"
+    },
+    "reverse-grip-push-up": {
+      "steps": [
+        "Stand facing a Smith machine bar or sturdy elevated platform at an appropriate height.",
+        "Place your hands on the bar palms up, with your hands about shoulder width apart.",
+        "Position your feet back from the bar with arms and body straight. This will be your starting position.",
+        "Keeping your body straight, lower your chest to the bar by bending the arms.",
+        "Return to the starting position by extending the elbows, pressing yourself back up."
+      ],
+      "source": "free-exercise-db"
+    },
+    "reverse-grip-row": {
+      "steps": [
+        "Stand erect while holding a barbell with a supinated grip (palms facing up).",
+        "Bend your knees slightly and bring your torso forward, by bending at the waist, while keeping the back straight until it is almost parallel to the floor. Tip: Make sure that you keep the head up. The barbell should hang directly in front of you as your arms hang perpendicular to the floor and your torso. This is your starting position.",
+        "While keeping the torso stationary, lift the barbell as you breathe out, keeping the elbows close to the body and not doing any force with the forearm other than holding the weights. On the top contracted position, squeeze the back muscles and hold for a second.",
+        "Slowly lower the weight again to the starting position as you inhale.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
+    "reverse-grip-skullcrusher": {
+      "steps": [
+        "While holding a barbell or EZ Curl bar with a pronated grip (palms facing forward), lie on your back on a flat bench with your head off the end of the bench. Tip: If you are holding a barbell grab it using a shoulder-width grip and if you are using an E-Z Bar grab it on the inner handles.",
+        "Extend your arms in front of you as you hold the barbell over your chest. The arms should be perpendicular to your torso (90-degree angle). This will be your starting position.",
+        "As you inhale, lower the bar in a semi-circular motion by bending at the elbows and while keeping the upper arm stationary and elbows in. Keep lowering the bar until it lightly touches your chin.",
+        "As you exhale bring the bar back up to the starting position by pushing the bar up in a semi-circular motion. Contract the triceps hard at the top of the movement for a second. Tip: Again, only the forearms should move. The upper arms should remain stationary at all times.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
+    "reverse-grip-triceps-pushdown": {
+      "steps": [
+        "Start by setting a bar attachment (straight or e-z) on a high pulley machine.",
+        "Facing the bar attachment, grab it with the palms facing up (supinated grip) at shoulder width. Lower the bar by using your lats until your arms are fully extended by your sides. Tip: Elbows should be in by your sides and your feet should be shoulder width apart from each other. This is the starting position.",
+        "Slowly elevate the bar attachment up as you inhale so it is aligned with your chest. Only the forearms should move and the elbows/upper arms should be stationary by your side at all times.",
+        "Then begin to lower the cable bar back down to the original staring position while exhaling and contracting the triceps hard.",
+        "Repeat for the recommended amount of repetitions."
       ],
       "source": "free-exercise-db"
     },
@@ -3080,6 +3250,16 @@
         "Cross your arms over your chest to make it harder, reach forward to make it easier."
       ],
       "source": "authored"
+    },
+    "reverse-preacher-curl": {
+      "steps": [
+        "Grab an EZ-bar using a shoulder width and palms down (pronated) grip.",
+        "Now place the upper part of both arms on top of the preacher bench and have your arms extended. This will be your starting position.",
+        "As you exhale, use the biceps to curl the weight up until your biceps are fully contracted and the barbell is at shoulder height. Squeeze the biceps hard for a second at the contracted position.",
+        "As you breathe in, slowly lower the barbell until your upper arms are extended and the biceps is fully stretched.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "source": "free-exercise-db"
     },
     "reverse-wrist-curl": {
       "steps": [
@@ -4426,6 +4606,71 @@
         "Position your legs through the decline machine until they are secured. Now reach for the exercise bands with both hands. Use a pronated (palms forward) grip to grasp the handles. Position them near your collar bone and rotate your wrist to a neutral grip (palms facing the torso). Note: Your arms should remain stationary throughout the exercise. This is the starting position.",
         "Move your torso upward until your upper body is perpendicular to the floor while exhaling. Hold the contraction for a second and lower your upper body back down to the starting position while inhaling.",
         "Repeat for the recommended amount of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
+    "wide-grip-barbell-curl": {
+      "steps": [
+        "Stand up with your torso upright while holding a barbell at the wide outer handle. The palm of your hands should be facing forward. The elbows should be close to the torso. This will be your starting position.",
+        "While holding the upper arms stationary, curl the weights forward while contracting the biceps as you breathe out. Tip: Only the forearms should move.",
+        "Continue the movement until your biceps are fully contracted and the bar is at shoulder level. Hold the contracted position for a second and squeeze the biceps hard.",
+        "Slowly begin to bring the bar back to starting position as your breathe in.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
+    "wide-grip-barbell-pullover": {
+      "steps": [
+        "Lie down on a decline bench with both legs securely locked in position. Reach for the barbell behind the head using a pronated grip (palms facing out). Make sure to grab the barbell wider than shoulder width apart for this exercise. Slowly lift the barbell up from the floor by using your arms.",
+        "When positioned properly, your arms should be fully extended and perpendicular to the floor. This is the starting position.",
+        "Begin by moving the barbell back down in a semicircular motion as if you were going to place it on the floor, but instead, stop when the arms are parallel to the floor. Tip: Keep the arms fully extended at all times. The movement should only happen at the shoulder joint. Inhale as you perform this portion of the movement.",
+        "Now bring the barbell up while exhaling until you are back at the starting position. Remember to keep full control of the barbell at all times.",
+        "Repeat the movement for the prescribed amount of repetitions of your training program.",
+        "When finished with your set, slowly lower the barbell back down until it is level with your head and release it."
+      ],
+      "source": "free-exercise-db"
+    },
+    "wide-grip-bench-press": {
+      "steps": [
+        "Lie back on a flat bench with feet firm on the floor. Using a wide, pronated (palms forward) grip that is around 3 inches away from shoulder width (for each hand), lift the bar from the rack and hold it straight over you with your arms locked. The bar will be perpendicular to the torso and the floor. This will be your starting position.",
+        "As you breathe in, come down slowly until you feel the bar on your middle chest.",
+        "After a second pause, bring the bar back to the starting position as you breathe out and push the bar using your chest muscles. Lock your arms and squeeze your chest in the contracted position, hold for a second and then start coming down slowly again. Tip: It should take at least twice as long to go down than to come up.",
+        "Repeat the movement for the prescribed amount of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
+    "wide-grip-decline-bench-press": {
+      "steps": [
+        "Lie back on a decline bench with the feet securely locked at the front of the bench. Using a wide, pronated (palms forward) grip that is around 3 inches away from shoulder width (for each hand), lift the bar from the rack and hold it straight over you with your arms locked. The bar will be perpendicular to the torso and the floor. This will be your starting position.",
+        "As you breathe in, come down slowly until you feel the bar on your lower chest.",
+        "After a second pause, bring the bar back to the starting position as you breathe out and push the bar using your chest muscles. Lock your arms and squeeze your chest in the contracted position, hold for a second and then start coming down slowly again. Tip: It should take at least twice as long to go down than to come up.",
+        "Repeat the movement for the prescribed amount of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
+    "wide-grip-push-up": {
+      "steps": [
+        "With your hands wide apart, support your body on your toes and hands in a plank position. Your elbows should be extended and your body straight. Do not allow your hips to sag. This will be your starting position.",
+        "To begin, allow the elbows to flex, lowering your chest to the floor as you inhale.",
+        "Using your pectoral muscles, press your upper body back up to the starting position by extending the elbows. Exhale as you perform this step.",
+        "After pausing at the contracted position, repeat the movement for the prescribed amount of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
+    "wide-grip-rear-pull-up": {
+      "steps": [
+        "Grab the pull-up bar with the palms facing forward using a wide grip.",
+        "As you have both arms extended in front of you holding the bar, bring your torso forward and head so that there is an imaginary line from the pull-up bar to the back of your neck. This is your starting position.",
+        "Pull your torso up until the bar is near the back of your neck. To do this, draw the shoulders and upper arms down and back while slightly leaning your head forward. Exhale as you perform this portion of the movement. Tip: Concentrate on squeezing the back muscles once you reach the full contracted position. The upper torso should remain stationary as it moves through space and only the arms should move. The forearms should do no other work other than hold the bar.",
+        "After a second on the contracted position, start to inhale and slowly lower your torso back to the starting position when your arms are fully extended and the lats are fully stretched.",
+        "Repeat this motion for the prescribed amount of repetitions."
+      ],
+      "source": "free-exercise-db"
+    },
+    "wide-stance-stiff-leg-deadlift": {
+      "steps": [
+        "Begin with a barbell loaded on the floor. Adopt a wide stance, and then bend at the hips to grab the bar. Your hips should be as far back as possible, and your legs nearly straight. Keep your back straight, and your head and chest up. This will be your starting position.",
+        "Begin the movement be engaging the hips, driving them forward as you allow the arms to hang straight. Continue until you are standing straight up, and then slowly return the weight to the starting position. For successive reps, the weight need not touch the floor."
       ],
       "source": "free-exercise-db"
     },

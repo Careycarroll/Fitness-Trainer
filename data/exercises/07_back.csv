@@ -62,3 +62,6 @@ Cable Shrug,cable-shrug,shrug,strength,isolation,traps,upper_back,cable,FALSE,1,
 Calf Machine Shrug,calf-machine-shrug,shrug,strength,isolation,traps,upper_back,calf_machine,FALSE,1,1,10,20,45,FALSE,weight_reps,shortened,,,,,,,abs,FALSE
 Sled Row,sled-row,sled_row,strength,pull_h,mid_back,lats|biceps,sled,TRUE,3,2,8,15,90,FALSE,weight_reps,,,,,,,,erectors|abs,FALSE
 Bent-Arm Barbell Pullover,bent-arm-barbell-pullover,pullover,strength,pull_v,lats,chest|triceps,barbell|bench,TRUE,3,3,8,12,90,FALSE,weight_reps,stretch,,,,,shoulder,,abs,FALSE
+Wide-Grip Barbell Pullover,wide-grip-barbell-pullover,pullover,strength,pull_v,lats,chest|triceps,barbell|bench,TRUE,3,3,8,12,90,FALSE,weight_reps,stretch,,wide,pronated,,shoulder,,abs,FALSE
+Reverse-Grip Row,reverse-grip-row,barbell_row,strength,pull_h,lats,mid_back|biceps,barbell,TRUE,4,3,8,12,90,FALSE,weight_reps,,,,supinated,,lower_back,,erectors|abs,FALSE
+Wide-Grip Rear Pull-Up,wide-grip-rear-pull-up,pull_up,strength,pull_v,lats,upper_back|rear_delts,pullup_bar,TRUE,4,4,4,10,120,FALSE,reps_only,,,wide,pronated,,shoulder,,abs,FALSE

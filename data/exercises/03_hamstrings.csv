@@ -23,3 +23,4 @@ Clean Deadlift,clean-deadlift,deadlift,strength,hinge,hamstrings,glutes|erectors
 Snatch Deadlift,snatch-deadlift,deadlift,strength,hinge,hamstrings,glutes|erectors|traps,barbell|platform,TRUE,4,4,3,6,180,FALSE,weight_reps,stretch,,,,,lower_back,,erectors|abs,FALSE
 Lunge Pass Through,lunge-pass-through,lunge,strength,lunge,hamstrings,glutes|quads|abs,kettlebell,TRUE,2,3,8,16,60,TRUE,reps_only,,,,,,knee,,abs|obliques,FALSE
 Floor Glute-Ham Raise,floor-glute-ham-raise,nordic_curl,strength,hinge,hamstrings,glutes,bodyweight,FALSE,3,3,3,8,120,FALSE,reps_only,shortened,,,,,knee,,erectors|abs,FALSE
+Wide-Stance Stiff-Leg Deadlift,wide-stance-stiff-leg-deadlift,stiff_leg_deadlift,strength,hinge,hamstrings,glutes|adductors|erectors,barbell,TRUE,4,3,6,12,150,FALSE,weight_reps,stretch,,wide,pronated,,lower_back,,erectors|abs,FALSE

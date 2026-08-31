@@ -44,3 +44,9 @@ Single-Arm Cable Fly,single-arm-cable-fly,fly,strength,push_h,chest,front_delts,
 Decline Dumbbell Fly,decline-dumbbell-fly,fly,strength,push_h,chest,front_delts,dumbbell|bench,FALSE,2,2,10,15,60,FALSE,weight_reps,stretch,decline,,,,shoulder,,abs,FALSE
 Single-Arm Dumbbell Fly,single-arm-dumbbell-fly,fly,strength,push_h,chest,front_delts,dumbbell|bench,FALSE,1,2,10,20,60,TRUE,weight_reps,stretch,flat,,,,shoulder,,abs|obliques,FALSE
 Svend Press,svend-press,plate_press,strength,push_h,chest,front_delts|triceps,plate,FALSE,1,2,10,20,45,FALSE,reps_only,shortened,flat,,,,,,abs,FALSE
+Wide-Grip Bench Press,wide-grip-bench-press,bench_press,strength,push_h,chest,front_delts|triceps,barbell|bench|rack,TRUE,4,3,6,12,120,FALSE,weight_reps,stretch,flat,wide,pronated,,shoulder,,abs,FALSE
+Wide-Grip Decline Bench Press,wide-grip-decline-bench-press,bench_press,strength,push_h,chest,triceps|front_delts,barbell|bench|rack,TRUE,4,3,6,12,120,FALSE,weight_reps,stretch,decline,wide,pronated,,shoulder,,abs,FALSE
+Reverse-Grip Bench Press,reverse-grip-bench-press,bench_press,strength,push_h,chest,triceps|front_delts,barbell|bench|rack,TRUE,4,4,6,12,120,FALSE,weight_reps,,flat,,supinated,,shoulder,,abs,FALSE
+Close-Grip Push-Up,close-grip-push-up,push_up,strength,push_h,triceps,chest|front_delts,bodyweight,TRUE,2,2,8,20,60,FALSE,reps_only,,flat,close,pronated,,,,abs,FALSE
+Wide-Grip Push-Up,wide-grip-push-up,push_up,strength,push_h,chest,front_delts|triceps,bodyweight,TRUE,2,1,10,25,60,FALSE,reps_only,stretch,flat,wide,pronated,,shoulder,,abs,FALSE
+Reverse-Grip Push-Up,reverse-grip-push-up,push_up,strength,push_h,chest,biceps|front_delts,bodyweight,TRUE,2,3,8,20,60,FALSE,reps_only,,incline,,supinated,,elbow,,abs,FALSE

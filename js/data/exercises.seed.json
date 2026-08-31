@@ -5909,6 +5909,56 @@
       "sourceFile": "03_hamstrings.csv"
     },
     {
+      "id": "wide-stance-stiff-leg-deadlift",
+      "name": "Wide-Stance Stiff-Leg Deadlift",
+      "pattern": "hinge",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell"
+      ],
+      "primaryMuscles": [
+        "hamstrings"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "adductors",
+        "erectors"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 150,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "stiff_leg_deadlift",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": "stretch",
+      "angle": null,
+      "gripWidth": "wide",
+      "gripOrientation": "pronated",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 6,
+      "repHigh": 12,
+      "sourceFile": "03_hamstrings.csv"
+    },
+    {
       "id": "standing-calf-raise",
       "name": "Standing Calf Raise",
       "pattern": "isolation",
@@ -9189,6 +9239,298 @@
       "sourceFile": "06_chest.csv"
     },
     {
+      "id": "wide-grip-bench-press",
+      "name": "Wide-Grip Bench Press",
+      "pattern": "push_h",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "bench",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "front_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "bench_press",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": "stretch",
+      "angle": "flat",
+      "gripWidth": "wide",
+      "gripOrientation": "pronated",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 6,
+      "repHigh": 12,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "wide-grip-decline-bench-press",
+      "name": "Wide-Grip Decline Bench Press",
+      "pattern": "push_h",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "bench",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "triceps",
+        "front_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "bench_press",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": "stretch",
+      "angle": "decline",
+      "gripWidth": "wide",
+      "gripOrientation": "pronated",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 6,
+      "repHigh": 12,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "reverse-grip-bench-press",
+      "name": "Reverse-Grip Bench Press",
+      "pattern": "push_h",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "bench",
+        "rack"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "triceps",
+        "front_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "bench_press",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": "flat",
+      "gripWidth": null,
+      "gripOrientation": "supinated",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 6,
+      "repHigh": 12,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "close-grip-push-up",
+      "name": "Close-Grip Push-Up",
+      "pattern": "push_h",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [
+        "chest",
+        "front_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "push_up",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "flat",
+      "gripWidth": "close",
+      "gripOrientation": "pronated",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 20,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "wide-grip-push-up",
+      "name": "Wide-Grip Push-Up",
+      "pattern": "push_h",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "front_delts",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "push_up",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": "stretch",
+      "angle": "flat",
+      "gripWidth": "wide",
+      "gripOrientation": "pronated",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 10,
+      "repHigh": 25,
+      "sourceFile": "06_chest.csv"
+    },
+    {
+      "id": "reverse-grip-push-up",
+      "name": "Reverse-Grip Push-Up",
+      "pattern": "push_h",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "biceps",
+        "front_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "push_up",
+      "jointLoad": [
+        "elbow"
+      ],
+      "romBias": null,
+      "angle": "incline",
+      "gripWidth": null,
+      "gripOrientation": "supinated",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 20,
+      "sourceFile": "06_chest.csv"
+    },
+    {
       "id": "pull-up",
       "name": "Pull-Up",
       "pattern": "pull_v",
@@ -12119,6 +12461,152 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 12,
+      "sourceFile": "07_back.csv"
+    },
+    {
+      "id": "wide-grip-barbell-pullover",
+      "name": "Wide-Grip Barbell Pullover",
+      "pattern": "pull_v",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "lats"
+      ],
+      "secondaryMuscles": [
+        "chest",
+        "triceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "pullover",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": "stretch",
+      "angle": null,
+      "gripWidth": "wide",
+      "gripOrientation": "pronated",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 12,
+      "sourceFile": "07_back.csv"
+    },
+    {
+      "id": "reverse-grip-row",
+      "name": "Reverse-Grip Row",
+      "pattern": "pull_h",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell"
+      ],
+      "primaryMuscles": [
+        "lats"
+      ],
+      "secondaryMuscles": [
+        "mid_back",
+        "biceps"
+      ],
+      "stabilises": [
+        "erectors",
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "barbell_row",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": "supinated",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 12,
+      "sourceFile": "07_back.csv"
+    },
+    {
+      "id": "wide-grip-rear-pull-up",
+      "name": "Wide-Grip Rear Pull-Up",
+      "pattern": "pull_v",
+      "loadType": "bodyweight",
+      "equipment": [
+        "pullup_bar"
+      ],
+      "primaryMuscles": [
+        "lats"
+      ],
+      "secondaryMuscles": [
+        "upper_back",
+        "rear_delts"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 4,
+      "skill": 4,
+      "defaultRIR": 2,
+      "restSeconds": 120,
+      "warmupRequired": true,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "reps_only",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": true,
+      "repsForTime": true,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "pull_up",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": null,
+      "gripWidth": "wide",
+      "gripOrientation": "pronated",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 4,
+      "repHigh": 10,
       "sourceFile": "07_back.csv"
     },
     {
@@ -15284,6 +15772,100 @@
       "sourceFile": "08_shoulders.csv"
     },
     {
+      "id": "palms-in-single-arm-dumbbell-press",
+      "name": "Palms-In Single-Arm Dumbbell Press",
+      "pattern": "push_v",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "triceps"
+      ],
+      "stabilises": [
+        "abs",
+        "obliques"
+      ],
+      "fatigueCost": 3,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 90,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": false,
+      "isCompound": true,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "dumbbell_shoulder_press",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "overhead",
+      "gripWidth": null,
+      "gripOrientation": "neutral",
+      "headBias": null,
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
+      "id": "reverse-fly-with-external-rotation",
+      "name": "Reverse Fly With External Rotation",
+      "pattern": "pull_h",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "rear_delts"
+      ],
+      "secondaryMuscles": [
+        "upper_back"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "reverse_fly",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 4,
+      "repLow": 12,
+      "repHigh": 20,
+      "sourceFile": "08_shoulders.csv"
+    },
+    {
       "id": "barbell-curl",
       "name": "Barbell Curl",
       "pattern": "isolation",
@@ -17046,6 +17628,410 @@
       "sourceFile": "09_biceps.csv"
     },
     {
+      "id": "wide-grip-barbell-curl",
+      "name": "Wide-Grip Barbell Curl",
+      "pattern": "isolation",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell"
+      ],
+      "primaryMuscles": [
+        "biceps"
+      ],
+      "secondaryMuscles": [
+        "forearms"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "barbell_curl",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "gripWidth": "wide",
+      "gripOrientation": "supinated",
+      "headBias": "short",
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "09_biceps.csv"
+    },
+    {
+      "id": "close-grip-barbell-curl",
+      "name": "Close-Grip Barbell Curl",
+      "pattern": "isolation",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell"
+      ],
+      "primaryMuscles": [
+        "biceps"
+      ],
+      "secondaryMuscles": [
+        "forearms"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "barbell_curl",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "gripWidth": "close",
+      "gripOrientation": "supinated",
+      "headBias": "long",
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "09_biceps.csv"
+    },
+    {
+      "id": "close-grip-ez-bar-curl",
+      "name": "Close-Grip EZ-Bar Curl",
+      "pattern": "isolation",
+      "loadType": "barbell",
+      "equipment": [
+        "ez_bar"
+      ],
+      "primaryMuscles": [
+        "biceps"
+      ],
+      "secondaryMuscles": [
+        "forearms"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "barbell_curl",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "gripWidth": "close",
+      "gripOrientation": "supinated",
+      "headBias": "long",
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "09_biceps.csv"
+    },
+    {
+      "id": "reverse-preacher-curl",
+      "name": "Reverse Preacher Curl",
+      "pattern": "isolation",
+      "loadType": "barbell",
+      "equipment": [
+        "ez_bar",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "forearms"
+      ],
+      "secondaryMuscles": [
+        "biceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "reverse_curl",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": "pronated",
+      "headBias": null,
+      "stability": 3,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "09_biceps.csv"
+    },
+    {
+      "id": "dumbbell-reverse-curl",
+      "name": "Dumbbell Reverse Curl",
+      "pattern": "isolation",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "forearms"
+      ],
+      "secondaryMuscles": [
+        "biceps"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "reverse_curl",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": "pronated",
+      "headBias": null,
+      "stability": 4,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "09_biceps.csv"
+    },
+    {
+      "id": "neutral-grip-dumbbell-curl",
+      "name": "Neutral-Grip Dumbbell Curl",
+      "pattern": "isolation",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "biceps"
+      ],
+      "secondaryMuscles": [
+        "forearms"
+      ],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "hammer_curl",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": "incline",
+      "gripWidth": null,
+      "gripOrientation": "neutral",
+      "headBias": "long",
+      "stability": 4,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "09_biceps.csv"
+    },
+    {
+      "id": "palms-down-dumbbell-wrist-curl",
+      "name": "Palms-Down Dumbbell Wrist Curl",
+      "pattern": "isolation",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "forearms"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "wrist_curl",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": "pronated",
+      "headBias": null,
+      "stability": 4,
+      "repLow": 12,
+      "repHigh": 25,
+      "sourceFile": "09_biceps.csv"
+    },
+    {
+      "id": "palms-up-dumbbell-wrist-curl",
+      "name": "Palms-Up Dumbbell Wrist Curl",
+      "pattern": "isolation",
+      "loadType": "dumbbell",
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "forearms"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "wrist_curl",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": "supinated",
+      "headBias": null,
+      "stability": 4,
+      "repLow": 12,
+      "repHigh": 25,
+      "sourceFile": "09_biceps.csv"
+    },
+    {
+      "id": "cable-palms-up-wrist-curl",
+      "name": "Cable Palms-Up Wrist Curl",
+      "pattern": "isolation",
+      "loadType": "cable",
+      "equipment": [
+        "cable",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "forearms"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "wrist_curl",
+      "jointLoad": [],
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": "supinated",
+      "headBias": null,
+      "stability": 2,
+      "repLow": 12,
+      "repHigh": 25,
+      "sourceFile": "09_biceps.csv"
+    },
+    {
       "id": "overhead-cable-triceps-extension",
       "name": "Overhead Cable Triceps Extension",
       "pattern": "isolation",
@@ -18622,6 +19608,141 @@
       "gripWidth": "close",
       "gripOrientation": null,
       "headBias": null,
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
+      "id": "reverse-grip-triceps-pushdown",
+      "name": "Reverse-Grip Triceps Pushdown",
+      "pattern": "isolation",
+      "loadType": "cable",
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 45,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "pushdown",
+      "jointLoad": [],
+      "romBias": "shortened",
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": "supinated",
+      "headBias": "short",
+      "stability": 2,
+      "repLow": 10,
+      "repHigh": 20,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
+      "id": "reverse-grip-skullcrusher",
+      "name": "Reverse-Grip Skullcrusher",
+      "pattern": "isolation",
+      "loadType": "barbell",
+      "equipment": [
+        "ez_bar",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "skullcrusher",
+      "jointLoad": [
+        "elbow"
+      ],
+      "romBias": "stretch",
+      "angle": "flat",
+      "gripWidth": null,
+      "gripOrientation": "supinated",
+      "headBias": "long",
+      "stability": 3,
+      "repLow": 8,
+      "repHigh": 15,
+      "sourceFile": "10_triceps.csv"
+    },
+    {
+      "id": "behind-head-triceps-extension",
+      "name": "Behind-Head Triceps Extension",
+      "pattern": "isolation",
+      "loadType": "barbell",
+      "equipment": [
+        "barbell",
+        "bench"
+      ],
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [
+        "abs"
+      ],
+      "fatigueCost": 2,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 60,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": false,
+      "isCompound": false,
+      "trackingType": "weight_reps",
+      "scoring": "load",
+      "timeDomain": null,
+      "roundsCapable": false,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "skullcrusher",
+      "jointLoad": [
+        "elbow"
+      ],
+      "romBias": "stretch",
+      "angle": "flat",
+      "gripWidth": "close",
+      "gripOrientation": "pronated",
+      "headBias": "long",
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,

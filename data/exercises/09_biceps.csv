@@ -39,3 +39,12 @@ Wrist Roller,wrist-roller,wrist_roller,strength,isolation,forearms,,plate,FALSE,
 Dumbbell Pronation,dumbbell-pronation,forearm_rotation,strength,isolation,forearms,,dumbbell|bench,FALSE,1,2,12,20,45,TRUE,weight_reps,,,,,,,,abs,FALSE
 Dumbbell Supination,dumbbell-supination,forearm_rotation,strength,isolation,forearms,,dumbbell|bench,FALSE,1,2,12,20,45,TRUE,weight_reps,,,,,,,,abs,FALSE
 Plate Hand Squeeze,plate-hand-squeeze,grip,strength,isolation,forearms,,plate,FALSE,1,1,15,30,45,FALSE,reps_only,,,,,,,,abs,FALSE
+Wide-Grip Barbell Curl,wide-grip-barbell-curl,barbell_curl,strength,isolation,biceps,forearms,barbell,FALSE,1,2,8,15,60,FALSE,weight_reps,,,wide,supinated,short,,,abs,FALSE
+Close-Grip Barbell Curl,close-grip-barbell-curl,barbell_curl,strength,isolation,biceps,forearms,barbell,FALSE,1,2,8,15,60,FALSE,weight_reps,,,close,supinated,long,,,abs,FALSE
+Close-Grip EZ-Bar Curl,close-grip-ez-bar-curl,barbell_curl,strength,isolation,biceps,forearms,ez_bar,FALSE,1,2,8,15,60,FALSE,weight_reps,,,close,supinated,long,,,abs,FALSE
+Reverse Preacher Curl,reverse-preacher-curl,reverse_curl,strength,isolation,forearms,biceps,ez_bar|bench,FALSE,1,2,10,20,45,FALSE,weight_reps,,,,pronated,,,,abs,FALSE
+Dumbbell Reverse Curl,dumbbell-reverse-curl,reverse_curl,strength,isolation,forearms,biceps,dumbbell,FALSE,1,2,10,20,45,FALSE,weight_reps,,,,pronated,,,,abs,FALSE
+Neutral-Grip Dumbbell Curl,neutral-grip-dumbbell-curl,hammer_curl,strength,isolation,biceps,forearms,dumbbell|bench,FALSE,1,2,8,15,60,FALSE,weight_reps,,incline,,neutral,long,,,abs,FALSE
+Palms-Down Dumbbell Wrist Curl,palms-down-dumbbell-wrist-curl,wrist_curl,strength,isolation,forearms,,dumbbell|bench,FALSE,1,1,12,25,45,FALSE,weight_reps,,,,pronated,,,,abs,FALSE
+Palms-Up Dumbbell Wrist Curl,palms-up-dumbbell-wrist-curl,wrist_curl,strength,isolation,forearms,,dumbbell|bench,FALSE,1,1,12,25,45,FALSE,weight_reps,,,,supinated,,,,abs,FALSE
+Cable Palms-Up Wrist Curl,cable-palms-up-wrist-curl,wrist_curl,strength,isolation,forearms,,cable|bench,FALSE,1,1,12,25,45,FALSE,weight_reps,,,,supinated,,,,abs,FALSE
