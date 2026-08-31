@@ -50,6 +50,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -99,6 +100,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -145,6 +147,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -195,6 +198,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -244,6 +248,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -289,6 +294,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -337,6 +343,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -386,6 +393,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -434,6 +442,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -479,6 +488,7 @@
       "stability": 3,
       "repLow": 15,
       "repHigh": 30,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -525,6 +535,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -573,6 +584,7 @@
       "stability": 3,
       "repLow": 30,
       "repHigh": 90,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -618,6 +630,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -662,6 +675,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -706,6 +720,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -750,6 +765,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -793,6 +809,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -838,6 +855,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -884,6 +902,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -931,6 +950,7 @@
       "stability": 2,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -978,6 +998,7 @@
       "stability": 4,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1025,6 +1046,7 @@
       "stability": 4,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1071,6 +1093,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1120,6 +1143,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1166,6 +1190,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1211,6 +1236,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 16,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1257,6 +1283,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1304,6 +1331,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1353,6 +1381,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1401,6 +1430,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1442,6 +1472,7 @@
       "stability": 2,
       "repLow": 15,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1486,6 +1517,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 40,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1532,6 +1564,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 40,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1577,6 +1610,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 40,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1629,6 +1663,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1680,6 +1715,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1729,6 +1765,7 @@
       "stability": 3,
       "repLow": 4,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1779,6 +1816,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1831,6 +1869,7 @@
       "stability": 3,
       "repLow": 1,
       "repHigh": 3,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1882,6 +1921,7 @@
       "stability": 3,
       "repLow": 1,
       "repHigh": 3,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1933,6 +1973,7 @@
       "stability": 3,
       "repLow": 1,
       "repHigh": 3,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -1985,6 +2026,7 @@
       "stability": 3,
       "repLow": 1,
       "repHigh": 3,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2036,6 +2078,7 @@
       "stability": 3,
       "repLow": 2,
       "repHigh": 4,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2086,6 +2129,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2137,6 +2181,7 @@
       "stability": 3,
       "repLow": 1,
       "repHigh": 3,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2190,6 +2235,7 @@
       "stability": 3,
       "repLow": 1,
       "repHigh": 3,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2239,6 +2285,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2287,6 +2334,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2337,6 +2385,7 @@
       "stability": 4,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2387,6 +2436,7 @@
       "stability": 4,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2435,6 +2485,7 @@
       "stability": 1,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2483,6 +2534,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2533,6 +2585,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2582,6 +2635,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2631,6 +2685,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2680,6 +2735,7 @@
       "stability": 5,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2729,6 +2785,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2775,6 +2832,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2824,6 +2882,7 @@
       "stability": 4,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2867,6 +2926,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2917,6 +2977,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -2969,6 +3030,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -3016,6 +3078,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -3066,6 +3129,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -3115,6 +3179,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -3163,6 +3228,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -3208,6 +3274,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -3256,6 +3323,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -3306,6 +3374,7 @@
       "stability": 4,
       "repLow": 4,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -3358,6 +3427,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "01_quads.csv"
     },
     {
@@ -3407,6 +3477,7 @@
       "stability": 3,
       "repLow": 1,
       "repHigh": 5,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -3457,6 +3528,7 @@
       "stability": 3,
       "repLow": 1,
       "repHigh": 5,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -3504,6 +3576,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -3552,6 +3625,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -3598,6 +3672,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -3642,6 +3717,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -3685,6 +3761,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -3729,6 +3806,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -3775,6 +3853,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -3818,6 +3897,7 @@
       "stability": 3,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -3862,6 +3942,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -3906,6 +3987,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -3949,6 +4031,7 @@
       "stability": 3,
       "repLow": 15,
       "repHigh": 30,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -3996,6 +4079,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4040,6 +4124,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4085,6 +4170,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4131,6 +4217,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4177,6 +4264,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4220,6 +4308,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4263,6 +4352,7 @@
       "stability": 2,
       "repLow": 15,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4310,6 +4400,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4359,6 +4450,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4407,6 +4499,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4452,6 +4545,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4503,6 +4597,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4553,6 +4648,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4600,6 +4696,7 @@
       "stability": 5,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4648,6 +4745,7 @@
       "stability": 5,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4693,6 +4791,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4739,6 +4838,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4784,6 +4884,7 @@
       "stability": 1,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "02_glutes.csv"
     },
     {
@@ -4832,6 +4933,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -4880,6 +4982,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -4929,6 +5032,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -4976,6 +5080,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5024,6 +5129,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5072,6 +5178,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5121,6 +5228,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5165,6 +5273,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5208,6 +5317,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5251,6 +5361,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5294,6 +5405,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5337,6 +5449,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5380,6 +5493,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5427,6 +5541,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5475,6 +5590,7 @@
       "stability": 2,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5521,6 +5637,7 @@
       "stability": 1,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5565,6 +5682,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5610,6 +5728,7 @@
       "stability": 5,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5656,6 +5775,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5706,6 +5826,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5757,6 +5878,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5808,6 +5930,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5858,6 +5981,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 16,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5906,6 +6030,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5956,6 +6081,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "03_hamstrings.csv"
     },
     {
@@ -5997,6 +6123,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "04_calves.csv"
     },
     {
@@ -6039,6 +6166,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "04_calves.csv"
     },
     {
@@ -6081,6 +6209,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "04_calves.csv"
     },
     {
@@ -6123,6 +6252,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "04_calves.csv"
     },
     {
@@ -6165,6 +6295,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "04_calves.csv"
     },
     {
@@ -6206,6 +6337,7 @@
       "stability": 3,
       "repLow": 15,
       "repHigh": 30,
+      "videoUrl": null,
       "sourceFile": "04_calves.csv"
     },
     {
@@ -6247,6 +6379,7 @@
       "stability": 1,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "04_calves.csv"
     },
     {
@@ -6290,6 +6423,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "04_calves.csv"
     },
     {
@@ -6331,6 +6465,7 @@
       "stability": 1,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "04_calves.csv"
     },
     {
@@ -6372,6 +6507,7 @@
       "stability": 3,
       "repLow": 15,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "04_calves.csv"
     },
     {
@@ -6417,6 +6553,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "04_calves.csv"
     },
     {
@@ -6460,6 +6597,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "04_calves.csv"
     },
     {
@@ -6504,6 +6642,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "04_calves.csv"
     },
     {
@@ -6548,6 +6687,7 @@
       "stability": 1,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "04_calves.csv"
     },
     {
@@ -6597,6 +6737,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "05_hips.csv"
     },
     {
@@ -6646,6 +6787,7 @@
       "stability": 4,
       "repLow": 6,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "05_hips.csv"
     },
     {
@@ -6694,6 +6836,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "05_hips.csv"
     },
     {
@@ -6737,6 +6880,7 @@
       "stability": 1,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "05_hips.csv"
     },
     {
@@ -6780,6 +6924,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "05_hips.csv"
     },
     {
@@ -6823,6 +6968,7 @@
       "stability": 2,
       "repLow": 15,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "05_hips.csv"
     },
     {
@@ -6873,6 +7019,7 @@
       "stability": 3,
       "repLow": 15,
       "repHigh": 45,
+      "videoUrl": null,
       "sourceFile": "05_hips.csv"
     },
     {
@@ -6923,6 +7070,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 60,
+      "videoUrl": null,
       "sourceFile": "05_hips.csv"
     },
     {
@@ -6966,6 +7114,7 @@
       "stability": 1,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "05_hips.csv"
     },
     {
@@ -7009,6 +7158,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "05_hips.csv"
     },
     {
@@ -7053,6 +7203,7 @@
       "stability": 2,
       "repLow": 15,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "05_hips.csv"
     },
     {
@@ -7096,6 +7247,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "05_hips.csv"
     },
     {
@@ -7140,6 +7292,7 @@
       "stability": 3,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "05_hips.csv"
     },
     {
@@ -7188,6 +7341,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7236,6 +7390,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7282,6 +7437,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7327,6 +7483,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7374,6 +7531,7 @@
       "stability": 1,
       "repLow": 6,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7421,6 +7579,7 @@
       "stability": 4,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7468,6 +7627,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7513,6 +7673,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7557,6 +7718,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7601,6 +7763,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7645,6 +7808,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7692,6 +7856,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7738,6 +7903,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7784,6 +7950,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7833,6 +8000,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7878,6 +8046,7 @@
       "stability": 3,
       "repLow": 12,
       "repHigh": 30,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7925,6 +8094,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -7970,6 +8140,7 @@
       "stability": 2,
       "repLow": 8,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8017,6 +8188,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8066,6 +8238,7 @@
       "stability": 5,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8113,6 +8286,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8162,6 +8336,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8207,6 +8382,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8251,6 +8427,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8294,6 +8471,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8340,6 +8518,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8385,6 +8564,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8434,6 +8614,7 @@
       "stability": 5,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8480,6 +8661,7 @@
       "stability": 5,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8530,6 +8712,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8580,6 +8763,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8627,6 +8811,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8674,6 +8859,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8721,6 +8907,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8767,6 +8954,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8815,6 +9003,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8862,6 +9051,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8908,6 +9098,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -8954,6 +9145,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -9000,6 +9192,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -9047,6 +9240,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -9093,6 +9287,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -9141,6 +9336,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -9190,6 +9386,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -9236,6 +9433,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -9286,6 +9484,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -9336,6 +9535,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -9386,6 +9586,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -9432,6 +9633,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -9480,6 +9682,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -9528,6 +9731,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "06_chest.csv"
     },
     {
@@ -9575,6 +9779,7 @@
       "stability": 3,
       "repLow": 4,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -9623,6 +9828,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -9671,6 +9877,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -9715,6 +9922,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -9760,6 +9968,7 @@
       "stability": 2,
       "repLow": 6,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -9804,6 +10013,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -9848,6 +10058,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -9892,6 +10103,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -9936,6 +10148,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -9983,6 +10196,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10030,6 +10244,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10079,6 +10294,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10127,6 +10343,7 @@
       "stability": 3,
       "repLow": 4,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10176,6 +10393,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10226,6 +10444,7 @@
       "stability": 2,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10274,6 +10493,7 @@
       "stability": 2,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10320,6 +10540,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10366,6 +10587,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10412,6 +10634,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10458,6 +10681,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10507,6 +10731,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10552,6 +10777,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10597,6 +10823,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10642,6 +10869,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10687,6 +10915,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10732,6 +10961,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10777,6 +11007,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10822,6 +11053,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10870,6 +11102,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10919,6 +11152,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -10966,6 +11200,7 @@
       "stability": 5,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11012,6 +11247,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11058,6 +11294,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11104,6 +11341,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11148,6 +11386,7 @@
       "stability": 2,
       "repLow": 15,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11194,6 +11433,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11237,6 +11477,7 @@
       "stability": 3,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11284,6 +11525,7 @@
       "stability": 5,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11331,6 +11573,7 @@
       "stability": 5,
       "repLow": 4,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11379,6 +11622,7 @@
       "stability": 5,
       "repLow": 5,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11428,6 +11672,7 @@
       "stability": 2,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11476,6 +11721,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11525,6 +11771,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11572,6 +11819,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11619,6 +11867,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11668,6 +11917,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11716,6 +11966,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11764,6 +12015,7 @@
       "stability": 4,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11811,6 +12063,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11857,6 +12110,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11903,6 +12157,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11951,6 +12206,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -11997,6 +12253,7 @@
       "stability": 3,
       "repLow": 4,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -12042,6 +12299,7 @@
       "stability": 3,
       "repLow": 4,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -12089,6 +12347,7 @@
       "stability": 3,
       "repLow": 1,
       "repHigh": 5,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -12138,6 +12397,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -12184,6 +12444,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -12230,6 +12491,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -12275,6 +12537,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -12320,6 +12583,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -12365,6 +12629,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -12412,6 +12677,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -12461,6 +12727,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -12510,6 +12777,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -12559,6 +12827,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -12607,6 +12876,7 @@
       "stability": 3,
       "repLow": 4,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "07_back.csv"
     },
     {
@@ -12657,6 +12927,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -12705,6 +12976,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -12755,6 +13027,7 @@
       "stability": 3,
       "repLow": 2,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -12802,6 +13075,7 @@
       "stability": 4,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -12850,6 +13124,7 @@
       "stability": 4,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -12897,6 +13172,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -12943,6 +13219,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -12990,6 +13267,7 @@
       "stability": 2,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13037,6 +13315,7 @@
       "stability": 2,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13085,6 +13364,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13134,6 +13414,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13179,6 +13460,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13224,6 +13506,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13268,6 +13551,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13311,6 +13595,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13354,6 +13639,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13398,6 +13684,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13441,6 +13728,7 @@
       "stability": 2,
       "repLow": 15,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13485,6 +13773,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13532,6 +13821,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13577,6 +13867,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13621,6 +13912,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13665,6 +13957,7 @@
       "stability": 1,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13710,6 +14003,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13754,6 +14048,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13798,6 +14093,7 @@
       "stability": 2,
       "repLow": 15,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13842,6 +14138,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13886,6 +14183,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13935,6 +14233,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -13984,6 +14283,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14030,6 +14330,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14075,6 +14376,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14122,6 +14424,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14167,6 +14470,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14214,6 +14518,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 16,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14259,6 +14564,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14305,6 +14611,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14352,6 +14659,7 @@
       "stability": 4,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14397,6 +14705,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14444,6 +14753,7 @@
       "stability": 4,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14490,6 +14800,7 @@
       "stability": 4,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14537,6 +14848,7 @@
       "stability": 4,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14585,6 +14897,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14633,6 +14946,7 @@
       "stability": 2,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14676,6 +14990,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14720,6 +15035,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14763,6 +15079,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14808,6 +15125,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14852,6 +15170,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14896,6 +15215,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14944,6 +15264,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -14990,6 +15311,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15036,6 +15358,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15081,6 +15404,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15124,6 +15448,7 @@
       "stability": 2,
       "repLow": 15,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15167,6 +15492,7 @@
       "stability": 2,
       "repLow": 15,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15213,6 +15539,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15259,6 +15586,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15305,6 +15633,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15350,6 +15679,7 @@
       "stability": 2,
       "repLow": 15,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15395,6 +15725,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15442,6 +15773,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15488,6 +15820,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15534,6 +15867,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15581,6 +15915,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15628,6 +15963,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15673,6 +16009,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15720,6 +16057,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15769,6 +16107,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 40,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15815,6 +16154,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15863,6 +16203,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "08_shoulders.csv"
     },
     {
@@ -15908,6 +16249,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -15951,6 +16293,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -15994,6 +16337,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16037,6 +16381,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16083,6 +16428,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16127,6 +16473,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16171,6 +16518,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16217,6 +16565,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16263,6 +16612,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16306,6 +16656,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16351,6 +16702,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16394,6 +16746,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16437,6 +16790,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16480,6 +16834,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16523,6 +16878,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16566,6 +16922,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16612,6 +16969,7 @@
       "stability": 5,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16658,6 +17016,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16702,6 +17061,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16746,6 +17106,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16791,6 +17152,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16836,6 +17198,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16882,6 +17245,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16926,6 +17290,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -16970,6 +17335,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17013,6 +17379,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17057,6 +17424,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17101,6 +17469,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17145,6 +17514,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17188,6 +17558,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17233,6 +17604,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17278,6 +17650,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17321,6 +17694,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17365,6 +17739,7 @@
       "stability": 3,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17408,6 +17783,7 @@
       "stability": 3,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17451,6 +17827,7 @@
       "stability": 3,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17494,6 +17871,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 40,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17538,6 +17916,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17582,6 +17961,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17625,6 +18005,7 @@
       "stability": 3,
       "repLow": 15,
       "repHigh": 30,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17670,6 +18051,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17715,6 +18097,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17760,6 +18143,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17806,6 +18190,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17851,6 +18236,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17897,6 +18283,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17941,6 +18328,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -17985,6 +18373,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -18029,6 +18418,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "09_biceps.csv"
     },
     {
@@ -18074,6 +18464,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18120,6 +18511,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18166,6 +18558,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18212,6 +18605,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18255,6 +18649,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18298,6 +18693,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18341,6 +18737,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18386,6 +18783,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18429,6 +18827,7 @@
       "stability": 2,
       "repLow": 15,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18472,6 +18871,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18518,6 +18918,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18564,6 +18965,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18610,6 +19012,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18658,6 +19061,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18707,6 +19111,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18754,6 +19159,7 @@
       "stability": 1,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18801,6 +19207,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18849,6 +19256,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18895,6 +19303,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18941,6 +19350,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -18988,6 +19398,7 @@
       "stability": 5,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19031,6 +19442,7 @@
       "stability": 4,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19074,6 +19486,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19120,6 +19533,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19166,6 +19580,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19212,6 +19627,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19256,6 +19672,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19301,6 +19718,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19345,6 +19763,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19388,6 +19807,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19431,6 +19851,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19474,6 +19895,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19517,6 +19939,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19564,6 +19987,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19611,6 +20035,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19654,6 +20079,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19700,6 +20126,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19746,6 +20173,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "10_triceps.csv"
     },
     {
@@ -19793,6 +20221,7 @@
       "stability": 3,
       "repLow": 30,
       "repHigh": 90,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -19842,6 +20271,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 60,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -19889,6 +20319,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -19936,6 +20367,7 @@
       "stability": 5,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -19979,6 +20411,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20025,6 +20458,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 60,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20069,6 +20503,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20113,6 +20548,7 @@
       "stability": 2,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20158,6 +20594,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20201,6 +20638,7 @@
       "stability": 3,
       "repLow": 15,
       "repHigh": 30,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20244,6 +20682,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20290,6 +20729,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20334,6 +20774,7 @@
       "stability": 5,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20381,6 +20822,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20427,6 +20869,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20469,6 +20912,7 @@
       "stability": 1,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20513,6 +20957,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20556,6 +21001,7 @@
       "stability": 3,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20605,6 +21051,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 60,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20651,6 +21098,7 @@
       "stability": 4,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20697,6 +21145,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20744,6 +21193,7 @@
       "stability": 2,
       "repLow": 8,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20791,6 +21241,7 @@
       "stability": 3,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20841,6 +21292,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 30,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20886,6 +21338,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20933,6 +21386,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -20980,6 +21434,7 @@
       "stability": 5,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -21025,6 +21480,7 @@
       "stability": 3,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -21071,6 +21527,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -21115,6 +21572,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -21160,6 +21618,7 @@
       "stability": 3,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -21206,6 +21665,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -21249,6 +21709,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -21294,6 +21755,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -21339,6 +21801,7 @@
       "stability": 3,
       "repLow": 12,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -21384,6 +21847,7 @@
       "stability": 2,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -21429,6 +21893,7 @@
       "stability": 5,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -21475,6 +21940,7 @@
       "stability": 5,
       "repLow": 10,
       "repHigh": 20,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -21520,6 +21986,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -21565,6 +22032,7 @@
       "stability": 2,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -21613,6 +22081,7 @@
       "stability": 4,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -21658,6 +22127,7 @@
       "stability": 3,
       "repLow": 12,
       "repHigh": 25,
+      "videoUrl": null,
       "sourceFile": "11_core.csv"
     },
     {
@@ -21710,6 +22180,7 @@
       "stability": 3,
       "repLow": 1,
       "repHigh": 3,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -21762,6 +22233,7 @@
       "stability": 3,
       "repLow": 1,
       "repHigh": 3,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -21812,6 +22284,7 @@
       "stability": 3,
       "repLow": 1,
       "repHigh": 3,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -21864,6 +22337,7 @@
       "stability": 3,
       "repLow": 1,
       "repHigh": 3,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -21916,6 +22390,7 @@
       "stability": 3,
       "repLow": 1,
       "repHigh": 5,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -21966,6 +22441,7 @@
       "stability": 3,
       "repLow": 2,
       "repHigh": 5,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22017,6 +22493,7 @@
       "stability": 3,
       "repLow": 1,
       "repHigh": 3,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22067,6 +22544,7 @@
       "stability": 3,
       "repLow": 2,
       "repHigh": 5,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22117,6 +22595,7 @@
       "stability": 3,
       "repLow": 2,
       "repHigh": 5,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22167,6 +22646,7 @@
       "stability": 3,
       "repLow": 2,
       "repHigh": 5,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22215,6 +22695,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22264,6 +22745,7 @@
       "stability": 4,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22314,6 +22796,7 @@
       "stability": 4,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22363,6 +22846,7 @@
       "stability": 4,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22411,6 +22895,7 @@
       "stability": 4,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22458,6 +22943,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22505,6 +22991,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22550,6 +23037,7 @@
       "stability": 3,
       "repLow": 8,
       "repHigh": 15,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22597,6 +23085,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22643,6 +23132,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22692,6 +23182,7 @@
       "stability": 4,
       "repLow": 30,
       "repHigh": 60,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22741,6 +23232,7 @@
       "stability": 3,
       "repLow": 30,
       "repHigh": 60,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22790,6 +23282,7 @@
       "stability": 4,
       "repLow": 30,
       "repHigh": 60,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22839,6 +23332,7 @@
       "stability": 4,
       "repLow": 20,
       "repHigh": 45,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22890,6 +23384,7 @@
       "stability": 4,
       "repLow": 20,
       "repHigh": 45,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22942,6 +23437,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 45,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -22991,6 +23487,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 60,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23038,6 +23535,7 @@
       "stability": 4,
       "repLow": 20,
       "repHigh": 60,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23082,6 +23580,7 @@
       "stability": 3,
       "repLow": 15,
       "repHigh": 45,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23129,6 +23628,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 40,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23174,6 +23674,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 40,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23226,6 +23727,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 60,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23277,6 +23779,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 60,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23327,6 +23830,7 @@
       "stability": 5,
       "repLow": 2,
       "repHigh": 5,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23377,6 +23881,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23428,6 +23933,7 @@
       "stability": 3,
       "repLow": 2,
       "repHigh": 5,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23480,6 +23986,7 @@
       "stability": 3,
       "repLow": 2,
       "repHigh": 5,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23531,6 +24038,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 6,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23580,6 +24088,7 @@
       "stability": 3,
       "repLow": 3,
       "repHigh": 8,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23631,6 +24140,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 40,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23680,6 +24190,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 40,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23731,6 +24242,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23780,6 +24292,7 @@
       "stability": 3,
       "repLow": 5,
       "repHigh": 10,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23827,6 +24340,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 40,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23874,6 +24388,7 @@
       "stability": 3,
       "repLow": 10,
       "repHigh": 30,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23921,6 +24436,7 @@
       "stability": 3,
       "repLow": 6,
       "repHigh": 12,
+      "videoUrl": null,
       "sourceFile": "12_fullbody.csv"
     },
     {
@@ -23969,6 +24485,7 @@
       "stability": 3,
       "repLow": 60,
       "repHigh": 3600,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     },
     {
@@ -24021,6 +24538,7 @@
       "stability": 3,
       "repLow": 60,
       "repHigh": 3600,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     },
     {
@@ -24073,6 +24591,7 @@
       "stability": 3,
       "repLow": 60,
       "repHigh": 3600,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     },
     {
@@ -24123,6 +24642,7 @@
       "stability": 3,
       "repLow": 60,
       "repHigh": 5400,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     },
     {
@@ -24173,6 +24693,7 @@
       "stability": 3,
       "repLow": 60,
       "repHigh": 3600,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     },
     {
@@ -24224,6 +24745,7 @@
       "stability": 3,
       "repLow": 20,
       "repHigh": 1200,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     },
     {
@@ -24278,6 +24800,7 @@
       "stability": 3,
       "repLow": 60,
       "repHigh": 1800,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     },
     {
@@ -24331,6 +24854,7 @@
       "stability": 3,
       "repLow": 30,
       "repHigh": 1200,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     },
     {
@@ -24380,6 +24904,7 @@
       "stability": 3,
       "repLow": 60,
       "repHigh": 3600,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     },
     {
@@ -24430,6 +24955,7 @@
       "stability": 3,
       "repLow": 60,
       "repHigh": 3600,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     },
     {
@@ -24480,6 +25006,7 @@
       "stability": 3,
       "repLow": 30,
       "repHigh": 300,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     },
     {
@@ -24533,6 +25060,7 @@
       "stability": 3,
       "repLow": 60,
       "repHigh": 300,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     },
     {
@@ -24585,6 +25113,7 @@
       "stability": 3,
       "repLow": 60,
       "repHigh": 300,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     },
     {
@@ -24637,6 +25166,7 @@
       "stability": 3,
       "repLow": 15,
       "repHigh": 120,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     },
     {
@@ -24687,6 +25217,7 @@
       "stability": 3,
       "repLow": 600,
       "repHigh": 2400,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     },
     {
@@ -24737,6 +25268,7 @@
       "stability": 3,
       "repLow": 600,
       "repHigh": 2400,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     },
     {
@@ -24787,6 +25319,7 @@
       "stability": 3,
       "repLow": 600,
       "repHigh": 1800,
+      "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
     }
   ]

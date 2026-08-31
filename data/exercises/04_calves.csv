@@ -1,15 +1,15 @@
-name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,rom_bias,angle,grip_width,grip_orientation,head_bias,joint_load,skill_gate,stabilises,selectable
-Standing Calf Raise,standing-calf-raise,standing_calf_raise,strength,isolation,calves,,calf_machine,FALSE,1,1,10,20,60,FALSE,weight_reps,stretch,,,,,,,,TRUE
-Barbell Standing Calf Raise,barbell-standing-calf-raise,standing_calf_raise,strength,isolation,calves,,barbell|box,FALSE,1,1,10,20,60,FALSE,weight_reps,stretch,,,,,,,,TRUE
-Smith Machine Calf Raise,smith-machine-calf-raise,standing_calf_raise,strength,isolation,calves,,smith_machine|box,FALSE,1,1,10,20,60,FALSE,weight_reps,stretch,,,,,,,,TRUE
-Dumbbell Standing Calf Raise,dumbbell-standing-calf-raise,standing_calf_raise,strength,isolation,calves,,dumbbell|box,FALSE,1,1,12,25,45,FALSE,weight_reps,stretch,,,,,,,,TRUE
-Single-Leg Dumbbell Calf Raise,single-leg-dumbbell-calf-raise,standing_calf_raise,strength,isolation,calves,,dumbbell|box,FALSE,1,1,10,20,45,TRUE,weight_reps,stretch,,,,,,,,TRUE
-Bodyweight Calf Raise,bodyweight-calf-raise,standing_calf_raise,strength,isolation,calves,,bodyweight,FALSE,1,1,15,30,45,FALSE,reps_only,stretch,,,,,,,,TRUE
-Seated Calf Raise,seated-calf-raise,seated_calf_raise,strength,isolation,calves,,calf_machine,FALSE,1,1,12,20,60,FALSE,weight_reps,shortened,,,,,,,,TRUE
-Dumbbell Seated Calf Raise,dumbbell-seated-calf-raise,seated_calf_raise,strength,isolation,calves,,dumbbell|bench|box,FALSE,1,1,12,25,45,FALSE,weight_reps,shortened,,,,,,,,TRUE
-Leg Press Calf Raise,leg-press-calf-raise,leg_press_calf_raise,strength,isolation,calves,,leg_press,FALSE,1,1,12,20,60,FALSE,weight_reps,stretch,,,,,,,,TRUE
-Tibialis Raise,tibialis-raise,tibialis_raise,strength,isolation,calves,,bodyweight,FALSE,1,1,15,25,45,FALSE,reps_only,shortened,,,,,,,,TRUE
-Barbell Seated Calf Raise,barbell-seated-calf-raise,seated_calf_raise,strength,isolation,calves,,barbell|bench|box,FALSE,1,2,10,20,45,FALSE,weight_reps,shortened,,,,,,,abs,FALSE
-Band Calf Raise,band-calf-raise,standing_calf_raise,strength,isolation,calves,,bands,FALSE,1,1,12,25,45,FALSE,reps_only,stretch,,,,,,,abs,FALSE
-Donkey Calf Raise,donkey-calf-raise,standing_calf_raise,strength,isolation,calves,,bodyweight|box,FALSE,1,2,10,20,45,FALSE,reps_only,stretch,,,,,,,abs,FALSE
-Smith Machine Reverse Calf Raise,smith-machine-reverse-calf-raise,tibialis_raise,strength,isolation,calves,,smith_machine|box,FALSE,1,2,12,20,45,FALSE,weight_reps,shortened,,,,,,,abs,FALSE
+name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,rom_bias,angle,grip_width,grip_orientation,head_bias,joint_load,skill_gate,stabilises,selectable,video_url
+Standing Calf Raise,standing-calf-raise,standing_calf_raise,strength,isolation,calves,,calf_machine,FALSE,1,1,10,20,60,FALSE,weight_reps,stretch,,,,,,,,TRUE,
+Barbell Standing Calf Raise,barbell-standing-calf-raise,standing_calf_raise,strength,isolation,calves,,barbell|box,FALSE,1,1,10,20,60,FALSE,weight_reps,stretch,,,,,,,,TRUE,
+Smith Machine Calf Raise,smith-machine-calf-raise,standing_calf_raise,strength,isolation,calves,,smith_machine|box,FALSE,1,1,10,20,60,FALSE,weight_reps,stretch,,,,,,,,TRUE,
+Dumbbell Standing Calf Raise,dumbbell-standing-calf-raise,standing_calf_raise,strength,isolation,calves,,dumbbell|box,FALSE,1,1,12,25,45,FALSE,weight_reps,stretch,,,,,,,,TRUE,
+Single-Leg Dumbbell Calf Raise,single-leg-dumbbell-calf-raise,standing_calf_raise,strength,isolation,calves,,dumbbell|box,FALSE,1,1,10,20,45,TRUE,weight_reps,stretch,,,,,,,,TRUE,
+Bodyweight Calf Raise,bodyweight-calf-raise,standing_calf_raise,strength,isolation,calves,,bodyweight,FALSE,1,1,15,30,45,FALSE,reps_only,stretch,,,,,,,,TRUE,
+Seated Calf Raise,seated-calf-raise,seated_calf_raise,strength,isolation,calves,,calf_machine,FALSE,1,1,12,20,60,FALSE,weight_reps,shortened,,,,,,,,TRUE,
+Dumbbell Seated Calf Raise,dumbbell-seated-calf-raise,seated_calf_raise,strength,isolation,calves,,dumbbell|bench|box,FALSE,1,1,12,25,45,FALSE,weight_reps,shortened,,,,,,,,TRUE,
+Leg Press Calf Raise,leg-press-calf-raise,leg_press_calf_raise,strength,isolation,calves,,leg_press,FALSE,1,1,12,20,60,FALSE,weight_reps,stretch,,,,,,,,TRUE,
+Tibialis Raise,tibialis-raise,tibialis_raise,strength,isolation,calves,,bodyweight,FALSE,1,1,15,25,45,FALSE,reps_only,shortened,,,,,,,,TRUE,
+Barbell Seated Calf Raise,barbell-seated-calf-raise,seated_calf_raise,strength,isolation,calves,,barbell|bench|box,FALSE,1,2,10,20,45,FALSE,weight_reps,shortened,,,,,,,abs,FALSE,
+Band Calf Raise,band-calf-raise,standing_calf_raise,strength,isolation,calves,,bands,FALSE,1,1,12,25,45,FALSE,reps_only,stretch,,,,,,,abs,FALSE,
+Donkey Calf Raise,donkey-calf-raise,standing_calf_raise,strength,isolation,calves,,bodyweight|box,FALSE,1,2,10,20,45,FALSE,reps_only,stretch,,,,,,,abs,FALSE,
+Smith Machine Reverse Calf Raise,smith-machine-reverse-calf-raise,tibialis_raise,strength,isolation,calves,,smith_machine|box,FALSE,1,2,12,20,45,FALSE,weight_reps,shortened,,,,,,,abs,FALSE,

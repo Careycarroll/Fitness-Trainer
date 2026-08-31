@@ -330,6 +330,11 @@ def build_record(row: dict, source: str) -> dict:
         "stability": stability_of(derive_load_type(equipment), equipment),
         "repLow": rep_low,
         "repHigh": rep_high,
+        # AUTHORED, one at a time, as good instructional video is found.
+        # Blank on every row today. A URL rather than embedded media: nothing is
+        # redistributed, the licence question does not arise, and it costs no
+        # bytes in the bundle.
+        "videoUrl": (row.get("video_url") or "").strip() or None,
         "sourceFile": source,
     }
 

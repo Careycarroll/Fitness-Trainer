@@ -1,72 +1,72 @@
-name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,rom_bias,angle,grip_width,grip_orientation,head_bias,joint_load,skill_gate,stabilises,selectable
-Overhead Press,overhead-press,overhead_press,strength,push_v,front_delts,triceps|chest,barbell|rack,TRUE,4,3,3,8,180,FALSE,weight_reps,,overhead,,,,shoulder|lower_back,,abs,TRUE
-Seated Barbell Overhead Press,seated-barbell-overhead-press,overhead_press,strength,push_v,front_delts,triceps|chest,barbell|rack|bench,TRUE,3,2,5,10,150,FALSE,weight_reps,,overhead,,,,shoulder,,,TRUE
-Push Press,push-press,overhead_press,strength,push_v,front_delts,triceps|quads,barbell|rack,TRUE,4,4,2,6,180,FALSE,weight_reps,,overhead,,,,shoulder|lower_back,,abs,TRUE
-Seated Dumbbell Press,seated-dumbbell-press,dumbbell_shoulder_press,strength,push_v,front_delts,triceps|side_delts,dumbbell|bench,TRUE,3,2,6,12,120,FALSE,weight_reps,,overhead,,,,shoulder,,,TRUE
-Standing Dumbbell Press,standing-dumbbell-press,dumbbell_shoulder_press,strength,push_v,front_delts,triceps|side_delts,dumbbell,TRUE,3,2,6,12,120,FALSE,weight_reps,,overhead,,,,shoulder,,abs,TRUE
-Arnold Press,arnold-press,dumbbell_shoulder_press,strength,push_v,front_delts|side_delts,triceps,dumbbell|bench,TRUE,3,3,8,12,120,FALSE,weight_reps,,overhead,,,,shoulder,,,TRUE
-Machine Shoulder Press,machine-shoulder-press,machine_shoulder_press,strength,push_v,front_delts,triceps|side_delts,shoulder_press_machine,TRUE,2,1,8,15,90,FALSE,weight_reps,,overhead,,,,shoulder,,,TRUE
-Landmine Press,landmine-press,landmine_press,strength,push_v,front_delts,triceps|upper_back,barbell|landmine,TRUE,2,2,8,12,90,TRUE,weight_reps,,,,,,,,abs,TRUE
-Half-Kneeling Landmine Press,half-kneeling-landmine-press,landmine_press,strength,push_v,front_delts,triceps|obliques,barbell|landmine,TRUE,2,2,8,12,90,TRUE,weight_reps,,,,,,,,abs,TRUE
-Pike Push-Up,pike-push-up,pike_push_up,strength,push_v,front_delts,triceps,bodyweight,TRUE,2,2,6,15,90,FALSE,reps_only,,overhead,,,,shoulder|wrist,,abs,TRUE
-Feet-Elevated Pike Push-Up,feet-elevated-pike-push-up,pike_push_up,strength,push_v,front_delts,triceps,bodyweight|box,TRUE,2,3,5,12,90,FALSE,reps_only,,overhead,,,,shoulder|wrist,,abs,TRUE
-Dumbbell Front Raise,dumbbell-front-raise,front_raise,strength,isolation,front_delts,chest,dumbbell,FALSE,1,1,10,20,60,FALSE,weight_reps,shortened,,,,,shoulder,,,TRUE
-Cable Front Raise,cable-front-raise,front_raise,strength,isolation,front_delts,chest,cable,FALSE,1,1,12,20,60,FALSE,weight_reps,stretch,,,,,shoulder,,,TRUE
-Dumbbell Lateral Raise,dumbbell-lateral-raise,lateral_raise,strength,isolation,side_delts,front_delts|traps,dumbbell,FALSE,1,1,10,20,60,FALSE,weight_reps,shortened,,,,,,,,TRUE
-Cable Lateral Raise,cable-lateral-raise,lateral_raise,strength,isolation,side_delts,front_delts,cable,FALSE,1,1,12,20,60,TRUE,weight_reps,stretch,,,,,,,,TRUE
-Leaning Cable Lateral Raise,leaning-cable-lateral-raise,lateral_raise,strength,isolation,side_delts,front_delts,cable,FALSE,1,2,12,20,60,TRUE,weight_reps,stretch,,,,,,,,TRUE
-Machine Lateral Raise,machine-lateral-raise,lateral_raise,strength,isolation,side_delts,front_delts|traps,lateral_raise_machine,FALSE,1,1,10,20,60,FALSE,weight_reps,shortened,,,,,,,,TRUE
-Band Lateral Raise,band-lateral-raise,lateral_raise,strength,isolation,side_delts,front_delts,bands,FALSE,1,1,15,25,45,FALSE,reps_only,shortened,,,,,,,,TRUE
-Lying Incline Lateral Raise,lying-incline-lateral-raise,lateral_raise,strength,isolation,side_delts,front_delts,dumbbell|bench,FALSE,1,2,10,15,60,TRUE,weight_reps,stretch,,,,,,,,TRUE
-Upright Row,upright-row,upright_row,strength,pull_v,side_delts|traps,biceps|forearms,barbell,FALSE,2,2,8,15,90,FALSE,weight_reps,shortened,,,,,shoulder,,,TRUE
-Dumbbell Reverse Fly,dumbbell-reverse-fly,reverse_fly,strength,pull_h,rear_delts,mid_back|traps,dumbbell|bench,FALSE,1,1,12,20,60,FALSE,weight_reps,shortened,,,,,,,,TRUE
-Cable Reverse Fly,cable-reverse-fly,reverse_fly,strength,pull_h,rear_delts,mid_back|traps,cable,FALSE,1,1,12,20,60,TRUE,weight_reps,stretch,,,,,,,,TRUE
-Machine Reverse Fly,machine-reverse-fly,reverse_fly,strength,pull_h,rear_delts,mid_back|traps,pec_deck,FALSE,1,1,12,20,60,FALSE,weight_reps,shortened,,,,,,,,TRUE
-Prone Incline Rear Delt Raise,prone-incline-rear-delt-raise,reverse_fly,strength,pull_h,rear_delts,mid_back|traps,dumbbell|bench,FALSE,1,1,12,20,60,FALSE,weight_reps,stretch,,,,,,,,TRUE
-Face Pull,face-pull,face_pull,strength,pull_h,rear_delts,mid_back|traps,cable,FALSE,1,1,12,20,60,FALSE,weight_reps,,,,,,,,,TRUE
-Band Pull-Apart,band-pull-apart,face_pull,strength,pull_h,rear_delts,mid_back|traps,bands,FALSE,1,1,15,25,45,FALSE,reps_only,shortened,,,,,,,,TRUE
-Neck Curl,neck-curl,neck,strength,isolation,neck,,plate|bench,FALSE,1,1,10,20,60,FALSE,weight_reps,,,,,,neck,,,TRUE
-Neck Extension,neck-extension,neck,strength,isolation,neck,,plate|bench,FALSE,1,1,10,20,60,FALSE,weight_reps,,,,,,neck,,,TRUE
-Behind-Neck Press,behind-neck-press,overhead_press,strength,push_v,front_delts,side_delts|triceps,barbell|rack,TRUE,4,4,6,10,120,FALSE,weight_reps,,overhead,,,,shoulder,,abs,FALSE
-Bradford Press,bradford-press,overhead_press,strength,push_v,front_delts,side_delts|triceps,barbell|rack,TRUE,3,4,8,15,90,FALSE,weight_reps,,overhead,,,,shoulder,,abs,FALSE
-Band Overhead Press,band-overhead-press,overhead_press,strength,push_v,front_delts,side_delts|triceps,bands,TRUE,2,2,10,20,60,FALSE,reps_only,,overhead,,,,,,abs,FALSE
-Smith Machine Overhead Press,smith-machine-overhead-press,overhead_press,strength,push_v,front_delts,triceps,smith_machine,TRUE,3,2,8,15,90,FALSE,weight_reps,,overhead,,,,,,abs,FALSE
-Single-Arm Dumbbell Press,single-arm-dumbbell-press,dumbbell_shoulder_press,strength,push_v,front_delts,side_delts|triceps,dumbbell,TRUE,3,3,8,15,90,TRUE,weight_reps,,overhead,,,,,,abs|obliques,FALSE
-Neutral-Grip Dumbbell Press,neutral-grip-dumbbell-press,dumbbell_shoulder_press,strength,push_v,front_delts,triceps,dumbbell,TRUE,3,2,8,15,90,FALSE,weight_reps,,overhead,,neutral,,,,abs,FALSE
-See-Saw Press,see-saw-press,dumbbell_shoulder_press,strength,push_v,front_delts,side_delts|triceps,dumbbell,TRUE,3,3,8,16,90,TRUE,weight_reps,,overhead,,,,,,abs|obliques,FALSE
-Kettlebell Shoulder Press,kettlebell-shoulder-press,dumbbell_shoulder_press,strength,push_v,front_delts,triceps,kettlebell,TRUE,3,3,8,15,90,FALSE,weight_reps,,overhead,,,,,,abs,FALSE
-Kettlebell Arnold Press,kettlebell-arnold-press,dumbbell_shoulder_press,strength,push_v,front_delts,side_delts|triceps,kettlebell,TRUE,3,3,8,15,90,FALSE,weight_reps,,overhead,,,,,,abs,FALSE
-Single-Arm Kettlebell Press,single-arm-kettlebell-press,dumbbell_shoulder_press,strength,push_v,front_delts,side_delts|triceps,kettlebell,TRUE,3,3,6,12,90,TRUE,weight_reps,,overhead,,,,,,abs|obliques,FALSE
-Cable Shoulder Press,cable-shoulder-press,machine_shoulder_press,strength,push_v,front_delts,triceps,cable,TRUE,2,2,10,15,75,FALSE,weight_reps,,overhead,,,,,,abs,FALSE
-Kettlebell Thruster,kettlebell-thruster,thruster,strength,push_v,front_delts,quads|glutes|triceps,kettlebell,TRUE,4,3,6,12,120,FALSE,weight_reps,,overhead,,,,,,abs,FALSE
-Kettlebell Jerk,kettlebell-jerk,jerk,strength,explosive,front_delts,triceps|quads,kettlebell,TRUE,3,4,3,8,120,FALSE,reps_only,,overhead,,,,,,abs,FALSE
-Single-Arm Kettlebell Jerk,single-arm-kettlebell-jerk,jerk,strength,explosive,front_delts,triceps|quads,kettlebell,TRUE,3,4,3,8,120,TRUE,reps_only,,overhead,,,,,,abs|obliques,FALSE
-Handstand Push-Up,handstand-push-up,pike_push_up,strength,push_v,front_delts,triceps|upper_back,bodyweight,TRUE,4,5,3,8,150,FALSE,reps_only,,overhead,,,,shoulder,ring-muscle-up,abs,FALSE
-Single-Arm Linear Jammer,single-arm-linear-jammer,landmine_press,strength,push_v,front_delts,triceps|obliques,barbell|landmine,TRUE,3,3,8,12,90,TRUE,weight_reps,,,,,,,,abs|obliques,FALSE
-Plate Front Raise,plate-front-raise,front_raise,strength,isolation,front_delts,,plate,FALSE,1,1,10,20,45,FALSE,weight_reps,,,,,,,,abs,FALSE
-Incline Front Raise,incline-front-raise,front_raise,strength,isolation,front_delts,,dumbbell|bench,FALSE,1,2,10,20,45,FALSE,weight_reps,stretch,incline,,,,,,abs,FALSE
-Barbell Front Raise,barbell-front-raise,front_raise,strength,isolation,front_delts,,barbell,FALSE,1,2,10,20,45,FALSE,weight_reps,,,,,,,,abs,FALSE
-Dumbbell Scaption,dumbbell-scaption,front_raise,strength,isolation,front_delts,side_delts,dumbbell,FALSE,1,2,12,20,45,FALSE,weight_reps,,,,,,,,abs,FALSE
-Seated Lateral Raise,seated-lateral-raise,lateral_raise,strength,isolation,side_delts,,dumbbell|bench,FALSE,1,2,10,20,45,FALSE,weight_reps,,,,,,,,abs,FALSE
-Single-Arm Lateral Raise,single-arm-lateral-raise,lateral_raise,strength,isolation,side_delts,,dumbbell,FALSE,1,2,10,20,45,TRUE,weight_reps,,,,,,,,abs|obliques,FALSE
-Cuban Press,cuban-press,lateral_raise,strength,isolation,side_delts,rear_delts|front_delts,dumbbell,FALSE,2,4,8,15,60,FALSE,weight_reps,,,,,,shoulder,,abs,FALSE
-Barbell Incline Shoulder Raise,barbell-incline-shoulder-raise,front_raise,strength,isolation,front_delts,upper_back,barbell|bench,FALSE,1,2,10,20,45,FALSE,weight_reps,shortened,incline,,,,,,abs,FALSE
-Dumbbell External Rotation,dumbbell-external-rotation,external_rotation,strength,isolation,rear_delts,,dumbbell|bench,FALSE,1,3,12,20,45,TRUE,weight_reps,,,,,,shoulder,,abs,FALSE
-Cable External Rotation,cable-external-rotation,external_rotation,strength,isolation,rear_delts,,cable,FALSE,1,3,12,20,45,TRUE,weight_reps,,,,,,shoulder,,abs,FALSE
-Band External Rotation,band-external-rotation,external_rotation,strength,isolation,rear_delts,,bands,FALSE,1,2,15,25,45,TRUE,reps_only,,,,,,,,abs,FALSE
-Band Internal Rotation,band-internal-rotation,external_rotation,strength,isolation,front_delts,,bands,FALSE,1,2,15,25,45,TRUE,reps_only,,,,,,,,abs,FALSE
-Lying Rear Delt Raise,lying-rear-delt-raise,reverse_fly,strength,pull_h,rear_delts,upper_back,dumbbell|bench,FALSE,1,2,12,20,45,FALSE,weight_reps,,,,,,,,abs,FALSE
-Single-Arm Lying Rear Delt Raise,single-arm-lying-rear-delt-raise,reverse_fly,strength,pull_h,rear_delts,upper_back,dumbbell|bench,FALSE,1,2,12,20,45,TRUE,weight_reps,,,,,,,,abs,FALSE
-Seated Bent-Over Rear Delt Raise,seated-bent-over-rear-delt-raise,reverse_fly,strength,pull_h,rear_delts,upper_back,dumbbell|bench,FALSE,1,2,12,20,45,FALSE,weight_reps,,,,,,,,abs,FALSE
-Band Reverse Fly,band-reverse-fly,reverse_fly,strength,pull_h,rear_delts,upper_back,bands,FALSE,1,2,15,25,45,FALSE,reps_only,,,,,,,,abs,FALSE
-Sled Reverse Fly,sled-reverse-fly,reverse_fly,strength,pull_h,rear_delts,upper_back,sled,FALSE,2,2,10,20,60,FALSE,reps_only,,,,,,,,abs,FALSE
-Barbell Rear Delt Row,barbell-rear-delt-row,reverse_fly,strength,pull_h,rear_delts,upper_back|mid_back,barbell,TRUE,3,2,8,15,90,FALSE,weight_reps,,,wide,,,,,erectors|abs,FALSE
-Cable Rear Delt Row,cable-rear-delt-row,face_pull,strength,pull_h,rear_delts,upper_back|traps,cable,TRUE,2,2,10,20,60,FALSE,weight_reps,,,,,,,,abs,FALSE
-Low Pulley Row To Neck,low-pulley-row-to-neck,face_pull,strength,pull_h,rear_delts,traps|upper_back,cable,TRUE,2,2,10,20,60,FALSE,weight_reps,,,,,,,,abs,FALSE
-Dumbbell Upright Row,dumbbell-upright-row,upright_row,strength,pull_v,traps,side_delts,dumbbell,TRUE,2,2,10,15,60,FALSE,weight_reps,shortened,,,,,shoulder,,abs,FALSE
-Cable Upright Row,cable-upright-row,upright_row,strength,pull_v,traps,side_delts,cable,TRUE,2,2,10,15,60,FALSE,weight_reps,shortened,,,,,shoulder,,abs,FALSE
-Band Upright Row,band-upright-row,upright_row,strength,pull_v,traps,side_delts,bands,TRUE,1,2,12,20,45,FALSE,reps_only,shortened,,,,,,,abs,FALSE
-Smith Machine Upright Row,smith-machine-upright-row,upright_row,strength,pull_v,traps,side_delts,smith_machine,TRUE,2,2,10,15,60,FALSE,weight_reps,shortened,,,,,shoulder,,abs,FALSE
-Sled Overhead Backward Walk,sled-overhead-backward-walk,sled,strength,carry,front_delts,upper_back|abs,sled,TRUE,3,3,20,40,90,FALSE,weight_distance,,overhead,,,,shoulder,,abs|erectors,FALSE
-Palms-In Single-Arm Dumbbell Press,palms-in-single-arm-dumbbell-press,dumbbell_shoulder_press,strength,push_v,front_delts,triceps,dumbbell,TRUE,3,3,8,15,90,TRUE,weight_reps,,overhead,,neutral,,,,abs|obliques,FALSE
-Reverse Fly With External Rotation,reverse-fly-with-external-rotation,reverse_fly,strength,pull_h,rear_delts,upper_back,dumbbell|bench,FALSE,1,3,12,20,45,FALSE,weight_reps,,,,,,shoulder,,abs,FALSE
+name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,rom_bias,angle,grip_width,grip_orientation,head_bias,joint_load,skill_gate,stabilises,selectable,video_url
+Overhead Press,overhead-press,overhead_press,strength,push_v,front_delts,triceps|chest,barbell|rack,TRUE,4,3,3,8,180,FALSE,weight_reps,,overhead,,,,shoulder|lower_back,,abs,TRUE,
+Seated Barbell Overhead Press,seated-barbell-overhead-press,overhead_press,strength,push_v,front_delts,triceps|chest,barbell|rack|bench,TRUE,3,2,5,10,150,FALSE,weight_reps,,overhead,,,,shoulder,,,TRUE,
+Push Press,push-press,overhead_press,strength,push_v,front_delts,triceps|quads,barbell|rack,TRUE,4,4,2,6,180,FALSE,weight_reps,,overhead,,,,shoulder|lower_back,,abs,TRUE,
+Seated Dumbbell Press,seated-dumbbell-press,dumbbell_shoulder_press,strength,push_v,front_delts,triceps|side_delts,dumbbell|bench,TRUE,3,2,6,12,120,FALSE,weight_reps,,overhead,,,,shoulder,,,TRUE,
+Standing Dumbbell Press,standing-dumbbell-press,dumbbell_shoulder_press,strength,push_v,front_delts,triceps|side_delts,dumbbell,TRUE,3,2,6,12,120,FALSE,weight_reps,,overhead,,,,shoulder,,abs,TRUE,
+Arnold Press,arnold-press,dumbbell_shoulder_press,strength,push_v,front_delts|side_delts,triceps,dumbbell|bench,TRUE,3,3,8,12,120,FALSE,weight_reps,,overhead,,,,shoulder,,,TRUE,
+Machine Shoulder Press,machine-shoulder-press,machine_shoulder_press,strength,push_v,front_delts,triceps|side_delts,shoulder_press_machine,TRUE,2,1,8,15,90,FALSE,weight_reps,,overhead,,,,shoulder,,,TRUE,
+Landmine Press,landmine-press,landmine_press,strength,push_v,front_delts,triceps|upper_back,barbell|landmine,TRUE,2,2,8,12,90,TRUE,weight_reps,,,,,,,,abs,TRUE,
+Half-Kneeling Landmine Press,half-kneeling-landmine-press,landmine_press,strength,push_v,front_delts,triceps|obliques,barbell|landmine,TRUE,2,2,8,12,90,TRUE,weight_reps,,,,,,,,abs,TRUE,
+Pike Push-Up,pike-push-up,pike_push_up,strength,push_v,front_delts,triceps,bodyweight,TRUE,2,2,6,15,90,FALSE,reps_only,,overhead,,,,shoulder|wrist,,abs,TRUE,
+Feet-Elevated Pike Push-Up,feet-elevated-pike-push-up,pike_push_up,strength,push_v,front_delts,triceps,bodyweight|box,TRUE,2,3,5,12,90,FALSE,reps_only,,overhead,,,,shoulder|wrist,,abs,TRUE,
+Dumbbell Front Raise,dumbbell-front-raise,front_raise,strength,isolation,front_delts,chest,dumbbell,FALSE,1,1,10,20,60,FALSE,weight_reps,shortened,,,,,shoulder,,,TRUE,
+Cable Front Raise,cable-front-raise,front_raise,strength,isolation,front_delts,chest,cable,FALSE,1,1,12,20,60,FALSE,weight_reps,stretch,,,,,shoulder,,,TRUE,
+Dumbbell Lateral Raise,dumbbell-lateral-raise,lateral_raise,strength,isolation,side_delts,front_delts|traps,dumbbell,FALSE,1,1,10,20,60,FALSE,weight_reps,shortened,,,,,,,,TRUE,
+Cable Lateral Raise,cable-lateral-raise,lateral_raise,strength,isolation,side_delts,front_delts,cable,FALSE,1,1,12,20,60,TRUE,weight_reps,stretch,,,,,,,,TRUE,
+Leaning Cable Lateral Raise,leaning-cable-lateral-raise,lateral_raise,strength,isolation,side_delts,front_delts,cable,FALSE,1,2,12,20,60,TRUE,weight_reps,stretch,,,,,,,,TRUE,
+Machine Lateral Raise,machine-lateral-raise,lateral_raise,strength,isolation,side_delts,front_delts|traps,lateral_raise_machine,FALSE,1,1,10,20,60,FALSE,weight_reps,shortened,,,,,,,,TRUE,
+Band Lateral Raise,band-lateral-raise,lateral_raise,strength,isolation,side_delts,front_delts,bands,FALSE,1,1,15,25,45,FALSE,reps_only,shortened,,,,,,,,TRUE,
+Lying Incline Lateral Raise,lying-incline-lateral-raise,lateral_raise,strength,isolation,side_delts,front_delts,dumbbell|bench,FALSE,1,2,10,15,60,TRUE,weight_reps,stretch,,,,,,,,TRUE,
+Upright Row,upright-row,upright_row,strength,pull_v,side_delts|traps,biceps|forearms,barbell,FALSE,2,2,8,15,90,FALSE,weight_reps,shortened,,,,,shoulder,,,TRUE,
+Dumbbell Reverse Fly,dumbbell-reverse-fly,reverse_fly,strength,pull_h,rear_delts,mid_back|traps,dumbbell|bench,FALSE,1,1,12,20,60,FALSE,weight_reps,shortened,,,,,,,,TRUE,
+Cable Reverse Fly,cable-reverse-fly,reverse_fly,strength,pull_h,rear_delts,mid_back|traps,cable,FALSE,1,1,12,20,60,TRUE,weight_reps,stretch,,,,,,,,TRUE,
+Machine Reverse Fly,machine-reverse-fly,reverse_fly,strength,pull_h,rear_delts,mid_back|traps,pec_deck,FALSE,1,1,12,20,60,FALSE,weight_reps,shortened,,,,,,,,TRUE,
+Prone Incline Rear Delt Raise,prone-incline-rear-delt-raise,reverse_fly,strength,pull_h,rear_delts,mid_back|traps,dumbbell|bench,FALSE,1,1,12,20,60,FALSE,weight_reps,stretch,,,,,,,,TRUE,
+Face Pull,face-pull,face_pull,strength,pull_h,rear_delts,mid_back|traps,cable,FALSE,1,1,12,20,60,FALSE,weight_reps,,,,,,,,,TRUE,
+Band Pull-Apart,band-pull-apart,face_pull,strength,pull_h,rear_delts,mid_back|traps,bands,FALSE,1,1,15,25,45,FALSE,reps_only,shortened,,,,,,,,TRUE,
+Neck Curl,neck-curl,neck,strength,isolation,neck,,plate|bench,FALSE,1,1,10,20,60,FALSE,weight_reps,,,,,,neck,,,TRUE,
+Neck Extension,neck-extension,neck,strength,isolation,neck,,plate|bench,FALSE,1,1,10,20,60,FALSE,weight_reps,,,,,,neck,,,TRUE,
+Behind-Neck Press,behind-neck-press,overhead_press,strength,push_v,front_delts,side_delts|triceps,barbell|rack,TRUE,4,4,6,10,120,FALSE,weight_reps,,overhead,,,,shoulder,,abs,FALSE,
+Bradford Press,bradford-press,overhead_press,strength,push_v,front_delts,side_delts|triceps,barbell|rack,TRUE,3,4,8,15,90,FALSE,weight_reps,,overhead,,,,shoulder,,abs,FALSE,
+Band Overhead Press,band-overhead-press,overhead_press,strength,push_v,front_delts,side_delts|triceps,bands,TRUE,2,2,10,20,60,FALSE,reps_only,,overhead,,,,,,abs,FALSE,
+Smith Machine Overhead Press,smith-machine-overhead-press,overhead_press,strength,push_v,front_delts,triceps,smith_machine,TRUE,3,2,8,15,90,FALSE,weight_reps,,overhead,,,,,,abs,FALSE,
+Single-Arm Dumbbell Press,single-arm-dumbbell-press,dumbbell_shoulder_press,strength,push_v,front_delts,side_delts|triceps,dumbbell,TRUE,3,3,8,15,90,TRUE,weight_reps,,overhead,,,,,,abs|obliques,FALSE,
+Neutral-Grip Dumbbell Press,neutral-grip-dumbbell-press,dumbbell_shoulder_press,strength,push_v,front_delts,triceps,dumbbell,TRUE,3,2,8,15,90,FALSE,weight_reps,,overhead,,neutral,,,,abs,FALSE,
+See-Saw Press,see-saw-press,dumbbell_shoulder_press,strength,push_v,front_delts,side_delts|triceps,dumbbell,TRUE,3,3,8,16,90,TRUE,weight_reps,,overhead,,,,,,abs|obliques,FALSE,
+Kettlebell Shoulder Press,kettlebell-shoulder-press,dumbbell_shoulder_press,strength,push_v,front_delts,triceps,kettlebell,TRUE,3,3,8,15,90,FALSE,weight_reps,,overhead,,,,,,abs,FALSE,
+Kettlebell Arnold Press,kettlebell-arnold-press,dumbbell_shoulder_press,strength,push_v,front_delts,side_delts|triceps,kettlebell,TRUE,3,3,8,15,90,FALSE,weight_reps,,overhead,,,,,,abs,FALSE,
+Single-Arm Kettlebell Press,single-arm-kettlebell-press,dumbbell_shoulder_press,strength,push_v,front_delts,side_delts|triceps,kettlebell,TRUE,3,3,6,12,90,TRUE,weight_reps,,overhead,,,,,,abs|obliques,FALSE,
+Cable Shoulder Press,cable-shoulder-press,machine_shoulder_press,strength,push_v,front_delts,triceps,cable,TRUE,2,2,10,15,75,FALSE,weight_reps,,overhead,,,,,,abs,FALSE,
+Kettlebell Thruster,kettlebell-thruster,thruster,strength,push_v,front_delts,quads|glutes|triceps,kettlebell,TRUE,4,3,6,12,120,FALSE,weight_reps,,overhead,,,,,,abs,FALSE,
+Kettlebell Jerk,kettlebell-jerk,jerk,strength,explosive,front_delts,triceps|quads,kettlebell,TRUE,3,4,3,8,120,FALSE,reps_only,,overhead,,,,,,abs,FALSE,
+Single-Arm Kettlebell Jerk,single-arm-kettlebell-jerk,jerk,strength,explosive,front_delts,triceps|quads,kettlebell,TRUE,3,4,3,8,120,TRUE,reps_only,,overhead,,,,,,abs|obliques,FALSE,
+Handstand Push-Up,handstand-push-up,pike_push_up,strength,push_v,front_delts,triceps|upper_back,bodyweight,TRUE,4,5,3,8,150,FALSE,reps_only,,overhead,,,,shoulder,ring-muscle-up,abs,FALSE,
+Single-Arm Linear Jammer,single-arm-linear-jammer,landmine_press,strength,push_v,front_delts,triceps|obliques,barbell|landmine,TRUE,3,3,8,12,90,TRUE,weight_reps,,,,,,,,abs|obliques,FALSE,
+Plate Front Raise,plate-front-raise,front_raise,strength,isolation,front_delts,,plate,FALSE,1,1,10,20,45,FALSE,weight_reps,,,,,,,,abs,FALSE,
+Incline Front Raise,incline-front-raise,front_raise,strength,isolation,front_delts,,dumbbell|bench,FALSE,1,2,10,20,45,FALSE,weight_reps,stretch,incline,,,,,,abs,FALSE,
+Barbell Front Raise,barbell-front-raise,front_raise,strength,isolation,front_delts,,barbell,FALSE,1,2,10,20,45,FALSE,weight_reps,,,,,,,,abs,FALSE,
+Dumbbell Scaption,dumbbell-scaption,front_raise,strength,isolation,front_delts,side_delts,dumbbell,FALSE,1,2,12,20,45,FALSE,weight_reps,,,,,,,,abs,FALSE,
+Seated Lateral Raise,seated-lateral-raise,lateral_raise,strength,isolation,side_delts,,dumbbell|bench,FALSE,1,2,10,20,45,FALSE,weight_reps,,,,,,,,abs,FALSE,
+Single-Arm Lateral Raise,single-arm-lateral-raise,lateral_raise,strength,isolation,side_delts,,dumbbell,FALSE,1,2,10,20,45,TRUE,weight_reps,,,,,,,,abs|obliques,FALSE,
+Cuban Press,cuban-press,lateral_raise,strength,isolation,side_delts,rear_delts|front_delts,dumbbell,FALSE,2,4,8,15,60,FALSE,weight_reps,,,,,,shoulder,,abs,FALSE,
+Barbell Incline Shoulder Raise,barbell-incline-shoulder-raise,front_raise,strength,isolation,front_delts,upper_back,barbell|bench,FALSE,1,2,10,20,45,FALSE,weight_reps,shortened,incline,,,,,,abs,FALSE,
+Dumbbell External Rotation,dumbbell-external-rotation,external_rotation,strength,isolation,rear_delts,,dumbbell|bench,FALSE,1,3,12,20,45,TRUE,weight_reps,,,,,,shoulder,,abs,FALSE,
+Cable External Rotation,cable-external-rotation,external_rotation,strength,isolation,rear_delts,,cable,FALSE,1,3,12,20,45,TRUE,weight_reps,,,,,,shoulder,,abs,FALSE,
+Band External Rotation,band-external-rotation,external_rotation,strength,isolation,rear_delts,,bands,FALSE,1,2,15,25,45,TRUE,reps_only,,,,,,,,abs,FALSE,
+Band Internal Rotation,band-internal-rotation,external_rotation,strength,isolation,front_delts,,bands,FALSE,1,2,15,25,45,TRUE,reps_only,,,,,,,,abs,FALSE,
+Lying Rear Delt Raise,lying-rear-delt-raise,reverse_fly,strength,pull_h,rear_delts,upper_back,dumbbell|bench,FALSE,1,2,12,20,45,FALSE,weight_reps,,,,,,,,abs,FALSE,
+Single-Arm Lying Rear Delt Raise,single-arm-lying-rear-delt-raise,reverse_fly,strength,pull_h,rear_delts,upper_back,dumbbell|bench,FALSE,1,2,12,20,45,TRUE,weight_reps,,,,,,,,abs,FALSE,
+Seated Bent-Over Rear Delt Raise,seated-bent-over-rear-delt-raise,reverse_fly,strength,pull_h,rear_delts,upper_back,dumbbell|bench,FALSE,1,2,12,20,45,FALSE,weight_reps,,,,,,,,abs,FALSE,
+Band Reverse Fly,band-reverse-fly,reverse_fly,strength,pull_h,rear_delts,upper_back,bands,FALSE,1,2,15,25,45,FALSE,reps_only,,,,,,,,abs,FALSE,
+Sled Reverse Fly,sled-reverse-fly,reverse_fly,strength,pull_h,rear_delts,upper_back,sled,FALSE,2,2,10,20,60,FALSE,reps_only,,,,,,,,abs,FALSE,
+Barbell Rear Delt Row,barbell-rear-delt-row,reverse_fly,strength,pull_h,rear_delts,upper_back|mid_back,barbell,TRUE,3,2,8,15,90,FALSE,weight_reps,,,wide,,,,,erectors|abs,FALSE,
+Cable Rear Delt Row,cable-rear-delt-row,face_pull,strength,pull_h,rear_delts,upper_back|traps,cable,TRUE,2,2,10,20,60,FALSE,weight_reps,,,,,,,,abs,FALSE,
+Low Pulley Row To Neck,low-pulley-row-to-neck,face_pull,strength,pull_h,rear_delts,traps|upper_back,cable,TRUE,2,2,10,20,60,FALSE,weight_reps,,,,,,,,abs,FALSE,
+Dumbbell Upright Row,dumbbell-upright-row,upright_row,strength,pull_v,traps,side_delts,dumbbell,TRUE,2,2,10,15,60,FALSE,weight_reps,shortened,,,,,shoulder,,abs,FALSE,
+Cable Upright Row,cable-upright-row,upright_row,strength,pull_v,traps,side_delts,cable,TRUE,2,2,10,15,60,FALSE,weight_reps,shortened,,,,,shoulder,,abs,FALSE,
+Band Upright Row,band-upright-row,upright_row,strength,pull_v,traps,side_delts,bands,TRUE,1,2,12,20,45,FALSE,reps_only,shortened,,,,,,,abs,FALSE,
+Smith Machine Upright Row,smith-machine-upright-row,upright_row,strength,pull_v,traps,side_delts,smith_machine,TRUE,2,2,10,15,60,FALSE,weight_reps,shortened,,,,,shoulder,,abs,FALSE,
+Sled Overhead Backward Walk,sled-overhead-backward-walk,sled,strength,carry,front_delts,upper_back|abs,sled,TRUE,3,3,20,40,90,FALSE,weight_distance,,overhead,,,,shoulder,,abs|erectors,FALSE,
+Palms-In Single-Arm Dumbbell Press,palms-in-single-arm-dumbbell-press,dumbbell_shoulder_press,strength,push_v,front_delts,triceps,dumbbell,TRUE,3,3,8,15,90,TRUE,weight_reps,,overhead,,neutral,,,,abs|obliques,FALSE,
+Reverse Fly With External Rotation,reverse-fly-with-external-rotation,reverse_fly,strength,pull_h,rear_delts,upper_back,dumbbell|bench,FALSE,1,3,12,20,45,FALSE,weight_reps,,,,,,shoulder,,abs,FALSE,
