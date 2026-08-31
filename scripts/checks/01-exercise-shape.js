@@ -1,6 +1,6 @@
 import { PATTERNS, LOAD_TYPES, SCORING, MUSCLES } from './_enums.js';
 
-const REQUIRED = ['id','name','pattern','loadType','equipment','primaryMuscles','secondaryMuscles','stabilises','fatigueCost','skill','defaultRIR','restSeconds','warmupRequired','unilateral','isCompound','trackingType','scoring','timeDomain','roundsCapable','repsForTime','kipAllowed','monostructural','skillGate'];
+const REQUIRED = ['id','name','pattern','loadType','equipment','primaryMuscles','secondaryMuscles','stabilises','fatigueCost','skill','defaultRIR','restSeconds','warmupRequired','unilateral','isCompound','trackingType','scoring','timeDomain','roundsCapable','repsForTime','kipAllowed','monostructural','skillGate','selectable'];
 
 export default {
   id: '01', name: 'Exercise record shape & enums',
@@ -24,6 +24,9 @@ export default {
       assert(typeof ex.warmupRequired === 'boolean', `${ex.id}: warmupRequired must be boolean`);
       assert(typeof ex.unilateral === 'boolean', `${ex.id}: unilateral must be boolean`);
       assert(typeof ex.repsForTime === 'boolean', `${ex.id}: repsForTime must be boolean`);
+      // #63. Explicit on every row: build_seed's to_bool reads a blank cell as
+      // false, so a missed cell would silently drop the row from generation.
+      assert(typeof ex.selectable === 'boolean', `${ex.id}: selectable must be boolean`);
     }
   }
 };

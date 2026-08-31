@@ -14,7 +14,12 @@ export default {
 
   run(defs, assert) {
     const counts = Object.fromEntries(PATTERNS.map((p) => [p, 0]));
+    // #63: SELECTABLE rows only. The claim here is "substitution needs an
+    // alternative", which is about what the generator can pick. Counting rows
+    // it will never choose would let hundreds of imported library variants pad
+    // every pattern past the threshold while the real options stayed at one.
     for (const ex of defs.exercises) {
+      if (ex.selectable === false) continue;
       if (ex.pattern in counts) counts[ex.pattern]++;
     }
 

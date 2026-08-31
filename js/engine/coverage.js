@@ -73,6 +73,17 @@ export function ownedOf(profile) {
  * CoverageError, which is fail-closed inverted. One function, both callers.
  */
 export function isAvailable(exercise, profile) {
+  // #63. An unselectable row is browsable and swappable but never GENERATED.
+  //
+  // This is the single availability rule (#41): both generators and
+  // analyzeCoverage call it, so the filter lands once rather than in three
+  // places that can drift. rankSubstitutes deliberately does NOT go through
+  // here -- a swap is the athlete choosing, and offering a variation they own
+  // is the whole reason the flag exists rather than the row being rejected.
+  //
+  // Absent is treated as selectable so a runtime-constructed exercise in a test
+  // fixture still works. Every catalog row carries it explicitly.
+  if (exercise?.selectable === false) return false;
   if (profile?.assumesAll === true) return true;
   return isPerformable(exercise, ownedOf(profile));
 }
@@ -98,7 +109,10 @@ export function analyzeCoverage(profile, requiredPatterns, catalog) {
   const covered = [];
 
   for (const pattern of [...new Set(requiredPatterns)]) {
-    const all = catalog.filter((ex) => ex.pattern === pattern);
+    // #63: selectable only. analyzeCoverage answers "can the GENERATOR find a
+    // row here", so counting rows it will never pick would make a thin profile
+    // look healthy -- silently weakening check 11 the moment the import lands.
+    const all = catalog.filter((ex) => ex.pattern === pattern && ex.selectable !== false);
     const options = assumesAll ? all : all.filter((ex) => isPerformable(ex, owned));
     optionsByPattern.set(pattern, options);
 

@@ -245,6 +245,23 @@ def build_record(row: dict, source: str) -> dict:
         "restSeconds": to_int(row["default_rest_sec"], "default_rest_sec", slug),
         "warmupRequired": fatigue >= 4,
         "unilateral": to_bool(row["is_unilateral"]),
+        # SELECTABLE (#63). May the GENERATOR pick this row?
+        #
+        # The bulk import brings in hundreds of implement variants of lifts the
+        # catalog already holds. A dumbbell bench press is not a lesser barbell
+        # bench press -- longer ROM, independent limbs, real stabiliser demand --
+        # but score() cannot tell them apart, so importing eight bench variants
+        # gives the generator eight rows it reads as identical and one more
+        # family to penalise.
+        #
+        # So: the row EXISTS, carries instructions, and is browsable and
+        # swappable. The generator skips it until someone promotes it by
+        # calibrating fatigue_cost, technical_demand and movement_pattern.
+        #
+        # EXPLICIT on every row, never blank. to_bool reads blank as False, so a
+        # missed cell would silently remove a row from generation -- exactly the
+        # silent-drop failure this repo keeps finding.
+        "selectable": to_bool(row["selectable"]),
         # ADR-023 anchors percentage prescription on compound + weight_reps +
         # fatigueCost >= 3 + barbell/trap_bar. This column was parsed for
         # repsForTime and then DISCARDED, so the filter was unimplementable and

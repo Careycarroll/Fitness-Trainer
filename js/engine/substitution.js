@@ -11,7 +11,20 @@
 // #41: availability is defined once, in coverage.js. Re-exported here so the two
 // generators keep importing it from where they always have.
 export { isAvailable } from './coverage.js';
-import { isAvailable } from './coverage.js';
+// #63. `isPerformable`, NOT `isAvailable`.
+//
+// isAvailable now also refuses rows flagged `selectable: false`, which is right
+// for the GENERATOR and wrong here. A swap is the ATHLETE choosing. If they own
+// a cable crossover and want it, offering it is the point of the flag — the row
+// exists and is reachable, the engine just does not pick it unprompted.
+//
+// Routing this through isAvailable made every imported library variant
+// unswappable, which would have made the flag a rejection in disguise.
+import { isPerformable, ownedOf } from './coverage.js';
+
+/** Equipment only. Deliberately blind to `selectable`. */
+const canPerform = (exercise, profile) =>
+  profile?.assumesAll === true || isPerformable(exercise, ownedOf(profile));
 
 /** Lower is better. Infinity-ish scores mean "not a substitute at all". */
 export function score(target, candidate, weights, profile) {
@@ -19,7 +32,7 @@ export function score(target, candidate, weights, profile) {
 
   let s = 0;
   if (candidate.pattern !== target.pattern) s += weights.patternMismatch;
-  if (profile && !isAvailable(candidate, profile)) s += weights.equipmentUnavailable;
+  if (profile && !canPerform(candidate, profile)) s += weights.equipmentUnavailable;
   if (!domainsCompatible(target.scoring, candidate.scoring)) s += weights.scoringDomainMismatch;
 
   s += Math.abs(candidate.fatigueCost - target.fatigueCost) * weights.fatigueCostDelta;

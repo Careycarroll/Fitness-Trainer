@@ -1,21 +1,21 @@
-name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,rom_bias,angle,grip,head_bias,joint_load,skill_gate,stabilises
-Conventional Deadlift,conventional-deadlift,deadlift,strength,hinge,glutes|hamstrings,lats|traps,barbell,TRUE,5,3,1,5,240,FALSE,weight_reps,,,,,lower_back,,erectors
-Sumo Deadlift,sumo-deadlift,deadlift,strength,hinge,glutes|quads,adductors|traps,barbell,TRUE,5,4,1,5,240,FALSE,weight_reps,,,,,lower_back|hip,,erectors
-Trap Bar Deadlift,trap-bar-deadlift,deadlift,strength,hinge,glutes|quads,hamstrings|traps,trap_bar,TRUE,4,2,3,8,180,FALSE,weight_reps,,,,,,,erectors
-Rack Pull,rack-pull,deadlift,strength,hinge,glutes|erectors,traps|lats,barbell|rack,TRUE,4,2,3,6,180,FALSE,weight_reps,shortened,,,,lower_back,,
-Dumbbell Sumo Deadlift,dumbbell-sumo-deadlift,deadlift,strength,hinge,glutes|quads,adductors,dumbbell,TRUE,3,1,8,15,120,FALSE,weight_reps,,,,,,,erectors
-Barbell Hip Thrust,barbell-hip-thrust,hip_thrust,strength,hinge,glutes,hamstrings,barbell|bench,TRUE,3,2,8,15,120,FALSE,weight_reps,shortened,,,,,,
-Machine Hip Thrust,machine-hip-thrust,hip_thrust,strength,hinge,glutes,hamstrings,hip_thrust_machine,TRUE,3,1,8,15,120,FALSE,weight_reps,shortened,,,,,,
-Dumbbell Hip Thrust,dumbbell-hip-thrust,hip_thrust,strength,hinge,glutes,hamstrings,dumbbell|bench,TRUE,2,1,10,20,90,FALSE,weight_reps,shortened,,,,,,
-Single-Leg Hip Thrust,single-leg-hip-thrust,hip_thrust,strength,hinge,glutes,hamstrings,bodyweight|bench,TRUE,2,2,8,15,90,TRUE,reps_only,shortened,,,,,,abs
-Glute Bridge,glute-bridge,hip_thrust,strength,hinge,glutes,hamstrings,bodyweight,FALSE,1,1,12,25,60,FALSE,reps_only,shortened,,,,,,
-Band-Resisted Glute Bridge,band-resisted-glute-bridge,hip_thrust,strength,hinge,glutes,hamstrings,bodyweight|bands,FALSE,1,1,12,25,60,FALSE,reps_only,shortened,,,,,,
-Feet-Elevated Glute Bridge,feet-elevated-glute-bridge,hip_thrust,strength,hinge,glutes,hamstrings,bodyweight|box,FALSE,1,1,10,20,60,FALSE,reps_only,stretch,,,,,,
-Frog Pump,frog-pump,hip_thrust,strength,isolation,glutes,adductors,bodyweight,FALSE,1,1,15,30,45,FALSE,reps_only,shortened,,,,,,
-Kettlebell Swing,kettlebell-swing,swing,strength,explosive,glutes|hamstrings,,kettlebell,TRUE,3,3,10,20,90,FALSE,reps_only,,,,,lower_back,,erectors|abs
-Cable Pull-Through,cable-pull-through,pull_through,strength,hinge,glutes|hamstrings,,cable,TRUE,2,1,10,20,90,FALSE,weight_reps,shortened,,,,,,erectors
-Single-Leg Romanian Deadlift,single-leg-romanian-deadlift,single_leg_hinge,strength,hinge,glutes|hamstrings,,dumbbell,TRUE,2,3,8,12,90,TRUE,weight_reps,stretch,,,,,,erectors|abs
-45-Degree Hip Extension,45-degree-hip-extension,hip_extension,strength,hinge,glutes|hamstrings,,back_extension_bench,FALSE,2,1,10,20,90,FALSE,weight_reps,,,,,lower_back,,erectors
-Reverse Hyperextension,reverse-hyperextension,hip_extension,strength,hinge,glutes|hamstrings,,back_extension_bench,FALSE,2,1,10,20,90,FALSE,weight_reps,shortened,,,,lower_back,,erectors
-Cable Glute Kickback,cable-glute-kickback,kickback,strength,isolation,glutes,hamstrings,cable,FALSE,1,1,10,20,60,TRUE,weight_reps,shortened,,,,,,
-Band Standing Glute Kickback,band-standing-glute-kickback,kickback,strength,isolation,glutes,hamstrings,bands,FALSE,1,1,15,25,45,TRUE,reps_only,shortened,,,,,,
+name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,rom_bias,angle,grip,head_bias,joint_load,skill_gate,stabilises,selectable
+Conventional Deadlift,conventional-deadlift,deadlift,strength,hinge,glutes|hamstrings,lats|traps,barbell,TRUE,5,3,1,5,240,FALSE,weight_reps,,,,,lower_back,,erectors,TRUE
+Sumo Deadlift,sumo-deadlift,deadlift,strength,hinge,glutes|quads,adductors|traps,barbell,TRUE,5,4,1,5,240,FALSE,weight_reps,,,,,lower_back|hip,,erectors,TRUE
+Trap Bar Deadlift,trap-bar-deadlift,deadlift,strength,hinge,glutes|quads,hamstrings|traps,trap_bar,TRUE,4,2,3,8,180,FALSE,weight_reps,,,,,,,erectors,TRUE
+Rack Pull,rack-pull,deadlift,strength,hinge,glutes|erectors,traps|lats,barbell|rack,TRUE,4,2,3,6,180,FALSE,weight_reps,shortened,,,,lower_back,,,TRUE
+Dumbbell Sumo Deadlift,dumbbell-sumo-deadlift,deadlift,strength,hinge,glutes|quads,adductors,dumbbell,TRUE,3,1,8,15,120,FALSE,weight_reps,,,,,,,erectors,TRUE
+Barbell Hip Thrust,barbell-hip-thrust,hip_thrust,strength,hinge,glutes,hamstrings,barbell|bench,TRUE,3,2,8,15,120,FALSE,weight_reps,shortened,,,,,,,TRUE
+Machine Hip Thrust,machine-hip-thrust,hip_thrust,strength,hinge,glutes,hamstrings,hip_thrust_machine,TRUE,3,1,8,15,120,FALSE,weight_reps,shortened,,,,,,,TRUE
+Dumbbell Hip Thrust,dumbbell-hip-thrust,hip_thrust,strength,hinge,glutes,hamstrings,dumbbell|bench,TRUE,2,1,10,20,90,FALSE,weight_reps,shortened,,,,,,,TRUE
+Single-Leg Hip Thrust,single-leg-hip-thrust,hip_thrust,strength,hinge,glutes,hamstrings,bodyweight|bench,TRUE,2,2,8,15,90,TRUE,reps_only,shortened,,,,,,abs,TRUE
+Glute Bridge,glute-bridge,hip_thrust,strength,hinge,glutes,hamstrings,bodyweight,FALSE,1,1,12,25,60,FALSE,reps_only,shortened,,,,,,,TRUE
+Band-Resisted Glute Bridge,band-resisted-glute-bridge,hip_thrust,strength,hinge,glutes,hamstrings,bodyweight|bands,FALSE,1,1,12,25,60,FALSE,reps_only,shortened,,,,,,,TRUE
+Feet-Elevated Glute Bridge,feet-elevated-glute-bridge,hip_thrust,strength,hinge,glutes,hamstrings,bodyweight|box,FALSE,1,1,10,20,60,FALSE,reps_only,stretch,,,,,,,TRUE
+Frog Pump,frog-pump,hip_thrust,strength,isolation,glutes,adductors,bodyweight,FALSE,1,1,15,30,45,FALSE,reps_only,shortened,,,,,,,TRUE
+Kettlebell Swing,kettlebell-swing,swing,strength,explosive,glutes|hamstrings,,kettlebell,TRUE,3,3,10,20,90,FALSE,reps_only,,,,,lower_back,,erectors|abs,TRUE
+Cable Pull-Through,cable-pull-through,pull_through,strength,hinge,glutes|hamstrings,,cable,TRUE,2,1,10,20,90,FALSE,weight_reps,shortened,,,,,,erectors,TRUE
+Single-Leg Romanian Deadlift,single-leg-romanian-deadlift,single_leg_hinge,strength,hinge,glutes|hamstrings,,dumbbell,TRUE,2,3,8,12,90,TRUE,weight_reps,stretch,,,,,,erectors|abs,TRUE
+45-Degree Hip Extension,45-degree-hip-extension,hip_extension,strength,hinge,glutes|hamstrings,,back_extension_bench,FALSE,2,1,10,20,90,FALSE,weight_reps,,,,,lower_back,,erectors,TRUE
+Reverse Hyperextension,reverse-hyperextension,hip_extension,strength,hinge,glutes|hamstrings,,back_extension_bench,FALSE,2,1,10,20,90,FALSE,weight_reps,shortened,,,,lower_back,,erectors,TRUE
+Cable Glute Kickback,cable-glute-kickback,kickback,strength,isolation,glutes,hamstrings,cable,FALSE,1,1,10,20,60,TRUE,weight_reps,shortened,,,,,,,TRUE
+Band Standing Glute Kickback,band-standing-glute-kickback,kickback,strength,isolation,glutes,hamstrings,bands,FALSE,1,1,15,25,45,TRUE,reps_only,shortened,,,,,,,TRUE

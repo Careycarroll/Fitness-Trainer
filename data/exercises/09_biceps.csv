@@ -1,21 +1,21 @@
-name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,rom_bias,angle,grip,head_bias,joint_load,skill_gate,stabilises
-Barbell Curl,barbell-curl,barbell_curl,strength,isolation,biceps,forearms,barbell,FALSE,1,1,8,15,60,FALSE,weight_reps,,,,,elbow,,
-EZ-Bar Curl,ez-bar-curl,barbell_curl,strength,isolation,biceps,forearms,ez_bar,FALSE,1,1,8,15,60,FALSE,weight_reps,,,,,,,
-Drag Curl,drag-curl,barbell_curl,strength,isolation,biceps,forearms,barbell,FALSE,1,2,8,12,60,FALSE,weight_reps,,,,long,,,
-Dumbbell Curl,dumbbell-curl,dumbbell_curl,strength,isolation,biceps,forearms,dumbbell,FALSE,1,1,8,15,60,TRUE,weight_reps,,,,,,,
-Incline Dumbbell Curl,incline-dumbbell-curl,dumbbell_curl,strength,isolation,biceps,forearms,dumbbell|bench,FALSE,1,1,8,15,60,TRUE,weight_reps,,,,long,elbow,,
-Concentration Curl,concentration-curl,dumbbell_curl,strength,isolation,biceps,forearms,dumbbell|bench,FALSE,1,1,10,15,45,TRUE,weight_reps,,,,short,,,
-Spider Curl,spider-curl,dumbbell_curl,strength,isolation,biceps,forearms,dumbbell|bench,FALSE,1,1,10,15,60,FALSE,weight_reps,,,,short,,,
-Preacher Curl,preacher-curl,preacher_curl,strength,isolation,biceps,forearms,dumbbell|bench,FALSE,1,1,8,15,60,TRUE,weight_reps,,,,short,elbow,,
-EZ-Bar Preacher Curl,ez-bar-preacher-curl,preacher_curl,strength,isolation,biceps,forearms,ez_bar|bench,FALSE,1,1,8,15,60,FALSE,weight_reps,,,,short,elbow,,
-Cable Curl,cable-curl,cable_curl,strength,isolation,biceps,forearms,cable,FALSE,1,1,10,15,60,FALSE,weight_reps,,,,,,,
-Behind-Body Cable Curl,behind-body-cable-curl,cable_curl,strength,isolation,biceps,forearms,cable,FALSE,1,2,10,15,60,TRUE,weight_reps,,,,long,shoulder,,
-Overhead Cable Curl,overhead-cable-curl,cable_curl,strength,isolation,biceps,forearms,cable,FALSE,1,2,10,15,60,TRUE,weight_reps,,,,short,,,
-Band Curl,band-curl,cable_curl,strength,isolation,biceps,forearms,bands,FALSE,1,1,12,20,45,FALSE,reps_only,,,,,,,
-Machine Preacher Curl,machine-preacher-curl,machine_curl,strength,isolation,biceps,forearms,preacher_curl_machine,FALSE,1,1,10,15,60,FALSE,weight_reps,,,,short,,,
-Dumbbell Hammer Curl,dumbbell-hammer-curl,hammer_curl,strength,isolation,biceps,forearms,dumbbell,FALSE,1,1,8,15,60,TRUE,weight_reps,,,,,,,
-Cable Hammer Curl,cable-hammer-curl,hammer_curl,strength,isolation,biceps,forearms,cable,FALSE,1,1,10,15,60,FALSE,weight_reps,,,,,,,
-Suspension Biceps Curl,suspension-biceps-curl,bodyweight_curl,strength,isolation,biceps,forearms|abs,suspension_trainer,FALSE,2,3,8,15,60,FALSE,reps_only,,,,,elbow,,
-Reverse Curl,reverse-curl,reverse_curl,strength,isolation,forearms,biceps,ez_bar,FALSE,1,1,10,15,60,FALSE,weight_reps,,,,,elbow|wrist,,
-Wrist Curl,wrist-curl,wrist_curl,strength,isolation,forearms,,dumbbell|bench,FALSE,1,1,12,25,45,FALSE,weight_reps,,,,,wrist,,
-Reverse Wrist Curl,reverse-wrist-curl,wrist_curl,strength,isolation,forearms,,dumbbell|bench,FALSE,1,1,12,25,45,FALSE,weight_reps,,,,,wrist,,
+name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,rom_bias,angle,grip,head_bias,joint_load,skill_gate,stabilises,selectable
+Barbell Curl,barbell-curl,barbell_curl,strength,isolation,biceps,forearms,barbell,FALSE,1,1,8,15,60,FALSE,weight_reps,,,,,elbow,,,TRUE
+EZ-Bar Curl,ez-bar-curl,barbell_curl,strength,isolation,biceps,forearms,ez_bar,FALSE,1,1,8,15,60,FALSE,weight_reps,,,,,,,,TRUE
+Drag Curl,drag-curl,barbell_curl,strength,isolation,biceps,forearms,barbell,FALSE,1,2,8,12,60,FALSE,weight_reps,,,,long,,,,TRUE
+Dumbbell Curl,dumbbell-curl,dumbbell_curl,strength,isolation,biceps,forearms,dumbbell,FALSE,1,1,8,15,60,TRUE,weight_reps,,,,,,,,TRUE
+Incline Dumbbell Curl,incline-dumbbell-curl,dumbbell_curl,strength,isolation,biceps,forearms,dumbbell|bench,FALSE,1,1,8,15,60,TRUE,weight_reps,,,,long,elbow,,,TRUE
+Concentration Curl,concentration-curl,dumbbell_curl,strength,isolation,biceps,forearms,dumbbell|bench,FALSE,1,1,10,15,45,TRUE,weight_reps,,,,short,,,,TRUE
+Spider Curl,spider-curl,dumbbell_curl,strength,isolation,biceps,forearms,dumbbell|bench,FALSE,1,1,10,15,60,FALSE,weight_reps,,,,short,,,,TRUE
+Preacher Curl,preacher-curl,preacher_curl,strength,isolation,biceps,forearms,dumbbell|bench,FALSE,1,1,8,15,60,TRUE,weight_reps,,,,short,elbow,,,TRUE
+EZ-Bar Preacher Curl,ez-bar-preacher-curl,preacher_curl,strength,isolation,biceps,forearms,ez_bar|bench,FALSE,1,1,8,15,60,FALSE,weight_reps,,,,short,elbow,,,TRUE
+Cable Curl,cable-curl,cable_curl,strength,isolation,biceps,forearms,cable,FALSE,1,1,10,15,60,FALSE,weight_reps,,,,,,,,TRUE
+Behind-Body Cable Curl,behind-body-cable-curl,cable_curl,strength,isolation,biceps,forearms,cable,FALSE,1,2,10,15,60,TRUE,weight_reps,,,,long,shoulder,,,TRUE
+Overhead Cable Curl,overhead-cable-curl,cable_curl,strength,isolation,biceps,forearms,cable,FALSE,1,2,10,15,60,TRUE,weight_reps,,,,short,,,,TRUE
+Band Curl,band-curl,cable_curl,strength,isolation,biceps,forearms,bands,FALSE,1,1,12,20,45,FALSE,reps_only,,,,,,,,TRUE
+Machine Preacher Curl,machine-preacher-curl,machine_curl,strength,isolation,biceps,forearms,preacher_curl_machine,FALSE,1,1,10,15,60,FALSE,weight_reps,,,,short,,,,TRUE
+Dumbbell Hammer Curl,dumbbell-hammer-curl,hammer_curl,strength,isolation,biceps,forearms,dumbbell,FALSE,1,1,8,15,60,TRUE,weight_reps,,,,,,,,TRUE
+Cable Hammer Curl,cable-hammer-curl,hammer_curl,strength,isolation,biceps,forearms,cable,FALSE,1,1,10,15,60,FALSE,weight_reps,,,,,,,,TRUE
+Suspension Biceps Curl,suspension-biceps-curl,bodyweight_curl,strength,isolation,biceps,forearms|abs,suspension_trainer,FALSE,2,3,8,15,60,FALSE,reps_only,,,,,elbow,,,TRUE
+Reverse Curl,reverse-curl,reverse_curl,strength,isolation,forearms,biceps,ez_bar,FALSE,1,1,10,15,60,FALSE,weight_reps,,,,,elbow|wrist,,,TRUE
+Wrist Curl,wrist-curl,wrist_curl,strength,isolation,forearms,,dumbbell|bench,FALSE,1,1,12,25,45,FALSE,weight_reps,,,,,wrist,,,TRUE
+Reverse Wrist Curl,reverse-wrist-curl,wrist_curl,strength,isolation,forearms,,dumbbell|bench,FALSE,1,1,12,25,45,FALSE,weight_reps,,,,,wrist,,,TRUE
