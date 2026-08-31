@@ -19,3 +19,14 @@ Single-Leg Romanian Deadlift,single-leg-romanian-deadlift,single_leg_hinge,stren
 Reverse Hyperextension,reverse-hyperextension,hip_extension,strength,hinge,glutes|hamstrings,,back_extension_bench,FALSE,2,1,10,20,90,FALSE,weight_reps,shortened,,,,lower_back,,erectors,TRUE
 Cable Glute Kickback,cable-glute-kickback,kickback,strength,isolation,glutes,hamstrings,cable,FALSE,1,1,10,20,60,TRUE,weight_reps,shortened,,,,,,,TRUE
 Band Standing Glute Kickback,band-standing-glute-kickback,kickback,strength,isolation,glutes,hamstrings,bands,FALSE,1,1,15,25,45,TRUE,reps_only,shortened,,,,,,,TRUE
+Barbell Glute Bridge,barbell-glute-bridge,hip_thrust,strength,hinge,glutes,hamstrings,barbell|plate,TRUE,3,2,8,15,90,FALSE,weight_reps,shortened,,,,,,erectors|abs,FALSE
+Kneeling Squat,kneeling-squat,kneeling_squat,strength,hinge,glutes,quads,barbell|rack,TRUE,3,3,6,12,90,FALSE,weight_reps,shortened,,,,lower_back,,erectors|abs,FALSE
+Kneeling Jump Squat,kneeling-jump-squat,kneeling_squat,strength,explosive,glutes,quads|hamstrings,bodyweight,TRUE,3,4,3,6,120,FALSE,reps_only,,,,,knee,,abs,FALSE
+Single-Leg Glute Bridge,single-leg-glute-bridge,hip_thrust,strength,hinge,glutes,hamstrings,bodyweight,FALSE,1,2,10,20,45,TRUE,reps_only,shortened,,,,,,abs,FALSE
+Deficit Deadlift,deficit-deadlift,deadlift,strength,hinge,glutes|hamstrings,erectors|lats,barbell|platform,TRUE,5,4,3,6,180,FALSE,weight_reps,stretch,,,,lower_back,,erectors|abs,FALSE
+Seated Good Morning,seated-good-morning,good_morning,strength,hinge,erectors,glutes|hamstrings,barbell|rack|bench,TRUE,3,3,6,12,120,FALSE,weight_reps,,,,,lower_back,,abs,FALSE
+Stability Ball Hip Thrust,stability-ball-hip-thrust,hip_thrust,strength,hinge,glutes,hamstrings,bodyweight|stability_ball,FALSE,2,3,10,20,60,FALSE,reps_only,shortened,,,,,,erectors|abs,FALSE
+Stability Ball Back Extension,stability-ball-back-extension,back_extension,strength,hinge,erectors,glutes,bodyweight|stability_ball,FALSE,1,2,12,20,45,FALSE,reps_only,shortened,,,,lower_back,,abs,FALSE
+Single-Leg Cable Kickback,single-leg-cable-kickback,glute_kickback,strength,isolation,glutes,hamstrings,cable,FALSE,1,2,12,20,45,TRUE,weight_reps,shortened,,,,,,abs,FALSE
+Standing Cable Hip Extension,standing-cable-hip-extension,glute_kickback,strength,isolation,glutes,hamstrings,cable,FALSE,1,2,12,20,45,TRUE,weight_reps,shortened,,,,,,erectors|abs,FALSE
+Machine Glute Kickback,machine-glute-kickback,glute_kickback,strength,isolation,glutes,hamstrings,hip_thrust_machine,FALSE,1,1,12,20,45,TRUE,weight_reps,shortened,,,,,,abs,FALSE
