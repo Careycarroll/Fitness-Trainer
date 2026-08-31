@@ -30,7 +30,10 @@ export default defineConfig({
       injectRegister: null,
       // ADR-001: app shell is cache-first. The app must open with zero network.
       workbox: {
-        globPatterns: ['**/*.{js,css,html,json,svg,png,webmanifest}'],
+        // webp is here and jpg is NOT, deliberately. The 300px thumbnails are
+        // precached so the library works offline (ADR-001); the full-size
+        // originals under the same directory are ~40 MB and load on tap only.
+        globPatterns: ['**/*.{js,css,html,json,svg,png,webp,webmanifest}'],
         navigateFallback: `${base}index.html`
       },
       manifest: {

@@ -13,6 +13,7 @@
     "check": "npm run validate && npm test && vite build",
     "build:seed": "python3 tools/build_seed.py",
     "build:instructions": "python3 tools/build_instructions.py",
+    "build:images": "python3 tools/build_images.py",
     "build:manifest": "python3 tools/build_fitnotes_manifest.py"
   },
   "devDependencies": {
