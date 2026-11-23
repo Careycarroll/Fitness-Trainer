@@ -201,6 +201,19 @@ claimed. Always include a behavioural check that prints real output.
 Authenticated already. Prefer the API over title-matching — `--milestone "Some
 Title"` resolves by string and fails on em-dashes and renames.
 
+### Milestones and issues for all changes
+
+Open milestones and issues for all code changes to ensure proper management of
+changes.
+
+- Every non-trivial feature, refactor, or fix must have an open issue assigned to
+  an appropriate milestone.
+- If a milestone for the work scope does not exist, create it first via the API.
+- Create or locate the tracking issue before or alongside the implementation.
+- Reference the issue in commit messages (e.g. `Closes #90`) so GitHub closes the
+  issue upon landing on `main`.
+- All milestone and issue creation commands must be **idempotent** (safe to run twice).
+
 ```bash
 # Robust: numeric milestone id through the API
 gh api --method PATCH "repos/{owner}/{repo}/issues/37" -F milestone=7
@@ -215,6 +228,17 @@ will run them twice.
 
 Beware: `gh issue list --milestone` can lag a just-created issue. Verify with
 `gh issue view N --json milestone` rather than assuming the write failed.
+
+### Auto squash and merge for GitHub Pages
+
+All code pushes should be auto squash/merged so changes deploy to GitHub Pages.
+
+- Once changes pass the full gate (`npm run check && npm run build`), squash the
+  work into a single, atomic commit explaining *why* and push directly to
+  `origin/main`.
+- Pushing to `origin/main` triggers the GitHub Actions workflow to build and
+  deploy the updated PWA to GitHub Pages.
+- Never leave orphaned feature branches or unpushed work across turns.
 
 ---
 
@@ -254,6 +278,10 @@ State known limitations in the message rather than omitting them.
 - **Offline is a hard requirement (ADR-001)** and cannot be tested with
   `npm run dev` or live-server. Only a real build — `vite preview` or the
   deployed Pages site — registers the service worker.
+- **Auto squash/merge to `main`:** All validated work is squashed into an atomic
+  commit and pushed to `origin/main` so GitHub Pages stays continuously updated.
+- **Track via milestones and issues:** Every non-trivial change must have an
+  open milestone and issue for change governance.
 
 ---
 
