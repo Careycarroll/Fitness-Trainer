@@ -124,6 +124,8 @@ describe('CrossFit benchmark presets (ADR-032)', () => {
     assert.ok(csv.includes('1x5 · 5 reps'));
     assert.ok(csv.includes('1x10 · 10 reps'));
     assert.ok(csv.includes('1x15 · 15 reps'));
+    assert.ok(csv.includes('[Cindy: 20-minute AMRAP'));
+    assert.ok(csv.includes('[Cindy · 20m AMRAP]'));
   });
 
   test('barbara benchmark exports all movements to FitNotes CSV with rest notes', () => {
@@ -144,6 +146,8 @@ describe('CrossFit benchmark presets (ADR-032)', () => {
     assert.ok(csv.includes('1x30 · 30 push-ups'));
     assert.ok(csv.includes('1x40 · 40 sit-ups'));
     assert.ok(csv.includes('1x50 · 50 air squats (3 min rest after round) · rest 180s'));
+    assert.ok(csv.includes('[Barbara: 5 rounds for time'));
+    assert.ok(csv.includes('[Barbara · 5 rnds]'));
   });
 
   test('expandBenchmark sets program name and description for UI header rendering', () => {

@@ -232,6 +232,7 @@ export function toFitNotesCSV(program, startDate, state, { manifest, catalog, cu
 
   sessions.forEach((session, i) => {
     const date = dates[i];
+    let exerciseIndexInSession = 0;
     for (const block of session.blocks) {
       for (const g of block.setGroups) {
         const max = currentMax(state, g.exerciseId);
@@ -296,6 +297,26 @@ export function toFitNotesCSV(program, startDate, state, { manifest, catalog, cu
           g.restSeconds ? `rest ${g.restSeconds}s` : null
         ].filter(Boolean).join(' · ');
 
+        const isCrossfit = program.styleId === 'crossfit' || session.styleId === 'crossfit';
+        let prefix = '';
+        if (isCrossfit) {
+          const title = program.name || 'CrossFit';
+          const fullDesc = program.description || session.label || '';
+          if (exerciseIndexInSession === 0) {
+            prefix = `[${title}${fullDesc ? `: ${fullDesc}` : ''}]`;
+          } else {
+            const formatShort = session.format === 'amrap'
+              ? (session.capSeconds ? `${Math.round(session.capSeconds / 60)}m AMRAP` : 'AMRAP')
+              : session.format === 'emom'
+                ? (session.capSeconds ? `${Math.round(session.capSeconds / 60)}m EMOM` : 'EMOM')
+                : (session.rounds && session.rounds > 1 ? `${session.rounds} rnds` : 'For time');
+            prefix = `[${title} · ${formatShort}]`;
+          }
+        }
+        exerciseIndexInSession += 1;
+
+        const rowNote = [prefix, note].filter(Boolean).join(' ');
+
         rows.push([
           date,
           names.get(g.exerciseId) ?? g.exerciseId,
@@ -308,7 +329,7 @@ export function toFitNotesCSV(program, startDate, state, { manifest, catalog, cu
           weight ?? '0.00',
           0,             // Reps: ZERO. Cannot feed e1RM, so a skipped session leaves nothing false
           '', '', '',    // Distance, Distance Unit, Time
-          note,
+          rowNote,
           'wr'
         ]);
       }
