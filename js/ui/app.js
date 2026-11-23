@@ -109,6 +109,11 @@ let scope = 'session';     // 'session' | 'block'
 let edited = false;
 let pinnedSeed = null;     // set when the user asks to reproduce a draft
 let seedLabel = '';         // the user's number/name, shown separately from the resolved integer
+let activeMode = 'planner';  // 'planner' | 'wod'
+let plannerProgram = null;
+let plannerRequest = null;
+let wodProgram = null;
+let wodRequest = null;
 
 /**
  * ONE stored draft, not a plan library. `plans` is an array and `putPlan` keys on
@@ -309,20 +314,22 @@ export function mount(root, defs) {
       </form>
 
       <form id="wod-form" class="panel planner-form wod-form" hidden>
-        <label>Track
+        <label>WOD Type
           <select name="wodTrack">
             <option value="hiit" selected>Daily Full-Body HIIT</option>
-            <option value="benchmark">CrossFit Challenge · Benchmark WOD</option>
-            <option value="crossfit-amrap">CrossFit Challenge · Daily AMRAP</option>
+            <option value="crossfit">CrossFit Challenge</option>
           </select>
         </label>
         <div id="benchmark-picker" hidden>
-          <label>Benchmark WOD
+          <label>Challenge Workout
             <select name="benchmarkId">
-              ${benchmarks.map((b) => `<option value="${b.id}">${esc(b.name)} — ${b.format === 'amrap' ? `${Math.round(b.timeCapSeconds / 60)}m AMRAP` : (b.rounds ? `${b.rounds} rnds` : 'For time')}</option>`).join('')}
+              <option value="daily" selected>Daily Benchmark (Rotates Daily)</option>
+              <optgroup label="Named Benchmarks (The Girls & Murph)">
+                ${benchmarks.map((b) => `<option value="${b.id}">${esc(b.name)} — ${b.format === 'amrap' ? `${Math.round(b.timeCapSeconds / 60)}m AMRAP` : (b.rounds ? `${b.rounds} rnds` : 'For time')}</option>`).join('')}
+              </optgroup>
             </select>
           </label>
-          <p id="benchmark-desc" class="note">${esc(benchmarks[0]?.description ?? '')}</p>
+          <p id="benchmark-desc" class="note">Daily rotating benchmark challenge based on date seed.</p>
         </div>
         <label>Date
           <input type="date" name="wodDate" value="${todayDateString()}" />
@@ -414,6 +421,8 @@ export function mount(root, defs) {
   modeTabs.forEach((tab) => {
     tab.addEventListener('click', () => {
       const mode = tab.dataset.mode;
+      if (mode === activeMode) return;
+      activeMode = mode;
       modeTabs.forEach((t) => {
         const isSelected = t.dataset.mode === mode;
         t.classList.toggle('selected', isSelected);
@@ -422,9 +431,23 @@ export function mount(root, defs) {
       if (mode === 'wod') {
         form.hidden = true;
         wodForm.hidden = false;
+        if (wodProgram) {
+          current = wodProgram;
+          currentRequest = wodRequest;
+          paint(out);
+        } else {
+          wodForm.requestSubmit();
+        }
       } else {
         form.hidden = false;
         wodForm.hidden = true;
+        if (plannerProgram) {
+          current = plannerProgram;
+          currentRequest = plannerRequest;
+          paint(out);
+        } else {
+          restoreDraft(out, form);
+        }
       }
     });
   });
@@ -435,12 +458,16 @@ export function mount(root, defs) {
   const trackSelect = root.querySelector('[name=wodTrack]');
 
   trackSelect.addEventListener('change', () => {
-    benchmarkPicker.hidden = trackSelect.value !== 'benchmark';
+    benchmarkPicker.hidden = trackSelect.value !== 'crossfit';
   });
 
   benchmarkSelect.addEventListener('change', () => {
-    const b = getBenchmark(benchmarkSelect.value);
-    if (b && benchmarkDesc) benchmarkDesc.textContent = b.description;
+    if (benchmarkSelect.value === 'daily') {
+      if (benchmarkDesc) benchmarkDesc.textContent = 'Daily rotating benchmark challenge based on date seed.';
+    } else {
+      const b = getBenchmark(benchmarkSelect.value);
+      if (b && benchmarkDesc) benchmarkDesc.textContent = b.description;
+    }
   });
 
   wodForm.addEventListener('submit', (e) => {
@@ -457,27 +484,7 @@ export function mount(root, defs) {
     visibleDay = 0;
     edited = false;
 
-    if (track === 'benchmark') {
-      const benchmarkId = f.get('benchmarkId') || 'cindy';
-      currentRequest = {
-        schemaVersion: 1,
-        styleId: 'crossfit',
-        daysPerWeek: 1,
-        availableDays: [weekday],
-        blockWeeks: 1,
-        equipmentProfile,
-        sessionMinutes: 45,
-        seed,
-        athlete: { skillLevel },
-        benchmarkId,
-        history: []
-      };
-      current = expandBenchmark(benchmarkId, currentDefs, {
-        seed,
-        schedule: [weekday]
-      });
-      seedLabel = getBenchmark(benchmarkId)?.name ?? benchmarkId;
-    } else if (track === 'hiit') {
+    if (track === 'hiit') {
       currentRequest = {
         schemaVersion: 1,
         styleId: 'hiit',
@@ -501,6 +508,18 @@ export function mount(root, defs) {
         return;
       }
     } else {
+      // CrossFit Challenge
+      const benchmarkVal = f.get('benchmarkId') || 'daily';
+      let selectedBenchmark;
+      if (benchmarkVal === 'daily') {
+        const benchmarkIndex = Math.abs(seed) % benchmarks.length;
+        selectedBenchmark = benchmarks[benchmarkIndex] ?? benchmarks[0];
+        seedLabel = `${selectedBenchmark.name} (Daily Challenge)`;
+      } else {
+        selectedBenchmark = getBenchmark(benchmarkVal) ?? benchmarks[0];
+        seedLabel = selectedBenchmark.name;
+      }
+
       currentRequest = {
         schemaVersion: 1,
         styleId: 'crossfit',
@@ -511,20 +530,17 @@ export function mount(root, defs) {
         sessionMinutes: 45,
         seed,
         athlete: { skillLevel },
+        benchmarkId: selectedBenchmark.id,
         history: []
       };
-      seedLabel = `WOD ${dateStr}`;
-      try {
-        current = generate(currentRequest, currentDefs);
-      } catch (err) {
-        current = null;
-        out.innerHTML = err instanceof CoverageError
-          ? coverageHtml(err, currentDefs, currentRequest)
-          : genericErrorHtml(err);
-        return;
-      }
+      current = expandBenchmark(selectedBenchmark.id, currentDefs, {
+        seed,
+        schedule: [weekday]
+      });
     }
 
+    wodProgram = current;
+    wodRequest = currentRequest;
     paint(out);
     dateOverrides = {};
     const exportStart = root.querySelector('#export-start');
@@ -985,6 +1001,8 @@ export function mount(root, defs) {
       seedLabel = `${selected.name} (WOD)`;
       visibleDay = 0;
       edited = false;
+      plannerProgram = current;
+      plannerRequest = currentRequest;
       paint(out);
       dateOverrides = {};
       const exportStart = root.querySelector('#export-start');
@@ -1027,6 +1045,8 @@ export function mount(root, defs) {
 
     try {
       current = generate(currentRequest, currentDefs);
+      plannerProgram = current;
+      plannerRequest = currentRequest;
       paint(out);
       dateOverrides = {};
       if (isWodHiit) {
@@ -1172,6 +1192,8 @@ function restoreDraft(out, form) {
     // 1276318216 after a reload.
     seedLabel = draft.seedLabel ?? '';
     visibleDay = 0;
+    plannerProgram = current;
+    plannerRequest = currentRequest;
     restoreForm(form, draft);
     paint(out);
   } finally {
@@ -1499,19 +1521,29 @@ function paint(out) {
     ? '<p class="edit-note">This draft has local edits, saved automatically. Regenerating replaces them.</p>'
     : '<p class="edit-note">Sets and reps are editable; draft edits remain only on this screen. Intensity is prescribed as a percentage of 1RM — absolute loads need logged maxes (M7).</p>';
 
+  const isWodView = activeMode === 'wod' || (scope === 'session' && current.weeks.length === 1 && current.weeks[0].sessions.length === 1 && (current.name || currentRequest?.benchmarkId || currentRequest?.styleId === 'hiit'));
+
+  const metaText = isWodView
+    ? `Workout of the Day · ${current.schedule?.[0] ? current.schedule[0].toUpperCase() : 'Today'} · seed <button class="ghost seed-copy" data-copy-seed="${esc(String(current.seed))}" title="${seedTitle}">${esc(seedText)}</button>${seedLabel && !seedLabel.startsWith('WOD') ? ` <span class="resolved-seed">(resolved: ${current.seed})</span>` : ''}`
+    : `${scope === 'session' ? `${(current.weeks[0]?.sessions.length ?? 0)} split days · session preview` : `${current.weeks.length} weeks × ${(current.weeks[0]?.sessions.length ?? 0)} days`} · seed <button class="ghost seed-copy" data-copy-seed="${esc(String(current.seed))}" title="${seedTitle}">${esc(seedText)}</button>${seedLabel ? ` <span class="resolved-seed">(resolved: ${current.seed})</span>` : ''}`;
+
   const head = `
     <div class="program-head">
       <h2>${esc(displayName)}</h2>
       ${current.description ? `<p class="benchmark-desc">${esc(current.description)}</p>` : ''}
       <p class="meta">
-        ${scope === 'session' ? `${(current.weeks[0]?.sessions.length ?? 0)} split days · session preview` : `${current.weeks.length} weeks × ${(current.weeks[0]?.sessions.length ?? 0)} days`}
-        · seed <button class="ghost seed-copy" data-copy-seed="${esc(String(current.seed))}" title="${seedTitle}">${esc(seedText)}</button>
-        ${seedLabel ? ` <span class="resolved-seed">(resolved: ${current.seed})</span>` : ''}
+        ${metaText}
       </p>
       ${sessionNoticeHtml(current)}
       ${splitNoticeHtml(current, currentDefs)}
       ${editMessage}
     </div>`;
+
+  if (isWodView) {
+    const session = current.weeks[0].sessions[0];
+    out.innerHTML = head + renderSession(session, 0, 0, style);
+    return;
+  }
 
   if (scope === 'session') {
     const sessions = current.weeks[0].sessions;
