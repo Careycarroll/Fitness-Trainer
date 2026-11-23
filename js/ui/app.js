@@ -261,13 +261,7 @@ export function mount(root, defs) {
       </label>
       <label>Style
         <select name="styleId">
-          <optgroup label="Standard Styles">
-            ${defs.styles.map((s) => `<option value="${s.id}">${esc(s.name)} — ${s.domain === 'load' ? 'load' : 'time'}</option>`).join('')}
-          </optgroup>
-          <optgroup label="Workout of the Day" class="wod-style-group">
-            <option value="wod-hiit">WOD · Full-Body HIIT (Daily)</option>
-            <option value="wod-crossfit">WOD · CrossFit Challenge (Daily)</option>
-          </optgroup>
+          ${defs.styles.map((s) => `<option value="${s.id}">${esc(s.name)} — ${s.domain === 'load' ? 'load' : 'time'}</option>`).join('')}
         </select>
       </label>
       <label>Equipment
@@ -408,15 +402,24 @@ export function mount(root, defs) {
   const syncScope = () => {
     scope = form.scope.value;
     form.querySelector('.block-only').hidden = scope === 'session';
-    const wodGroup = form.querySelector('.wod-style-group');
-    if (wodGroup) wodGroup.hidden = scope !== 'session';
-    if (scope !== 'session' && (form.styleId.value === 'wod-hiit' || form.styleId.value === 'wod-crossfit')) {
-      form.styleId.value = defs.styles[0]?.id;
-    }
   };
 
   const modeTabs = root.querySelectorAll('.mode-tab');
   const wodForm = root.querySelector('#wod-form');
+
+  const eqPicker = form.querySelector('[name=equipmentProfile]');
+  const wodEqPicker = wodForm.querySelector('[name=wodEquipmentProfile]');
+  if (eqPicker && wodEqPicker) {
+    eqPicker.addEventListener('change', () => {
+      wodEqPicker.value = eqPicker.value;
+      localStorage.setItem(PREF_PROFILE, eqPicker.value);
+    });
+    wodEqPicker.addEventListener('change', () => {
+      eqPicker.value = wodEqPicker.value;
+      localStorage.setItem(PREF_PROFILE, wodEqPicker.value);
+      paintProfiles();
+    });
+  }
 
   modeTabs.forEach((tab) => {
     tab.addEventListener('click', () => {
@@ -974,54 +977,10 @@ export function mount(root, defs) {
     e.preventDefault();
     const f = new FormData(e.target);
 
-    const styleVal = f.get('styleId');
-    if (styleVal === 'wod-crossfit') {
-      const today = todayDateString();
-      const weekday = weekdayOf(today);
-      const seed = seedFrom(f.get('seed')) || dateAsSeed(today);
-      const benchmarkIndex = Math.abs(seed) % benchmarks.length;
-      const selected = benchmarks[benchmarkIndex] ?? benchmarks[0];
-      currentRequest = {
-        schemaVersion: 1,
-        styleId: 'crossfit',
-        daysPerWeek: 1,
-        availableDays: [weekday],
-        blockWeeks: 1,
-        equipmentProfile: f.get('equipmentProfile'),
-        sessionMinutes: 45,
-        seed,
-        athlete: { skillLevel: Number(f.get('skillLevel')) },
-        benchmarkId: selected.id,
-        history: []
-      };
-      current = expandBenchmark(selected.id, currentDefs, {
-        seed,
-        schedule: [weekday]
-      });
-      seedLabel = `${selected.name} (WOD)`;
-      visibleDay = 0;
-      edited = false;
-      plannerProgram = current;
-      plannerRequest = currentRequest;
-      paint(out);
-      dateOverrides = {};
-      const exportStart = root.querySelector('#export-start');
-      if (exportStart) exportStart.value = today;
-      paintDates();
-      return;
-    }
-
-    const isWodHiit = styleVal === 'wod-hiit';
-    const styleId = isWodHiit ? 'hiit' : styleVal;
-    const daysPerWeek = isWodHiit ? 1 : Number(f.get('daysPerWeek'));
-    const today = todayDateString();
-    const seed = (isWodHiit && !f.get('seed')) ? dateAsSeed(today) : seedFrom(f.get('seed'));
-    if (isWodHiit) seedLabel = `WOD ${today}`;
-
     currentRequest = {
       schemaVersion: 1,
-      styleId,
-      daysPerWeek,
+      styleId: f.get('styleId'),
+      daysPerWeek: Number(f.get('daysPerWeek')),
       // The days training is possible. The engine chooses the best-spaced
       // subset of these; it never trains on a day not listed here.
       availableDays: f.getAll('availableDay'),
@@ -1035,7 +994,7 @@ export function mount(root, defs) {
       // is shown so a draft you liked can be reproduced.
       // An explicit seed reproduces a draft exactly (ADR-002). Blank means
       // "give me a different one", which is what Generate should mean by default.
-      seed,
+      seed: seedFrom(f.get('seed')),
       athlete: { skillLevel: Number(f.get('skillLevel')) },
       history: []
     };
@@ -1049,10 +1008,6 @@ export function mount(root, defs) {
       plannerRequest = currentRequest;
       paint(out);
       dateOverrides = {};
-      if (isWodHiit) {
-        const exportStart = root.querySelector('#export-start');
-        if (exportStart) exportStart.value = today;
-      }
       paintDates();
     } catch (err) {
       current = null;
@@ -1216,11 +1171,7 @@ function restoreForm(form, draft) {
   if (!r) return;
   if (draft.scope) form.scope.value = draft.scope;
   scope = form.scope.value;
-  if (r.benchmarkId) {
-    const wodOption = form.querySelector('option[value="wod-crossfit"]');
-    if (wodOption && scope === 'session') form.styleId.value = 'wod-crossfit';
-    else form.styleId.value = r.styleId;
-  } else {
+  if (r.styleId && form.styleId.querySelector(`option[value="${r.styleId}"]`)) {
     form.styleId.value = r.styleId;
   }
   form.daysPerWeek.value = r.daysPerWeek ?? 1;
@@ -1346,6 +1297,14 @@ function paintProfiles() {
       .map((p) => `<option value="${esc(p.id)}">${esc(p.name)}${p.userDefined ? ' (yours)' : ''}</option>`)
       .join('');
     if (currentDefs.equipment.some((p) => p.id === keep)) picker.value = keep;
+  }
+  const wodPicker = document.querySelector('[name=wodEquipmentProfile]');
+  if (wodPicker) {
+    const keepWod = wodPicker.value;
+    wodPicker.innerHTML = currentDefs.equipment
+      .map((p) => `<option value="${esc(p.id)}">${esc(p.name)}${p.userDefined ? ' (yours)' : ''}</option>`)
+      .join('');
+    if (currentDefs.equipment.some((p) => p.id === keepWod)) wodPicker.value = keepWod;
   }
 }
 
