@@ -942,3 +942,26 @@ button[disabled] {
   opacity: 0.85;
 }
 .howto-steps li { margin-bottom: 4px; }
+
+.wod-form-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-sm);
+  margin-top: 4px;
+}
+
+.wod-export-btn {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 600;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wod-export-btn:hover {
+  background: var(--border);
+}

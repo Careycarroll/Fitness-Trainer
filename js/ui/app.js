@@ -344,7 +344,11 @@ export function mount(root, defs) {
             <option value="5">5 · Full Olympic lifts to competition technique</option>
           </select>
         </label>
-        <button type="submit" class="primary">Load Workout</button>
+        <div class="wod-form-actions">
+          <button type="submit" class="primary">Load Workout</button>
+          <button type="button" id="wod-export-btn" class="ghost wod-export-btn">Export to FitNotes</button>
+        </div>
+        <p id="wod-status" class="note" role="status"></p>
       </form>
 
       <details class="storage-panel">
@@ -354,7 +358,7 @@ export function mount(root, defs) {
           <button type="button" id="import" class="ghost">Import backup</button>
           <button type="button" id="export-csv" class="ghost">Export history CSV</button>
           <button type="button" id="import-fitnotes" class="ghost">Import FitNotes history</button>
-          <label class="export-start">Block starts
+          <label class="export-start"><span class="export-start-label">Block starts</span>
             <input type="date" id="export-start" />
           </label>
           <button type="button" id="export-plan" class="ghost">Export plan to FitNotes</button>
@@ -418,6 +422,7 @@ export function mount(root, defs) {
       eqPicker.value = wodEqPicker.value;
       localStorage.setItem(PREF_PROFILE, wodEqPicker.value);
       paintProfiles();
+      wodForm.requestSubmit();
     });
   }
 
@@ -431,19 +436,19 @@ export function mount(root, defs) {
         t.classList.toggle('selected', isSelected);
         t.setAttribute('aria-selected', isSelected ? 'true' : 'false');
       });
+      const exportPlanBtn = root.querySelector('#export-plan');
+      const exportStartLabel = root.querySelector('.export-start-label');
       if (mode === 'wod') {
         form.hidden = true;
         wodForm.hidden = false;
-        if (wodProgram) {
-          current = wodProgram;
-          currentRequest = wodRequest;
-          paint(out);
-        } else {
-          wodForm.requestSubmit();
-        }
+        if (exportPlanBtn) exportPlanBtn.textContent = 'Export workout to FitNotes';
+        if (exportStartLabel) exportStartLabel.textContent = 'Workout date';
+        wodForm.requestSubmit();
       } else {
         form.hidden = false;
         wodForm.hidden = true;
+        if (exportPlanBtn) exportPlanBtn.textContent = 'Export plan to FitNotes';
+        if (exportStartLabel) exportStartLabel.textContent = 'Block starts';
         if (plannerProgram) {
           current = plannerProgram;
           currentRequest = plannerRequest;
@@ -462,6 +467,7 @@ export function mount(root, defs) {
 
   trackSelect.addEventListener('change', () => {
     benchmarkPicker.hidden = trackSelect.value !== 'crossfit';
+    wodForm.requestSubmit();
   });
 
   benchmarkSelect.addEventListener('change', () => {
@@ -471,7 +477,27 @@ export function mount(root, defs) {
       const b = getBenchmark(benchmarkSelect.value);
       if (b && benchmarkDesc) benchmarkDesc.textContent = b.description;
     }
+    wodForm.requestSubmit();
   });
+
+  const wodDateInput = root.querySelector('[name=wodDate]');
+  if (wodDateInput) {
+    wodDateInput.addEventListener('change', () => wodForm.requestSubmit());
+  }
+
+  const wodSkillSelect = root.querySelector('[name=wodSkillLevel]');
+  if (wodSkillSelect) {
+    wodSkillSelect.addEventListener('change', () => wodForm.requestSubmit());
+  }
+
+  const wodExportBtn = root.querySelector('#wod-export-btn');
+  if (wodExportBtn) {
+    wodExportBtn.addEventListener('click', () => {
+      if (!current) wodForm.requestSubmit();
+      const exportPlanBtn = root.querySelector('#export-plan');
+      if (exportPlanBtn) exportPlanBtn.click();
+    });
+  }
 
   wodForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -486,6 +512,8 @@ export function mount(root, defs) {
     scope = 'session';
     visibleDay = 0;
     edited = false;
+    const wodStatusEl = root.querySelector('#wod-status');
+    if (wodStatusEl) wodStatusEl.textContent = '';
 
     if (track === 'hiit') {
       currentRequest = {
@@ -705,7 +733,10 @@ export function mount(root, defs) {
       const url = URL.createObjectURL(new Blob([out.csv], { type: 'text/csv' }));
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'trainer-plan-' + startEl.value + '.csv';
+      const exportName = (activeMode === 'wod' && current?.name)
+        ? `wod-${current.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${startEl.value}.csv`
+        : 'trainer-plan-' + startEl.value + '.csv';
+      a.download = exportName;
       a.click();
       URL.revokeObjectURL(url);
 
@@ -716,8 +747,16 @@ export function mount(root, defs) {
         + (out.unpriced.length
           ? ' No max for: ' + out.unpriced.join(', ') + ' - exported as a percentage.'
           : '');
+      const wodStatus = root.querySelector('#wod-status');
+      if (wodStatus && activeMode === 'wod') {
+        wodStatus.textContent = `${out.rows} exercises exported to ${exportName} for FitNotes.`;
+      }
     } catch (err) {
       storageNote = 'Export failed: ' + err.message;
+      const wodStatus = root.querySelector('#wod-status');
+      if (wodStatus && activeMode === 'wod') {
+        wodStatus.textContent = 'Export failed: ' + err.message;
+      }
     }
     paintStatus();
   });

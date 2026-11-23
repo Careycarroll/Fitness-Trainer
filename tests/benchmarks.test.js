@@ -126,6 +126,26 @@ describe('CrossFit benchmark presets (ADR-032)', () => {
     assert.ok(csv.includes('1x15 · 15 reps'));
   });
 
+  test('barbara benchmark exports all movements to FitNotes CSV with rest notes', () => {
+    const state = emptyState();
+    const program = expandBenchmark('barbara', defs, { schedule: ['mon'] });
+    const { csv, rows } = toFitNotesCSV(program, '2026-11-23', state, {
+      manifest: mappingFile,
+      catalog: defs.exercises,
+      currentMax
+    });
+
+    assert.equal(rows, 4);
+    assert.ok(csv.includes('Pull Up'));
+    assert.ok(csv.includes('Push Up'));
+    assert.ok(csv.includes('Sit-Up'));
+    assert.ok(csv.includes('Bodyweight Squat'));
+    assert.ok(csv.includes('1x20 · 20 pull-ups'));
+    assert.ok(csv.includes('1x30 · 30 push-ups'));
+    assert.ok(csv.includes('1x40 · 40 sit-ups'));
+    assert.ok(csv.includes('1x50 · 50 air squats (3 min rest after round) · rest 180s'));
+  });
+
   test('expandBenchmark sets program name and description for UI header rendering', () => {
     const program = expandBenchmark('fran', defs);
     assert.equal(program.name, 'Fran');
