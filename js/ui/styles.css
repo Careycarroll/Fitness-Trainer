@@ -66,6 +66,40 @@ select:focus-visible {
 
 .planner-sidebar > .warn { margin: 0; }
 
+.app-mode-nav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: var(--gap);
+  padding: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.mode-tab {
+  flex: 1;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius) - 3px);
+  background: transparent;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: .95rem;
+  transition: all 120ms;
+}
+
+.mode-tab:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.mode-tab.selected {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--text);
+}
+
 .app-bar {
   display: flex;
   align-items: center;
@@ -176,6 +210,12 @@ button.ghost {
 
 .program-head { min-width: 0; }
 .program-head .meta { overflow-wrap: anywhere; }
+.benchmark-desc {
+  margin: 4px 0 8px;
+  font-size: 1.05rem;
+  color: var(--accent);
+  font-weight: 500;
+}
 
 .week {
   display: flex;

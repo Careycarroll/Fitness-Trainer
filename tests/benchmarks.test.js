@@ -125,4 +125,11 @@ describe('CrossFit benchmark presets (ADR-032)', () => {
     assert.ok(csv.includes('1x10 · 10 reps'));
     assert.ok(csv.includes('1x15 · 15 reps'));
   });
+
+  test('expandBenchmark sets program name and description for UI header rendering', () => {
+    const program = expandBenchmark('fran', defs);
+    assert.equal(program.name, 'Fran');
+    assert.equal(typeof program.description, 'string');
+    assert.ok(program.description.includes('Thrusters'));
+  });
 });

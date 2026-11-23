@@ -94,6 +94,7 @@ export function expandBenchmark(benchmarkOrId, defs, options = {}) {
     schemaVersion: 1,
     id: `preset-${benchmark.id}`,
     name: benchmark.name,
+    description: benchmark.description,
     styleId: 'crossfit',
     splitId: 'conditioning-3',
     domain: 'time',
