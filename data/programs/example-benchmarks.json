@@ -1,0 +1,340 @@
+{
+  "id": "example-benchmarks",
+  "name": "Classic CrossFit Benchmarks (The Girls & Murph)",
+  "category": "The Girls & Hero WODs",
+  "benchmarks": [
+    {
+      "id": "angie",
+      "name": "Angie",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 1800,
+      "rounds": 1,
+      "description": "For time: 100 Pull-ups, 100 Push-ups, 100 Sit-ups, 100 Air Squats (complete in order)",
+      "movements": [
+        { "exerciseId": "pull-up", "reps": 100, "loadNote": "100 pull-ups" },
+        { "exerciseId": "push-up", "reps": 100, "loadNote": "100 push-ups" },
+        { "exerciseId": "sit-up", "reps": 100, "loadNote": "100 sit-ups" },
+        { "exerciseId": "bodyweight-squat", "reps": 100, "loadNote": "100 air squats" }
+      ]
+    },
+    {
+      "id": "barbara",
+      "name": "Barbara",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 2400,
+      "rounds": 5,
+      "description": "5 rounds for time (3 min rest between rounds): 20 Pull-ups, 30 Push-ups, 40 Sit-ups, 50 Air Squats",
+      "movements": [
+        { "exerciseId": "pull-up", "reps": 20, "loadNote": "20 pull-ups" },
+        { "exerciseId": "push-up", "reps": 30, "loadNote": "30 push-ups" },
+        { "exerciseId": "sit-up", "reps": 40, "loadNote": "40 sit-ups" },
+        { "exerciseId": "bodyweight-squat", "reps": 50, "restSeconds": 180, "loadNote": "50 air squats (3 min rest after round)" }
+      ]
+    },
+    {
+      "id": "chelsea",
+      "name": "Chelsea",
+      "category": "The Girls",
+      "format": "emom",
+      "blockType": "emom",
+      "timeCapSeconds": 1800,
+      "rounds": 30,
+      "description": "EMOM for 30 minutes: 5 Pull-ups, 10 Push-ups, 15 Air Squats every minute on the minute",
+      "movements": [
+        { "exerciseId": "pull-up", "reps": 5, "loadNote": "5 pull-ups" },
+        { "exerciseId": "push-up", "reps": 10, "loadNote": "10 push-ups" },
+        { "exerciseId": "bodyweight-squat", "reps": 15, "loadNote": "15 air squats" }
+      ]
+    },
+    {
+      "id": "cindy",
+      "name": "Cindy",
+      "category": "The Girls",
+      "format": "amrap",
+      "blockType": "amrap",
+      "timeCapSeconds": 1200,
+      "rounds": null,
+      "description": "20-minute AMRAP: 5 Pull-ups, 10 Push-ups, 15 Air Squats",
+      "movements": [
+        { "exerciseId": "pull-up", "reps": 5, "loadNote": "5 reps" },
+        { "exerciseId": "push-up", "reps": 10, "loadNote": "10 reps" },
+        { "exerciseId": "bodyweight-squat", "reps": 15, "loadNote": "15 reps" }
+      ]
+    },
+    {
+      "id": "diane",
+      "name": "Diane",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 600,
+      "rounds": 3,
+      "description": "21-15-9 reps for time: Deadlift (225/155 lb) and Handstand Push-ups",
+      "movements": [
+        { "exerciseId": "conventional-deadlift", "reps": 21, "loadNote": "21-15-9 reps · 225 lb / 155 lb (102 kg / 70 kg)" },
+        { "exerciseId": "handstand-push-up", "reps": 21, "loadNote": "21-15-9 reps · Handstand push-ups" }
+      ]
+    },
+    {
+      "id": "elizabeth",
+      "name": "Elizabeth",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 600,
+      "rounds": 3,
+      "description": "21-15-9 reps for time: Cleans (135/95 lb) and Ring Dips",
+      "movements": [
+        { "exerciseId": "power-clean", "reps": 21, "loadNote": "21-15-9 reps · 135 lb / 95 lb (61 kg / 43 kg)" },
+        { "exerciseId": "ring-dip", "reps": 21, "loadNote": "21-15-9 reps · Ring dips" }
+      ]
+    },
+    {
+      "id": "fran",
+      "name": "Fran",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 600,
+      "rounds": 3,
+      "description": "21-15-9 reps for time: Thrusters (95/65 lb) and Pull-ups",
+      "movements": [
+        { "exerciseId": "kettlebell-thruster", "reps": 21, "loadNote": "21-15-9 reps · 95 lb / 65 lb (43 kg / 30 kg)" },
+        { "exerciseId": "pull-up", "reps": 21, "loadNote": "21-15-9 reps · Pull-ups" }
+      ]
+    },
+    {
+      "id": "grace",
+      "name": "Grace",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 480,
+      "rounds": 1,
+      "description": "30 reps for time: Clean and Jerk (135/95 lb)",
+      "movements": [
+        { "exerciseId": "clean-and-jerk", "reps": 30, "loadNote": "30 reps · 135 lb / 95 lb (61 kg / 43 kg)" }
+      ]
+    },
+    {
+      "id": "helen",
+      "name": "Helen",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 900,
+      "rounds": 3,
+      "description": "3 rounds for time: 400m Run, 21 Kettlebell Swings (53/35 lb), 12 Pull-ups",
+      "movements": [
+        { "exerciseId": "running-outdoor", "workSeconds": 120, "loadNote": "400m run" },
+        { "exerciseId": "kettlebell-swing", "reps": 21, "loadNote": "21 reps · 53 lb / 35 lb (24 kg / 16 kg)" },
+        { "exerciseId": "pull-up", "reps": 12, "loadNote": "12 reps · Pull-ups" }
+      ]
+    },
+    {
+      "id": "isabel",
+      "name": "Isabel",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 480,
+      "rounds": 1,
+      "description": "30 reps for time: Snatch (135/95 lb)",
+      "movements": [
+        { "exerciseId": "snatch", "reps": 30, "loadNote": "30 reps · 135 lb / 95 lb (61 kg / 43 kg)" }
+      ]
+    },
+    {
+      "id": "jackie",
+      "name": "Jackie",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 900,
+      "rounds": 1,
+      "description": "For time: 1000m Row, 50 Thrusters (45 lb bar), 30 Pull-ups",
+      "movements": [
+        { "exerciseId": "rowing-machine", "workSeconds": 240, "loadNote": "1000m row" },
+        { "exerciseId": "kettlebell-thruster", "reps": 50, "loadNote": "50 thrusters · 45 lb bar / dumbbell" },
+        { "exerciseId": "pull-up", "reps": 30, "loadNote": "30 pull-ups" }
+      ]
+    },
+    {
+      "id": "karen",
+      "name": "Karen",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 900,
+      "rounds": 1,
+      "description": "150 Wall-Ball Shots (20/14 lb target) for time",
+      "movements": [
+        { "exerciseId": "kettlebell-thruster", "reps": 150, "loadNote": "150 wall-ball shots · 20 lb / 14 lb target" }
+      ]
+    },
+    {
+      "id": "kelly",
+      "name": "Kelly",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 2400,
+      "rounds": 5,
+      "description": "5 rounds for time: 400m Run, 30 Box Jumps (24/20\"), 30 Wall-Ball Shots (20/14 lb)",
+      "movements": [
+        { "exerciseId": "running-outdoor", "workSeconds": 120, "loadNote": "400m run" },
+        { "exerciseId": "box-jump", "reps": 30, "loadNote": "30 box jumps · 24\" / 20\"" },
+        { "exerciseId": "kettlebell-thruster", "reps": 30, "loadNote": "30 wall-ball shots · 20 lb / 14 lb" }
+      ]
+    },
+    {
+      "id": "linda",
+      "name": "Linda",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 2100,
+      "rounds": 10,
+      "description": "10-9-8-7-6-5-4-3-2-1 reps for time (The Three Bars of Death): Deadlift (1.5x BW), Bench Press (1.0x BW), Clean (0.75x BW)",
+      "movements": [
+        { "exerciseId": "conventional-deadlift", "reps": 10, "loadNote": "10 to 1 reps · 1.5× bodyweight deadlift" },
+        { "exerciseId": "barbell-bench-press", "reps": 10, "loadNote": "10 to 1 reps · 1.0× bodyweight bench press" },
+        { "exerciseId": "power-clean", "reps": 10, "loadNote": "10 to 1 reps · 0.75× bodyweight clean" }
+      ]
+    },
+    {
+      "id": "mary",
+      "name": "Mary",
+      "category": "The Girls",
+      "format": "amrap",
+      "blockType": "amrap",
+      "timeCapSeconds": 1200,
+      "rounds": null,
+      "description": "20-minute AMRAP: 5 Handstand Push-ups, 10 Pistols (alternating), 15 Pull-ups",
+      "movements": [
+        { "exerciseId": "handstand-push-up", "reps": 5, "loadNote": "5 handstand push-ups" },
+        { "exerciseId": "pistol-squat", "reps": 10, "loadNote": "10 pistols (5 per leg)" },
+        { "exerciseId": "pull-up", "reps": 15, "loadNote": "15 pull-ups" }
+      ]
+    },
+    {
+      "id": "nancy",
+      "name": "Nancy",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 1200,
+      "rounds": 5,
+      "description": "5 rounds for time: 400m Run, 15 Overhead Squats (95/65 lb)",
+      "movements": [
+        { "exerciseId": "running-outdoor", "workSeconds": 120, "loadNote": "400m run" },
+        { "exerciseId": "overhead-squat", "reps": 15, "loadNote": "15 overhead squats · 95 lb / 65 lb (43 kg / 30 kg)" }
+      ]
+    },
+    {
+      "id": "annie",
+      "name": "Annie",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 600,
+      "rounds": 5,
+      "description": "50-40-30-20-10 reps for time: Double-Unders and Sit-ups",
+      "movements": [
+        { "exerciseId": "jump-rope", "reps": 50, "loadNote": "50-40-30-20-10 double-unders" },
+        { "exerciseId": "sit-up", "reps": 50, "loadNote": "50-40-30-20-10 sit-ups" }
+      ]
+    },
+    {
+      "id": "eva",
+      "name": "Eva",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 2400,
+      "rounds": 5,
+      "description": "5 rounds for time: 800m Run, 30 Kettlebell Swings (70/53 lb), 30 Pull-ups",
+      "movements": [
+        { "exerciseId": "running-outdoor", "workSeconds": 240, "loadNote": "800m run" },
+        { "exerciseId": "kettlebell-swing", "reps": 30, "loadNote": "30 kettlebell swings · 70 lb / 53 lb (32 kg / 24 kg)" },
+        { "exerciseId": "pull-up", "reps": 30, "loadNote": "30 pull-ups" }
+      ]
+    },
+    {
+      "id": "lynne",
+      "name": "Lynne",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 1500,
+      "rounds": 5,
+      "description": "5 rounds for max reps (no time cap): Bench Press (bodyweight) and Pull-ups",
+      "movements": [
+        { "exerciseId": "barbell-bench-press", "reps": 15, "restSeconds": 120, "loadNote": "Max reps · bodyweight load" },
+        { "exerciseId": "pull-up", "reps": 15, "restSeconds": 120, "loadNote": "Max reps · pull-ups" }
+      ]
+    },
+    {
+      "id": "nicole",
+      "name": "Nicole",
+      "category": "The Girls",
+      "format": "amrap",
+      "blockType": "amrap",
+      "timeCapSeconds": 1200,
+      "rounds": null,
+      "description": "20-minute AMRAP: 400m Run, then max unbroken Pull-ups",
+      "movements": [
+        { "exerciseId": "running-outdoor", "workSeconds": 120, "loadNote": "400m run" },
+        { "exerciseId": "pull-up", "reps": 15, "loadNote": "Max unbroken pull-ups" }
+      ]
+    },
+    {
+      "id": "amanda",
+      "name": "Amanda",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 600,
+      "rounds": 3,
+      "description": "9-7-5 reps for time: Ring Muscle-ups and Snatches (135/95 lb)",
+      "movements": [
+        { "exerciseId": "ring-muscle-up", "reps": 9, "loadNote": "9-7-5 reps · Ring muscle-ups" },
+        { "exerciseId": "snatch", "reps": 9, "loadNote": "9-7-5 reps · 135 lb / 95 lb (61 kg / 43 kg)" }
+      ]
+    },
+    {
+      "id": "gwen",
+      "name": "Gwen",
+      "category": "The Girls",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 600,
+      "rounds": 3,
+      "description": "15-12-9 reps of Clean and Jerk unbroken sets (rest as needed between sets; find max load)",
+      "movements": [
+        { "exerciseId": "clean-and-jerk", "reps": 15, "restSeconds": 120, "loadNote": "15-12-9 unbroken reps · clean and jerk" }
+      ]
+    },
+    {
+      "id": "murph",
+      "name": "Murph",
+      "category": "Hero WODs",
+      "format": "intervals",
+      "blockType": "circuit",
+      "timeCapSeconds": 3600,
+      "rounds": 1,
+      "description": "For time: 1 mile Run, 100 Pull-ups, 200 Push-ups, 300 Air Squats, 1 mile Run",
+      "movements": [
+        { "exerciseId": "running-outdoor", "workSeconds": 480, "loadNote": "1 mile run" },
+        { "exerciseId": "pull-up", "reps": 100, "loadNote": "100 pull-ups" },
+        { "exerciseId": "push-up", "reps": 200, "loadNote": "200 push-ups" },
+        { "exerciseId": "bodyweight-squat", "reps": 300, "loadNote": "300 air squats" },
+        { "exerciseId": "running-outdoor", "workSeconds": 480, "loadNote": "1 mile run" }
+      ]
+    }
+  ]
+}
