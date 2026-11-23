@@ -492,7 +492,6 @@ export function mount(root, defs) {
         schemaVersion: 1,
         styleId: 'hiit',
         daysPerWeek: 1,
-        availableDays: [weekday],
         blockWeeks: 1,
         equipmentProfile,
         sessionMinutes: 45,
@@ -502,7 +501,20 @@ export function mount(root, defs) {
       };
       seedLabel = `WOD ${dateStr}`;
       try {
-        current = generate(currentRequest, currentDefs);
+        const fullProg = generate(currentRequest, currentDefs);
+        const dayIdx = Math.abs(seed) % fullProg.weeks[0].sessions.length;
+        const session = fullProg.weeks[0].sessions[dayIdx];
+        session.label = `Daily Full-Body HIIT (${dateStr})`;
+        current = {
+          ...fullProg,
+          id: `wod-hiit-${seed}`,
+          name: 'Daily Full-Body HIIT',
+          description: 'High-intensity interval training for full-body conditioning.',
+          schedule: [weekday],
+          sessionMismatch: null,
+          splitFit: null,
+          weeks: [{ week: 1, sessions: [session] }]
+        };
       } catch (err) {
         current = null;
         out.innerHTML = err instanceof CoverageError
