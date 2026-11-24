@@ -383,17 +383,17 @@ export function mount(root, defs) {
         </div>
 
         <div class="sync-cards-grid">
-          <div class="card sync-card">
+          <div class="card sync-card" id="sync-drop-zone">
             <div class="sync-card-head">
               <h3>Android .fitnotes Backup</h3>
               <span id="sync-db-badge" class="tag tag-warn">No Backup Loaded</span>
             </div>
-            <p class="note">Load your backup file from Android FitNotes (<code>Settings → Backup → Export</code>) to enable safe SQLite injection.</p>
+            <p class="note">Load your backup file from Android FitNotes (<code>Settings → Backup → Export</code>) to enable safe SQLite injection. Drag & drop or select below:</p>
             <div class="sync-file-row">
               <input type="file" id="sync-fitnotes-file" accept=".fitnotes,.db,.sqlite" hidden />
-              <button type="button" id="sync-choose-file-btn" class="secondary">Select .fitnotes File</button>
-              <button type="button" id="sync-use-history-btn" class="ghost">Use Loaded History</button>
+              <button type="button" id="sync-choose-file-btn" class="primary">Select .fitnotes File</button>
             </div>
+            <p id="sync-file-feedback" class="note sync-file-feedback"></p>
             <div id="sync-db-metrics" class="sync-metrics-grid" hidden>
               <div class="metric-card"><span class="metric-val" id="metric-completed-sets">0</span><span class="metric-lbl">Completed Sets</span></div>
               <div class="metric-card"><span class="metric-val" id="metric-workouts">0</span><span class="metric-lbl">Workouts</span></div>
@@ -703,7 +703,8 @@ export function mount(root, defs) {
   // FitNotes Sync Hub & Staging handlers
   const syncFileInput = root.querySelector('#sync-fitnotes-file');
   const syncChooseFileBtn = root.querySelector('#sync-choose-file-btn');
-  const syncUseHistoryBtn = root.querySelector('#sync-use-history-btn');
+  const syncDropZone = root.querySelector('#sync-drop-zone');
+  const syncFileFeedback = root.querySelector('#sync-file-feedback');
   const syncStagePlannerBtn = root.querySelector('#sync-stage-planner-btn');
   const syncStageWodBtn = root.querySelector('#sync-stage-wod-btn');
   const syncClearQueueBtn = root.querySelector('#sync-clear-queue-btn');
@@ -711,14 +712,27 @@ export function mount(root, defs) {
   const syncExportCsvBtn = root.querySelector('#sync-export-csv-btn');
   const syncStatusMsg = root.querySelector('#sync-status-msg');
 
-  async function loadFitNotesDatabase(buf) {
+  async function loadFitNotesDatabase(buf, fileName = 'backup.fitnotes') {
+    const badge = root.querySelector('#sync-db-badge');
     try {
+      if (badge) {
+        badge.textContent = 'Inspecting…';
+        badge.className = 'tag';
+      }
+      if (syncFileFeedback) {
+        syncFileFeedback.textContent = 'Inspecting SQLite database…';
+        syncFileFeedback.className = 'note sync-file-feedback';
+      }
       loadedFitNotesBuffer = buf;
       loadedDbStats = await inspectDatabase(buf);
-      const badge = root.querySelector('#sync-db-badge');
+
       if (badge) {
         badge.textContent = `Backup Loaded (${loadedDbStats.totalWorkouts} Workouts)`;
         badge.className = 'tag tag-ok';
+      }
+      if (syncFileFeedback) {
+        syncFileFeedback.textContent = `✓ Loaded: ${fileName} (${loadedDbStats.totalWorkouts} workouts, ${loadedDbStats.completedSets} completed sets)`;
+        syncFileFeedback.className = 'note sync-file-feedback text-ok';
       }
       const metricsBox = root.querySelector('#sync-db-metrics');
       if (metricsBox) metricsBox.hidden = false;
@@ -732,7 +746,16 @@ export function mount(root, defs) {
       if (setExercises) setExercises.textContent = String(loadedDbStats.totalExercises);
       renderSyncHub();
     } catch (err) {
-      if (syncStatusMsg) syncStatusMsg.textContent = 'Error inspecting database: ' + err.message;
+      console.error('FitNotes inspection error:', err);
+      if (badge) {
+        badge.textContent = 'Load Failed';
+        badge.className = 'tag tag-warn';
+      }
+      if (syncFileFeedback) {
+        syncFileFeedback.textContent = '⚠️ Could not read .fitnotes database: ' + err.message;
+        syncFileFeedback.className = 'note sync-file-feedback text-error';
+      }
+      if (syncStatusMsg) syncStatusMsg.textContent = 'Error: ' + err.message;
     }
   }
 
@@ -740,16 +763,31 @@ export function mount(root, defs) {
     syncChooseFileBtn.addEventListener('click', () => syncFileInput.click());
     syncFileInput.addEventListener('change', async (e) => {
       const file = e.target.files?.[0];
+      syncFileInput.value = '';
       if (!file) return;
       const buf = await file.arrayBuffer();
-      await loadFitNotesDatabase(buf);
+      await loadFitNotesDatabase(buf, file.name);
     });
   }
 
-  if (syncUseHistoryBtn) {
-    syncUseHistoryBtn.addEventListener('click', async () => {
-      const fitnotesInput = root.querySelector('#fitnotes-file');
-      if (fitnotesInput) fitnotesInput.click();
+  if (syncDropZone) {
+    ['dragenter', 'dragover'].forEach(name => {
+      syncDropZone.addEventListener(name, (e) => {
+        e.preventDefault();
+        syncDropZone.classList.add('drop-target');
+      });
+    });
+    ['dragleave', 'drop'].forEach(name => {
+      syncDropZone.addEventListener(name, (e) => {
+        e.preventDefault();
+        syncDropZone.classList.remove('drop-target');
+      });
+    });
+    syncDropZone.addEventListener('drop', async (e) => {
+      const file = e.dataTransfer?.files?.[0];
+      if (!file) return;
+      const buf = await file.arrayBuffer();
+      await loadFitNotesDatabase(buf, file.name);
     });
   }
 

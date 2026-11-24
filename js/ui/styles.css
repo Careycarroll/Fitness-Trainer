@@ -57,9 +57,13 @@ select:focus-visible {
 
 #app {
   width: 100%;
-  max-width: 760px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: var(--gap);
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  gap: 16px;
 }
 
 #out { min-width: 0; }
@@ -537,35 +541,33 @@ button.ghost {
 
 @media (min-width: 900px) {
   #app {
-    display: grid;
-    grid-template-columns: minmax(290px, 360px) minmax(0, 1fr);
-    grid-template-rows: auto auto auto 1fr;
-    gap: 16px 24px;
-    max-width: 1320px;
-    padding: 20px;
+    padding: 20px 24px;
+    gap: 20px;
   }
 
   .app-bar {
-    grid-column: 1 / -1;
     margin-bottom: 0;
+  }
+
+  #view-planner,
+  #view-wod {
+    display: grid;
+    grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+    width: 100%;
   }
 
   .planner-sidebar {
     position: sticky;
     top: 20px;
-    grid-column: 1;
-    grid-row: 2 / 4;
     align-self: start;
   }
 
   .planner-form { box-shadow: var(--shadow); }
 
-  #out {
-    grid-column: 2;
-    grid-row: 2 / 5;
-  }
-
-  #out > .program-head h2:first-child { margin-top: 0; }
+  #out > .program-head h2:first-child,
+  #wod-out > .program-head h2:first-child { margin-top: 0; }
   .card { padding: 16px; }
 
   .block-edit {
@@ -586,6 +588,17 @@ button.ghost {
   .day-picker {
     margin-inline: 0;
     padding-inline: 0;
+  }
+
+  .sync-cards-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 20px;
   }
 }
 
@@ -637,33 +650,34 @@ html[data-preview='desktop'] body {
 }
 
 html[data-preview='desktop'] #app {
-  display: grid;
-  grid-template-columns: minmax(290px, 360px) minmax(620px, 1fr);
-  grid-template-rows: auto auto auto 1fr;
-  gap: 16px 24px;
-  width: 1180px;
-  max-width: 1180px;
+  width: 1200px;
+  max-width: 1200px;
   padding: 20px;
 }
 
 html[data-preview='desktop'] .app-bar {
-  grid-column: 1 / -1;
   margin-bottom: 0;
+}
+
+html[data-preview='desktop'] #view-planner,
+html[data-preview='desktop'] #view-wod {
+  display: grid;
+  grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
 }
 
 html[data-preview='desktop'] .planner-sidebar {
   position: sticky;
   top: 20px;
-  grid-column: 1;
-  grid-row: 2 / 4;
   align-self: start;
 }
 
 html[data-preview='desktop'] .planner-form { box-shadow: var(--shadow); }
 
-html[data-preview='desktop'] #out {
-  grid-column: 2;
-  grid-row: 2 / 5;
+html[data-preview='desktop'] .sync-cards-grid {
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
 
 html[data-preview='desktop'] .block-edit {
@@ -1032,18 +1046,10 @@ button[disabled] {
 
 /* App Views Layout */
 #view-planner,
-#view-wod {
+#view-wod,
+.view-sync,
+.view-settings {
   width: 100%;
-}
-
-@media (min-width: 900px) {
-  #view-planner,
-  #view-wod {
-    display: grid;
-    grid-template-columns: minmax(290px, 360px) minmax(0, 1fr);
-    gap: 24px;
-    align-items: start;
-  }
 }
 
 .view-out {
@@ -1053,10 +1059,10 @@ button[disabled] {
 /* FitNotes Sync Hub & Stager Styling */
 .view-sync,
 .view-settings {
-  max-width: 1080px;
+  max-width: 1120px;
   margin: 0 auto;
-  width: 100%;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 
@@ -1073,7 +1079,7 @@ button[disabled] {
 
 .sync-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: 1fr;
   gap: 16px;
 }
 
@@ -1081,6 +1087,27 @@ button[disabled] {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.sync-card.drop-target {
+  border-color: var(--accent) !important;
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface)) !important;
+}
+
+.sync-file-feedback {
+  margin: 4px 0 0 0;
+  font-size: 0.85rem;
+}
+
+.text-ok {
+  color: #22c55e !important;
+  font-weight: 500;
+}
+
+.text-error {
+  color: var(--error) !important;
+  font-weight: 500;
 }
 
 .sync-card-head {

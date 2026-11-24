@@ -13,7 +13,8 @@ export async function getSql() {
     const config = {};
     if (typeof window !== 'undefined') {
       const base = (typeof import.meta !== 'undefined' && import.meta.env?.BASE_URL) || '/';
-      config.locateFile = (file) => `${base}${file}`;
+      const cleanBase = base.endsWith('/') ? base : base + '/';
+      config.locateFile = (file) => `${cleanBase}${file}`;
     }
     sqlPromise = initSqlJs(config);
   }
