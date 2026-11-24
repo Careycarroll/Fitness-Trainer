@@ -834,18 +834,15 @@ export function mount(root, defs) {
         loadedDbStats = await inspectDatabase(buffer);
         const setExercises = root.querySelector('#metric-exercises');
         if (setExercises) setExercises.textContent = String(loadedDbStats.totalExercises);
+        const badge = root.querySelector('#sync-db-badge');
+        if (badge) {
+          badge.textContent = `Backup Loaded (${loadedDbStats.totalWorkouts} Workouts · ${loadedDbStats.totalExercises} Exercises)`;
+          badge.className = 'tag tag-ok';
+        }
         if (syncFileFeedback) {
-          syncFileFeedback.textContent = `✓ Injected ${summary.addedExercisesCount} new catalog exercises (Total: ${summary.totalExercises})! Downloading updated backup…`;
+          syncFileFeedback.textContent = `✓ Injected ${summary.addedExercisesCount} catalog exercises into loaded backup (Total: ${summary.totalExercises}). You can now stage workouts above and click Export below when ready.`;
           syncFileFeedback.className = 'note sync-file-feedback text-ok';
         }
-        const blob = new Blob([buffer], { type: 'application/octet-stream' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        const dateStamp = new Date().toISOString().slice(0, 10).replace(/-/g, '_');
-        a.download = `FitNotes_Full_Catalog_${dateStamp}.fitnotes`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
       } catch (err) {
         console.error('Catalog injection failed:', err);
         if (syncFileFeedback) {
@@ -995,22 +992,30 @@ export function mount(root, defs) {
         if (syncStatusMsg) syncStatusMsg.textContent = 'Please choose your Android .fitnotes backup file above first.';
         return;
       }
-      if (stagedWorkouts.length === 0) {
-        if (syncStatusMsg) syncStatusMsg.textContent = 'Please stage at least one workout before exporting.';
-        return;
-      }
       try {
-        if (syncStatusMsg) syncStatusMsg.textContent = 'Injecting workouts into SQLite database...';
-        const { buffer, summary } = await injectWorkouts(loadedFitNotesBuffer, stagedWorkouts);
-        const blob = new Blob([buffer], { type: 'application/octet-stream' });
+        let exportBuffer = loadedFitNotesBuffer;
+        let exportSummaryMsg = '';
+
+        if (stagedWorkouts.length > 0) {
+          if (syncStatusMsg) syncStatusMsg.textContent = 'Injecting workouts into SQLite database...';
+          const { buffer, summary } = await injectWorkouts(loadedFitNotesBuffer, stagedWorkouts);
+          exportBuffer = buffer;
+          exportSummaryMsg = `${summary.addedWorkoutsCount} workouts added (${summary.addedSetsCount} sets). ${summary.preCompletedSets} past completed sets preserved.`;
+        } else {
+          exportSummaryMsg = `Exported backup with ${loadedDbStats?.totalExercises ?? 0} exercises and ${loadedDbStats?.completedSets ?? 0} past completed sets.`;
+        }
+
+        const blob = new Blob([exportBuffer], { type: 'application/octet-stream' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
         a.download = `FitNotes_Merged_${todayDateString()}.fitnotes`;
+        document.body.appendChild(a);
         a.click();
+        a.remove();
         URL.revokeObjectURL(url);
         if (syncStatusMsg) {
-          syncStatusMsg.textContent = `✔ Downloaded! ${summary.addedWorkoutsCount} workouts added (${summary.addedSetsCount} sets). ${summary.preCompletedSets} past completed sets preserved.`;
+          syncStatusMsg.textContent = `✔ Downloaded! ${exportSummaryMsg}`;
         }
       } catch (err) {
         if (syncStatusMsg) syncStatusMsg.textContent = 'Export error: ' + err.message;
