@@ -14,7 +14,22 @@
   --radius: 10px;
   --gap: 12px;
   --shadow: 0 12px 32px rgb(0 0 0 / 18%);
+
+  /* Proportional display scaling & responsive typography (#94) */
+  --display-scale: 1.15;
+  --base-font-size: 16px;
 }
+
+@media (max-width: 600px) {
+  :root {
+    --base-font-size: 16.5px;
+  }
+}
+
+html[data-scale='100'] { --display-scale: 1.0; }
+html[data-scale='115'] { --display-scale: 1.15; }
+html[data-scale='130'] { --display-scale: 1.30; }
+html[data-scale='150'] { --display-scale: 1.50; }
 
 [data-theme='light'] {
   color-scheme: light;
@@ -29,7 +44,10 @@
 }
 
 * { box-sizing: border-box; }
-html { min-width: 320px; }
+html {
+  min-width: 320px;
+  font-size: calc(var(--base-font-size) * var(--display-scale));
+}
 
 [hidden],
 .app-view[hidden],
@@ -41,12 +59,15 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font: 16px/1.5 system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font: 1rem/1.5 system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 button, input, select { font: inherit; }
-button { cursor: pointer; }
+button {
+  cursor: pointer;
+  min-height: 40px;
+}
 
 button:focus-visible,
 input:focus-visible,
@@ -249,14 +270,14 @@ button.ghost {
 .meta {
   margin: 8px 0 0;
   color: var(--muted);
-  font-size: .8rem;
+  font-size: .88rem;
 }
 
 .note,
 .edit-note {
   margin: 8px 0 0;
   color: var(--muted);
-  font-size: .82rem;
+  font-size: .88rem;
 }
 
 .edit-note {
@@ -268,12 +289,12 @@ button.ghost {
 .tag {
   display: inline-flex;
   align-items: center;
-  min-height: 20px;
-  padding: 1px 5px;
+  min-height: 22px;
+  padding: 2px 7px;
   border: 1px solid var(--border);
   border-radius: 4px;
   color: var(--muted);
-  font-size: .67rem;
+  font-size: .8rem;
   letter-spacing: .02em;
   line-height: 1.2;
   text-transform: uppercase;
@@ -350,13 +371,13 @@ button.ghost {
 
 .marker {
   display: inline-grid;
-  min-width: 28px;
-  min-height: 28px;
+  min-width: 30px;
+  min-height: 30px;
   place-items: center;
   border-radius: 999px;
   background: var(--surface-raised);
   color: var(--muted);
-  font-size: .75rem;
+  font-size: .85rem;
   font-weight: 700;
 }
 
@@ -517,12 +538,12 @@ button.ghost {
     align-items: flex-end;
     flex-direction: column;
     gap: 2px;
-    font-size: .72rem;
+    font-size: .82rem;
   }
 
   .preview-control select {
     max-width: 130px;
-    min-height: 36px;
+    min-height: 38px;
   }
 
   .card,
@@ -709,11 +730,11 @@ html[data-preview='desktop'] .block-edit .intensity { grid-column: 1 / 3; }
 }
 
 .day-index {
-  padding: 3px 9px;
+  padding: 4px 10px;
   border-radius: 999px;
   background: color-mix(in srgb, var(--accent) 16%, transparent);
   color: var(--accent);
-  font-size: .7rem;
+  font-size: .82rem;
   font-weight: 700;
   letter-spacing: .06em;
   text-transform: uppercase;
@@ -800,12 +821,12 @@ button[disabled] {
    the download rather than reported after it. */
 .date-preview:empty { display: none; }
 .date-list { margin-top: 0.75rem; }
-.date-list h4 { margin: 0 0 0.35rem; font-size: 0.85rem; }
+.date-list h4 { margin: 0 0 0.35rem; font-size: 0.92rem; }
 .date-list .note.warn { color: var(--warn, #e0a458); }
 .date-list ol.dates { list-style: none; margin: 0; padding: 0; }
 .date-list ol.dates li {
   display: flex; gap: 0.5rem; align-items: baseline;
-  padding: 0.15rem 0; font-size: 0.85rem;
+  padding: 0.2rem 0; font-size: 0.9rem;
 }
 .date-list .date { font-variant-numeric: tabular-nums; opacity: 0.85; }
 .date-list .label { flex: 1; }
@@ -813,14 +834,14 @@ button[disabled] {
 
 /* A session moved off its computed date (#54). */
 .date-list .date-input {
-  font-variant-numeric: tabular-nums; font-size: 0.8rem;
-  padding: 0.1rem 0.2rem; background: transparent;
+  font-variant-numeric: tabular-nums; font-size: 0.88rem;
+  padding: 0.15rem 0.3rem; background: transparent;
   border: 1px solid transparent; border-radius: 3px; color: inherit;
 }
 .date-list .date-input:hover, .date-list .date-input:focus { border-color: var(--line, #3a3a3a); }
 .date-list li.moved .date-input { border-color: var(--accent, #4a9eff); }
 .date-list li.out-of-order { color: var(--danger, #e05a5a); }
-.date-list .gap-note { flex-basis: 100%; font-size: 0.75rem; opacity: 0.8; }
+.date-list .gap-note { flex-basis: 100%; font-size: 0.82rem; opacity: 0.85; }
 
 /* Equipment profile editor (#8). A long checkbox list, so it scrolls inside the
    sidebar rather than pushing everything else off screen. */
@@ -838,7 +859,7 @@ button[disabled] {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 0.5rem;
   align-content: start;
 }
-.token-list li { padding: 0; font-size: 0.85rem; }
+.token-list li { padding: 0; font-size: 0.9rem; }
 .token-list label {
   display: flex; gap: 0.5rem; align-items: center;
   cursor: pointer; padding: 0.2rem 0.5rem; margin: 0;
@@ -856,7 +877,7 @@ button[disabled] {
   flex: 1; min-width: 0; text-align: left; text-transform: capitalize;
   overflow-wrap: break-word;
 }
-.token-list .tag { font-size: 0.65rem; opacity: 0.6; }
+.token-list .tag { font-size: 0.78rem; opacity: 0.85; }
 
 /* Day-level notes (#50). Imported and authored are visually distinct: one is
    what FitNotes recorded, the other is an instruction you wrote. */
@@ -1154,7 +1175,8 @@ button[disabled] {
 }
 
 .metric-lbl {
-  font-size: 0.72rem;
+  font-size: 0.78rem;
+  font-weight: 600;
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -1265,5 +1287,60 @@ button[disabled] {
 @media (max-width: 600px) {
   .max-entry-box {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Display scale & accessibility (#94) */
+.scale-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 3px 8px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.scale-badge {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--accent);
+}
+
+.scale-control select {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+.scale-setting-row {
+  max-width: 400px;
+}
+
+.scale-preview-text {
+  font-size: 0.95rem;
+  padding: 8px 12px;
+  background: var(--surface-raised);
+  border-radius: var(--radius);
+  border: 1px dashed var(--border);
+}
+
+@media (max-width: 768px) {
+  .app-bar {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .app-nav {
+    order: 3;
+    width: 100%;
+    justify-content: flex-start;
   }
 }

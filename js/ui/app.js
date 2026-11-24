@@ -253,6 +253,15 @@ export function mount(root, defs) {
       </nav>
 
       <div class="app-actions">
+        <label class="scale-control" title="Adjust text & display scale">
+          <span class="scale-badge" aria-hidden="true">Aa</span>
+          <select id="header-scale-select" aria-label="Text & display scale">
+            <option value="100">100%</option>
+            <option value="115" selected>115%</option>
+            <option value="130">130%</option>
+            <option value="150">150%</option>
+          </select>
+        </label>
         ${import.meta.env.DEV ? `
           <label class="preview-control">Preview
             <select id="preview" aria-label="Responsive preview">
@@ -445,6 +454,22 @@ export function mount(root, defs) {
         </div>
 
         <div class="settings-grid">
+          <div class="card settings-card">
+            <h3>Display Scale & Accessibility</h3>
+            <p class="note">Adjust text and UI scaling proportionally across the entire app for comfortable reading on phones and tablets.</p>
+            <div class="scale-setting-row">
+              <label>UI & Font Scale
+                <select id="settings-scale-select">
+                  <option value="100">100% · Standard (Desktop / Compact)</option>
+                  <option value="115" selected>115% · Comfortable (Recommended for mobile)</option>
+                  <option value="130">130% · Large (High visibility)</option>
+                  <option value="150">150% · Extra Large (Maximum readability)</option>
+                </select>
+              </label>
+            </div>
+            <p class="note scale-preview-text">Sample: Barbell Back Squat · 3 sets × 8 reps @ 225 lb (RPE 8)</p>
+          </div>
+
           <div class="card settings-card">
             <h3>Equipment Profiles</h3>
             <p class="note">Select an equipment profile to edit or create custom gym setups.</p>
@@ -988,6 +1013,33 @@ export function mount(root, defs) {
     localStorage.setItem('theme', el.dataset.theme);
   });
   document.documentElement.dataset.theme = localStorage.getItem('theme') ?? 'dark';
+
+  const PREF_SCALE = 'trainer_display_scale';
+  const savedScale = localStorage.getItem(PREF_SCALE) || '115';
+
+  function applyDisplayScale(scale) {
+    document.documentElement.dataset.scale = scale;
+    localStorage.setItem(PREF_SCALE, scale);
+    const headerScale = root.querySelector('#header-scale-select');
+    const settingsScale = root.querySelector('#settings-scale-select');
+    if (headerScale && headerScale.value !== scale) {
+      headerScale.value = scale;
+    }
+    if (settingsScale && settingsScale.value !== scale) {
+      settingsScale.value = scale;
+    }
+  }
+
+  applyDisplayScale(savedScale);
+
+  const headerScale = root.querySelector('#header-scale-select');
+  if (headerScale) {
+    headerScale.addEventListener('change', (e) => applyDisplayScale(e.target.value));
+  }
+  const settingsScale = root.querySelector('#settings-scale-select');
+  if (settingsScale) {
+    settingsScale.addEventListener('change', (e) => applyDisplayScale(e.target.value));
+  }
 
   statusEl = root.querySelector('#storage-status');
   reviewEl = root.querySelector('#import-review');
