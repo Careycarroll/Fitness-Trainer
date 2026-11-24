@@ -906,6 +906,37 @@ export function mount(root, defs) {
     });
   }
 
+function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = '') {
+  const exDef = Array.isArray(defs?.exercises)
+    ? defs.exercises.find((x) => x.id === item.exerciseId)
+    : null;
+  const displayName = exDef?.name || item.name || (item.exerciseId ? item.exerciseId.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'Exercise');
+  let categoryName = 'Legs';
+  if (exDef) {
+    const sf = (exDef.sourceFile || '').toLowerCase();
+    const pm = (exDef.primaryMuscles?.[0] || '').toLowerCase();
+    const pat = (exDef.pattern || '').toLowerCase();
+    if (sf.includes('chest') || pm.includes('chest') || pat.includes('push_h')) categoryName = 'Chest';
+    else if (sf.includes('back') || pm.includes('back') || pm.includes('lat') || pat.includes('pull')) categoryName = 'Back';
+    else if (sf.includes('biceps') || pm.includes('biceps')) categoryName = 'Biceps';
+    else if (sf.includes('triceps') || pm.includes('triceps')) categoryName = 'Triceps';
+    else if (sf.includes('shoulders') || pm.includes('delts') || pm.includes('shoulder') || pat.includes('push_v')) categoryName = 'Shoulders';
+    else if (sf.includes('core') || sf.includes('abs') || pm.includes('abs') || pat.includes('core')) categoryName = 'Abs';
+    else if (sf.includes('conditioning') || pat.includes('cardio') || pat.includes('monostructural')) categoryName = 'Cardio';
+    else categoryName = 'Legs';
+  } else if (item.pattern) {
+    categoryName = item.pattern;
+  }
+  return {
+    name: displayName,
+    category: categoryName,
+    reps: item.reps || 0,
+    setCount: item.sets || defaultSets,
+    metricWeight: 0,
+    loadNote: defaultLoadNote || (item.sets && item.reps ? `${item.sets}x${item.reps}` : '')
+  };
+}
+
   if (syncStagePlannerBtn) {
     syncStagePlannerBtn.addEventListener('click', () => {
       const prog = plannerProgram || current;
@@ -928,14 +959,7 @@ export function mount(root, defs) {
               id: `planner-${date}-${sessionIdx}`,
               date,
               title: s.label || `Week ${week.week} Session ${sessionIdx + 1}`,
-              exercises: groups.map((g) => ({
-                name: (currentDefs?.exercises instanceof Map ? currentDefs.exercises.get(g.exerciseId)?.name : null) || g.exerciseId,
-                category: g.pattern || 'Legs',
-                reps: g.reps || 0,
-                setCount: g.sets || 1,
-                metricWeight: 0,
-                loadNote: g.loadNote || `${g.sets}x${g.reps}`
-              }))
+              exercises: groups.map((g) => resolveStagedExercise(g, currentDefs, 1, `${g.sets || 1}x${g.reps || 0}`))
             });
             sessionIdx += 1;
           }
@@ -964,14 +988,7 @@ export function mount(root, defs) {
         date,
         title: prog.name || s.label || 'Workout of the Day',
         description: prog.description || '',
-        exercises: groups.map((g) => ({
-          name: (currentDefs?.exercises instanceof Map ? currentDefs.exercises.get(g.exerciseId)?.name : null) || g.exerciseId,
-          category: g.pattern || 'Legs',
-          reps: g.reps || 0,
-          setCount: g.sets || (s.rounds || 1),
-          metricWeight: 0,
-          loadNote: g.loadNote || ''
-        }))
+        exercises: groups.map((g) => resolveStagedExercise(g, currentDefs, s.rounds || 1, g.loadNote || ''))
       });
       if (syncStatusMsg) syncStatusMsg.textContent = `Staged WOD (${prog.name || 'Workout'}) for ${date}.`;
       renderSyncHub();

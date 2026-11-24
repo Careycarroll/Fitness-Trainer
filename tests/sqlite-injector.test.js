@@ -115,4 +115,51 @@ describe('SQLite WASM Injector for FitNotes Android (#92)', () => {
     assert.equal(completed, 1);
     verifyDb.close();
   });
+
+  test('injectWorkouts dynamically resolves Category table and self-heals orphan category_id (#97)', async () => {
+    const SQL = await getSql();
+    const db = new SQL.Database();
+
+    // User's custom Category table with IDs starting at 9
+    db.run('CREATE TABLE Category (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL)');
+    db.run('INSERT INTO Category VALUES (9, "Abs"), (10, "Back"), (13, "Chest"), (14, "Legs"), (15, "Shoulders")');
+
+    db.run('CREATE TABLE exercise (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, category_id INTEGER NOT NULL, exercise_type_id INTEGER NOT NULL DEFAULT 0, weight_increment INTEGER, default_rest_time INTEGER)');
+    db.run('CREATE TABLE training_log (_id INTEGER PRIMARY KEY AUTOINCREMENT, exercise_id INTEGER NOT NULL, date DATE NOT NULL, metric_weight INTEGER NOT NULL, reps INTEGER NOT NULL, unit INTEGER NOT NULL DEFAULT 0, is_complete INTEGER NOT NULL DEFAULT 0)');
+    db.run('CREATE TABLE Comment (_id INTEGER PRIMARY KEY AUTOINCREMENT, date DATE NOT NULL, owner_type_id INTEGER NOT NULL, owner_id INTEGER NOT NULL, comment TEXT NOT NULL)');
+    db.run('CREATE TABLE WorkoutComment (_id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT NOT NULL, comment TEXT NOT NULL)');
+
+    // Insert an exercise with an orphan category_id (e.g. 6 which does not exist in Category)
+    db.run('INSERT INTO exercise (name, category_id) VALUES ("Corrupt Exercise", 6)');
+
+    const baseBuf = db.export();
+    db.close();
+
+    const staged = [
+      {
+        date: '2026-11-24',
+        title: 'Push Day',
+        exercises: [
+          { name: 'Hands-Elevated Push-Up', category: 'Chest', reps: 15, setCount: 3, loadNote: '3x15' }
+        ]
+      }
+    ];
+
+    const { buffer } = await injectWorkouts(baseBuf, staged);
+    const verifyDb = new SQL.Database(buffer);
+
+    // Verify orphan category_id was healed to defaultCatId (14 for Legs)
+    const corruptRow = verifyDb.exec('SELECT category_id FROM exercise WHERE name = "Corrupt Exercise"')[0].values[0][0];
+    assert.equal(corruptRow, 14, 'orphan category_id must be self-healed to a valid existing category');
+
+    // Verify newly created exercise resolved Category ID 13 (Chest) dynamically, NOT hardcoded 4
+    const newExRow = verifyDb.exec('SELECT category_id FROM exercise WHERE name = "Hands-Elevated Push-Up"')[0].values[0][0];
+    assert.equal(newExRow, 13, 'new exercise category_id must match dynamic Category table ID for Chest');
+
+    // Verify ZERO orphan category_id entries exist in the entire exercise table
+    const orphans = verifyDb.exec('SELECT COUNT(*) FROM exercise WHERE category_id NOT IN (SELECT _id FROM Category)')[0].values[0][0];
+    assert.equal(orphans, 0, 'no exercise should have an orphan category_id foreign key');
+
+    verifyDb.close();
+  });
 });

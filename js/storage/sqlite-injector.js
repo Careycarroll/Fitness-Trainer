@@ -82,18 +82,39 @@ export async function injectWorkouts(buffer, stagedWorkouts, options = {}) {
     const preCompletedSets = Number(db.exec('SELECT COUNT(*) FROM training_log WHERE is_complete = 1')[0]?.values[0][0] ?? 0);
     const preTotalSets = Number(db.exec('SELECT COUNT(*) FROM training_log')[0]?.values[0][0] ?? 0);
 
-    // Categories in FitNotes default schema:
-    // 1: Shoulders, 2: Triceps, 3: Biceps, 4: Chest, 5: Back, 6: Legs, 7: Abs, 8: Cardio
-    const categoryMap = {
-      shoulders: 1,
-      triceps: 2,
-      biceps: 3,
-      chest: 4,
-      back: 5,
-      legs: 6,
-      abs: 7,
-      cardio: 8
+    // Resolve categories directly from the database schema rather than hardcoded IDs (#97)
+    let catRows = [];
+    try {
+      catRows = db.exec('SELECT _id, name FROM Category')[0]?.values ?? [];
+    } catch {
+      // Table may not exist in synthetic test databases
+    }
+    const catMap = {};
+    for (const [id, name] of catRows) {
+      catMap[String(name).toLowerCase().trim()] = id;
+    }
+    const defaultCatId = catMap['legs'] ?? (catRows[0]?.[0] ?? 1);
+
+    const resolveCategory = (categoryName) => {
+      const norm = String(categoryName || '').toLowerCase().trim();
+      if (catMap[norm]) return catMap[norm];
+      if (norm.includes('chest') || norm.includes('push_h')) return catMap['chest'] ?? defaultCatId;
+      if (norm.includes('back') || norm.includes('pull_v') || norm.includes('pull_h') || norm.includes('lats')) return catMap['back'] ?? defaultCatId;
+      if (norm.includes('biceps')) return catMap['biceps'] ?? defaultCatId;
+      if (norm.includes('triceps')) return catMap['triceps'] ?? defaultCatId;
+      if (norm.includes('shoulder') || norm.includes('push_v') || norm.includes('delts') || norm.includes('olympic')) return catMap['shoulders'] ?? defaultCatId;
+      if (norm.includes('abs') || norm.includes('core')) return catMap['abs'] ?? defaultCatId;
+      if (norm.includes('cardio') || norm.includes('conditioning')) return catMap['cardio'] ?? defaultCatId;
+      if (norm.includes('leg') || norm.includes('squat') || norm.includes('hinge') || norm.includes('quad') || norm.includes('glute')) return catMap['legs'] ?? defaultCatId;
+      return defaultCatId;
     };
+
+    // Sanitize any corrupt orphan category_id references so FitNotes Android never crashes (#97)
+    try {
+      db.run('UPDATE exercise SET category_id = ? WHERE category_id NOT IN (SELECT _id FROM Category)', [defaultCatId]);
+    } catch {
+      // Ignore if table missing
+    }
 
     // Load existing exercises
     const exRows = db.exec('SELECT _id, name, category_id FROM exercise');
@@ -109,7 +130,7 @@ export async function injectWorkouts(buffer, stagedWorkouts, options = {}) {
       if (existingExercises.has(key)) {
         return existingExercises.get(key).id;
       }
-      const catId = categoryMap[categoryName.toLowerCase()] ?? 6;
+      const catId = resolveCategory(categoryName);
       db.run(
         'INSERT INTO exercise (name, category_id, exercise_type_id, weight_increment, default_rest_time) VALUES (?, ?, ?, 5, 60)',
         [name.trim(), catId, exerciseTypeId]
@@ -211,32 +232,45 @@ export async function injectCatalog(buffer, catalogExercises) {
   try {
     const preCompletedSets = Number(db.exec('SELECT COUNT(*) FROM training_log WHERE is_complete = 1')[0]?.values[0][0] ?? 0);
 
-    const catRows = db.exec('SELECT _id, name FROM Category')[0]?.values ?? [];
+    let catRows = [];
+    try {
+      catRows = db.exec('SELECT _id, name FROM Category')[0]?.values ?? [];
+    } catch {
+      // Table may not exist in synthetic test databases
+    }
     const catMap = {};
     for (const [id, name] of catRows) {
-      catMap[String(name).toLowerCase()] = id;
+      catMap[String(name).toLowerCase().trim()] = id;
     }
+    const defaultCatId = catMap['legs'] ?? (catRows[0]?.[0] ?? 1);
 
     const getCatId = (ex) => {
       const sf = (ex.sourceFile || '').toLowerCase();
-      if (sf.includes('chest')) return catMap['chest'] ?? 13;
-      if (sf.includes('back')) return catMap['back'] ?? 10;
-      if (sf.includes('biceps')) return catMap['biceps'] ?? 11;
-      if (sf.includes('triceps')) return catMap['triceps'] ?? 16;
-      if (sf.includes('shoulders')) return catMap['shoulders'] ?? 15;
-      if (sf.includes('core')) return catMap['abs'] ?? 9;
-      if (sf.includes('conditioning')) return catMap['cardio'] ?? 12;
+      if (sf.includes('chest')) return catMap['chest'] ?? defaultCatId;
+      if (sf.includes('back')) return catMap['back'] ?? defaultCatId;
+      if (sf.includes('biceps')) return catMap['biceps'] ?? defaultCatId;
+      if (sf.includes('triceps')) return catMap['triceps'] ?? defaultCatId;
+      if (sf.includes('shoulders')) return catMap['shoulders'] ?? defaultCatId;
+      if (sf.includes('core')) return catMap['abs'] ?? defaultCatId;
+      if (sf.includes('conditioning')) return catMap['cardio'] ?? defaultCatId;
       if (sf.includes('quads') || sf.includes('glutes') || sf.includes('hamstrings') || sf.includes('calves') || sf.includes('hips')) {
-        return catMap['legs'] ?? 14;
+        return catMap['legs'] ?? defaultCatId;
       }
       if (sf.includes('fullbody')) {
         const pm = (ex.primaryMuscles?.[0] || '').toLowerCase();
-        if (['delts', 'front_delts'].includes(pm)) return catMap['shoulders'] ?? 15;
-        if (['lats', 'upper_back'].includes(pm)) return catMap['back'] ?? 10;
-        return catMap['legs'] ?? 14;
+        if (['delts', 'front_delts'].includes(pm)) return catMap['shoulders'] ?? defaultCatId;
+        if (['lats', 'upper_back'].includes(pm)) return catMap['back'] ?? defaultCatId;
+        return catMap['legs'] ?? defaultCatId;
       }
-      return catMap['legs'] ?? 14;
+      return defaultCatId;
     };
+
+    // Sanitize any corrupt orphan category_id references so FitNotes Android never crashes (#97)
+    try {
+      db.run('UPDATE exercise SET category_id = ? WHERE category_id NOT IN (SELECT _id FROM Category)', [defaultCatId]);
+    } catch {
+      // Ignore if table missing
+    }
 
     const getExType = (ex) => {
       const tt = ex.trackingType || 'weight_reps';
