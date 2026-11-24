@@ -196,3 +196,99 @@ export async function injectWorkouts(buffer, stagedWorkouts, options = {}) {
     db.close();
   }
 }
+
+/**
+ * Bulk inject full exercise catalog into an existing FitNotes SQLite database (#95).
+ *
+ * @param {ArrayBuffer|Uint8Array} buffer
+ * @param {Array<object>} catalogExercises
+ * @returns {Promise<{buffer: Uint8Array, summary: object}>}
+ */
+export async function injectCatalog(buffer, catalogExercises) {
+  const SQL = await getSql();
+  const db = new SQL.Database(new Uint8Array(buffer));
+
+  try {
+    const preCompletedSets = Number(db.exec('SELECT COUNT(*) FROM training_log WHERE is_complete = 1')[0]?.values[0][0] ?? 0);
+
+    const catRows = db.exec('SELECT _id, name FROM Category')[0]?.values ?? [];
+    const catMap = {};
+    for (const [id, name] of catRows) {
+      catMap[String(name).toLowerCase()] = id;
+    }
+
+    const getCatId = (ex) => {
+      const sf = (ex.sourceFile || '').toLowerCase();
+      if (sf.includes('chest')) return catMap['chest'] ?? 13;
+      if (sf.includes('back')) return catMap['back'] ?? 10;
+      if (sf.includes('biceps')) return catMap['biceps'] ?? 11;
+      if (sf.includes('triceps')) return catMap['triceps'] ?? 16;
+      if (sf.includes('shoulders')) return catMap['shoulders'] ?? 15;
+      if (sf.includes('core')) return catMap['abs'] ?? 9;
+      if (sf.includes('conditioning')) return catMap['cardio'] ?? 12;
+      if (sf.includes('quads') || sf.includes('glutes') || sf.includes('hamstrings') || sf.includes('calves') || sf.includes('hips')) {
+        return catMap['legs'] ?? 14;
+      }
+      if (sf.includes('fullbody')) {
+        const pm = (ex.primaryMuscles?.[0] || '').toLowerCase();
+        if (['delts', 'front_delts'].includes(pm)) return catMap['shoulders'] ?? 15;
+        if (['lats', 'upper_back'].includes(pm)) return catMap['back'] ?? 10;
+        return catMap['legs'] ?? 14;
+      }
+      return catMap['legs'] ?? 14;
+    };
+
+    const getExType = (ex) => {
+      const tt = ex.trackingType || 'weight_reps';
+      if (tt === 'reps_only') return 4;
+      if (tt === 'time' || tt === 'time_load') return 3;
+      if (tt === 'weight_distance') return 2;
+      if (ex.monostructural || ex.sourceFile === '13_conditioning.csv') return 1;
+      return 0;
+    };
+
+    const existingRows = db.exec('SELECT _id, name FROM exercise')[0]?.values ?? [];
+    const existing = new Set(existingRows.map(r => String(r[1]).toLowerCase().trim()));
+
+    let addedExercisesCount = 0;
+    for (const ex of catalogExercises) {
+      const name = String(ex.name || '').trim();
+      const norm = name.toLowerCase();
+      if (!name || existing.has(norm)) continue;
+
+      const catId = getCatId(ex);
+      const exType = getExType(ex);
+      const rest = ex.restSeconds || 60;
+
+      db.run(
+        'INSERT INTO exercise (name, category_id, exercise_type_id, weight_increment, default_rest_time) VALUES (?, ?, ?, 5, ?)',
+        [name, catId, exType, rest]
+      );
+      existing.add(norm);
+      addedExercisesCount++;
+    }
+
+    const postCompletedSets = Number(db.exec('SELECT COUNT(*) FROM training_log WHERE is_complete = 1')[0]?.values[0][0] ?? 0);
+    if (postCompletedSets !== preCompletedSets) {
+      throw new Error(`Integrity invariant violated: completed sets changed`);
+    }
+
+    const integrity = db.exec('PRAGMA integrity_check')[0]?.values[0][0];
+    if (integrity !== 'ok') {
+      throw new Error(`Database integrity check failed: ${integrity}`);
+    }
+
+    const totalExercises = Number(db.exec('SELECT COUNT(*) FROM exercise')[0]?.values[0][0] ?? 0);
+
+    return {
+      buffer: db.export(),
+      summary: {
+        addedExercisesCount,
+        totalExercises,
+        integrity
+      }
+    };
+  } finally {
+    db.close();
+  }
+}
