@@ -900,13 +900,14 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
   let exerciseTypeId = 0;
 
   if (isTimedHold) {
-    if (!isTimeTracking && !displayName.includes('(Time)')) {
+    if (!displayName.includes('(Time)')) {
       displayName = `${displayName} (Time)`;
     }
     exerciseTypeId = 3;
     durationSeconds = item.workSeconds || (item.reps && item.reps > 5 ? item.reps : 30);
     reps = 0;
   } else {
+    displayName = displayName.replace(/\s*\(Time\)$/i, '').trim();
     exerciseTypeId = exDef?.trackingType === 'reps_only' ? 4 : 0;
     reps = item.reps || 0;
     durationSeconds = 0;

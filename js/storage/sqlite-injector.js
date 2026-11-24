@@ -130,13 +130,20 @@ export async function injectWorkouts(buffer, stagedWorkouts, options = {}) {
       if (existingExercises.has(key)) {
         return existingExercises.get(key).id;
       }
+      // If looking for a (Time) exercise, also check if a (Time) variant exists in the DB
+      if (exerciseTypeId === 3 && !key.endsWith('(time)')) {
+        const altKey = `${key} (time)`;
+        if (existingExercises.has(altKey)) {
+          return existingExercises.get(altKey).id;
+        }
+      }
       const catId = resolveCategory(categoryName);
       db.run(
         'INSERT INTO exercise (name, category_id, exercise_type_id, weight_increment, default_rest_time) VALUES (?, ?, ?, 5, 60)',
         [name.trim(), catId, exerciseTypeId]
       );
       const newId = Number(db.exec('SELECT last_insert_rowid()')[0].values[0][0]);
-      existingExercises.set(key, { id: newId, name: name.trim(), catId });
+      existingExercises.set(key, { id: newId, name: name.trim(), catId, typeId: exerciseTypeId });
       return newId;
     };
 
