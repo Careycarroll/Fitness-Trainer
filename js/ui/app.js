@@ -401,7 +401,6 @@ export function mount(root, defs) {
             <div class="sync-file-row">
               <input type="file" id="sync-fitnotes-file" accept=".fitnotes,.db,.sqlite" hidden />
               <button type="button" id="sync-choose-file-btn" class="primary">Select .fitnotes File</button>
-              <button type="button" id="sync-inject-catalog-btn" class="secondary" title="Import all 533 exercises from the planner catalog into your FitNotes backup">+ Inject Full Catalog (533)</button>
             </div>
             <p id="sync-file-feedback" class="note sync-file-feedback"></p>
             <div id="sync-db-metrics" class="sync-metrics-grid" hidden>
@@ -817,42 +816,6 @@ export function mount(root, defs) {
     });
   }
 
-  const syncInjectCatalogBtn = root.querySelector('#sync-inject-catalog-btn');
-  if (syncInjectCatalogBtn) {
-    syncInjectCatalogBtn.addEventListener('click', async () => {
-      if (!loadedFitNotesBuffer) {
-        if (syncChooseFileBtn) syncChooseFileBtn.click();
-        return;
-      }
-      try {
-        if (syncFileFeedback) {
-          syncFileFeedback.textContent = 'Injecting 533 catalog exercises into SQLite backup…';
-          syncFileFeedback.className = 'note sync-file-feedback';
-        }
-        const { buffer, summary } = await injectCatalog(loadedFitNotesBuffer, currentDefs.exercises);
-        loadedFitNotesBuffer = buffer;
-        loadedDbStats = await inspectDatabase(buffer);
-        const setExercises = root.querySelector('#metric-exercises');
-        if (setExercises) setExercises.textContent = String(loadedDbStats.totalExercises);
-        const badge = root.querySelector('#sync-db-badge');
-        if (badge) {
-          badge.textContent = `Backup Loaded (${loadedDbStats.totalWorkouts} Workouts · ${loadedDbStats.totalExercises} Exercises)`;
-          badge.className = 'tag tag-ok';
-        }
-        if (syncFileFeedback) {
-          syncFileFeedback.textContent = `✓ Injected ${summary.addedExercisesCount} catalog exercises into loaded backup (Total: ${summary.totalExercises}). You can now stage workouts above and click Export below when ready.`;
-          syncFileFeedback.className = 'note sync-file-feedback text-ok';
-        }
-      } catch (err) {
-        console.error('Catalog injection failed:', err);
-        if (syncFileFeedback) {
-          syncFileFeedback.textContent = '⚠️ Catalog injection error: ' + err.message;
-          syncFileFeedback.className = 'note sync-file-feedback text-error';
-        }
-      }
-    });
-  }
-
   function renderSyncHub() {
     const queueBadge = root.querySelector('#sync-queue-badge');
     if (queueBadge) queueBadge.textContent = `${stagedWorkouts.length} Staged`;
@@ -910,7 +873,7 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
   const exDef = Array.isArray(defs?.exercises)
     ? defs.exercises.find((x) => x.id === item.exerciseId)
     : null;
-  const displayName = exDef?.name || item.name || (item.exerciseId ? item.exerciseId.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'Exercise');
+  const rawName = exDef?.name || item.name || (item.exerciseId ? item.exerciseId.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'Exercise');
   let categoryName = 'Legs';
   if (exDef) {
     const sf = (exDef.sourceFile || '').toLowerCase();
@@ -927,13 +890,41 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
   } else if (item.pattern) {
     categoryName = item.pattern;
   }
+
+  const isTimeTracking = exDef?.trackingType === 'time' || exDef?.trackingType === 'time_load';
+  const isTimedHold = isTimeTracking || Boolean(item.workSeconds && !item.reps);
+
+  let displayName = rawName;
+  let reps = 0;
+  let durationSeconds = 0;
+  let exerciseTypeId = 0;
+
+  if (isTimedHold) {
+    if (!isTimeTracking && !displayName.includes('(Time)')) {
+      displayName = `${displayName} (Time)`;
+    }
+    exerciseTypeId = 3;
+    durationSeconds = item.workSeconds || (item.reps && item.reps > 5 ? item.reps : 30);
+    reps = 0;
+  } else {
+    exerciseTypeId = exDef?.trackingType === 'reps_only' ? 4 : 0;
+    reps = item.reps || 0;
+    durationSeconds = 0;
+  }
+
+  const loadNote = defaultLoadNote || (isTimedHold
+    ? `${item.sets || defaultSets} sets · ${durationSeconds}s hold`
+    : (item.sets && reps ? `${item.sets}x${reps}` : ''));
+
   return {
     name: displayName,
     category: categoryName,
-    reps: item.reps || 0,
+    reps,
+    durationSeconds,
+    exerciseTypeId,
     setCount: item.sets || defaultSets,
     metricWeight: 0,
-    loadNote: defaultLoadNote || (item.sets && item.reps ? `${item.sets}x${item.reps}` : '')
+    loadNote
   };
 }
 

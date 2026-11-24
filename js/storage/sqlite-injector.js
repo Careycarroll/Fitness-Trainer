@@ -140,6 +140,15 @@ export async function injectWorkouts(buffer, stagedWorkouts, options = {}) {
       return newId;
     };
 
+    // Check if training_log supports duration_seconds column (native FitNotes schema)
+    let hasDurationCol = false;
+    try {
+      const logCols = db.exec('PRAGMA table_info(training_log)')[0]?.values ?? [];
+      hasDurationCol = logCols.some((col) => col[1] === 'duration_seconds');
+    } catch {
+      hasDurationCol = false;
+    }
+
     let addedSetsCount = 0;
     let addedWorkoutsCount = 0;
 
@@ -158,19 +167,33 @@ export async function injectWorkouts(buffer, stagedWorkouts, options = {}) {
       }
 
       for (const item of workout.exercises) {
-        const exerciseId = getOrCreateExercise(item.name, item.category || 'Legs');
         const reps = Number(item.reps ?? 0);
+        const durationSeconds = Number(item.durationSeconds ?? 0);
         const metricWeight = Number(item.metricWeight ?? 0);
         const unit = options.unit ?? 0; // 0 = standard/lbs depending on settings
 
+        const exerciseTypeId = item.exerciseTypeId ?? (durationSeconds > 0 && reps === 0 ? 3 : 0);
+        const exerciseId = getOrCreateExercise(item.name, item.category || 'Legs', exerciseTypeId);
+
         // Each exercise can specify multiple sets or a setCount
-        const setsToInsert = item.sets || Array.from({ length: item.setCount || 1 }, () => ({ reps, metricWeight }));
+        const setsToInsert = item.sets || Array.from({ length: item.setCount || 1 }, () => ({ reps, durationSeconds, metricWeight }));
 
         for (const s of setsToInsert) {
-          db.run(
-            'INSERT INTO training_log (exercise_id, date, metric_weight, reps, unit, is_complete) VALUES (?, ?, ?, ?, ?, 0)',
-            [exerciseId, workout.date, s.metricWeight ?? metricWeight, s.reps ?? reps, unit]
-          );
+          const sReps = s.reps ?? reps;
+          const sDuration = s.durationSeconds ?? durationSeconds;
+          const sWeight = s.metricWeight ?? metricWeight;
+
+          if (hasDurationCol) {
+            db.run(
+              'INSERT INTO training_log (exercise_id, date, metric_weight, reps, unit, is_complete, duration_seconds) VALUES (?, ?, ?, ?, ?, 0, ?)',
+              [exerciseId, workout.date, sWeight, sReps, unit, sDuration]
+            );
+          } else {
+            db.run(
+              'INSERT INTO training_log (exercise_id, date, metric_weight, reps, unit, is_complete) VALUES (?, ?, ?, ?, ?, 0)',
+              [exerciseId, workout.date, sWeight, sReps, unit]
+            );
+          }
           const logId = Number(db.exec('SELECT last_insert_rowid()')[0].values[0][0]);
           addedSetsCount += 1;
 

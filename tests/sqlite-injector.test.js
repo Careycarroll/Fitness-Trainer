@@ -162,4 +162,74 @@ describe('SQLite WASM Injector for FitNotes Android (#92)', () => {
 
     verifyDb.close();
   });
+
+  test('injectWorkouts correctly handles duration_seconds and exercise_type_id for timed holds vs reps (#98)', async () => {
+    const SQL = await getSql();
+    const db = new SQL.Database();
+
+    db.run('CREATE TABLE Category (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL)');
+    db.run('INSERT INTO Category VALUES (9, "Abs"), (13, "Chest"), (14, "Legs")');
+
+    db.run('CREATE TABLE exercise (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, category_id INTEGER NOT NULL, exercise_type_id INTEGER NOT NULL DEFAULT 0, weight_increment INTEGER, default_rest_time INTEGER)');
+    db.run('CREATE TABLE training_log (_id INTEGER PRIMARY KEY AUTOINCREMENT, exercise_id INTEGER NOT NULL, date DATE NOT NULL, metric_weight INTEGER NOT NULL, reps INTEGER NOT NULL, unit INTEGER NOT NULL DEFAULT 0, is_complete INTEGER NOT NULL DEFAULT 0, duration_seconds INTEGER NOT NULL DEFAULT 0)');
+
+    const baseBuf = db.export();
+    db.close();
+
+    const staged = [
+      {
+        date: '2026-11-25',
+        title: 'Core & Upper Body',
+        exercises: [
+          {
+            name: 'Plank',
+            category: 'Abs',
+            reps: 0,
+            durationSeconds: 60,
+            exerciseTypeId: 3,
+            setCount: 3,
+            loadNote: '3 sets · 60s hold'
+          },
+          {
+            name: 'Push-Up',
+            category: 'Chest',
+            reps: 20,
+            durationSeconds: 0,
+            exerciseTypeId: 0,
+            setCount: 4,
+            loadNote: '4x20'
+          }
+        ]
+      }
+    ];
+
+    const { buffer } = await injectWorkouts(baseBuf, staged);
+    const verifyDb = new SQL.Database(buffer);
+
+    // Verify Plank exercise_type_id is 3 (Time)
+    const plankType = verifyDb.exec('SELECT exercise_type_id FROM exercise WHERE name = "Plank"')[0].values[0][0];
+    assert.equal(plankType, 3, 'timed hold must have exercise_type_id = 3 (Time)');
+
+    // Verify Push-Up exercise_type_id is 0 (Weight & Reps)
+    const pushupType = verifyDb.exec('SELECT exercise_type_id FROM exercise WHERE name = "Push-Up"')[0].values[0][0];
+    assert.equal(pushupType, 0, 'standard lift must have exercise_type_id = 0 (Weight & Reps)');
+
+    // Verify training_log rows for Plank have duration_seconds = 60 and reps = 0
+    const plankSets = verifyDb.exec('SELECT reps, duration_seconds FROM training_log WHERE exercise_id = (SELECT _id FROM exercise WHERE name = "Plank")')[0].values;
+    assert.equal(plankSets.length, 3);
+    for (const [reps, dur] of plankSets) {
+      assert.equal(reps, 0, 'timed hold must have reps = 0');
+      assert.equal(dur, 60, 'timed hold must have duration_seconds = 60');
+    }
+
+    // Verify training_log rows for Push-Up have reps = 20 and duration_seconds = 0
+    const pushupSets = verifyDb.exec('SELECT reps, duration_seconds FROM training_log WHERE exercise_id = (SELECT _id FROM exercise WHERE name = "Push-Up")')[0].values;
+    assert.equal(pushupSets.length, 4);
+    for (const [reps, dur] of pushupSets) {
+      assert.equal(reps, 20, 'rep lift must have reps = 20');
+      assert.equal(dur, 0, 'rep lift must have duration_seconds = 0');
+    }
+
+    verifyDb.close();
+  });
 });
