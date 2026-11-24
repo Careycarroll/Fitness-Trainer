@@ -438,6 +438,13 @@ export function mount(root, defs) {
             <div id="sync-staged-list" class="sync-staged-list" hidden></div>
           </div>
 
+          <div id="sync-collision-banner" class="sync-collision-banner" hidden style="margin: 0.75rem 0 1rem; padding: 0.75rem 1rem; background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 6px;">
+            <label style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; cursor: pointer; color: #facc15;">
+              <input type="checkbox" id="sync-global-overwrite-check" style="cursor: pointer; width: 1.15rem; height: 1.15rem;" />
+              <span><strong>Overwrite existing workouts on all matching dates</strong> (replaces old sets instead of merging)</span>
+            </label>
+          </div>
+
           <div class="sync-export-toolbar">
             <button type="button" id="sync-export-db-btn" class="primary btn-large">Export Merged .fitnotes Backup</button>
             <button type="button" id="sync-export-csv-btn" class="ghost">Export FitNotes CSV</button>
@@ -835,6 +842,11 @@ export function mount(root, defs) {
     listBox.hidden = false;
 
     const existingDates = new Set(loadedDbStats?.existingDates || []);
+    const hasCollision = stagedWorkouts.some((w) => existingDates.has(w.date));
+    const collisionBanner = root.querySelector('#sync-collision-banner');
+    if (collisionBanner) {
+      collisionBanner.hidden = !hasCollision;
+    }
 
     listBox.innerHTML = stagedWorkouts.map((w, i) => {
       const collides = existingDates.has(w.date);
@@ -848,10 +860,19 @@ export function mount(root, defs) {
             <button type="button" class="ghost icon-button remove-staged-btn" data-staged-idx="${i}" title="Remove this workout">✕</button>
           </div>
           <h4 class="staged-title">${esc(w.title)}</h4>
+          ${collides ? `
+            <div class="staged-collision-options" style="margin: 0.5rem 0; padding: 0.5rem; background: rgba(234, 179, 8, 0.08); border-radius: 6px; border: 1px dashed rgba(234, 179, 8, 0.4);">
+              <label style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; cursor: pointer; color: #facc15;">
+                <input type="checkbox" class="staged-overwrite-check" data-staged-idx="${i}" ${w.overwrite ? 'checked' : ''} style="cursor: pointer; width: 1.1rem; height: 1.1rem;" />
+                <span><strong>Overwrite existing workout</strong> on ${esc(w.date)} (replaces old sets instead of merging)</span>
+              </label>
+            </div>
+          ` : ''}
           <ul class="staged-exercises-list">
             ${w.exercises.map((ex) => `
               <li>
                 <strong>${esc(ex.name)}</strong>: ${ex.setCount || 1} sets ${ex.reps ? `× ${ex.reps} reps` : ''}
+                ${ex.durationSeconds ? `· ${ex.durationSeconds}s hold` : ''}
                 ${ex.loadNote ? `<span class="note">(${esc(ex.loadNote)})</span>` : ''}
               </li>
             `).join('')}
@@ -867,6 +888,28 @@ export function mount(root, defs) {
         renderSyncHub();
       });
     });
+
+    listBox.querySelectorAll('.staged-overwrite-check').forEach((chk) => {
+      chk.addEventListener('change', () => {
+        const idx = Number(chk.dataset.stagedIdx);
+        if (stagedWorkouts[idx]) {
+          stagedWorkouts[idx].overwrite = chk.checked;
+        }
+      });
+    });
+
+    const globalOverwriteCheck = root.querySelector('#sync-global-overwrite-check');
+    if (globalOverwriteCheck) {
+      globalOverwriteCheck.onchange = () => {
+        const checked = globalOverwriteCheck.checked;
+        for (const w of stagedWorkouts) {
+          if (existingDates.has(w.date)) {
+            w.overwrite = checked;
+          }
+        }
+        renderSyncHub();
+      };
+    }
   }
 
 function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = '') {
@@ -1007,9 +1050,10 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
 
         if (stagedWorkouts.length > 0) {
           if (syncStatusMsg) syncStatusMsg.textContent = 'Injecting workouts into SQLite database...';
-          const { buffer, summary } = await injectWorkouts(loadedFitNotesBuffer, stagedWorkouts);
+          const globalOverwrite = root.querySelector('#sync-global-overwrite-check')?.checked || false;
+          const { buffer, summary } = await injectWorkouts(loadedFitNotesBuffer, stagedWorkouts, { overwriteExisting: globalOverwrite });
           exportBuffer = buffer;
-          exportSummaryMsg = `${summary.addedWorkoutsCount} workouts added (${summary.addedSetsCount} sets). ${summary.preCompletedSets} past completed sets preserved.`;
+          exportSummaryMsg = `${summary.addedWorkoutsCount} workouts added (${summary.addedSetsCount} sets)${summary.overwrittenDatesCount ? `, ${summary.overwrittenDatesCount} existing workout date(s) replaced` : ''}. ${summary.preCompletedSets} past completed sets preserved.`;
         } else {
           exportSummaryMsg = `Exported backup with ${loadedDbStats?.totalExercises ?? 0} exercises and ${loadedDbStats?.completedSets ?? 0} past completed sets.`;
         }

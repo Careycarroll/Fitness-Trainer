@@ -232,4 +232,52 @@ describe('SQLite WASM Injector for FitNotes Android (#92)', () => {
 
     verifyDb.close();
   });
+
+  test('injectWorkouts overwrites existing workout on matching date when requested (#100)', async () => {
+    const SQL = await getSql();
+    const db = new SQL.Database();
+
+    db.run('CREATE TABLE Category (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL)');
+    db.run('INSERT INTO Category VALUES (13, "Chest")');
+
+    db.run('CREATE TABLE exercise (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, category_id INTEGER NOT NULL, exercise_type_id INTEGER NOT NULL DEFAULT 0, weight_increment INTEGER, default_rest_time INTEGER)');
+    db.run('CREATE TABLE training_log (_id INTEGER PRIMARY KEY AUTOINCREMENT, exercise_id INTEGER NOT NULL, date DATE NOT NULL, metric_weight INTEGER NOT NULL, reps INTEGER NOT NULL, unit INTEGER NOT NULL DEFAULT 0, is_complete INTEGER NOT NULL DEFAULT 0, duration_seconds INTEGER NOT NULL DEFAULT 0)');
+    db.run('CREATE TABLE Comment (_id INTEGER PRIMARY KEY AUTOINCREMENT, date DATE NOT NULL, owner_type_id INTEGER NOT NULL, owner_id INTEGER NOT NULL, comment TEXT NOT NULL)');
+    db.run('CREATE TABLE WorkoutComment (_id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT NOT NULL, comment TEXT NOT NULL)');
+
+    // Pre-existing workout for today
+    db.run('INSERT INTO exercise (name, category_id) VALUES ("Bench Press", 13)');
+    db.run('INSERT INTO training_log (exercise_id, date, metric_weight, reps, is_complete) VALUES (1, "2026-11-23", 80, 5, 1)');
+    db.run('INSERT INTO training_log (exercise_id, date, metric_weight, reps, is_complete) VALUES (1, "2026-11-23", 80, 5, 1)');
+    db.run('INSERT INTO WorkoutComment (date, comment) VALUES ("2026-11-23", "Old workout comment")');
+
+    const baseBuf = db.export();
+    db.close();
+
+    const staged = [
+      {
+        date: '2026-11-23',
+        title: 'New Replacement Workout',
+        overwrite: true,
+        exercises: [
+          { name: 'Push-Up', category: 'Chest', reps: 25, setCount: 2, loadNote: '2x25' }
+        ]
+      }
+    ];
+
+    const { buffer, summary } = await injectWorkouts(baseBuf, staged);
+    assert.equal(summary.overwrittenDatesCount, 1);
+    assert.equal(summary.addedSetsCount, 2);
+
+    const verifyDb = new SQL.Database(buffer);
+    const sets = verifyDb.exec('SELECT reps FROM training_log WHERE date = "2026-11-23"')[0].values;
+    assert.equal(sets.length, 2, 'old sets must be wiped and only the 2 new replacement sets should exist');
+    assert.equal(sets[0][0], 25);
+
+    const comment = verifyDb.exec('SELECT comment FROM WorkoutComment WHERE date = "2026-11-23"')[0].values[0][0];
+    assert.ok(comment.includes('New Replacement Workout'));
+    assert.ok(!comment.includes('Old workout comment'));
+
+    verifyDb.close();
+  });
 });

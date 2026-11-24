@@ -158,10 +158,31 @@ export async function injectWorkouts(buffer, stagedWorkouts, options = {}) {
 
     let addedSetsCount = 0;
     let addedWorkoutsCount = 0;
+    let overwrittenDatesCount = 0;
 
     for (const workout of stagedWorkouts) {
       if (!workout.date || !workout.exercises?.length) continue;
       addedWorkoutsCount += 1;
+
+      // Overwrite existing workout on date collision if requested (#100)
+      if (workout.overwrite || options.overwriteExisting) {
+        try {
+          db.run('DELETE FROM training_log WHERE date = ?', [workout.date]);
+          overwrittenDatesCount += 1;
+        } catch {
+          // Table might be absent in synthetic tests
+        }
+        try {
+          db.run('DELETE FROM WorkoutComment WHERE date = ?', [workout.date]);
+        } catch {
+          // Optional table
+        }
+        try {
+          db.run('DELETE FROM Comment WHERE date = ?', [workout.date]);
+        } catch {
+          // Optional table
+        }
+      }
 
       // Add workout comment if available and table exists
       if (workout.description || workout.title) {
@@ -219,10 +240,11 @@ export async function injectWorkouts(buffer, stagedWorkouts, options = {}) {
     }
 
     // Verify non-destructive integrity
+    // Verify non-destructive integrity (unless user explicitly overwrote an existing date)
     const postCompletedSets = Number(db.exec('SELECT COUNT(*) FROM training_log WHERE is_complete = 1')[0]?.values[0][0] ?? 0);
     const postTotalSets = Number(db.exec('SELECT COUNT(*) FROM training_log')[0]?.values[0][0] ?? 0);
 
-    if (postCompletedSets !== preCompletedSets) {
+    if (!overwrittenDatesCount && postCompletedSets !== preCompletedSets) {
       throw new Error(`Integrity invariant violated: completed sets changed from ${preCompletedSets} to ${postCompletedSets}`);
     }
 
@@ -240,6 +262,7 @@ export async function injectWorkouts(buffer, stagedWorkouts, options = {}) {
         postTotalSets,
         addedSetsCount,
         addedWorkoutsCount,
+        overwrittenDatesCount,
         integrity
       }
     };
