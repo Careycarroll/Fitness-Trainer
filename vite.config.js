@@ -33,7 +33,8 @@ export default defineConfig({
         // webp is here and jpg is NOT, deliberately. The 300px thumbnails are
         // precached so the library works offline (ADR-001); the full-size
         // originals under the same directory are ~40 MB and load on tap only.
-        globPatterns: ['**/*.{js,css,html,json,svg,png,webp,webmanifest}'],
+        // wasm is precached so sql.js offline backup injection works with zero network (ADR-001).
+        globPatterns: ['**/*.{js,css,html,json,svg,png,webp,webmanifest,wasm}'],
         navigateFallback: `${base}index.html`
       },
       manifest: {
