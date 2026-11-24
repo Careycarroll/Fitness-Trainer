@@ -867,6 +867,9 @@ export function mount(root, defs) {
 
     listBox.innerHTML = stagedWorkouts.map((w, i) => {
       const collides = existingDates.has(w.date);
+      if (collides && w.overwrite === undefined) {
+        w.overwrite = true; // Default collision to overwrite mode
+      }
       return `
         <div class="card staged-workout-card${collides ? ' staged-collision' : ''}">
           <div class="staged-card-head">
@@ -878,15 +881,15 @@ export function mount(root, defs) {
           </div>
           <h4 class="staged-title">${esc(w.title)}</h4>
           ${collides ? `
-            <div class="staged-collision-options" style="margin: 0.6rem 0; padding: 0.6rem 0.8rem; background: rgba(234, 179, 8, 0.08); border-radius: 6px; border: 1px dashed rgba(234, 179, 8, 0.4);">
-              <p style="margin: 0 0 0.4rem; font-weight: 600; color: #facc15; font-size: 0.85rem;">⚠️ Existing workout in history for ${esc(w.date)}</p>
-              <div style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.85rem;">
-                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--text-color, #fff);">
-                  <input type="radio" name="collision-mode-${i}" class="staged-collision-radio" data-staged-idx="${i}" value="overwrite" ${w.overwrite ? 'checked' : ''} style="cursor: pointer;" />
+            <div class="staged-collision-options">
+              <p>⚠️ Existing workout in history for ${esc(w.date)}</p>
+              <div class="staged-collision-group">
+                <label>
+                  <input type="radio" name="collision-mode-${i}" class="staged-collision-radio" data-staged-idx="${i}" value="overwrite" ${w.overwrite !== false ? 'checked' : ''} />
                   <span><strong>Overwrite / Replace:</strong> Wipe old sets on ${esc(w.date)} and write this new workout</span>
                 </label>
-                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--text-muted, #aaa);">
-                  <input type="radio" name="collision-mode-${i}" class="staged-collision-radio" data-staged-idx="${i}" value="merge" ${!w.overwrite ? 'checked' : ''} style="cursor: pointer;" />
+                <label>
+                  <input type="radio" name="collision-mode-${i}" class="staged-collision-radio" data-staged-idx="${i}" value="merge" ${w.overwrite === false ? 'checked' : ''} />
                   <span><strong>Merge / Append:</strong> Keep old sets and append new sets to the same day</span>
                 </label>
               </div>
@@ -1142,6 +1145,18 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
 
         if (stagedWorkouts.length > 0) {
           if (syncStatusMsg) syncStatusMsg.textContent = 'Injecting workouts into SQLite database...';
+
+          // Sync radio buttons state directly from DOM before injection
+          const listBox = root.querySelector('#sync-staged-list');
+          if (listBox) {
+            listBox.querySelectorAll('.staged-collision-radio:checked').forEach((radio) => {
+              const idx = Number(radio.dataset.stagedIdx);
+              if (stagedWorkouts[idx]) {
+                stagedWorkouts[idx].overwrite = (radio.value === 'overwrite');
+              }
+            });
+          }
+
           const globalOverwrite = root.querySelector('#sync-global-overwrite-check')?.checked || false;
           const { buffer, summary } = await injectWorkouts(loadedFitNotesBuffer, stagedWorkouts, { overwriteExisting: globalOverwrite });
           exportBuffer = buffer;

@@ -77,11 +77,30 @@ export async function inspectDate(buffer, dateStr) {
   const SQL = await getSql();
   const db = new SQL.Database(new Uint8Array(buffer));
   try {
+    let hasDuration = false;
+    try {
+      const logCols = db.exec('PRAGMA table_info(training_log)')[0]?.values ?? [];
+      hasDuration = logCols.some((col) => col[1] === 'duration_seconds');
+    } catch {
+      hasDuration = false;
+    }
+
+    let hasCategoryTable = false;
+    try {
+      hasCategoryTable = db.exec("SELECT 1 FROM sqlite_master WHERE type='table' AND name='Category'").length > 0;
+    } catch {
+      hasCategoryTable = false;
+    }
+
+    const durCol = hasDuration ? 't.duration_seconds' : '0 AS duration_seconds';
+    const catCol = hasCategoryTable ? 'c.name' : '"Uncategorized" AS category_name';
+    const catJoin = hasCategoryTable ? 'LEFT JOIN Category c ON c._id = e.category_id' : '';
+
     const sets = db.exec(`
-      SELECT e.name, t.metric_weight, t.reps, t.duration_seconds, t.is_complete, c.name
+      SELECT e.name, t.metric_weight, t.reps, ${durCol}, t.is_complete, ${catCol}
       FROM training_log t
       JOIN exercise e ON e._id = t.exercise_id
-      LEFT JOIN Category c ON c._id = e.category_id
+      ${catJoin}
       WHERE t.date = ?
       ORDER BY t._id ASC
     `, [dateStr])[0]?.values ?? [];
@@ -172,6 +191,18 @@ export async function injectWorkouts(buffer, stagedWorkouts, options = {}) {
       }
     }
 
+    let hasExTypeCol = false;
+    let hasExIncCol = false;
+    let hasExRestCol = false;
+    try {
+      const exCols = db.exec('PRAGMA table_info(exercise)')[0]?.values ?? [];
+      hasExTypeCol = exCols.some((col) => col[1] === 'exercise_type_id');
+      hasExIncCol = exCols.some((col) => col[1] === 'weight_increment');
+      hasExRestCol = exCols.some((col) => col[1] === 'default_rest_time');
+    } catch {
+      // ignore
+    }
+
     const getOrCreateExercise = (name, categoryName = 'Legs', exerciseTypeId = 0) => {
       const key = name.trim().toLowerCase();
       if (existingExercises.has(key)) {
@@ -185,22 +216,40 @@ export async function injectWorkouts(buffer, stagedWorkouts, options = {}) {
         }
       }
       const catId = resolveCategory(categoryName);
+      const exColsList = ['name', 'category_id'];
+      const exValsList = [name.trim(), catId];
+      if (hasExTypeCol) {
+        exColsList.push('exercise_type_id');
+        exValsList.push(exerciseTypeId);
+      }
+      if (hasExIncCol) {
+        exColsList.push('weight_increment');
+        exValsList.push(5);
+      }
+      if (hasExRestCol) {
+        exColsList.push('default_rest_time');
+        exValsList.push(60);
+      }
+      const exPlaceholders = exColsList.map(() => '?').join(', ');
       db.run(
-        'INSERT INTO exercise (name, category_id, exercise_type_id, weight_increment, default_rest_time) VALUES (?, ?, ?, 5, 60)',
-        [name.trim(), catId, exerciseTypeId]
+        `INSERT INTO exercise (${exColsList.join(', ')}) VALUES (${exPlaceholders})`,
+        exValsList
       );
       const newId = Number(db.exec('SELECT last_insert_rowid()')[0].values[0][0]);
       existingExercises.set(key, { id: newId, name: name.trim(), catId, typeId: exerciseTypeId });
       return newId;
     };
 
-    // Check if training_log supports duration_seconds column (native FitNotes schema)
+    // Check if training_log supports duration_seconds and unit columns (native FitNotes schema)
     let hasDurationCol = false;
+    let hasUnitCol = false;
     try {
       const logCols = db.exec('PRAGMA table_info(training_log)')[0]?.values ?? [];
       hasDurationCol = logCols.some((col) => col[1] === 'duration_seconds');
+      hasUnitCol = logCols.some((col) => col[1] === 'unit');
     } catch {
       hasDurationCol = false;
+      hasUnitCol = false;
     }
 
     let addedSetsCount = 0;
@@ -258,17 +307,26 @@ export async function injectWorkouts(buffer, stagedWorkouts, options = {}) {
           const sDuration = s.durationSeconds ?? durationSeconds;
           const sWeight = s.metricWeight ?? metricWeight;
 
-          if (hasDurationCol) {
-            db.run(
-              'INSERT INTO training_log (exercise_id, date, metric_weight, reps, unit, is_complete, duration_seconds) VALUES (?, ?, ?, ?, ?, 0, ?)',
-              [exerciseId, workout.date, sWeight, sReps, unit, sDuration]
-            );
-          } else {
-            db.run(
-              'INSERT INTO training_log (exercise_id, date, metric_weight, reps, unit, is_complete) VALUES (?, ?, ?, ?, ?, 0)',
-              [exerciseId, workout.date, sWeight, sReps, unit]
-            );
+          const cols = ['exercise_id', 'date', 'metric_weight', 'reps'];
+          const vals = [exerciseId, workout.date, sWeight, sReps];
+
+          if (hasUnitCol) {
+            cols.push('unit');
+            vals.push(unit);
           }
+          cols.push('is_complete');
+          vals.push(0);
+
+          if (hasDurationCol) {
+            cols.push('duration_seconds');
+            vals.push(sDuration);
+          }
+
+          const placeholders = cols.map(() => '?').join(', ');
+          db.run(
+            `INSERT INTO training_log (${cols.join(', ')}) VALUES (${placeholders})`,
+            vals
+          );
           const logId = Number(db.exec('SELECT last_insert_rowid()')[0].values[0][0]);
           addedSetsCount += 1;
 

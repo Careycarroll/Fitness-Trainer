@@ -1,7 +1,7 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
-import { inspectDatabase, injectWorkouts, injectCatalog, getSql } from '../js/storage/sqlite-injector.js';
+import { inspectDatabase, inspectDate, injectWorkouts, injectCatalog, getSql } from '../js/storage/sqlite-injector.js';
 
 const SAMPLE_DB_PATH = '/Users/careycarroll/.gemini/antigravity/brain/ee93e30f-3978-4fe2-8775-b176195e79cf/.user_uploaded/media_1795479245274_91abe76e.fitnotes';
 
@@ -278,6 +278,62 @@ describe('SQLite WASM Injector for FitNotes Android (#92)', () => {
     assert.ok(comment.includes('New Replacement Workout'));
     assert.ok(!comment.includes('Old workout comment'));
 
+    verifyDb.close();
+  });
+
+  test('inspectDate returns parsed exercise details for a given date (#101)', async () => {
+    const SQL = await getSql();
+    const db = new SQL.Database();
+
+    db.run('CREATE TABLE Category (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL)');
+    db.run('INSERT INTO Category VALUES (13, "Chest")');
+
+    db.run('CREATE TABLE exercise (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, category_id INTEGER NOT NULL, exercise_type_id INTEGER NOT NULL DEFAULT 0)');
+    db.run('CREATE TABLE training_log (_id INTEGER PRIMARY KEY AUTOINCREMENT, exercise_id INTEGER NOT NULL, date DATE NOT NULL, metric_weight INTEGER NOT NULL, reps INTEGER NOT NULL, unit INTEGER NOT NULL DEFAULT 0, is_complete INTEGER NOT NULL DEFAULT 0, duration_seconds INTEGER NOT NULL DEFAULT 0)');
+    db.run('CREATE TABLE WorkoutComment (_id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT NOT NULL, comment TEXT NOT NULL)');
+
+    db.run('INSERT INTO exercise (name, category_id) VALUES ("Dips", 13)');
+    db.run('INSERT INTO training_log (exercise_id, date, metric_weight, reps, is_complete, duration_seconds) VALUES (1, "2026-11-23", 0, 12, 1, 0)');
+    db.run('INSERT INTO WorkoutComment (date, comment) VALUES ("2026-11-23", "Good pump")');
+
+    const buf = db.export();
+    db.close();
+
+    const result = await inspectDate(buf, '2026-11-23');
+    assert.equal(result.date, '2026-11-23');
+    assert.equal(result.totalSets, 1);
+    assert.equal(result.exercises[0].name, 'Dips');
+    assert.equal(result.exercises[0].reps, 12);
+    assert.equal(result.exercises[0].isComplete, true);
+    assert.equal(result.workoutComment, 'Good pump');
+  });
+
+  test('injectWorkouts succeeds on minimal schema missing optional unit column', async () => {
+    const SQL = await getSql();
+    const db = new SQL.Database();
+
+    // Minimal table without unit column
+    db.run('CREATE TABLE exercise (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, category_id INTEGER NOT NULL)');
+    db.run('CREATE TABLE training_log (_id INTEGER PRIMARY KEY AUTOINCREMENT, exercise_id INTEGER NOT NULL, date DATE NOT NULL, metric_weight INTEGER NOT NULL, reps INTEGER NOT NULL, is_complete INTEGER NOT NULL DEFAULT 0)');
+
+    const baseBuf = db.export();
+    db.close();
+
+    const staged = [
+      {
+        date: '2026-11-26',
+        title: 'Minimal Workout',
+        exercises: [{ name: 'Air Squat', category: 'Legs', reps: 20, setCount: 1 }]
+      }
+    ];
+
+    const { buffer, summary } = await injectWorkouts(baseBuf, staged);
+    assert.ok(buffer);
+    assert.equal(summary.addedSetsCount, 1);
+
+    const verifyDb = new SQL.Database(buffer);
+    const count = verifyDb.exec('SELECT COUNT(*) FROM training_log WHERE date = "2026-11-26"')[0].values[0][0];
+    assert.equal(count, 1);
     verifyDb.close();
   });
 });

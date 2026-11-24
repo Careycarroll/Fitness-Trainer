@@ -1224,6 +1224,77 @@ button[disabled] {
   background: color-mix(in srgb, var(--warn) 6%, var(--surface));
 }
 
+/* Radio and checkbox reset for Sync Hub collision options (#102) */
+.staged-collision-options input[type="radio"],
+.sync-collision-banner input[type="checkbox"] {
+  width: 1.15rem !important;
+  height: 1.15rem !important;
+  min-width: 1.15rem !important;
+  min-height: 1.15rem !important;
+  max-width: 1.15rem !important;
+  max-height: 1.15rem !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  flex: none !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+  accent-color: var(--accent, #e5484d) !important;
+  cursor: pointer !important;
+}
+
+.staged-collision-options {
+  margin: 10px 0;
+  padding: 10px 14px;
+  background: rgba(234, 179, 8, 0.08);
+  border: 1px dashed rgba(234, 179, 8, 0.4);
+  border-radius: var(--radius);
+}
+
+.staged-collision-options p {
+  margin: 0 0 8px;
+  font-weight: 600;
+  color: #facc15;
+  font-size: 0.85rem;
+}
+
+.staged-collision-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.staged-collision-group label {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 10px !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+  font-size: 0.88rem !important;
+  line-height: 1.3;
+  color: var(--text) !important;
+}
+
+.sync-collision-banner {
+  margin: 8px 0 12px;
+  padding: 10px 14px;
+  background: rgba(234, 179, 8, 0.1);
+  border: 1px solid rgba(234, 179, 8, 0.3);
+  border-radius: var(--radius);
+}
+
+.sync-collision-banner label {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 10px !important;
+  font-size: 0.9rem !important;
+  cursor: pointer !important;
+  color: #facc15 !important;
+  margin: 0 !important;
+}
+
 .staged-card-head {
   display: flex;
   align-items: center;
