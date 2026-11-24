@@ -67,6 +67,53 @@ export async function inspectDatabase(buffer) {
 }
 
 /**
+ * Inspect the exact exercises and sets logged in a .fitnotes SQLite database for a specific date.
+ *
+ * @param {ArrayBuffer|Uint8Array} buffer
+ * @param {string} dateStr YYYY-MM-DD
+ * @returns {Promise<object>}
+ */
+export async function inspectDate(buffer, dateStr) {
+  const SQL = await getSql();
+  const db = new SQL.Database(new Uint8Array(buffer));
+  try {
+    const sets = db.exec(`
+      SELECT e.name, t.metric_weight, t.reps, t.duration_seconds, t.is_complete, c.name
+      FROM training_log t
+      JOIN exercise e ON e._id = t.exercise_id
+      LEFT JOIN Category c ON c._id = e.category_id
+      WHERE t.date = ?
+      ORDER BY t._id ASC
+    `, [dateStr])[0]?.values ?? [];
+
+    let workoutComment = '';
+    try {
+      workoutComment = db.exec('SELECT comment FROM WorkoutComment WHERE date = ?', [dateStr])[0]?.values[0]?.[0] ?? '';
+    } catch {
+      // Table might not exist
+    }
+
+    const exercises = sets.map(([name, weight, reps, duration, isComplete, category]) => ({
+      name,
+      weight: Number(weight || 0),
+      reps: Number(reps || 0),
+      duration: Number(duration || 0),
+      isComplete: Boolean(isComplete),
+      category: category || 'Uncategorized'
+    }));
+
+    return {
+      date: dateStr,
+      workoutComment,
+      totalSets: sets.length,
+      exercises
+    };
+  } finally {
+    db.close();
+  }
+}
+
+/**
  * Inject planned workouts into a .fitnotes SQLite database non-destructively.
  *
  * @param {ArrayBuffer|Uint8Array} buffer
