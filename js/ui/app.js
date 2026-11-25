@@ -591,26 +591,28 @@ export function mount(root, defs) {
           </form>
         </aside>
         <div class="view-out">
-          <section id="wod-runner-panel" class="card wod-timer-panel" hidden>
-            <div class="wod-timer-top">
-              <strong id="wod-view-title">WOD Runner</strong>
-              <span class="note" id="wod-view-total">00:00</span>
-            </div>
-            <div class="wod-timer-top" style="margin-top:4px;">
-              <strong id="wod-view-round">Ready</strong>
-              <button type="button" id="wod-view-voice-btn" class="ghost logger-mini-btn">🔊 Voice On</button>
-            </div>
-            <div id="wod-view-clock" class="wod-timer-clock">00:00</div>
-            <div class="wod-timer-cues">
-              <div><span class="note">NOW:</span> <strong id="wod-view-now">—</strong></div>
-              <div><span class="note">NEXT:</span> <span id="wod-view-next">—</span></div>
-            </div>
-            <div class="storage-actions">
-              <button type="button" id="wod-view-toggle-btn" class="primary">▶ Start</button>
-              <button type="button" id="wod-view-reset-btn" class="ghost">↺ Reset</button>
-              <button type="button" id="wod-view-round-btn" class="ghost">+1 Round</button>
-              <button type="button" id="wod-view-save-btn" class="primary">✓ Finish &amp; Save to Log</button>
-              <button type="button" id="wod-view-close-btn" class="ghost">✕ Close</button>
+          <section id="wod-runner-panel" class="hold-timer-overlay" hidden>
+            <div class="card wod-timer-panel hold-timer-card">
+              <div class="wod-timer-top">
+                <strong id="wod-view-title">WOD Runner</strong>
+                <span class="note" id="wod-view-total">00:00</span>
+              </div>
+              <div class="wod-timer-top" style="margin-top:4px;">
+                <strong id="wod-view-round">Ready</strong>
+                <button type="button" id="wod-view-voice-btn" class="ghost logger-mini-btn">🔊 Voice On</button>
+              </div>
+              <div id="wod-view-clock" class="wod-timer-clock">00:00</div>
+              <div class="wod-timer-cues" style="text-align:left;">
+                <div><span class="note">NOW:</span> <strong id="wod-view-now">—</strong></div>
+                <div><span class="note">NEXT:</span> <span id="wod-view-next">—</span></div>
+              </div>
+              <div class="storage-actions" style="justify-content:center;">
+                <button type="button" id="wod-view-toggle-btn" class="primary">▶ Start</button>
+                <button type="button" id="wod-view-reset-btn" class="ghost">↺ Reset</button>
+                <button type="button" id="wod-view-round-btn" class="ghost">+1 Round</button>
+                <button type="button" id="wod-view-save-btn" class="primary">✓ Finish &amp; Save to Log</button>
+                <button type="button" id="wod-view-close-btn" class="ghost">✕ Close</button>
+              </div>
             </div>
           </section>
           <section id="wod-out" class="view-out" aria-live="polite"></section>
@@ -2001,6 +2003,13 @@ export function mount(root, defs) {
     if (!tObj?.config) return;
     const { clockEl, totalEl, roundEl, nowEl, nextEl, toggleBtn } = els;
 
+    if (tObj.waitingIntro) {
+      if (clockEl) clockEl.textContent = 'GET READY';
+      if (roundEl) roundEl.textContent = 'Briefing…';
+      if (toggleBtn) toggleBtn.textContent = '⏹ Cancel Prep';
+      return;
+    }
+
     if (tObj.prepEndMs > 0) {
       const prepRem = Math.max(0, Math.ceil((tObj.prepEndMs - now) / 1000));
       tObj.prepRemainingSec = prepRem;
@@ -2010,12 +2019,9 @@ export function mount(root, defs) {
         if (roundEl) roundEl.textContent = `Next: ${firstLabel}`;
         if (toggleBtn) toggleBtn.textContent = '⏹ Cancel Prep';
         if (prepRem !== tObj.lastPrepSpoken) {
-          const isFirstTick = tObj.lastPrepSpoken === null;
           tObj.lastPrepSpoken = prepRem;
           playTimerBeep(660, 90);
-          if (isFirstTick && prepRem > 1) {
-            speakAnnouncement(`${firstLabel} in ${prepRem}`, voiceEnabled);
-          } else if (prepRem <= 5) {
+          if (prepRem <= 5) {
             speakAnnouncement(String(prepRem), voiceEnabled);
           } else if (prepRem === 10) {
             speakAnnouncement('10 seconds', voiceEnabled);
@@ -2155,7 +2161,8 @@ export function mount(root, defs) {
       tObj.running = false;
       return defaultLabel;
     }
-    if (tObj.prepEndMs > 0) {
+    if (tObj.waitingIntro || tObj.prepEndMs > 0) {
+      tObj.waitingIntro = false;
       tObj.prepEndMs = 0;
       tObj.prepRemainingSec = 0;
       tObj.lastPrepSpoken = null;
@@ -2163,9 +2170,23 @@ export function mount(root, defs) {
     }
     const prepSec = Number(localStorage.getItem(WOD_COUNTDOWN_KEY) ?? 3);
     if (tObj.accumulatedSec === 0 && prepSec > 0) {
-      tObj.prepEndMs = Date.now() + prepSec * 1000;
-      tObj.prepRemainingSec = prepSec;
-      tObj.lastPrepSpoken = null;
+      const movements = tObj.config?.stations?.length
+        ? [tObj.config.stations[0].name]
+        : (tObj.config?.movements || []);
+      const introText = movements.length
+        ? `Get ready: ${movements.join(', ')}`
+        : `Get ready for ${tObj.config?.mode?.toUpperCase() || 'workout'}`;
+      tObj.waitingIntro = true;
+      speakAnnouncement(introText, voiceEnabled, {
+        onDone: () => {
+          if (!tObj.waitingIntro) return;
+          tObj.waitingIntro = false;
+          tObj.prepEndMs = Date.now() + prepSec * 1000;
+          tObj.prepRemainingSec = prepSec;
+          tObj.lastPrepSpoken = null;
+          updateTimerDisplays();
+        }
+      });
       return '⏹ Cancel Prep';
     }
     tObj.startedMs = Date.now();
@@ -2705,6 +2726,7 @@ export function mount(root, defs) {
       }
       if (e.target.closest('#wod-view-reset-btn')) {
         wodViewTimer.running = false;
+        wodViewTimer.waitingIntro = false;
         wodViewTimer.accumulatedSec = 0;
         wodViewTimer.lastRound = null;
         wodViewTimer.lastPhase = null;
@@ -2729,8 +2751,9 @@ export function mount(root, defs) {
         if (btn) btn.textContent = voiceEnabled ? '🔊 Voice On' : '🔇 Muted';
         return;
       }
-      if (e.target.closest('#wod-view-close-btn')) {
+      if (e.target === wodRunnerPanel || e.target.closest('#wod-view-close-btn')) {
         wodViewTimer.running = false;
+        wodViewTimer.waitingIntro = false;
         wodViewTimer.prepEndMs = 0;
         wodViewTimer.active = false;
         wodRunnerPanel.hidden = true;

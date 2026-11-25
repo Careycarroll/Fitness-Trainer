@@ -205,17 +205,35 @@ export function computeConditioningState(config, elapsedSec) {
 
 /**
  * Speak a short coaching cue via Web Speech API if available and enabled.
+ * When `onDone` is provided, invokes it once after speech finishes (or immediately if muted/unavailable).
  */
-export function speakAnnouncement(text, enabled = true) {
-  if (!enabled || !text) return false;
-  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return false;
+export function speakAnnouncement(text, enabled = true, { onDone = null, maxWaitMs = 6000 } = {}) {
+  const finishOnce = (() => {
+    let called = false;
+    return () => {
+      if (called) return;
+      called = true;
+      if (typeof onDone === 'function') onDone();
+    };
+  })();
+
+  if (!enabled || !text || typeof window === 'undefined' || !('speechSynthesis' in window)) {
+    finishOnce();
+    return false;
+  }
   try {
     window.speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(text);
     utter.rate = 1.05;
+    if (typeof onDone === 'function') {
+      const timer = setTimeout(finishOnce, maxWaitMs);
+      utter.onend = () => { clearTimeout(timer); finishOnce(); };
+      utter.onerror = () => { clearTimeout(timer); finishOnce(); };
+    }
     window.speechSynthesis.speak(utter);
     return true;
   } catch {
+    finishOnce();
     return false;
   }
 }
