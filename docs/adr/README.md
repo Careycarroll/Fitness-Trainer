@@ -20,7 +20,7 @@ That history is the point: it shows what was believed and why it changed.
 Nobody reads these front to back. You arrive with a question — start here.
 
 **Platform, storage, and process**
-[001](ADR-001-platform-web-pwa.md) · [004](ADR-004-storage-indexeddb-export.md) · [005](ADR-005-fork-scaffolding.md) · [007](ADR-007-no-deadline-quality-gates.md) · [011](ADR-011-persistence-gate.md) · [031](ADR-031-planner-not-logger.md)
+[001](ADR-001-platform-web-pwa.md) · [004](ADR-004-storage-indexeddb-export.md) · [005](ADR-005-fork-scaffolding.md) · [007](ADR-007-no-deadline-quality-gates.md) · [011](ADR-011-persistence-gate.md) · [031](ADR-031-planner-not-logger.md) · [033](ADR-033-capacitor-android-logger-then-kotlin.md)
 
 **Engine and generation**
 [002](ADR-002-deterministic-rules-engine.md) · [010](ADR-010-styles-as-data.md) · [013](ADR-013-equipment-profiles-and-first-style.md) · [014](ADR-014-editable-profiles-and-whole-session-conditioning.md) · [015](ADR-015-arbitrary-training-days.md) · [027](ADR-027-block-setgroup-nesting.md) · [032](ADR-032-workout-of-the-day-and-benchmark-presets.md)
@@ -72,6 +72,7 @@ Nobody reads these front to back. You arrive with a question — start here.
 | [030](ADR-030-defer-distance-and-pace.md) | Duration and intensity remain the whole conditioning prescription | PROPOSED | 028, 009 | The app plans how long and how hard, not how far and how fast. |
 | [031](ADR-031-planner-not-logger.md) | Trainer is a planner; FitNotes is the system of record for performed work | PROPOSED | 011, 004, 023 | Two systems of record disagree, and nothing resolves the disagreement. |
 | [032](ADR-032-workout-of-the-day-and-benchmark-presets.md) | Workout of the Day as date-seeded generation and preset benchmarks | PROPOSED | 002, 010, 012 | Daily training splits into date-seeded HIIT and authored CrossFit benchmarks. |
+| [033](ADR-033-capacitor-android-logger-then-kotlin.md) | Capacitor Android shell and in-app logger first, native Kotlin later | ACCEPTED | 001, 004, 011 | Ship logger and `.apk` via Capacitor now; port to Kotlin once stable. |
 
 ---
 
