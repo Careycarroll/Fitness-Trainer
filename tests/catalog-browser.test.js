@@ -41,6 +41,12 @@ describe('Browsable Exercise Catalog (#83)', () => {
     });
     assert.ok(bwOnly.length > 0);
     assert.ok(bwOnly.every((e) => e.equipment.every((tok) => tok === 'bodyweight')));
+
+    const noBw = filterCatalogExercises(exercises, {
+      excludeNoEquipment: true
+    });
+    assert.ok(noBw.length > 0);
+    assert.ok(noBw.every((e) => e.equipment.some((tok) => tok !== 'bodyweight')));
   });
 
   test('formatTrackingLabel formats known and fallback tracking types cleanly', () => {

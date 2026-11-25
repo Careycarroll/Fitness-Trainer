@@ -423,10 +423,16 @@ export function mount(root, defs) {
               <select id="catalog-tracking"><option value="">All types</option></select>
             </label>
           </div>
-          <label class="catalog-owned-toggle">
-            <input type="checkbox" id="catalog-owned-only" />
-            <span>Only exercises performable with my active equipment profile</span>
-          </label>
+          <div class="catalog-toggles" style="display:flex; flex-wrap:wrap; gap:12px 20px;">
+            <label class="catalog-owned-toggle">
+              <input type="checkbox" id="catalog-owned-only" />
+              <span>Only exercises performable with my active equipment profile</span>
+            </label>
+            <label class="catalog-owned-toggle">
+              <input type="checkbox" id="catalog-exclude-bodyweight" />
+              <span>Exclude bodyweight / no-equipment exercises</span>
+            </label>
+          </div>
         </div>
         <div id="catalog-list" class="catalog-grid"></div>
         <div id="catalog-more-wrap" class="catalog-more-wrap" hidden>
@@ -911,6 +917,7 @@ export function mount(root, defs) {
   const catEquipment = root.querySelector('#catalog-equipment');
   const catTracking = root.querySelector('#catalog-tracking');
   const catOwnedOnly = root.querySelector('#catalog-owned-only');
+  const catExcludeBw = root.querySelector('#catalog-exclude-bodyweight');
   const catResetBtn = root.querySelector('#catalog-reset-btn');
   const catCount = root.querySelector('#catalog-count');
   const catList = root.querySelector('#catalog-list');
@@ -955,12 +962,14 @@ export function mount(root, defs) {
       equipment: catEquipment?.value || '',
       trackingType: catTracking?.value || '',
       onlyMyEquipment: Boolean(catOwnedOnly?.checked),
-      ownedEquipment: profileObj?.owns || []
+      ownedEquipment: profileObj?.owns || [],
+      excludeNoEquipment: Boolean(catExcludeBw?.checked)
     };
 
     const hasFilter = Boolean(
       filters.query || filters.muscle || filters.pattern ||
-      filters.equipment || filters.trackingType || filters.onlyMyEquipment
+      filters.equipment || filters.trackingType || filters.onlyMyEquipment ||
+      filters.excludeNoEquipment
     );
     if (catResetBtn) catResetBtn.hidden = !hasFilter;
 
@@ -1035,7 +1044,7 @@ export function mount(root, defs) {
     if (catMoreWrap) catMoreWrap.hidden = true;
   }
 
-  [catSearch, catMuscle, catPattern, catEquipment, catTracking, catOwnedOnly].forEach((el) => {
+  [catSearch, catMuscle, catPattern, catEquipment, catTracking, catOwnedOnly, catExcludeBw].forEach((el) => {
     if (!el) return;
     el.addEventListener(el === catSearch ? 'input' : 'change', renderCatalog);
   });
@@ -1048,6 +1057,7 @@ export function mount(root, defs) {
       if (catEquipment) catEquipment.value = '';
       if (catTracking) catTracking.value = '';
       if (catOwnedOnly) catOwnedOnly.checked = false;
+      if (catExcludeBw) catExcludeBw.checked = false;
       renderCatalog();
     });
   }

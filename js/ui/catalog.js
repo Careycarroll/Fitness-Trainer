@@ -46,6 +46,7 @@ export function extractCatalogFacets(exercises) {
  * @param {string} [filters.trackingType]
  * @param {boolean} [filters.onlyMyEquipment]
  * @param {Iterable<string>} [filters.ownedEquipment]
+ * @param {boolean} [filters.excludeNoEquipment]
  * @returns {Array<object>}
  */
 export function filterCatalogExercises(exercises, filters = {}) {
@@ -56,7 +57,8 @@ export function filterCatalogExercises(exercises, filters = {}) {
     equipment = '',
     trackingType = '',
     onlyMyEquipment = false,
-    ownedEquipment = null
+    ownedEquipment = null,
+    excludeNoEquipment = false
   } = filters;
 
   const q = String(query).trim().toLowerCase();
@@ -81,6 +83,12 @@ export function filterCatalogExercises(exercises, filters = {}) {
       const req = ex.equipment || [];
       const performable = req.every((tok) => tok === 'bodyweight' || ownedSet.has(tok));
       if (!performable) return false;
+    }
+
+    if (excludeNoEquipment) {
+      const req = ex.equipment || [];
+      const hasRealEquipment = req.some((tok) => tok !== 'bodyweight');
+      if (!hasRealEquipment) return false;
     }
 
     if (q) {
