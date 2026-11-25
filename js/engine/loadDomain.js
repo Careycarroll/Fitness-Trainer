@@ -132,7 +132,8 @@ export function generateSession({
 
     const chosen = pick({
       pool: allowed, pattern, style, state, rng, isMain, dayMuscles, week,
-      slotsLeft: Math.max(1, target - state.blocks.length)
+      slotsLeft: Math.max(1, target - state.blocks.length),
+      catalog, request
     });
 
     if (!chosen) {
@@ -195,7 +196,8 @@ export function generateSession({
 
     const chosen = pick({
       pool: allowed, pattern, style, state, rng, isMain: false, dayMuscles, week,
-      slotsLeft: Math.max(1, target - state.blocks.length)
+      slotsLeft: Math.max(1, target - state.blocks.length),
+      catalog, request
     });
 
     if (!chosen) {
@@ -245,7 +247,7 @@ export function generateSession({
  * a session short one movement that says why beats one that quietly substituted
  * something the style does not program (ADR-014).
  */
-function pick({ pool, pattern, style, state, rng, isMain, slotsLeft, dayMuscles, week }) {
+function pick({ pool, pattern, style, state, rng, isMain, slotsLeft, dayMuscles, week, catalog = pool, request = null }) {
   const remaining = style.fatigueBudget - state.fatigueUsed;
 
   const legal = pool.filter((e) => {
@@ -271,25 +273,66 @@ function pick({ pool, pattern, style, state, rng, isMain, slotsLeft, dayMuscles,
   });
   if (legal.length === 0) return null;
 
+  const historyBias = summarizeHistory(request?.history, catalog);
+
   // Shuffle before scoring so equal scores break by seed rather than by catalog
   // order — otherwise every strength session opens with whichever squat row sits
   // earliest in 01_quads.csv.
   let best = null;
   let bestScore = -Infinity;
   for (const e of shuffle(rng, legal)) {
-    const s = score({ exercise: e, pattern, style, state, isMain, remaining, slotsLeft, dayMuscles, week });
+    const s = score({ exercise: e, pattern, style, state, isMain, remaining, slotsLeft, dayMuscles, week, historyBias });
     if (s > bestScore) { bestScore = s; best = e; }
   }
   return best;
+}
+
+function summarizeHistory(history, catalog) {
+  if (!Array.isArray(history) || history.length === 0) return null;
+  const byId = new Map(catalog.map((e) => [e.id, e]));
+  const exCounts = new Map();
+  const muscleSets = new Map();
+
+  for (const h of history) {
+    if (!h?.exerciseId) continue;
+    exCounts.set(h.exerciseId, (exCounts.get(h.exerciseId) ?? 0) + 1);
+    const ex = byId.get(h.exerciseId);
+    if (!ex) continue;
+    for (const m of ex.primaryMuscles || []) {
+      muscleSets.set(m, (muscleSets.get(m) ?? 0) + 1);
+    }
+    for (const m of ex.secondaryMuscles || []) {
+      muscleSets.set(m, (muscleSets.get(m) ?? 0) + 0.5);
+    }
+  }
+  const vals = [...muscleSets.values()];
+  const avgMuscle = vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : 0;
+  return { exCounts, muscleSets, avgMuscle };
+}
+
+function historyScoreAdjustment(exercise, historyBias, isMain) {
+  if (!historyBias) return 0;
+  const exSets = historyBias.exCounts.get(exercise.id) ?? 0;
+  const exPenalty = isMain ? Math.min(1.5, exSets * 0.15) : Math.min(3, exSets * 0.4);
+
+  let muscleDelta = 0;
+  const primaries = exercise.primaryMuscles || [];
+  if (primaries.length && historyBias.avgMuscle > 0) {
+    const avgTarget = primaries.reduce((sum, m) => sum + (historyBias.muscleSets.get(m) ?? 0), 0) / primaries.length;
+    if (avgTarget < historyBias.avgMuscle * 0.6) muscleDelta += 1.5; // boost under-trained muscles
+    else if (avgTarget > historyBias.avgMuscle * 1.6) muscleDelta -= 1.0; // ease over-biased muscles
+  }
+  return muscleDelta - exPenalty;
 }
 
 /**
  * Deliberately few terms. This is the function to tune when output looks wrong,
  * and one with fifteen weights cannot be reasoned about from a generated session.
  */
-function score({ exercise, pattern, style, state, isMain, remaining, slotsLeft, dayMuscles, week }) {
+function score({ exercise, pattern, style, state, isMain, remaining, slotsLeft, dayMuscles, week, historyBias = null }) {
   const emphasis = style.patternEmphasis[pattern] ?? 0;
   const muscles = muscleFit(exercise, dayMuscles);
+  const histAdj = historyScoreAdjustment(exercise, historyBias, isMain);
 
   // Main work wants the heaviest legal thing: it is the point of the session.
   // The muscle term is weighted to outrank ONE step of fatigueCost, so a chest
@@ -301,7 +344,7 @@ function score({ exercise, pattern, style, state, isMain, remaining, slotsLeft, 
   if (isMain) {
     return exercise.fatigueCost * 10 + emphasis * 2 + muscles * 8
       - familyPenalty(state, exercise, style)
-      - repeat * WEEK_REPEAT_MAIN;
+      - repeat * WEEK_REPEAT_MAIN + histAdj;
   }
 
   // Accessories aim to SPEND the remaining budget across the remaining slots
@@ -317,6 +360,7 @@ function score({ exercise, pattern, style, state, isMain, remaining, slotsLeft, 
     familyPenalty(state, exercise, style) -
     patternPenalty(state, pattern, style) * 2 -
     repeat * WEEK_REPEAT_ACCESSORY +
+    histAdj +
     // A nudge toward compounds among accessories, not a filter: an isolation row
     // is a legitimate accessory.
     ((exercise.primaryMuscles?.length ?? 0) > 1 ? 0.5 : 0)

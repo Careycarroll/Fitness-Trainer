@@ -633,3 +633,27 @@ export function queryCompletedSetsForMaxes(appDb) {
     rir: rir !== null ? Number(rir) : null
   }));
 }
+
+/**
+ * Query recent completed sets (last N days) for Planner recency/fatigue biasing (#120).
+ */
+export function queryRecentHistoryForPlanner(appDb, { days = 14 } = {}) {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - Number(days));
+  const cutoffStr = cutoff.toISOString().slice(0, 10);
+
+  const rows = appDb.exec(`
+    SELECT ls.exercise_id, ws.date, ls.rir
+    FROM logged_sets ls
+    JOIN workout_sessions ws ON ws.id = ls.session_id
+    WHERE ls.is_complete = 1
+      AND ws.date >= ?
+    ORDER BY ws.date DESC
+  `, [cutoffStr])[0]?.values ?? [];
+
+  return rows.map(([exerciseId, date, rir]) => ({
+    exerciseId,
+    date,
+    rir: rir !== null ? Number(rir) : null
+  }));
+}

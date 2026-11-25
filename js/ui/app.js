@@ -114,6 +114,7 @@ import {
   queryHistoryPerLift,
   queryDeloadInputs,
   queryCompletedSetsForMaxes,
+  queryRecentHistoryForPlanner,
   addBodyMetric,
   renderSvgLineChart,
   renderSvgBarChart,
@@ -207,7 +208,7 @@ let current = null;
 let currentDefs = null;
 let currentRequest = null;
 let visibleDay = 0;        // single-session mode: which day of the split is shown
-let scope = 'session';     // 'session' | 'block'
+let scope = 'block';     // 'session' | 'block'
 let edited = false;
 let pinnedSeed = null;     // set when the user asks to reproduce a draft
 let seedLabel = '';         // the user's number/name, shown separately from the resolved integer
@@ -495,8 +496,8 @@ export function mount(root, defs) {
           <form id="req" class="panel planner-form">
             <label>View
               <select name="scope">
-                <option value="session" selected>One day at a time</option>
-                <option value="block">All weeks</option>
+                <option value="block" selected>All weeks</option>
+                <option value="session">One day at a time</option>
               </select>
             </label>
             <label>Style
@@ -4379,9 +4380,16 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
   paintProfiles();
   hydrate(out, form);
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const f = new FormData(e.target);
+    let history = [];
+    try {
+      const appDb = await ensureAppDb();
+      history = queryRecentHistoryForPlanner(appDb, { days: 14 });
+    } catch {
+      history = [];
+    }
 
     currentRequest = {
       schemaVersion: 1,
@@ -4402,7 +4410,7 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
       // "give me a different one", which is what Generate should mean by default.
       seed: seedFrom(f.get('seed')),
       athlete: { skillLevel: Number(f.get('skillLevel')) },
-      history: []
+      history
     };
 
     visibleDay = 0;
