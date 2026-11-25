@@ -1,10 +1,14 @@
 name: Build Android Debug APK
 
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
   push:
     branches: [main]
     paths:
+      - '.github/workflows/android-apk.yml'
       - 'android/**'
       - 'capacitor.config.json'
       - 'package.json'
@@ -42,3 +46,18 @@ jobs:
         with:
           name: fitness-trainer-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Publish to rolling latest-android Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk fitness-trainer-debug.apk
+          if gh release view latest-android >/dev/null 2>&1; then
+            gh release upload latest-android fitness-trainer-debug.apk --clobber
+            gh release edit latest-android --notes "Latest Android debug APK from commit ${{ github.sha }}"
+          else
+            gh release create latest-android fitness-trainer-debug.apk \
+              --title "Latest Android Debug APK" \
+              --notes "Latest Android debug APK from commit ${{ github.sha }}" \
+              --prerelease
+          fi
