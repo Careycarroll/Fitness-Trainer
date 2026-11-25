@@ -2444,7 +2444,19 @@ export function mount(root, defs) {
       }
     });
 
+    const inspectChartTarget = (target) => {
+      const pt = target.closest('[data-chart-info]');
+      if (!pt) return;
+      const wrap = pt.closest('.trend-chart-wrap');
+      const readout = wrap?.querySelector('.trend-readout');
+      if (readout) readout.textContent = pt.dataset.chartInfo;
+      wrap?.querySelectorAll('.trend-point.is-active').forEach((el) => el.classList.remove('is-active'));
+      pt.classList.add('is-active');
+    };
+
+    viewTrends.addEventListener('pointermove', (e) => inspectChartTarget(e.target));
     viewTrends.addEventListener('click', async (e) => {
+      inspectChartTarget(e.target);
       if (e.target.closest('#trends-soft-reset-btn')) {
         if (!window.confirm('Soft reset your active baseline for this exercise? Your all-time PRs remain intact.')) return;
         const appDb = await ensureAppDb();

@@ -261,19 +261,25 @@ export function renderSvgDistributionBars(items, { width = 560 } = {}) {
   const rowsHtml = items.map((item, idx) => {
     const y = 6 + idx * rowH;
     const bw = Math.max(4, (item.value / maxVal) * barMaxW);
+    const info = `${item.label}: ${item.value} working sets (${item.pct}%)`;
     return `
-      <text x="${labelW - 8}" y="${y + 15}" text-anchor="end" fill="var(--text, #eee)" font-size="12">${escSvg(item.label)}</text>
-      <rect x="${labelW}" y="${y + 4}" width="${bw.toFixed(1)}" height="15" rx="4" fill="var(--accent, #e5484d)">
-        <title>${escSvg(`${item.label}: ${item.value} sets (${item.pct}%)`)}</title>
-      </rect>
-      <text x="${labelW + bw + 6}" y="${y + 15}" text-anchor="start" fill="var(--text-muted, #9aa)" font-size="11">${escSvg(`${item.value} (${item.pct}%)`)}</text>
+      <g class="trend-point" data-chart-info="${escSvg(info)}" tabindex="0">
+        <rect x="0" y="${y}" width="${width}" height="${rowH}" fill="transparent" />
+        <text x="${labelW - 8}" y="${y + 15}" text-anchor="end" fill="var(--text, #eee)" font-size="12">${escSvg(item.label)}</text>
+        <rect class="trend-bar" x="${labelW}" y="${y + 4}" width="${bw.toFixed(1)}" height="15" rx="4" fill="var(--accent, #e5484d)" />
+        <text x="${labelW + bw + 6}" y="${y + 15}" text-anchor="start" fill="var(--text-muted, #9aa)" font-size="11">${escSvg(`${item.value} (${item.pct}%)`)}</text>
+        <title>${escSvg(info)}</title>
+      </g>
     `;
   }).join('');
 
   return `
-    <svg class="trend-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Training distribution chart">
-      ${rowsHtml}
-    </svg>
+    <div class="trend-chart-wrap">
+      <div class="trend-readout" aria-live="polite">Tap or hover a row to inspect</div>
+      <svg class="trend-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Training distribution chart">
+        ${rowsHtml}
+      </svg>
+    </div>
   `;
 }
 
@@ -313,26 +319,36 @@ export function renderSvgLineChart(points, { width = 560, height = 180, unitSuff
   });
 
   const polyline = coords.map((c) => `${c.x},${c.y}`).join(' ');
-  const dots = coords.map((c) => `
-    <circle cx="${c.x}" cy="${c.y}" r="${c.isPr ? 5 : 3.5}" fill="${c.isPr ? '#facc15' : 'var(--accent, #e5484d)'}">
-      <title>${escSvg(`${c.date}: ${c.value}${unitSuffix}${c.isPr ? ' (PR)' : ''}`)}</title>
-    </circle>
-  `).join('');
+  const dots = coords.map((c) => {
+    const info = `${c.date}: ${c.value}${unitSuffix}${c.isPr ? ' 🏆 PR' : ''}`;
+    return `
+      <g class="trend-point" data-chart-info="${escSvg(info)}" tabindex="0">
+        <circle cx="${c.x}" cy="${c.y}" r="12" fill="transparent" />
+        <circle class="trend-dot" cx="${c.x}" cy="${c.y}" r="${c.isPr ? 5 : 3.5}" fill="${c.isPr ? '#facc15' : 'var(--accent, #e5484d)'}" />
+        <title>${escSvg(info)}</title>
+      </g>
+    `;
+  }).join('');
 
   const firstDate = points[0].date;
   const lastDate = points[points.length - 1].date;
+  const latest = points[points.length - 1];
+  const defaultReadout = `Latest — ${latest.date}: ${latest.value}${unitSuffix}${latest.isPr ? ' 🏆 PR' : ''}`;
 
   return `
-    <svg class="trend-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Progression trend chart">
-      <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT + plotH}" stroke="var(--border, #333)" stroke-width="1" />
-      <line x1="${padL}" y1="${padT + plotH}" x2="${padL + plotW}" y2="${padT + plotH}" stroke="var(--border, #333)" stroke-width="1" />
-      <text x="${padL - 6}" y="${padT + 4}" text-anchor="end" fill="var(--text-muted, #9aa)" font-size="11">${escSvg(maxVal + unitSuffix)}</text>
-      <text x="${padL - 6}" y="${padT + plotH}" text-anchor="end" fill="var(--text-muted, #9aa)" font-size="11">${escSvg(minVal + unitSuffix)}</text>
-      <text x="${padL}" y="${height - 6}" text-anchor="start" fill="var(--text-muted, #9aa)" font-size="11">${escSvg(firstDate)}</text>
-      <text x="${padL + plotW}" y="${height - 6}" text-anchor="end" fill="var(--text-muted, #9aa)" font-size="11">${escSvg(lastDate)}</text>
-      ${coords.length > 1 ? `<polyline fill="none" stroke="var(--accent, #e5484d)" stroke-width="2.5" points="${polyline}" />` : ''}
-      ${dots}
-    </svg>
+    <div class="trend-chart-wrap">
+      <div class="trend-readout" aria-live="polite">${escSvg(defaultReadout)}</div>
+      <svg class="trend-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Progression trend chart">
+        <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT + plotH}" stroke="var(--border, #333)" stroke-width="1" />
+        <line x1="${padL}" y1="${padT + plotH}" x2="${padL + plotW}" y2="${padT + plotH}" stroke="var(--border, #333)" stroke-width="1" />
+        <text x="${padL - 6}" y="${padT + 4}" text-anchor="end" fill="var(--text-muted, #9aa)" font-size="11">${escSvg(maxVal + unitSuffix)}</text>
+        <text x="${padL - 6}" y="${padT + plotH}" text-anchor="end" fill="var(--text-muted, #9aa)" font-size="11">${escSvg(minVal + unitSuffix)}</text>
+        <text x="${padL}" y="${height - 6}" text-anchor="start" fill="var(--text-muted, #9aa)" font-size="11">${escSvg(firstDate)}</text>
+        <text x="${padL + plotW}" y="${height - 6}" text-anchor="end" fill="var(--text-muted, #9aa)" font-size="11">${escSvg(lastDate)}</text>
+        ${coords.length > 1 ? `<polyline fill="none" stroke="var(--accent, #e5484d)" stroke-width="2.5" points="${polyline}" />` : ''}
+        ${dots}
+      </svg>
+    </div>
   `;
 }
 
@@ -358,21 +374,27 @@ export function renderSvgBarChart(bars, { width = 560, height = 160 } = {}) {
     const h = Math.max(2, (b.workouts / maxVal) * plotH);
     const x = padL + i * slotW + (slotW - barW) / 2;
     const y = padT + plotH - h;
+    const info = `Week of ${b.weekStart}: ${b.workouts} workout(s) · ${b.sets} sets`;
     return `
-      <rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="var(--accent, #e5484d)">
-        <title>${escSvg(`Week of ${b.weekStart}: ${b.workouts} workouts (${b.sets} sets)`)}</title>
-      </rect>
-      <text x="${(x + barW / 2).toFixed(1)}" y="${(y - 4).toFixed(1)}" text-anchor="middle" fill="var(--text-muted, #9aa)" font-size="10">${b.workouts}</text>
+      <g class="trend-point" data-chart-info="${escSvg(info)}" tabindex="0">
+        <rect x="${x.toFixed(1)}" y="${padT}" width="${barW.toFixed(1)}" height="${plotH}" fill="transparent" />
+        <rect class="trend-bar" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="var(--accent, #e5484d)" />
+        <text x="${(x + barW / 2).toFixed(1)}" y="${(y - 4).toFixed(1)}" text-anchor="middle" fill="var(--text-muted, #9aa)" font-size="10">${b.workouts}</text>
+        <title>${escSvg(info)}</title>
+      </g>
     `;
   }).join('');
 
   return `
-    <svg class="trend-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Weekly workouts chart">
-      <line x1="${padL}" y1="${padT + plotH}" x2="${padL + plotW}" y2="${padT + plotH}" stroke="var(--border, #333)" stroke-width="1" />
-      <text x="${padL}" y="${height - 6}" text-anchor="start" fill="var(--text-muted, #9aa)" font-size="11">${escSvg(bars[0].weekStart)}</text>
-      <text x="${padL + plotW}" y="${height - 6}" text-anchor="end" fill="var(--text-muted, #9aa)" font-size="11">${escSvg(bars[bars.length - 1].weekStart)}</text>
-      ${rects}
-    </svg>
+    <div class="trend-chart-wrap">
+      <div class="trend-readout" aria-live="polite">Tap or hover a bar to inspect</div>
+      <svg class="trend-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Weekly workouts chart">
+        <line x1="${padL}" y1="${padT + plotH}" x2="${padL + plotW}" y2="${padT + plotH}" stroke="var(--border, #333)" stroke-width="1" />
+        <text x="${padL}" y="${height - 6}" text-anchor="start" fill="var(--text-muted, #9aa)" font-size="11">${escSvg(bars[0].weekStart)}</text>
+        <text x="${padL + plotW}" y="${height - 6}" text-anchor="end" fill="var(--text-muted, #9aa)" font-size="11">${escSvg(bars[bars.length - 1].weekStart)}</text>
+        ${rects}
+      </svg>
+    </div>
   `;
 }
 

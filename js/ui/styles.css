@@ -1995,7 +1995,39 @@ button[disabled] {
   width: 100%;
   height: auto;
   display: block;
-  margin-top: 8px;
+  margin-top: 6px;
+}
+
+.trend-chart-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.trend-readout {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  padding: 5px 10px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+}
+
+.trend-point {
+  cursor: pointer;
+}
+
+.trend-point.is-active .trend-dot {
+  r: 6.5;
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.trend-point.is-active .trend-bar {
+  opacity: 0.82;
+  stroke: #fff;
+  stroke-width: 1.5;
 }
 
 .trend-kpis {
