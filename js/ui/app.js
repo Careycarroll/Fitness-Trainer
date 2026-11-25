@@ -47,6 +47,11 @@ import {
   savePersistedAppDb,
   replacePersistedAppDbFromBuffer
 } from '../storage/app-db-store.js';
+import {
+  backupAppDbToNativeFile,
+  scheduleRestNotification,
+  cancelRestNotifications
+} from '../storage/capacitor-bridge.js';
 import { listBenchmarks, getBenchmark, expandBenchmark, BENCHMARKS } from '../engine/benchmarks.js';
 import {
   extractCatalogFacets,
@@ -1746,6 +1751,7 @@ export function mount(root, defs) {
       lastSpokenSec: null
     };
     if (mode === 'hold') speakAnnouncement(`Starting ${dur} second ${label}`, voiceEnabled);
+    scheduleRestNotification(dur, label);
     updateTimerDisplays();
   }
 
@@ -2205,6 +2211,7 @@ export function mount(root, defs) {
       if (e.target.closest('#rest-skip-btn')) {
         restTimer.active = false;
         restTimer.running = false;
+        cancelRestNotifications();
         await renderActiveLogger();
         return;
       }

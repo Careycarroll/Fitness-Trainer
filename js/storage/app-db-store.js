@@ -8,6 +8,7 @@
  */
 
 import { createAppDb, openAppDb, exportAppDb } from './app-db.js';
+import { backupAppDbToNativeFile } from './capacitor-bridge.js';
 
 const IDB_NAME = 'fitness-trainer-appdb';
 const IDB_VERSION = 1;
@@ -93,6 +94,8 @@ export async function loadPersistedAppDb(catalogExercises = []) {
 export async function savePersistedAppDb(db) {
   const bytes = exportAppDb(db);
   await writeSavedBuffer(bytes);
+  // Best-effort native file backup when running inside Capacitor Android
+  backupAppDbToNativeFile(bytes);
 }
 
 /**
