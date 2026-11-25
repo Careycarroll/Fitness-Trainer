@@ -424,10 +424,12 @@ export function mount(root, defs) {
             <button type="button" id="log-add-btn" class="primary">+ Add Workout</button>
           </div>
           <div id="log-month-bar" class="log-month-bar">
-            <button type="button" id="log-prev-month" class="ghost" aria-label="Previous month">‹</button>
-            <strong id="log-month-title"></strong>
+            <div class="log-month-nav" style="display:flex; align-items:center; gap:8px;">
+              <button type="button" id="log-prev-month" class="ghost" aria-label="Previous month">‹</button>
+              <strong id="log-month-title"></strong>
+              <button type="button" id="log-next-month" class="ghost" aria-label="Next month">›</button>
+            </div>
             <button type="button" id="log-today-btn" class="ghost">Today</button>
-            <button type="button" id="log-next-month" class="ghost" aria-label="Next month">›</button>
           </div>
         </div>
 
