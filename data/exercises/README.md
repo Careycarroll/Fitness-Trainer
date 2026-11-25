@@ -265,6 +265,9 @@ So band-resisted push-up is a row. "3-second eccentric push-up" is not.
 - [x] Six pending equipment tokens, plus `med_ball` and `platform` for file 12
 - [x] Equipment substitution map — a kettlebell-only setup went from 1 usable
       exercise to ~45
+- [x] Ruling (#82): `tibialis-raise` stays tagged `calves` (ADR-018; no
+      `tibialis` muscle token), and `monostructural` rows are not a weekly-set
+      volume risk (`intervalDomain` prescribes seconds, not hard sets).
 
 ## Related docs
 
