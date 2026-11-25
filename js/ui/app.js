@@ -26,6 +26,15 @@ import { generate, CoverageError } from '../engine/index.js';
 import { rankSubstitutes } from '../engine/substitution.js';
 import { allSetGroups, setGroupAt, makeSetGroup, sessionFatigue } from '../engine/blocks.js';
 import { volumeConcerns } from '../engine/volume.js';
+import {
+  isPlateLoaded,
+  barWeightFor,
+  roundToLoadable,
+  computePlateLoad,
+  DEFAULT_PLATES_LB,
+  DEFAULT_PLATES_KG
+} from '../engine/plate-math.js';
+import { prescribeWarmup } from '../engine/warmup.js';
 import * as db from '../storage/db.js';
 import {
   emptyState, putPlan, toExportJSON, fromImportJSON, toCSV, replaceImportedSets,
@@ -1937,6 +1946,16 @@ export function mount(root, defs) {
             const weightVal = kgToDisplay(st.weightKg, unit);
             const focused = loggerFocusSetId === st.id ? ' logger-set-focused' : '';
             const completedCls = st.isComplete ? ' logger-set-done' : '';
+            const exObj = defs.exercises.find((e) => e.id === st.exerciseId);
+            let plateHintHtml = '';
+            if (!isTime && weightVal && isPlateLoaded(exObj)) {
+              const barWt = barWeightFor(exObj, { unit });
+              const plates = unit === 'kg' ? DEFAULT_PLATES_KG : DEFAULT_PLATES_LB;
+              const pm = computePlateLoad(weightVal, { barWeight: barWt, plates, unit });
+              plateHintHtml = pm.achievable
+                ? `<p class="note" style="margin:2px 0 0;">🏋️ ${esc(pm.formatted)}</p>`
+                : `<p class="catalog-warn" style="margin:2px 0 0;">⚠️ ${esc(pm.reason)}</p>`;
+            }
 
             return `
               <div class="logger-set-row${isDrop ? ' logger-drop-row' : ''}${focused}${completedCls}" data-set-id="${esc(st.id)}" data-block-id="${esc(blk.id)}">
@@ -1973,6 +1992,7 @@ export function mount(root, defs) {
                     <span>Done</span>
                   </label>
                 </div>
+                ${plateHintHtml}
               </div>
             `;
           }).join('');
@@ -4178,6 +4198,20 @@ function renderSetGroup(group, w, s, b, g, domain, blockType, rounds) {
     ? loadControls(p, w, s, b, g)
     : timeControls(p, w, s, b, g, rounds);
 
+  let warmupHtml = '';
+  if (group.warmupRequired) {
+    const exObj = currentDefs?.exercises?.find((e) => e.id === group.exerciseId);
+    const maxEntry = persisted ? currentMax(persisted, group.exerciseId) : null;
+    const barWt = barWeightFor(exObj, { unit: 'lb' });
+    const workingWt = (maxEntry && p.intensityOf1RM != null)
+      ? roundToLoadable(maxEntry.value * p.intensityOf1RM, { increment: 5, minWeight: barWt })
+      : null;
+    const ramp = prescribeWarmup(group, { workingWeight: workingWt, barWeight: barWt, increment: 5, unit: 'lb' });
+    if (ramp) {
+      warmupHtml = `<p class="note warmup-ramp" style="margin:4px 0 0;">🔥 ${esc(ramp.text)}</p>`;
+    }
+  }
+
   // #63. Rendered ONLY where text exists — 99 of 307 rows today. A disclosure
   // on the other 208 would open onto an apology, and the review pass fills them
   // in over time rather than all at once.
@@ -4194,6 +4228,7 @@ function renderSetGroup(group, w, s, b, g, domain, blockType, rounds) {
         ${marker}<strong>${esc(group.name)}</strong>${role}${warmup}
       </div>
       ${controls}
+      ${warmupHtml}
       ${swapped}
       ${howto}
     </li>`;
@@ -4208,11 +4243,29 @@ function loadControls(p, w, s, b, g) {
   // the engine did not compute and must not restate as a percentage of a 1RM
   // nobody supplied. Generated programs never set this field, so their
   // rendering is unchanged.
-  const load = p.loadNote
-      ? p.loadNote
-      : p.intensityOf1RM != null
-        ? `${formatNumber(p.intensityOf1RM * 100)}% 1RM`
-        : 'load not prescribed';
+  const exObj = currentDefs?.exercises?.find((e) => e.id === p.exerciseId);
+  const maxEntry = persisted ? currentMax(persisted, p.exerciseId) : null;
+  let plateHint = '';
+  let load;
+  if (p.loadNote) {
+    load = p.loadNote;
+  } else if (p.intensityOf1RM != null) {
+    if (maxEntry?.value > 0) {
+      const barWt = barWeightFor(exObj, { unit: 'lb' });
+      const rounded = roundToLoadable(maxEntry.value * p.intensityOf1RM, { increment: 5, minWeight: isPlateLoaded(exObj) ? barWt : 0 });
+      load = `${rounded} lb (${formatNumber(p.intensityOf1RM * 100)}% 1RM)`;
+      if (isPlateLoaded(exObj)) {
+        const pm = computePlateLoad(rounded, { barWeight: barWt, plates: DEFAULT_PLATES_LB, unit: 'lb' });
+        plateHint = pm.achievable
+          ? `<p class="note" style="margin:2px 0 0;">🏋️ ${esc(pm.formatted)}</p>`
+          : `<p class="catalog-warn" style="margin:2px 0 0;">⚠️ ${esc(pm.reason)}</p>`;
+      }
+    } else {
+      load = `${formatNumber(p.intensityOf1RM * 100)}% 1RM`;
+    }
+  } else {
+    load = 'load not prescribed';
+  }
   const intensity = [load, p.rir != null ? `RIR ${formatNumber(p.rir)}` : '', p.restSeconds != null ? `${p.restSeconds}s rest` : '']
     .filter(Boolean).join(' · ');
 
@@ -4221,6 +4274,7 @@ function loadControls(p, w, s, b, g) {
       ${numberEdit('sets', p.sets, w, s, b, g, 1)}
       ${numberEdit('reps', p.reps, w, s, b, g, 1)}
       <p class="intensity">${esc(intensity)}</p>
+      ${plateHint}
       ${editActions(w, s, b, g)}
     </div>`;
 }
