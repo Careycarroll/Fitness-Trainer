@@ -10,6 +10,7 @@
 
 // #41: availability is defined once, in coverage.js. Re-exported here so the two
 // generators keep importing it from where they always have.
+import { allowsExerciseForJoints } from './safety.js';
 export { isAvailable } from './coverage.js';
 // #63. `isPerformable`, NOT `isAvailable`.
 //
@@ -89,8 +90,10 @@ const sharesPrimaryMuscle = (target, candidate) =>
 /**
  * @returns {Array<{exercise: object, score: number}>} ranked ascending
  */
-export function rankSubstitutes(target, catalog, weights, profile, limit = 5) {
+export function rankSubstitutes(target, catalog, weights, profile, limit = 5, athlete = null) {
+  const avoidJoints = athlete?.avoidJoints;
   return catalog
+    .filter((c) => allowsExerciseForJoints(c, avoidJoints).allowed)
     .map((c) => ({ exercise: c, score: score(target, c, weights, profile) }))
     .filter((r) => Number.isFinite(r.score))
     // Fewer results beats padding with something that trains a different muscle.

@@ -44,6 +44,7 @@
  */
 import { createRng, shuffle } from './rng.js';
 import { filterByGates } from './safety.js';
+import { isAnchoredLift } from './exercise-max.js';
 import { isAvailable } from './substitution.js';
 import { straightBlock } from './blocks.js';
 
@@ -532,6 +533,24 @@ function commit(state, exercise, style, { isMain, emphasis, rng, week }) {
  * is attached by makeSetGroup, so this function cannot disagree with the catalog
  * about what it is prescribing for.
  */
+/**
+ * Derive prescribed RIR from style, role, and (when anchored) %1RM so RIR
+ * varies intentionally and never contradicts percentage prescriptions (#47).
+ */
+export function prescribeRir({ exercise, style, isMain, intensity }) {
+  if (intensity != null) {
+    if (intensity >= 0.85) return 1;
+    if (intensity >= 0.75) return 2;
+    if (intensity >= 0.65) return isMain ? 2 : 3;
+    return 3;
+  }
+  const id = style?.id;
+  if (id === 'bodybuilding') return isMain ? 2 : 1;
+  if (id === 'powerlifting' || id === 'strength') return isMain ? 2 : 2.5;
+  if (id === 'athletic' || id === 'core') return isMain ? 2.5 : 2;
+  return exercise?.defaultRIR ?? 2;
+}
+
 function prescribe({ exercise, style, isMain, emphasis, rng }) {
   const { min: repMin, max: repMax } = style.repRange;
   const { min: intMin, max: intMax } = style.intensityBand;
@@ -540,7 +559,10 @@ function prescribe({ exercise, style, isMain, emphasis, rng }) {
   // Main work sits at the heavy/low-rep end of the style band; accessories at the light end.
   const t = isMain ? 0.15 + rng() * 0.25 : 0.6 + rng() * 0.35;
   const reps = Math.round(repMin + (repMax - repMin) * t);
-  const intensity = round(intMax - (intMax - intMin) * t, 2);
+  const rawIntensity = round(intMax - (intMax - intMin) * t, 2);
+  const anchored = isAnchoredLift(exercise);
+  const intensity = anchored ? rawIntensity : null;
+  const rir = prescribeRir({ exercise, style, isMain, intensity });
   const sets = isMain
     ? Math.round(setMin + (setMax - setMin) * emphasis)
     : Math.max(2, setMin - 1);
@@ -550,7 +572,7 @@ function prescribe({ exercise, style, isMain, emphasis, rng }) {
     sets,
     reps,
     intensityOf1RM: intensity,
-    rir: exercise.defaultRIR,
+    rir,
     restSeconds: isMain ? style.restSeconds.main : style.restSeconds.accessory
   };
 }

@@ -341,10 +341,13 @@ describe('prescriptions are sane', () => {
       for (const sg of p.weeks[0].sessions.flatMap(allSetGroups)) {
         assert.ok(sg.reps >= style.repRange.min && sg.reps <= style.repRange.max,
           `${id}: reps ${sg.reps} outside band`);
-        assert.ok(
-          sg.intensityOf1RM >= style.intensityBand.min - 1e-9 &&
-          sg.intensityOf1RM <= style.intensityBand.max + 1e-9,
-          `${id}: intensity ${sg.intensityOf1RM} outside band`);
+        if (sg.intensityOf1RM != null) {
+          assert.ok(
+            sg.intensityOf1RM >= style.intensityBand.min - 1e-9 &&
+            sg.intensityOf1RM <= style.intensityBand.max + 1e-9,
+            `${id}: intensity ${sg.intensityOf1RM} outside band`);
+        }
+        assert.ok(sg.rir >= 0 && sg.rir <= 5, `${id}: rir ${sg.rir} out of range`);
         assert.ok(sg.sets >= 2);
       }
     }

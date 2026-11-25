@@ -263,6 +263,18 @@ const EZBAR_WEIGHT_KEY = 'trainer_default_ezbar_weight';
 const SSB_WEIGHT_KEY = 'trainer_default_ssb_weight';
 const PLATE_INC_KEY = 'trainer_plate_increment';
 const WOD_COUNTDOWN_KEY = 'trainer_wod_countdown_sec';
+const AVOID_JOINTS_KEY = 'trainer_avoid_joints';
+
+function getAvoidJoints() {
+  const ls = typeof localStorage !== 'undefined' ? localStorage : null;
+  try {
+    const raw = ls?.getItem(AVOID_JOINTS_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
 
 function getEquipmentLoadDefaults() {
   const ls = typeof localStorage !== 'undefined' ? localStorage : null;
@@ -845,6 +857,18 @@ export function mount(root, defs) {
               </label>
             </div>
             <p class="note scale-preview-text">Sample: Barbell Back Squat · 3 sets × 8 reps @ 225 lb (RPE 8)</p>
+            <fieldset style="border:1px solid var(--border); border-radius:var(--radius); padding:10px 12px;">
+              <legend style="font-weight:600; font-size:0.9rem; padding:0 6px;">Joint / Injury Exclusions</legend>
+              <p class="note" style="margin:0 0 8px;">Not medical guidance — excludes exercises tagged with selected joint loads during generation and swaps.</p>
+              <div id="setting-avoid-joints" style="display:flex; flex-wrap:wrap; gap:10px;">
+                ${['shoulder', 'lower_back', 'knee', 'elbow', 'wrist', 'hip', 'ankle', 'neck'].map((j) => `
+                  <label style="display:inline-flex; flex-direction:row; align-items:center; gap:6px; font-weight:500;">
+                    <input type="checkbox" value="${j}" class="avoid-joint-cb" />
+                    <span>${j.replace('_', ' ')}</span>
+                  </label>
+                `).join('')}
+              </div>
+            </fieldset>
           </div>
         </div>
 
@@ -1462,7 +1486,7 @@ export function mount(root, defs) {
         const ul = details.querySelector('.cat-subs-list');
         const target = defs.exercises.find((x) => x.id === subsSummary.dataset.catSubs);
         if (!ul || !target) return;
-        const ranked = rankSubstitutes(target, defs.exercises, defs.substitutionWeights, getActiveProfileObj(), 5);
+        const ranked = rankSubstitutes(target, defs.exercises, defs.substitutionWeights, getActiveProfileObj(), 5, { avoidJoints: getAvoidJoints() });
         ul.innerHTML = ranked.length
           ? ranked.map((r) => {
             const eq = (r.exercise.equipment || []).length
@@ -1535,6 +1559,15 @@ export function mount(root, defs) {
         wodCdSel.value = String(savedCd);
         localStorage.setItem(WOD_COUNTDOWN_KEY, String(savedCd));
       }
+      const savedJointsRaw = getSetting(appDb, 'avoid_joints', localStorage.getItem(AVOID_JOINTS_KEY) || '[]');
+      let savedJoints = [];
+      try { savedJoints = JSON.parse(savedJointsRaw); } catch {}
+      if (Array.isArray(savedJoints)) {
+        localStorage.setItem(AVOID_JOINTS_KEY, JSON.stringify(savedJoints));
+        root.querySelectorAll('.avoid-joint-cb').forEach((cb) => {
+          cb.checked = savedJoints.includes(cb.value);
+        });
+      }
     } catch (err) {
       if (statsEl) statsEl.textContent = `Database unavailable: ${err.message}`;
     }
@@ -1602,6 +1635,23 @@ export function mount(root, defs) {
       try {
         const appDb = await ensureAppDb();
         setSetting(appDb, 'wod_countdown_sec', sec);
+        await savePersistedAppDb(appDb);
+      } catch {}
+    });
+  }
+
+  const avoidJointsEl = root.querySelector('#setting-avoid-joints');
+  if (avoidJointsEl) {
+    const initialJoints = getAvoidJoints();
+    avoidJointsEl.querySelectorAll('.avoid-joint-cb').forEach((cb) => {
+      cb.checked = initialJoints.includes(cb.value);
+    });
+    avoidJointsEl.addEventListener('change', async () => {
+      const selected = [...avoidJointsEl.querySelectorAll('.avoid-joint-cb:checked')].map((cb) => cb.value);
+      localStorage.setItem(AVOID_JOINTS_KEY, JSON.stringify(selected));
+      try {
+        const appDb = await ensureAppDb();
+        setSetting(appDb, 'avoid_joints', JSON.stringify(selected));
         await savePersistedAppDb(appDb);
       } catch {}
     });
@@ -4409,7 +4459,7 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
       // An explicit seed reproduces a draft exactly (ADR-002). Blank means
       // "give me a different one", which is what Generate should mean by default.
       seed: seedFrom(f.get('seed')),
-      athlete: { skillLevel: Number(f.get('skillLevel')) },
+      athlete: { skillLevel: Number(f.get('skillLevel')), avoidJoints: getAvoidJoints() },
       history
     };
 
@@ -5079,9 +5129,12 @@ function loadControls(p, w, s, b, g, allowSwap = true) {
       load = `${formatNumber(p.intensityOf1RM * 100)}% 1RM`;
     }
   } else {
-    load = 'load not prescribed';
+    load = `RIR ${formatNumber(p.rir ?? 2)} (effort target)`;
   }
-  const intensity = [load, p.rir != null ? `RIR ${formatNumber(p.rir)}` : '', p.restSeconds != null ? `${p.restSeconds}s rest` : '']
+  const rirLabel = p.intensityOf1RM != null && p.rir != null
+    ? `target RIR ${formatNumber(p.rir)}`
+    : '';
+  const intensity = [load, rirLabel, p.restSeconds != null ? `${p.restSeconds}s rest` : '']
     .filter(Boolean).join(' · ');
 
   return `
@@ -5145,7 +5198,7 @@ function toggleSwapList(out, button, w, s, b, g) {
   // throwing inside a click handler.
   const profile = currentDefs.equipment.find((p) => p.id === currentRequest?.equipmentProfile) ?? null;
   const alternatives = rankSubstitutes(
-    target, currentDefs.exercises, currentDefs.substitutionWeights, profile, 5
+    target, currentDefs.exercises, currentDefs.substitutionWeights, profile, 5, { avoidJoints: getAvoidJoints() }
   );
   const list = document.createElement('ul');
   list.className = 'swap-list';

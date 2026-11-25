@@ -9,6 +9,7 @@ import { weeklyVolume } from './volume.js';
 import { chooseTrainingDays, gapClass } from './schedule.js';
 import * as loadDomain from './loadDomain.js';
 import * as intervalDomain from './intervalDomain.js';
+import { validateAvoidJoints } from './safety.js';
 
 const GENERATORS = { load: loadDomain, time: intervalDomain };
 
@@ -279,6 +280,13 @@ function validateRequest(request, defs) {
   if (request.exerciseCount !== undefined &&
       !(Number.isInteger(request.exerciseCount) && request.exerciseCount >= 1 && request.exerciseCount <= 14)) {
     throw new RequestError('exerciseCount must be an integer 1-14 when provided');
+  }
+  if (request.athlete?.avoidJoints !== undefined) {
+    try {
+      validateAvoidJoints(request.athlete.avoidJoints);
+    } catch (err) {
+      throw new RequestError(err.message);
+    }
   }
 }
 

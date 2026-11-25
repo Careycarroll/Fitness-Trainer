@@ -14,6 +14,37 @@
 /** Thrown when a definition file references a gate that does not exist. Fail closed. */
 export class UnknownGateError extends Error {}
 
+/** Thrown when an unrecognised joint constraint is supplied (#48). Fail closed. */
+export class UnknownJointError extends Error {}
+
+export const KNOWN_JOINTS = Object.freeze([
+  'ankle', 'elbow', 'hip', 'knee', 'lower_back', 'neck', 'shoulder', 'wrist'
+]);
+const KNOWN_JOINT_SET = new Set(KNOWN_JOINTS);
+
+export function validateAvoidJoints(avoidJoints) {
+  if (avoidJoints == null) return [];
+  if (!Array.isArray(avoidJoints)) {
+    throw new UnknownJointError('athlete.avoidJoints must be an array');
+  }
+  for (const j of avoidJoints) {
+    if (!KNOWN_JOINT_SET.has(j)) {
+      throw new UnknownJointError(`Unknown joint constraint: "${j}"`);
+    }
+  }
+  return avoidJoints;
+}
+
+export function allowsExerciseForJoints(exercise, avoidJoints) {
+  if (!avoidJoints || avoidJoints.length === 0) return allow();
+  validateAvoidJoints(avoidJoints);
+  const hit = (exercise?.jointLoad ?? []).find((j) => avoidJoints.includes(j));
+  if (hit) {
+    return deny(`Excluded by joint constraint (${hit}; not medical guidance)`);
+  }
+  return allow();
+}
+
 /**
  * ONE gate, and that is the honest count (#61).
  *
@@ -104,13 +135,19 @@ export function evaluateGate(gateId, ctx) {
   return GATES[gateId](ctx ?? {});
 }
 
-/** Convenience: filter a candidate list through their gates. */
+/** Convenience: filter a candidate list through their skill gates and joint constraints. */
 export function filterByGates(exercises, ctx) {
+  const avoidJoints = validateAvoidJoints(ctx?.avoidJoints);
   const allowed = [];
   const blocked = [];
   for (const ex of exercises) {
-    const result = evaluateGate(ex.skillGate, ctx);
-    (result.allowed ? allowed : blocked).push({ exercise: ex, reason: result.reason });
+    const gateRes = evaluateGate(ex.skillGate, ctx);
+    if (!gateRes.allowed) {
+      blocked.push({ exercise: ex, reason: gateRes.reason });
+      continue;
+    }
+    const jointRes = allowsExerciseForJoints(ex, avoidJoints);
+    (jointRes.allowed ? allowed : blocked).push({ exercise: ex, reason: jointRes.reason });
   }
   return { allowed: allowed.map((a) => a.exercise), blocked };
 }
