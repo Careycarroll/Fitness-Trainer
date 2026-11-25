@@ -5,6 +5,7 @@ import {
   barWeightFor,
   roundToLoadable,
   computePlateLoad,
+  platesForIncrement,
   DEFAULT_PLATES_LB
 } from '../js/engine/plate-math.js';
 import { prescribeWarmup } from '../js/engine/warmup.js';
@@ -46,5 +47,14 @@ describe('Loadable rounding (#17), Plate math (#73), and Warm-up ramp (#72)', ()
     const noMax = prescribeWarmup({ warmupRequired: true });
     assert.equal(noMax.steps.length, 3);
     assert.ok(noMax.text.includes('RIR 6+'));
+  });
+
+  test('roundToLoadable and platesForIncrement support 0.25 lb micro-plates and custom barWeights', () => {
+    assert.equal(roundToLoadable(135.4, { increment: 0.5, minWeight: 35 }), 135.5);
+    const microPlates = platesForIncrement(0.5, 'lb');
+    assert.equal(microPlates.includes(0.25), true);
+    const pm = computePlateLoad(135.5, { barWeight: 45, plates: microPlates, unit: 'lb' });
+    assert.equal(pm.achievable, true);
+    assert.equal(barWeightFor({ equipment: ['barbell'] }, { barWeights: { barbell: 35 } }), 35);
   });
 });

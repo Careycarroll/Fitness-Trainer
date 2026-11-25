@@ -31,6 +31,7 @@ import {
   barWeightFor,
   roundToLoadable,
   computePlateLoad,
+  platesForIncrement,
   DEFAULT_PLATES_LB,
   DEFAULT_PLATES_KG
 } from '../engine/plate-math.js';
@@ -255,6 +256,29 @@ let dateOverrides = {};
 let importReview = [];
 let reviewEl = null;
 let maxListEl = null;
+
+const BAR_WEIGHT_KEY = 'trainer_default_bar_weight';
+const EZBAR_WEIGHT_KEY = 'trainer_default_ezbar_weight';
+const SSB_WEIGHT_KEY = 'trainer_default_ssb_weight';
+const PLATE_INC_KEY = 'trainer_plate_increment';
+
+function getEquipmentLoadDefaults() {
+  const ls = typeof localStorage !== 'undefined' ? localStorage : null;
+  const unit = ls?.getItem('pref:displayUnit') === 'kg' ? 'kg' : 'lb';
+  const fallbackBar = unit === 'kg' ? 20 : 45;
+  const fallbackEz = unit === 'kg' ? 10 : 25;
+  const fallbackSsb = unit === 'kg' ? 25 : 65;
+  const bar = Number(ls?.getItem(BAR_WEIGHT_KEY)) || fallbackBar;
+  const ez = Number(ls?.getItem(EZBAR_WEIGHT_KEY)) || fallbackEz;
+  const ssb = Number(ls?.getItem(SSB_WEIGHT_KEY)) || fallbackSsb;
+  const increment = Number(ls?.getItem(PLATE_INC_KEY)) || 5;
+  return {
+    unit,
+    barWeights: { barbell: bar, trap_bar: bar, ez_bar: ez, safety_bar: ssb },
+    increment,
+    plates: platesForIncrement(increment, unit)
+  };
+}
 
 /** fitnotesId -> mapping row. Keyed on the NUMERIC id: FitNotes lets the
  *  athlete rename any row, and a name-keyed join is how a renamed row lands
@@ -743,13 +767,35 @@ export function mount(root, defs) {
 
           <div class="card settings-card">
             <h3>Display &amp; Defaults</h3>
-            <p class="note">Adjust default weight units and text/UI scaling across the app.</p>
-            <label style="max-width:240px;">Display Weight Unit
-              <select id="setting-display-unit">
-                <option value="lb" selected>Pounds (lb)</option>
-                <option value="kg">Kilograms (kg)</option>
-              </select>
-            </label>
+            <p class="note">Adjust default weight units, bar weights, smallest plate increments, and text/UI scaling across the app.</p>
+            <div class="catalog-filters">
+              <label>Display Weight Unit
+                <select id="setting-display-unit">
+                  <option value="lb" selected>Pounds (lb)</option>
+                  <option value="kg">Kilograms (kg)</option>
+                </select>
+              </label>
+              <label>Plate Increment (total bar jump)
+                <select id="setting-plate-increment">
+                  <option value="10">10 (5 / side)</option>
+                  <option value="5" selected>5 (2.5 / side)</option>
+                  <option value="2.5">2.5 (1.25 / side)</option>
+                  <option value="1">1 (0.5 / side)</option>
+                  <option value="0.5">0.5 (0.25 / side)</option>
+                </select>
+              </label>
+            </div>
+            <div class="catalog-filters">
+              <label>Standard / Trap Bar Weight
+                <input type="number" id="setting-bar-weight" min="5" max="150" step="0.5" value="45" />
+              </label>
+              <label>EZ-Bar Weight
+                <input type="number" id="setting-ezbar-weight" min="5" max="100" step="0.5" value="25" />
+              </label>
+              <label>Safety Squat Bar Weight
+                <input type="number" id="setting-ssb-weight" min="5" max="150" step="0.5" value="65" />
+              </label>
+            </div>
             <div class="scale-setting-row">
               <label>UI &amp; Font Scale
                 <select id="settings-scale-select">
@@ -1384,6 +1430,10 @@ export function mount(root, defs) {
   async function refreshAppDbCard() {
     const statsEl = root.querySelector('#appdb-stats');
     const unitSel = root.querySelector('#setting-display-unit');
+    const incSel = root.querySelector('#setting-plate-increment');
+    const barIn = root.querySelector('#setting-bar-weight');
+    const ezIn = root.querySelector('#setting-ezbar-weight');
+    const ssbIn = root.querySelector('#setting-ssb-weight');
     try {
       const appDb = await ensureAppDb();
       const s = getAppDbStats(appDb);
@@ -1394,6 +1444,27 @@ export function mount(root, defs) {
       if (unitSel && (savedUnit === 'lb' || savedUnit === 'kg')) {
         unitSel.value = savedUnit;
         localStorage.setItem(DISPLAY_UNIT_KEY, savedUnit);
+      }
+      const dflt = getEquipmentLoadDefaults();
+      const savedInc = getSetting(appDb, 'plate_increment', String(dflt.increment));
+      if (incSel && savedInc) {
+        incSel.value = savedInc;
+        localStorage.setItem(PLATE_INC_KEY, savedInc);
+      }
+      const savedBar = getSetting(appDb, 'default_bar_weight', String(dflt.barWeights.barbell));
+      if (barIn && Number(savedBar) > 0) {
+        barIn.value = savedBar;
+        localStorage.setItem(BAR_WEIGHT_KEY, savedBar);
+      }
+      const savedEz = getSetting(appDb, 'default_ezbar_weight', String(dflt.barWeights.ez_bar));
+      if (ezIn && Number(savedEz) > 0) {
+        ezIn.value = savedEz;
+        localStorage.setItem(EZBAR_WEIGHT_KEY, savedEz);
+      }
+      const savedSsb = getSetting(appDb, 'default_ssb_weight', String(dflt.barWeights.safety_bar));
+      if (ssbIn && Number(savedSsb) > 0) {
+        ssbIn.value = savedSsb;
+        localStorage.setItem(SSB_WEIGHT_KEY, savedSsb);
       }
     } catch (err) {
       if (statsEl) statsEl.textContent = `Database unavailable: ${err.message}`;
@@ -1413,6 +1484,43 @@ export function mount(root, defs) {
       } catch {
         // localStorage already updated
       }
+      paint();
+    });
+  }
+
+  const plateIncEl = root.querySelector('#setting-plate-increment');
+  if (plateIncEl) {
+    plateIncEl.value = localStorage.getItem(PLATE_INC_KEY) || '5';
+    plateIncEl.addEventListener('change', async () => {
+      const inc = String(Math.max(0.25, Number(plateIncEl.value) || 5));
+      localStorage.setItem(PLATE_INC_KEY, inc);
+      try {
+        const appDb = await ensureAppDb();
+        setSetting(appDb, 'plate_increment', inc);
+        await savePersistedAppDb(appDb);
+      } catch {}
+      paint();
+    });
+  }
+
+  for (const [elId, lsKey, dbKey, fallback] of [
+    ['#setting-bar-weight', BAR_WEIGHT_KEY, 'default_bar_weight', 45],
+    ['#setting-ezbar-weight', EZBAR_WEIGHT_KEY, 'default_ezbar_weight', 25],
+    ['#setting-ssb-weight', SSB_WEIGHT_KEY, 'default_ssb_weight', 65]
+  ]) {
+    const inp = root.querySelector(elId);
+    if (!inp) continue;
+    inp.value = localStorage.getItem(lsKey) || String(fallback);
+    inp.addEventListener('change', async () => {
+      const val = Number(inp.value);
+      if (!(val > 0 && Number.isFinite(val))) return;
+      localStorage.setItem(lsKey, String(val));
+      try {
+        const appDb = await ensureAppDb();
+        setSetting(appDb, dbKey, String(val));
+        await savePersistedAppDb(appDb);
+      } catch {}
+      paint();
     });
   }
 
@@ -1956,9 +2064,9 @@ export function mount(root, defs) {
             const exObj = defs.exercises.find((e) => e.id === st.exerciseId);
             let plateHintHtml = '';
             if (!isTime && weightVal && isPlateLoaded(exObj)) {
-              const barWt = barWeightFor(exObj, { unit });
-              const plates = unit === 'kg' ? DEFAULT_PLATES_KG : DEFAULT_PLATES_LB;
-              const pm = computePlateLoad(weightVal, { barWeight: barWt, plates, unit });
+              const ld = getEquipmentLoadDefaults();
+              const barWt = barWeightFor(exObj, { unit, barWeights: ld.barWeights });
+              const pm = computePlateLoad(weightVal, { barWeight: barWt, plates: ld.plates, unit });
               plateHintHtml = pm.achievable
                 ? `<p class="note" style="margin:2px 0 0;">🏋️ ${esc(pm.formatted)}</p>`
                 : `<p class="catalog-warn" style="margin:2px 0 0;">⚠️ ${esc(pm.reason)}</p>`;
@@ -4341,11 +4449,12 @@ function renderSetGroup(group, w, s, b, g, domain, blockType, rounds) {
   if (group.warmupRequired) {
     const exObj = currentDefs?.exercises?.find((e) => e.id === group.exerciseId);
     const maxEntry = persisted ? currentMax(persisted, group.exerciseId) : null;
-    const barWt = barWeightFor(exObj, { unit: 'lb' });
-    const workingWt = (maxEntry && p.intensityOf1RM != null)
-      ? roundToLoadable(maxEntry.value * p.intensityOf1RM, { increment: 5, minWeight: barWt })
+    const ld = getEquipmentLoadDefaults();
+    const barWt = barWeightFor(exObj, { unit: ld.unit, barWeights: ld.barWeights });
+    const workingWt = (maxEntry?.e1rm > 0 && p.intensityOf1RM != null)
+      ? roundToLoadable(maxEntry.e1rm * p.intensityOf1RM, { increment: ld.increment, minWeight: barWt })
       : null;
-    const ramp = prescribeWarmup(group, { workingWeight: workingWt, barWeight: barWt, increment: 5, unit: 'lb' });
+    const ramp = prescribeWarmup(group, { workingWeight: workingWt, barWeight: barWt, increment: ld.increment, unit: ld.unit });
     if (ramp) {
       warmupHtml = `<p class="note warmup-ramp" style="margin:4px 0 0;">🔥 ${esc(ramp.text)}</p>`;
     }
@@ -4389,12 +4498,13 @@ function loadControls(p, w, s, b, g) {
   if (p.loadNote) {
     load = p.loadNote;
   } else if (p.intensityOf1RM != null) {
-    if (maxEntry?.value > 0) {
-      const barWt = barWeightFor(exObj, { unit: 'lb' });
-      const rounded = roundToLoadable(maxEntry.value * p.intensityOf1RM, { increment: 5, minWeight: isPlateLoaded(exObj) ? barWt : 0 });
-      load = `${rounded} lb (${formatNumber(p.intensityOf1RM * 100)}% 1RM)`;
+    if (maxEntry?.e1rm > 0) {
+      const ld = getEquipmentLoadDefaults();
+      const barWt = barWeightFor(exObj, { unit: ld.unit, barWeights: ld.barWeights });
+      const rounded = roundToLoadable(maxEntry.e1rm * p.intensityOf1RM, { increment: ld.increment, minWeight: isPlateLoaded(exObj) ? barWt : 0 });
+      load = `${rounded} ${ld.unit} (${formatNumber(p.intensityOf1RM * 100)}% 1RM)`;
       if (isPlateLoaded(exObj)) {
-        const pm = computePlateLoad(rounded, { barWeight: barWt, plates: DEFAULT_PLATES_LB, unit: 'lb' });
+        const pm = computePlateLoad(rounded, { barWeight: barWt, plates: ld.plates, unit: ld.unit });
         plateHint = pm.achievable
           ? `<p class="note" style="margin:2px 0 0;">🏋️ ${esc(pm.formatted)}</p>`
           : `<p class="catalog-warn" style="margin:2px 0 0;">⚠️ ${esc(pm.reason)}</p>`;

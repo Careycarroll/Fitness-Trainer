@@ -7,6 +7,22 @@
 export const DEFAULT_PLATES_LB = [45, 35, 25, 10, 5, 2.5];
 export const DEFAULT_PLATES_KG = [25, 20, 15, 10, 5, 2.5, 1.25];
 
+/**
+ * Return plate inventory appropriate for a given total bar increment (#112).
+ * Supports standard 5 lb / 2.5 lb per-side plates down to 0.25 lb micro plates.
+ */
+export function platesForIncrement(increment = 5, unit = 'lb') {
+  const base = unit === 'kg' ? [...DEFAULT_PLATES_KG] : [...DEFAULT_PLATES_LB];
+  const perSide = Number(increment) / 2;
+  const extras = unit === 'kg'
+    ? [1.25, 0.5, 0.25]
+    : [1.25, 0.5, 0.25];
+  for (const p of extras) {
+    if (perSide <= p + 1e-6 && !base.includes(p)) base.push(p);
+  }
+  return base.sort((a, b) => b - a);
+}
+
 const BAR_WEIGHTS_LB = {
   safety_bar: 65,
   barbell: 45,
@@ -36,18 +52,19 @@ export function isPlateLoaded(exercise) {
 /**
  * Determine bar weight from exercise equipment tokens.
  */
-export function barWeightFor(exercise, { unit = 'lb', barWeight = null } = {}) {
+export function barWeightFor(exercise, { unit = 'lb', barWeight = null, barWeights = null } = {}) {
   if (barWeight !== null && barWeight !== undefined && Number(barWeight) > 0) {
     return Number(barWeight);
   }
-  const table = unit === 'kg' ? BAR_WEIGHTS_KG : BAR_WEIGHTS_LB;
+  const defaults = unit === 'kg' ? BAR_WEIGHTS_KG : BAR_WEIGHTS_LB;
+  const table = barWeights ? { ...defaults, ...barWeights } : defaults;
   for (const tok of exercise?.equipment || []) {
-    if (table[tok] !== undefined) return table[tok];
+    if (table[tok] !== undefined && Number(table[tok]) > 0) return Number(table[tok]);
   }
-  if (exercise?.loadType && table[exercise.loadType] !== undefined) {
-    return table[exercise.loadType];
+  if (exercise?.loadType && table[exercise.loadType] !== undefined && Number(table[exercise.loadType]) > 0) {
+    return Number(table[exercise.loadType]);
   }
-  return unit === 'kg' ? 20 : 45;
+  return Number(table.barbell ?? (unit === 'kg' ? 20 : 45));
 }
 
 /**
@@ -61,7 +78,7 @@ export function barWeightFor(exercise, { unit = 'lb', barWeight = null } = {}) {
  */
 export function roundToLoadable(targetWeight, { increment = 5, minWeight = 0 } = {}) {
   const w = Number(targetWeight);
-  const inc = Math.max(0.5, Number(increment || 5));
+  const inc = Math.max(0.25, Number(increment || 5));
   if (!Number.isFinite(w) || w <= 0) return minWeight;
   const rounded = Math.round(w / inc) * inc;
   return Math.max(minWeight, Number(rounded.toFixed(2)));
