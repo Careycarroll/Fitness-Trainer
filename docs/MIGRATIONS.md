@@ -129,3 +129,17 @@ the athlete's own writing. A test asserts an import leaves authored notes intact
 Both are date-keyed `{date, note}` on a `YYYY-MM-DD` date, the same shape set
 records are validated against, so a note always joins to a day sets can share.
 Nothing parses the text (ADR-002): a note is displayed, never interpreted.
+
+---
+
+## v3 -> v4 — athlete-adjustable volume landmarks (#67)
+
+`STATE_VERSION` 3 -> 4, `DB_VERSION` 3 -> 4. `EXPORT_FORMAT` unchanged at 1.
+
+Adds `volumeLandmarks: []` (an array of `{ muscle, mv, mev, mav, mrv }`
+overrides) and a corresponding `volumeLandmarks` object store.
+
+**Migration:** `3: (s) => ({ ...s, version: 4, volumeLandmarks: [] })`.
+Additive — unoverridden muscles continue tracking `js/data/landmarks.json`.
+Validation enforces `0 <= mv <= mev <= mav <= mrv` and fails closed on
+invalid overrides.

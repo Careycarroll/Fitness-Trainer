@@ -57,6 +57,22 @@ export const STABILISER_WEIGHT = 0;
 const NOT_TRAINABLE = new Set(['systemic']);
 
 /**
+ * Single resolution point for volume landmarks (#67): merges athlete
+ * overrides over shipped population defaults without mutating either.
+ */
+export function resolveLandmarks(shippedLandmarks, overrides = []) {
+  const base = shippedLandmarks?.landmarks ?? shippedLandmarks ?? {};
+  const merged = { ...base };
+  for (const ov of overrides || []) {
+    if (!ov?.muscle) continue;
+    merged[ov.muscle] = { mv: ov.mv, mev: ov.mev, mav: ov.mav, mrv: ov.mrv };
+  }
+  return shippedLandmarks?.landmarks
+    ? { ...shippedLandmarks, landmarks: merged }
+    : merged;
+}
+
+/**
  * Where a muscle's weekly volume sits against its landmarks.
  *
  * `untrained` is deliberately distinct from `below-mv`: zero sets is a

@@ -3,7 +3,7 @@
  * No clock reads, no Math.random, no I/O. ADR-002.
  */
 import { assertCoverage } from './coverage.js';
-import { weeklyVolume } from './volume.js';
+import { weeklyVolume, resolveLandmarks } from './volume.js';
 // schedule.js owns weekday logic and is the ONE definition of a valid weekday.
 // Re-checking the rules here is how two copies drift apart (#25).
 import { chooseTrainingDays, gapClass } from './schedule.js';
@@ -101,10 +101,11 @@ export function generate(request, defs) {
     // adjustable; capping an athlete's OWN number is a different argument.
     //
     // Null for the interval domain, which prescribes seconds rather than sets.
+    const resolvedLandmarks = resolveLandmarks(defs.landmarks, request.athlete?.volumeLandmarks);
     weeks.push({
       week: w + 1,
       sessions,
-      volume: weeklyVolume({ sessions }, defs.landmarks)
+      volume: weeklyVolume({ sessions }, resolvedLandmarks)
     });
   }
 

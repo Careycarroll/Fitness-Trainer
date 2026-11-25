@@ -25,7 +25,7 @@
 import { generate, CoverageError } from '../engine/index.js';
 import { rankSubstitutes } from '../engine/substitution.js';
 import { allSetGroups, setGroupAt, makeSetGroup, sessionFatigue } from '../engine/blocks.js';
-import { volumeConcerns } from '../engine/volume.js';
+import { volumeConcerns, resolveLandmarks } from '../engine/volume.js';
 import {
   isPlateLoaded,
   barWeightFor,
@@ -42,6 +42,7 @@ import * as db from '../storage/db.js';
 import {
   emptyState, putPlan, toExportJSON, fromImportJSON, toCSV, replaceImportedSets,
   appendExerciseMax, currentMax, putProfile, removeProfile,
+  putVolumeLandmark, removeVolumeLandmark,
   replaceImportedDayNotes, notesForDate, putSessionNote
 } from '../storage/state.js';
 import { toFitNotesCSV, planDates } from '../storage/fitnotes-export.js';
@@ -805,6 +806,27 @@ export function mount(root, defs) {
               <button type="button" id="max-save" class="primary">Save Max</button>
             </div>
             <div id="max-list"></div>
+          </div>
+
+          <div class="card settings-card">
+            <h3>Volume Landmarks (Weekly Sets)</h3>
+            <p class="note">Adjust weekly MV / MEV / MAV / MRV per muscle. Shipped population estimates remain defaults for unoverridden muscles.</p>
+            <div class="catalog-filters">
+              <label>Muscle
+                <select id="lm-muscle"></select>
+              </label>
+              <label>MV <input type="number" id="lm-mv" min="0" max="40" step="1" /></label>
+              <label>MEV <input type="number" id="lm-mev" min="0" max="40" step="1" /></label>
+              <label>MAV <input type="number" id="lm-mav" min="0" max="40" step="1" /></label>
+              <label>MRV <input type="number" id="lm-mrv" min="0" max="50" step="1" /></label>
+            </div>
+            <p id="lm-default-note" class="note"></p>
+            <div class="storage-actions">
+              <button type="button" id="lm-save" class="primary">Save Landmark</button>
+              <button type="button" id="lm-reset" class="ghost">Reset to Default</button>
+            </div>
+            <p id="lm-status" class="note" role="status"></p>
+            <div id="lm-list" class="note"></div>
           </div>
 
           <div class="card settings-card">
@@ -3163,9 +3185,11 @@ export function mount(root, defs) {
 
     const deloadInputs = queryDeloadInputs(appDb, { days: 14 });
     const activePlanVol = current?.weeks?.[0]?.volume;
+    const resolvedLm = resolveLandmarks(defs.landmarks, persisted?.volumeLandmarks);
+    const lmMap = resolvedLm?.landmarks ?? resolvedLm ?? {};
     const weeklyVolList = activePlanVol
       ? Object.entries(activePlanVol).map(([muscle, sets]) => {
-          const lm = defs.landmarks?.find((l) => l.muscle === muscle);
+          const lm = lmMap[muscle];
           return { muscle, sets: Number(sets || 0), mrv: Number(lm?.mrv || 0) };
         })
       : [];
@@ -4165,6 +4189,80 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
   });
   maxListEl = root.querySelector('#max-list');
 
+  const lmMuscleSel = root.querySelector('#lm-muscle');
+  const lmMvIn = root.querySelector('#lm-mv');
+  const lmMevIn = root.querySelector('#lm-mev');
+  const lmMavIn = root.querySelector('#lm-mav');
+  const lmMrvIn = root.querySelector('#lm-mrv');
+  const lmDefaultNote = root.querySelector('#lm-default-note');
+  const lmStatusEl = root.querySelector('#lm-status');
+  const lmListEl = root.querySelector('#lm-list');
+  const shippedLmMap = defs.landmarks?.landmarks ?? {};
+
+  function paintLandmarksEditor() {
+    if (!lmMuscleSel) return;
+    const m = lmMuscleSel.value;
+    const shipped = shippedLmMap[m];
+    const override = (persisted?.volumeLandmarks ?? []).find((r) => r.muscle === m);
+    const active = override || shipped;
+    if (active) {
+      if (lmMvIn) lmMvIn.value = String(active.mv);
+      if (lmMevIn) lmMevIn.value = String(active.mev);
+      if (lmMavIn) lmMavIn.value = String(active.mav);
+      if (lmMrvIn) lmMrvIn.value = String(active.mrv);
+    }
+    if (lmDefaultNote && shipped) {
+      lmDefaultNote.textContent = `Shipped default for ${m}: MV ${shipped.mv} / MEV ${shipped.mev} / MAV ${shipped.mav} / MRV ${shipped.mrv}${override ? ' (custom override active)' : ' (using default)'}`;
+    }
+    if (lmListEl) {
+      const ovs = persisted?.volumeLandmarks ?? [];
+      lmListEl.textContent = ovs.length
+        ? 'Overrides: ' + ovs.map((o) => `${o.muscle} (${o.mv}/${o.mev}/${o.mav}/${o.mrv})`).join(' · ')
+        : 'All muscles using shipped population defaults.';
+    }
+  }
+
+  if (lmMuscleSel) {
+    for (const m of Object.keys(shippedLmMap).sort()) {
+      const opt = document.createElement('option');
+      opt.value = m;
+      opt.textContent = m.replace(/_/g, ' ');
+      lmMuscleSel.appendChild(opt);
+    }
+    lmMuscleSel.addEventListener('change', paintLandmarksEditor);
+    paintLandmarksEditor();
+
+    root.querySelector('#lm-save')?.addEventListener('click', async () => {
+      try {
+        const next = putVolumeLandmark(persisted ?? emptyState(), {
+          muscle: lmMuscleSel.value,
+          mv: Number(lmMvIn?.value),
+          mev: Number(lmMevIn?.value),
+          mav: Number(lmMavIn?.value),
+          mrv: Number(lmMrvIn?.value)
+        });
+        const saved = await db.trySave(next);
+        if (!saved.ok) {
+          if (lmStatusEl) lmStatusEl.textContent = `Landmark not saved: ${saved.error?.message ?? 'unknown'}`;
+          return;
+        }
+        persisted = next;
+        if (lmStatusEl) lmStatusEl.textContent = `Saved ${lmMuscleSel.value} override.`;
+        paintLandmarksEditor();
+      } catch (err) {
+        if (lmStatusEl) lmStatusEl.textContent = err.message;
+      }
+    });
+
+    root.querySelector('#lm-reset')?.addEventListener('click', async () => {
+      const next = removeVolumeLandmark(persisted ?? emptyState(), lmMuscleSel.value);
+      const saved = await db.trySave(next);
+      if (saved.ok) persisted = next;
+      if (lmStatusEl) lmStatusEl.textContent = `Reset ${lmMuscleSel.value} to shipped default.`;
+      paintLandmarksEditor();
+    });
+  }
+
   // Lifts a percentage prescription can anchor to, derived from the catalog so
   // a catalog change cannot leave this list stale.
   //
@@ -4459,7 +4557,11 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
       // An explicit seed reproduces a draft exactly (ADR-002). Blank means
       // "give me a different one", which is what Generate should mean by default.
       seed: seedFrom(f.get('seed')),
-      athlete: { skillLevel: Number(f.get('skillLevel')), avoidJoints: getAvoidJoints() },
+      athlete: {
+        skillLevel: Number(f.get('skillLevel')),
+        avoidJoints: getAvoidJoints(),
+        volumeLandmarks: persisted?.volumeLandmarks ?? []
+      },
       history
     };
 

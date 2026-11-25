@@ -444,7 +444,7 @@ describe('ADR-031 retention rules', () => {
       // authored by the app and durable like plans. Neither is a raw FitNotes
       // database, which is what ruling 3 excludes.
       ['equipmentProfiles', 'exerciseMax', 'importedDayNotes', 'importedSets',
-       'meta', 'plans', 'sessionNotes', 'version']
+       'meta', 'plans', 'sessionNotes', 'version', 'volumeLandmarks']
     );
   });
 

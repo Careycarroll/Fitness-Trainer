@@ -31,7 +31,7 @@
  */
 
 /** Stored-record schema. Bumping this requires a migration below and a MIGRATIONS.md entry. */
-export const STATE_VERSION = 3;
+export const STATE_VERSION = 4;
 
 /** Export envelope format. Moves with STATE_VERSION; kept separate because they need not. */
 export const EXPORT_FORMAT = 1;
@@ -64,7 +64,8 @@ export function emptyState() {
     // session, durable, the only copy. Sharing one store would mean every
     // import destroyed the athlete's own writing.
     importedDayNotes: [],
-    sessionNotes: []
+    sessionNotes: [],
+    volumeLandmarks: []
   };
 }
 
@@ -379,6 +380,14 @@ const MIGRATIONS = Object.freeze({
    * empty. Nothing existing is reinterpreted.
    */
   2: (s) => ({ ...s, version: 3, importedDayNotes: [], sessionNotes: [] }),
+
+  /**
+   * 3 -> 4 (#67): athlete-adjustable volume landmark overrides.
+   *
+   * Additive. Stores only overridden muscles so unoverridden muscles keep
+   * tracking js/data/landmarks.json.
+   */
+  3: (s) => ({ ...s, version: 4, volumeLandmarks: [] }),
 });
 
 /**
@@ -448,6 +457,46 @@ export function removeProfile(state, id) {
   return { ...state, equipmentProfiles: state.equipmentProfiles.filter((p) => p.id !== id) };
 }
 
+/** Validate one volume landmark override, enforcing 0 <= mv <= mev <= mav <= mrv (#67). */
+export function validateVolumeLandmark(entry, index = 0) {
+  const at = (msg) => new StateError(`volumeLandmarks[${index}]: ${msg}`);
+  if (!entry || typeof entry !== 'object' || Array.isArray(entry)) throw at('must be an object');
+  if (typeof entry.muscle !== 'string' || !entry.muscle) throw at('muscle must be a non-empty string');
+  for (const k of ['mv', 'mev', 'mav', 'mrv']) {
+    if (typeof entry[k] !== 'number' || !Number.isFinite(entry[k]) || entry[k] < 0) {
+      throw at(`${k} must be a non-negative finite number`);
+    }
+  }
+  if (!(entry.mv <= entry.mev && entry.mev <= entry.mav && entry.mav <= entry.mrv)) {
+    throw at(`must satisfy mv <= mev <= mav <= mrv (got ${entry.mv}/${entry.mev}/${entry.mav}/${entry.mrv})`);
+  }
+  return entry;
+}
+
+/** Insert or replace a muscle's volume landmark override (#67). */
+export function putVolumeLandmark(state, entry) {
+  const clean = validateVolumeLandmark({
+    muscle: entry.muscle,
+    mv: Number(entry.mv),
+    mev: Number(entry.mev),
+    mav: Number(entry.mav),
+    mrv: Number(entry.mrv)
+  });
+  const rest = (state.volumeLandmarks ?? []).filter((r) => r.muscle !== clean.muscle);
+  return {
+    ...state,
+    volumeLandmarks: [...rest, clean].sort((a, b) => (a.muscle < b.muscle ? -1 : a.muscle > b.muscle ? 1 : 0))
+  };
+}
+
+/** Remove a muscle's volume landmark override so it tracks shipped defaults (#67). */
+export function removeVolumeLandmark(state, muscle) {
+  return {
+    ...state,
+    volumeLandmarks: (state.volumeLandmarks ?? []).filter((r) => r.muscle !== muscle)
+  };
+}
+
 export function migrate(state) {
   let out = state;
   let guard = 0;
@@ -481,11 +530,12 @@ export function validate(state) {
   if (!('lastImportAt' in state.meta)) throw new StateError('validate: meta.lastImportAt missing');
 
   for (const key of ['plans', 'importedSets', 'exerciseMax', 'equipmentProfiles',
-    'importedDayNotes', 'sessionNotes']) {
+    'importedDayNotes', 'sessionNotes', 'volumeLandmarks']) {
     if (!Array.isArray(state[key])) throw new StateError(`validate: ${key} must be an array`);
   }
 
   state.equipmentProfiles.forEach((p, i) => validateProfile(p, i));
+  state.volumeLandmarks.forEach((v, i) => validateVolumeLandmark(v, i));
 
   // Every imported row, not just the array. Until this existed, whatever the
   // first importer wrote became the format (#26).

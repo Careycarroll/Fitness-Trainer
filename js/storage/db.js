@@ -27,7 +27,7 @@ export const DB_NAME = 'training-planner';
  * index bumps this and adds a case to `upgrade()`. Conflating them is how a
  * migration runs twice or not at all (MIGRATIONS.md rule 2).
  */
-export const DB_VERSION = 3;
+export const DB_VERSION = 4;
 
 /**
  * One row per store, `id: 'singleton'`, holding that slice of canonical state.
@@ -45,7 +45,7 @@ export const DB_VERSION = 3;
  * is exactly the seam this layout leaves open.
  */
 export const STORES = Object.freeze(['meta', 'plans', 'importedSets', 'exerciseMax',
-  'equipmentProfiles', 'importedDayNotes', 'sessionNotes']);
+  'equipmentProfiles', 'importedDayNotes', 'sessionNotes', 'volumeLandmarks']);
 
 const SINGLETON = 'singleton';
 
@@ -226,7 +226,8 @@ export async function load() {
     // adding a store additive here too.
     equipmentProfiles: rows.equipmentProfiles?.value ?? base.equipmentProfiles,
     importedDayNotes: rows.importedDayNotes?.value ?? base.importedDayNotes,
-    sessionNotes: rows.sessionNotes?.value ?? base.sessionNotes
+    sessionNotes: rows.sessionNotes?.value ?? base.sessionNotes,
+    volumeLandmarks: rows.volumeLandmarks?.value ?? base.volumeLandmarks
   };
 
   // MIGRATE, then validate. This read the stored version and validated against
