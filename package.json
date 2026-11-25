@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "npm run validate && vite build",
-    "cap:sync": "npm run build && npx cap sync android",
+    "cap:sync": "npm run build && npx cap sync android && find android/app/src/main/assets/public -type f \\( -name '*.jpg' -o -name '*.map' \\) -delete",
     "preview": "vite preview",
     "validate": "python3 tools/build_seed.py --check && python3 tools/build_fitnotes_manifest.py --check && python3 tools/build_instructions.py --check && node scripts/validate.js",
     "test": "node --test \"tests/**/*.test.js\"",

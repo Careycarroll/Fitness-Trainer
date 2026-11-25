@@ -2030,6 +2030,21 @@ button[disabled] {
   stroke-width: 1.5;
 }
 
+.howto-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.howto-images img {
+  width: 130px;
+  height: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
 .trend-kpis {
   display: flex;
   gap: 12px;

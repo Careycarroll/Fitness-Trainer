@@ -157,7 +157,17 @@ async function fillInstructions(summary) {
 
   try {
     const all = await loadInstructions();
-    const entry = all[summary.dataset.howto];
+    const exId = summary.dataset.howto;
+    const entry = all[exId];
+    const baseUrl = (typeof import.meta !== 'undefined' && import.meta.env?.BASE_URL) || '/';
+    if (!details.querySelector('.howto-images')) {
+      const imgs = document.createElement('div');
+      imgs.className = 'howto-images';
+      imgs.innerHTML = [0, 1].map((n) =>
+        `<img src="${esc(`${baseUrl}exercise-images/${exId}/${n}.webp`)}" alt="${esc(exId)} position ${n + 1}" loading="lazy" onerror="this.remove()" />`
+      ).join('');
+      list.before(imgs);
+    }
     list.innerHTML = entry?.steps?.length
       ? entry.steps.map((s) => `<li>${esc(s)}</li>`).join('')
       : '<li class="note">No instructions recorded for this exercise.</li>';

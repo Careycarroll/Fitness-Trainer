@@ -31,7 +31,7 @@ jobs:
         run: npm ci
 
       - name: Build web bundle & sync Capacitor Android
-        run: npm run build && npx cap sync android
+        run: npm run cap:sync
 
       - name: Assemble Debug APK
         working-directory: android
