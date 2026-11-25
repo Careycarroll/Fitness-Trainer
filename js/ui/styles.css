@@ -2001,6 +2001,43 @@ button[disabled] {
   font-size: 0.9rem;
 }
 
+.logger-rest-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.logger-rest-in {
+  width: 56px;
+  padding: 2px 6px;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.hold-timer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(8, 12, 18, 0.84);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.hold-timer-overlay[hidden] {
+  display: none;
+}
+
+.hold-timer-card {
+  width: min(460px, 100%);
+  text-align: center;
+  padding: 24px 20px;
+}
+
 /* Trends & Meals (#108) */
 .view-trends,
 .view-meals {

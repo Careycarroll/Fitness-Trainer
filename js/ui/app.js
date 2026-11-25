@@ -877,6 +877,21 @@ export function mount(root, defs) {
           </div>
         </div>
       </section>
+      <section id="hold-timer-overlay" class="hold-timer-overlay" hidden>
+        <div class="card wod-timer-panel hold-timer-card">
+          <div class="wod-timer-top">
+            <strong id="hold-overlay-title">Hold</strong>
+            <span class="note" id="hold-overlay-status">Ready</span>
+          </div>
+          <div id="hold-overlay-clock" class="wod-timer-clock">01:00</div>
+          <div class="storage-actions" style="justify-content:center;">
+            <button type="button" id="hold-overlay-toggle-btn" class="primary">⏸ Pause</button>
+            <button type="button" id="hold-overlay-reset-btn" class="ghost">↺ Reset</button>
+            <button type="button" id="hold-overlay-done-btn" class="primary">✓ Mark Set Done</button>
+            <button type="button" id="hold-overlay-close-btn" class="ghost">✕ Close</button>
+          </div>
+        </div>
+      </section>
     </main>
   `;
 
@@ -2162,8 +2177,117 @@ export function mount(root, defs) {
     return '⏸ Pause';
   }
 
+  // Full-screen Timed Hold Timer overlay state (#117)
+  let holdTimer = {
+    active: false,
+    setId: null,
+    blockId: null,
+    label: 'Hold',
+    durationSec: 60,
+    running: false,
+    endMs: 0,
+    pausedRemainingSec: 60,
+    lastSpokenSec: null,
+    prepEndMs: 0,
+    prepRemainingSec: 0,
+    lastPrepSpoken: null
+  };
+
+  function openHoldOverlay({ setId, blockId, label, durationSec }) {
+    const dur = Math.max(1, Math.round(Number(durationSec) || 60));
+    const prepSec = Number(localStorage.getItem(WOD_COUNTDOWN_KEY) ?? 3);
+    holdTimer = {
+      active: true,
+      setId: setId || null,
+      blockId: blockId || null,
+      label: label || 'Hold',
+      durationSec: dur,
+      running: prepSec <= 0,
+      endMs: prepSec <= 0 ? Date.now() + dur * 1000 : 0,
+      pausedRemainingSec: dur,
+      lastSpokenSec: null,
+      prepEndMs: prepSec > 0 ? Date.now() + prepSec * 1000 : 0,
+      prepRemainingSec: prepSec,
+      lastPrepSpoken: null
+    };
+    const overlay = root.querySelector('#hold-timer-overlay');
+    const titleEl = root.querySelector('#hold-overlay-title');
+    const toggleBtn = root.querySelector('#hold-overlay-toggle-btn');
+    if (overlay) overlay.hidden = false;
+    if (titleEl) titleEl.textContent = holdTimer.label;
+    if (toggleBtn) toggleBtn.textContent = prepSec > 0 ? '⏹ Cancel Prep' : '⏸ Pause';
+    if (prepSec <= 0) {
+      playTimerBeep(880, 180);
+      speakAnnouncement(`${holdTimer.label}. Hold`, voiceEnabled);
+    }
+    updateTimerDisplays();
+  }
+
+  function closeHoldOverlay() {
+    holdTimer.active = false;
+    holdTimer.running = false;
+    holdTimer.prepEndMs = 0;
+    const overlay = root.querySelector('#hold-timer-overlay');
+    if (overlay) overlay.hidden = true;
+  }
+
   function updateTimerDisplays() {
     const now = Date.now();
+    if (holdTimer.active) {
+      const clockEl = root.querySelector('#hold-overlay-clock');
+      const statusEl = root.querySelector('#hold-overlay-status');
+      const toggleBtn = root.querySelector('#hold-overlay-toggle-btn');
+      if (holdTimer.prepEndMs > 0) {
+        const prepRem = Math.max(0, Math.ceil((holdTimer.prepEndMs - now) / 1000));
+        holdTimer.prepRemainingSec = prepRem;
+        if (prepRem > 0) {
+          if (clockEl) clockEl.textContent = `GET READY · ${prepRem}`;
+          if (statusEl) statusEl.textContent = `Target: ${formatClock(holdTimer.durationSec)}`;
+          if (toggleBtn) toggleBtn.textContent = '⏹ Cancel Prep';
+          if (prepRem !== holdTimer.lastPrepSpoken) {
+            const isFirst = holdTimer.lastPrepSpoken === null;
+            holdTimer.lastPrepSpoken = prepRem;
+            playTimerBeep(660, 90);
+            if (isFirst && prepRem > 1) speakAnnouncement(`${holdTimer.label} in ${prepRem}`, voiceEnabled);
+            else if (prepRem <= 5) speakAnnouncement(String(prepRem), voiceEnabled);
+          }
+          return;
+        }
+        holdTimer.prepEndMs = 0;
+        holdTimer.prepRemainingSec = 0;
+        holdTimer.lastPrepSpoken = null;
+        holdTimer.running = true;
+        holdTimer.endMs = now + holdTimer.durationSec * 1000;
+        holdTimer.pausedRemainingSec = holdTimer.durationSec;
+        if (toggleBtn) toggleBtn.textContent = '⏸ Pause';
+        playTimerBeep(990, 220);
+        speakAnnouncement('Hold', voiceEnabled);
+      }
+
+      const rem = holdTimer.running
+        ? Math.max(0, Math.ceil((holdTimer.endMs - now) / 1000))
+        : Math.max(0, Math.ceil(holdTimer.pausedRemainingSec));
+      if (clockEl) clockEl.textContent = formatClock(rem);
+      if (statusEl) {
+        statusEl.textContent = rem === 0
+          ? 'Hold Complete!'
+          : (holdTimer.running ? 'Hold in Progress' : 'Paused');
+      }
+      if (holdTimer.running && rem !== holdTimer.lastSpokenSec) {
+        holdTimer.lastSpokenSec = rem;
+        if (rem === 10) speakAnnouncement('10 seconds', voiceEnabled);
+        else if (rem >= 1 && rem <= 5) {
+          playTimerBeep(660, 80);
+          speakAnnouncement(String(rem), voiceEnabled);
+        } else if (rem === 0) {
+          holdTimer.running = false;
+          holdTimer.pausedRemainingSec = 0;
+          if (toggleBtn) toggleBtn.textContent = '↺ Restart';
+          playTimerBeep(1040, 300);
+          speakAnnouncement('Hold complete', voiceEnabled);
+        }
+      }
+    }
     if (activeTab === 'wod' && wodViewTimer.active && wodViewTimer.config) {
       tickWodTimerUi(wodViewTimer, now, {
         clockEl: root.querySelector('#wod-view-clock'),
@@ -2336,9 +2460,11 @@ export function mount(root, defs) {
                   <span class="logger-set-badge">${esc(badge)}</span>
                   ${isSuperset ? `<strong class="logger-set-ex">${esc(st.exerciseName)}</strong>` : ''}
                   ${st.isPr ? '<span class="catalog-badge" title="Personal Record">🏆 PR</span>' : ''}
-                  <span class="note" style="margin-left:auto;">Rest ${st.restSec}s</span>
-                  ${isTime ? `<button type="button" class="ghost logger-mini-btn" data-logger-hold-sec="${st.durationSec || 45}" data-logger-hold-name="${esc(st.exerciseName)}" title="Start timed hold countdown">▶ Hold</button>` : ''}
-                  ${!isDrop ? `<button type="button" class="ghost logger-mini-btn" data-logger-add-drop="${esc(st.id)}" title="Add drop set">+ Drop</button>` : ''}
+                  <label class="logger-rest-edit" style="margin-left:auto;">Rest
+                    <input type="number" min="0" step="5" class="logger-in logger-rest-in" data-set-field="restSec" data-set-id="${esc(st.id)}" value="${st.restSec ?? 90}" aria-label="Rest seconds" />s
+                  </label>
+                  ${isTime ? `<button type="button" class="ghost logger-mini-btn" data-logger-hold-set="${esc(st.id)}" data-logger-hold-block="${esc(blk.id)}" data-logger-hold-sec="${st.durationSec || 60}" data-logger-hold-name="${esc(st.exerciseName)}" title="Start full-screen hold countdown">▶ Hold</button>` : ''}
+                  ${!isDrop && !isTime && st.setType !== 'warmup' && st.trackingType === 'weight_reps' ? `<button type="button" class="ghost logger-mini-btn" data-logger-add-drop="${esc(st.id)}" title="Add drop set">+ Drop</button>` : ''}
                   <button type="button" class="ghost logger-mini-btn" data-logger-del-set="${esc(st.id)}" aria-label="Delete set">✕</button>
                 </div>
                 <div class="logger-set-inputs">
@@ -2403,7 +2529,7 @@ export function mount(root, defs) {
                   ${!isSuperset && blockExercises[0] ? ` · <span>${esc(blockExercises[0].name)}</span>` : ''}
                   ${isSuperset ? '<span class="note"> (Auto-advances between exercises)</span>' : ''}
                 </div>
-                <button type="button" class="ghost logger-mini-btn" data-logger-pair-block="${esc(blk.id)}">+ Pair Superset</button>
+                ${blk.blockType === 'straight' ? `<button type="button" class="ghost logger-mini-btn" data-logger-pair-block="${esc(blk.id)}">+ Pair Superset</button>` : ''}
               </div>
               ${wodPanelHtml}
               <div class="logger-sets-list">${setsHtml}</div>
@@ -2511,6 +2637,62 @@ export function mount(root, defs) {
     });
   });
 
+  const holdOverlay = root.querySelector('#hold-timer-overlay');
+  if (holdOverlay) {
+    holdOverlay.addEventListener('click', async (e) => {
+      if (e.target === holdOverlay || e.target.closest('#hold-overlay-close-btn')) {
+        closeHoldOverlay();
+        return;
+      }
+      if (e.target.closest('#hold-overlay-toggle-btn')) {
+        const toggleBtn = root.querySelector('#hold-overlay-toggle-btn');
+        if (holdTimer.prepEndMs > 0) {
+          closeHoldOverlay();
+          return;
+        }
+        if (holdTimer.running) {
+          holdTimer.pausedRemainingSec = Math.max(0, Math.ceil((holdTimer.endMs - Date.now()) / 1000));
+          holdTimer.running = false;
+          if (toggleBtn) toggleBtn.textContent = '▶ Resume';
+        } else {
+          const rem = holdTimer.pausedRemainingSec > 0 ? holdTimer.pausedRemainingSec : holdTimer.durationSec;
+          holdTimer.endMs = Date.now() + rem * 1000;
+          holdTimer.running = true;
+          holdTimer.lastSpokenSec = null;
+          if (toggleBtn) toggleBtn.textContent = '⏸ Pause';
+        }
+        updateTimerDisplays();
+        return;
+      }
+      if (e.target.closest('#hold-overlay-reset-btn')) {
+        openHoldOverlay({
+          setId: holdTimer.setId,
+          blockId: holdTimer.blockId,
+          label: holdTimer.label,
+          durationSec: holdTimer.durationSec
+        });
+        return;
+      }
+      if (e.target.closest('#hold-overlay-done-btn')) {
+        const setId = holdTimer.setId;
+        const blockId = holdTimer.blockId;
+        closeHoldOverlay();
+        if (setId && activeLoggerSessionId) {
+          const appDb = await ensureAppDb();
+          updateSetFields(appDb, setId, { isComplete: true });
+          const active = loadActiveWorkout(appDb, activeLoggerSessionId);
+          const blk = active?.blocks.find((b) => b.id === blockId);
+          const completedSet = blk?.sets.find((s) => s.id === setId);
+          if (completedSet && blk && !['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(blk.blockType)) {
+            startCountdownTimer(completedSet.restSec || 90, 'rest', `Rest (${completedSet.exerciseName})`);
+          }
+          await savePersistedAppDb(appDb);
+          await renderActiveLogger();
+        }
+      }
+    });
+  }
+
   const wodRunnerPanel = root.querySelector('#wod-runner-panel');
   if (wodRunnerPanel) {
     wodRunnerPanel.addEventListener('click', async (e) => {
@@ -2615,9 +2797,13 @@ export function mount(root, defs) {
         const field = fieldEl.dataset.setField;
         let val = fieldEl.value;
         if (field === 'weightKg') val = displayToKg(val, unit);
-        else if (field === 'reps' || field === 'durationSec') val = val === '' ? null : Number(val);
+        else if (field === 'reps' || field === 'durationSec' || field === 'restSec') val = val === '' ? null : Math.max(0, Number(val));
         else if (field === 'rir') val = val === '' ? null : Number(val);
         updateSetFields(appDb, setId, { [field]: val });
+        if (field === 'restSec' && val !== null) {
+          const exRow = appDb.exec('SELECT exercise_id FROM logged_sets WHERE id = ?', [setId])[0]?.values?.[0]?.[0];
+          if (exRow) appDb.run('UPDATE exercises SET user_rest_sec = ? WHERE id = ?', [Math.round(val), exRow]);
+        }
         await savePersistedAppDb(appDb);
         return;
       }
@@ -2662,9 +2848,22 @@ export function mount(root, defs) {
         startCountdownTimer(60, 'rest', 'Rest');
         return;
       }
-      const holdBtn = e.target.closest('[data-logger-hold-sec]');
+      const holdBtn = e.target.closest('[data-logger-hold-set]');
       if (holdBtn) {
-        startCountdownTimer(Number(holdBtn.dataset.loggerHoldSec), 'hold', holdBtn.dataset.loggerHoldName || 'Hold');
+        const setId = holdBtn.dataset.loggerHoldSet;
+        const blockId = holdBtn.dataset.loggerHoldBlock;
+        const row = holdBtn.closest('.logger-set-row');
+        const durInput = row?.querySelector('[data-set-field="durationSec"]');
+        const liveSec = durInput && durInput.value !== '' ? Number(durInput.value) : Number(holdBtn.dataset.loggerHoldSec || 60);
+        const dur = Math.max(1, Math.round(liveSec || 60));
+        updateSetFields(appDb, setId, { durationSec: dur });
+        await savePersistedAppDb(appDb);
+        openHoldOverlay({
+          setId,
+          blockId,
+          label: holdBtn.dataset.loggerHoldName || 'Hold',
+          durationSec: dur
+        });
         return;
       }
       if (e.target.closest('#rest-minus-btn')) {
