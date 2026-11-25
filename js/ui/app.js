@@ -2329,7 +2329,24 @@ export function mount(root, defs) {
   // --- Trends & Analytics View (#108) ---
   let selectedTrendExerciseId = null;
   let selectedBiasMode = 'muscles'; // 'muscles' | 'regions' | 'patterns'
-  let selectedBiasDays = '';        // '' (all-time) | '90' | '30'
+  let trendRangePreset = 'all';     // 'all' | '30' | '90' | 'ytd' | 'custom'
+  let trendStartDate = '';
+  let trendEndDate = '';
+
+  function resolveTrendDateRange() {
+    const today = todayDateString();
+    if (trendRangePreset === 'all') return { startDate: null, endDate: null };
+    if (trendRangePreset === 'ytd') return { startDate: `${today.slice(0, 4)}-01-01`, endDate: today };
+    if (trendRangePreset === '30' || trendRangePreset === '90') {
+      const d = new Date();
+      d.setDate(d.getDate() - Number(trendRangePreset));
+      return { startDate: d.toISOString().slice(0, 10), endDate: today };
+    }
+    return {
+      startDate: trendStartDate || null,
+      endDate: trendEndDate || null
+    };
+  }
 
   async function renderTrendsView() {
     if (!viewTrends) return;
@@ -2340,7 +2357,8 @@ export function mount(root, defs) {
       selectedTrendExerciseId = loggedExs[0]?.id || 'back-squat';
     }
 
-    const trend = queryExerciseTrend(appDb, selectedTrendExerciseId);
+    const range = resolveTrendDateRange();
+    const trend = queryExerciseTrend(appDb, selectedTrendExerciseId, range);
     const isTime = trend.scoring === 'time';
     const unitSuffix = isTime ? 's' : ` ${unit}`;
     const chartPoints = trend.points.map((p) => ({
@@ -2351,13 +2369,13 @@ export function mount(root, defs) {
     const allBestDisp = isTime ? trend.allTimeBest : kgToDisplayNum(trend.allTimeBest, unit);
     const epochBestDisp = isTime ? trend.currentEpochBest : kgToDisplayNum(trend.currentEpochBest, unit);
 
-    const weeks = queryWeeklyWorkouts(appDb, 12);
-    const bias = queryTrainingBias(appDb, { days: selectedBiasDays ? Number(selectedBiasDays) : null });
+    const weeks = queryWeeklyWorkouts(appDb, { ...range, limitWeeks: 52 });
+    const bias = queryTrainingBias(appDb, range);
     const biasItems = selectedBiasMode === 'regions'
       ? bias.regions
       : (selectedBiasMode === 'patterns' ? bias.patterns : bias.muscles);
 
-    const bwRows = queryBodyweightTrend(appDb);
+    const bwRows = queryBodyweightTrend(appDb, range);
     const bwPoints = bwRows.map((r) => ({
       date: r.date,
       value: kgToDisplayNum(r.weightKg, unit),
@@ -2365,6 +2383,27 @@ export function mount(root, defs) {
     }));
 
     viewTrends.innerHTML = `
+      <div class="card">
+        <h2 style="margin:0 0 8px;">Date Range</h2>
+        <div class="catalog-filters">
+          <label>Preset
+            <select id="trends-range-preset">
+              <option value="all"${trendRangePreset === 'all' ? ' selected' : ''}>All Time</option>
+              <option value="30"${trendRangePreset === '30' ? ' selected' : ''}>Last 30 Days</option>
+              <option value="90"${trendRangePreset === '90' ? ' selected' : ''}>Last 90 Days</option>
+              <option value="ytd"${trendRangePreset === 'ytd' ? ' selected' : ''}>Year to Date</option>
+              <option value="custom"${trendRangePreset === 'custom' ? ' selected' : ''}>Custom Range</option>
+            </select>
+          </label>
+          <label>From
+            <input type="date" id="trends-start-date" value="${esc(range.startDate || '')}" />
+          </label>
+          <label>To
+            <input type="date" id="trends-end-date" value="${esc(range.endDate || '')}" />
+          </label>
+        </div>
+      </div>
+
       <div class="card">
         <div class="log-toolbar-top">
           <h2 style="margin:0;">Lift & Benchmark Progression</h2>
@@ -2378,27 +2417,20 @@ export function mount(root, defs) {
           </select>
         </label>
         <div class="trend-kpis">
-          <div class="trend-kpi"><strong>All-Time Best:</strong> ${esc(allBestDisp + unitSuffix)}</div>
+          <div class="trend-kpi"><strong>Best in Range:</strong> ${esc(allBestDisp + unitSuffix)}</div>
           <div class="trend-kpi"><strong>Active Baseline (Epoch ${trend.activeEpoch}):</strong> ${esc(epochBestDisp + unitSuffix)}</div>
         </div>
         ${renderSvgLineChart(chartPoints, { unitSuffix })}
       </div>
 
       <div class="card">
-        <h2 style="margin:0 0 6px;">Training Bias & Muscle Distribution</h2>
-        <div class="catalog-filters" style="max-width:520px; margin-bottom:8px;">
-          <label>Group By
+        <div class="log-toolbar-top">
+          <h2 style="margin:0;">Training Bias & Muscle Distribution</h2>
+          <label style="min-width:190px;">Group By
             <select id="trends-bias-mode">
               <option value="muscles"${selectedBiasMode === 'muscles' ? ' selected' : ''}>Muscle Groups</option>
               <option value="regions"${selectedBiasMode === 'regions' ? ' selected' : ''}>Upper / Lower / Core</option>
               <option value="patterns"${selectedBiasMode === 'patterns' ? ' selected' : ''}>Movement Patterns</option>
-            </select>
-          </label>
-          <label>Timeframe
-            <select id="trends-bias-days">
-              <option value=""${selectedBiasDays === '' ? ' selected' : ''}>All Time</option>
-              <option value="90"${selectedBiasDays === '90' ? ' selected' : ''}>Last 90 Days</option>
-              <option value="30"${selectedBiasDays === '30' ? ' selected' : ''}>Last 30 Days</option>
             </select>
           </label>
         </div>
@@ -2438,8 +2470,16 @@ export function mount(root, defs) {
       } else if (e.target.id === 'trends-bias-mode') {
         selectedBiasMode = e.target.value;
         renderTrendsView();
-      } else if (e.target.id === 'trends-bias-days') {
-        selectedBiasDays = e.target.value;
+      } else if (e.target.id === 'trends-range-preset') {
+        trendRangePreset = e.target.value;
+        renderTrendsView();
+      } else if (e.target.id === 'trends-start-date') {
+        trendRangePreset = 'custom';
+        trendStartDate = e.target.value;
+        renderTrendsView();
+      } else if (e.target.id === 'trends-end-date') {
+        trendRangePreset = 'custom';
+        trendEndDate = e.target.value;
         renderTrendsView();
       }
     });

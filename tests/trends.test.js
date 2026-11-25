@@ -38,6 +38,10 @@ describe('Graphical Trends & Basic Meal Tracker (#108)', () => {
       const svg = renderSvgLineChart(trend.points, { unitSuffix: ' kg' });
       assert.ok(svg.includes('<svg'));
       assert.ok(svg.includes('<polyline'));
+
+      const filtered = queryExerciseTrend(db, 'back-squat', { startDate: '2026-11-01', endDate: '2026-11-30' });
+      assert.equal(filtered.points.length, 1);
+      assert.equal(filtered.points[0].date, '2026-11-25');
     } finally {
       db.close();
     }

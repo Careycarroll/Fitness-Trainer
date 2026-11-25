@@ -51,9 +51,9 @@ export function queryLoggedExercisesWithRecords(appDb) {
 }
 
 /**
- * Query performance trend points for a single exercise.
+ * Query performance trend points for a single exercise, optionally bounded by date range.
  */
-export function queryExerciseTrend(appDb, exerciseId) {
+export function queryExerciseTrend(appDb, exerciseId, { startDate = null, endDate = null } = {}) {
   const exRow = appDb.exec(
     'SELECT name, scoring, COALESCE(active_epoch, 1) FROM exercises WHERE id = ?',
     [exerciseId]
@@ -63,12 +63,17 @@ export function queryExerciseTrend(appDb, exerciseId) {
   const scoring = exRow?.[1] || 'load';
   const name = exRow?.[0] || exerciseId;
 
+  const clauses = ['exercise_id = ?'];
+  const params = [exerciseId];
+  if (startDate) { clauses.push('date >= ?'); params.push(startDate); }
+  if (endDate) { clauses.push('date <= ?'); params.push(endDate); }
+
   const rows = appDb.exec(`
     SELECT date, epoch, record_type, value_primary, is_pr, is_epoch_pr
     FROM performance_records
-    WHERE exercise_id = ?
+    WHERE ${clauses.join(' AND ')}
     ORDER BY date ASC, created_at ASC
-  `, [exerciseId])[0]?.values ?? [];
+  `, params)[0]?.values ?? [];
 
   let allTimeBest = 0;
   let currentEpochBest = 0;
@@ -99,9 +104,18 @@ export function queryExerciseTrend(appDb, exerciseId) {
 }
 
 /**
- * Query completed workouts & sets grouped by ISO week (last N weeks).
+ * Query completed workouts & sets grouped by ISO week.
  */
-export function queryWeeklyWorkouts(appDb, limitWeeks = 12) {
+export function queryWeeklyWorkouts(appDb, opts = 12) {
+  const { startDate = null, endDate = null, limitWeeks = 52 } =
+    typeof opts === 'number' ? { limitWeeks: opts } : (opts || {});
+
+  const clauses = ["s.status = 'completed'"];
+  const params = [];
+  if (startDate) { clauses.push('s.date >= ?'); params.push(startDate); }
+  if (endDate) { clauses.push('s.date <= ?'); params.push(endDate); }
+  params.push(limitWeeks);
+
   const rows = appDb.exec(`
     SELECT
       strftime('%Y-W%W', s.date) AS week_key,
@@ -110,11 +124,11 @@ export function queryWeeklyWorkouts(appDb, limitWeeks = 12) {
       COUNT(ls.id) AS set_count
     FROM workout_sessions s
     LEFT JOIN logged_sets ls ON ls.session_id = s.id AND ls.is_complete = 1
-    WHERE s.status = 'completed'
+    WHERE ${clauses.join(' AND ')}
     GROUP BY week_key
     ORDER BY week_key DESC
     LIMIT ?
-  `, [limitWeeks])[0]?.values ?? [];
+  `, params)[0]?.values ?? [];
 
   return rows
     .map(([weekKey, weekStart, workouts, sets]) => ({
@@ -129,13 +143,18 @@ export function queryWeeklyWorkouts(appDb, limitWeeks = 12) {
 /**
  * Query bodyweight history from body_metrics.
  */
-export function queryBodyweightTrend(appDb) {
+export function queryBodyweightTrend(appDb, { startDate = null, endDate = null } = {}) {
+  const clauses = ['weight_kg IS NOT NULL'];
+  const params = [];
+  if (startDate) { clauses.push('date >= ?'); params.push(startDate); }
+  if (endDate) { clauses.push('date <= ?'); params.push(endDate); }
+
   const rows = appDb.exec(`
     SELECT id, date, weight_kg, notes
     FROM body_metrics
-    WHERE weight_kg IS NOT NULL
+    WHERE ${clauses.join(' AND ')}
     ORDER BY date ASC, created_at ASC
-  `)[0]?.values ?? [];
+  `, params)[0]?.values ?? [];
 
   return rows.map(([id, date, weightKg, notes]) => ({
     id,
@@ -168,25 +187,25 @@ function formatTokenLabel(tok) {
  * @param {object} [options]
  * @param {number|null} [options.days] optional trailing day window (e.g. 30, 90, or null for all-time)
  */
-export function queryTrainingBias(appDb, { days = null } = {}) {
-  let dateCutoff = null;
-  if (days && Number(days) > 0) {
+export function queryTrainingBias(appDb, { days = null, startDate = null, endDate = null } = {}) {
+  let effectiveStart = startDate;
+  if (!effectiveStart && days && Number(days) > 0) {
     const d = new Date();
     d.setDate(d.getDate() - Number(days));
-    dateCutoff = d.toISOString().slice(0, 10);
+    effectiveStart = d.toISOString().slice(0, 10);
   }
 
-  const whereDate = dateCutoff ? 'AND ws.date >= ?' : '';
-  const params = dateCutoff ? [dateCutoff] : [];
+  const clauses = ['ls.is_complete = 1', "ls.set_type != 'warmup'"];
+  const params = [];
+  if (effectiveStart) { clauses.push('ws.date >= ?'); params.push(effectiveStart); }
+  if (endDate) { clauses.push('ws.date <= ?'); params.push(endDate); }
 
   const rows = appDb.exec(`
     SELECT e.pattern, e.primary_muscles, e.secondary_muscles
     FROM logged_sets ls
     JOIN workout_sessions ws ON ws.id = ls.session_id
     JOIN exercises e ON e.id = ls.exercise_id
-    WHERE ls.is_complete = 1
-      AND ls.set_type != 'warmup'
-      ${whereDate}
+    WHERE ${clauses.join(' AND ')}
   `, params)[0]?.values ?? [];
 
   const regions = { Upper: 0, Lower: 0, Core: 0 };
