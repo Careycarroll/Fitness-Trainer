@@ -45,4 +45,5 @@ test('generate() keeps empty history deterministic and shifts selection when rec
     s.blocks.flatMap((blk) => blk.setGroups.map((g) => g.exerciseId))
   );
   assert.notEqual(JSON.stringify(shiftedIds), JSON.stringify(firstExIds));
+  assert.ok(shifted.weeks[0].sessions[0].fatigueBudget < a.weeks[0].sessions[0].fatigueBudget);
 });

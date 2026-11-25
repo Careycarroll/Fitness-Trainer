@@ -86,6 +86,7 @@ export function generateSession({
   // the budget stopped it.
   const target = clamp(request.exerciseCount ?? count.max, 1, 14);
 
+  const sessionBudget = effectiveFatigueBudget(style, request);
   const state = {
     blocks: [],
     omitted: [],
@@ -135,7 +136,7 @@ export function generateSession({
     const chosen = pick({
       pool: allowed, pattern, style, state, rng, isMain, dayMuscles, week,
       slotsLeft: Math.max(1, target - state.blocks.length),
-      catalog, request
+      catalog, request, sessionBudget
     });
 
     if (!chosen) {
@@ -199,7 +200,7 @@ export function generateSession({
     const chosen = pick({
       pool: allowed, pattern, style, state, rng, isMain: false, dayMuscles, week,
       slotsLeft: Math.max(1, target - state.blocks.length),
-      catalog, request
+      catalog, request, sessionBudget
     });
 
     if (!chosen) {
@@ -236,9 +237,25 @@ export function generateSession({
     exercisesRequested: fillTarget,
     exercisesPlaced: state.blocks.length,
     fatigueUsed: state.fatigueUsed,
-    fatigueBudget: style.fatigueBudget,
+    fatigueBudget: sessionBudget,
     blockedByGates: blocked.filter((b) => b.reason).map((b) => ({ id: b.exercise.id, reason: b.reason }))
   };
+}
+
+/**
+ * Scale session fatigue budget down when recent logged history shows high
+ * accumulated load (#20). Empty history keeps style.fatigueBudget unchanged.
+ */
+function effectiveFatigueBudget(style, request) {
+  const base = style.fatigueBudget;
+  const hist = request?.history;
+  if (!Array.isArray(hist) || hist.length === 0) return base;
+  const latestDate = hist.reduce((max, h) => (h?.date && h.date > max ? h.date : max), '');
+  const latestSets = latestDate ? hist.filter((h) => h?.date === latestDate).length : 0;
+  if (latestSets >= 12 || hist.length >= 40) {
+    return Math.max(Math.ceil(base * 0.8), Math.round(base * 0.85));
+  }
+  return base;
 }
 
 // ---------------------------------------------------------------------------
@@ -251,8 +268,8 @@ export function generateSession({
  * a session short one movement that says why beats one that quietly substituted
  * something the style does not program (ADR-014).
  */
-function pick({ pool, pattern, style, state, rng, isMain, slotsLeft, dayMuscles, week, catalog = pool, request = null }) {
-  const remaining = style.fatigueBudget - state.fatigueUsed;
+function pick({ pool, pattern, style, state, rng, isMain, slotsLeft, dayMuscles, week, catalog = pool, request = null, sessionBudget = style.fatigueBudget }) {
+  const remaining = sessionBudget - state.fatigueUsed;
 
   const legal = pool.filter((e) => {
     if (e.pattern !== pattern) return false;

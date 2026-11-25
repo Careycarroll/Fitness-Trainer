@@ -97,7 +97,10 @@
             "chest",
             "triceps",
             "front_delts",
+            "side_delts",
+            "rear_delts",
             "mid_back",
+            "upper_back",
             "lats",
             "abs"
           ]
