@@ -1523,16 +1523,45 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
   // -- an empty panel under a heading, which reads as a broken build (#8).
   currentDefs = currentDefs ?? defs;
 
+  root.querySelector('#profile-editor').addEventListener('change', (e) => {
+    const sel = e.target.closest('#settings-profile-select');
+    if (!sel) return;
+    const val = sel.value;
+    if (eqPicker) eqPicker.value = val;
+    if (wodEqPicker) wodEqPicker.value = val;
+    localStorage.setItem(PREF_PROFILE, val);
+    paintProfiles();
+  });
+
   root.querySelector('#profile-editor').addEventListener('click', async (e) => {
+    const newBtn = e.target.closest('#profile-new');
+    if (newBtn) {
+      const panel = root.querySelector('#profile-editor');
+      const nameInput = panel.querySelector('#profile-name');
+      if (nameInput) {
+        nameInput.value = '';
+        nameInput.focus();
+      }
+      panel.querySelectorAll('[name=token]').forEach((cb) => { cb.checked = false; });
+      const saveBtn = panel.querySelector('#profile-save');
+      if (saveBtn) saveBtn.textContent = 'Save new profile';
+      const saveNewBtn = panel.querySelector('#profile-save-new');
+      if (saveNewBtn) saveNewBtn.hidden = true;
+      const delBtn = panel.querySelector('#profile-delete');
+      if (delBtn) delBtn.hidden = true;
+      return;
+    }
+
     const save = e.target.closest('#profile-save');
+    const saveNew = e.target.closest('#profile-save-new');
     const del = e.target.closest('#profile-delete');
-    if (!save && !del) return;
+    if (!save && !saveNew && !del) return;
 
     const panel = root.querySelector('#profile-editor');
     const base = persisted ?? emptyState();
 
     if (del) {
-      const id = root.querySelector('[name=equipmentProfile]').value;
+      const id = root.querySelector('#settings-profile-select')?.value || root.querySelector('[name=equipmentProfile]').value;
       if (!window.confirm('Delete this profile? Plans already generated are unaffected.')) return;
       const { ok, error } = await db.trySave(removeProfile(base, id));
       storageNote = ok ? 'Profile deleted.' : `Not deleted: ${error?.message ?? 'unknown'}`;
@@ -1544,6 +1573,14 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
 
     const name = panel.querySelector('#profile-name').value.trim();
     if (!name) { storageNote = 'Name the profile before saving it.'; paintStatus(); return; }
+
+    const currentSelId = root.querySelector('#settings-profile-select')?.value;
+    if (saveNew && profileId(name) === currentSelId) {
+      storageNote = 'Enter a different profile name to save as a new profile.';
+      panel.querySelector('#profile-name')?.focus();
+      paintStatus();
+      return;
+    }
 
     const available = [...panel.querySelectorAll('[name=token]:checked')].map((b) => b.value);
     const profile = {
@@ -1559,7 +1596,9 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
       persisted = next;
       storageNote = `Saved "${name}" with ${available.length} items.`;
       paintProfiles();
-      root.querySelector('[name=equipmentProfile]').value = profile.id;
+      if (eqPicker) eqPicker.value = profile.id;
+      if (wodEqPicker) wodEqPicker.value = profile.id;
+      localStorage.setItem(PREF_PROFILE, profile.id);
       paintProfiles();
     } catch (err) {
       storageNote = `Profile refused: ${err.message}`;
@@ -2225,7 +2264,9 @@ function paintProfiles() {
   el.innerHTML = renderProfileEditor(tokenChoices(currentDefs.exercises, owned), {
     name: editing?.name ?? '',
     editingId: editing?.id ?? null,
-    authored
+    authored,
+    profiles: currentDefs.equipment,
+    selectedId: selected ?? currentDefs.equipment[0]?.id ?? null
   });
 
   // Keep the picker in step with what exists, preserving the selection.
@@ -2764,9 +2805,16 @@ export function profileId(name) {
   return String(name).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
-export function renderProfileEditor(choices, { name = '', editingId = null, authored = [] } = {}) {
+export function renderProfileEditor(choices, { name = '', editingId = null, authored = [], profiles = [], selectedId = null } = {}) {
   const owned = choices.filter((c) => c.owned).length;
   return `
+    ${profiles.length ? `
+      <label>Active / Editing Profile
+        <select id="settings-profile-select">
+          ${profiles.map((p) => `<option value="${esc(p.id)}"${p.id === selectedId ? ' selected' : ''}>${esc(p.name)}${p.userDefined ? ' (yours)' : ''}</option>`).join('')}
+        </select>
+      </label>
+    ` : ''}
     <label>Profile name
       <input type="text" id="profile-name" value="${esc(name)}" placeholder="My Gym" />
     </label>
@@ -2783,7 +2831,9 @@ export function renderProfileEditor(choices, { name = '', editingId = null, auth
         </li>`).join('')}
     </ul>
     <div class="storage-actions">
-      <button type="button" id="profile-save" class="ghost">${editingId ? 'Update' : 'Save'} profile</button>
+      <button type="button" id="profile-save" class="${editingId ? 'ghost' : 'primary'}">${editingId ? 'Update' : 'Save new'} profile</button>
+      ${editingId ? `<button type="button" id="profile-save-new" class="ghost">Save as new</button>` : ''}
+      <button type="button" id="profile-new" class="ghost">+ New</button>
       ${editingId ? `<button type="button" id="profile-delete" class="ghost">Delete</button>` : ''}
     </div>
     ${authored.length ? `<p class="note">Your profiles: ${authored.map((p) => esc(p.name)).join(', ')}</p>` : ''}`;
