@@ -54,15 +54,7 @@ Eleven Trainer exercises receive more than one FitNotes definition. This is what
 FitNotes table looks like after years of use: the stock row survives beside the
 athlete's renamed or re-created copy.
 
-**The precondition for a safe merge is checkable: in every group, at most one
-source carries completed sets.** Where it holds, no two histories combine and no
-estimated 1RM is affected.
-
-**It does not hold today.** `ez-bar-skullcrusher` receives completed sets from
-two sources -- id 181 (3 sets) and id 202 (2 sets) -- and the merge rule for that
-group is undecided. Deferred to #55 and declared in `KNOWN_UNSAFE` in
-`scripts/checks/12-merge-precondition.js`; it must be resolved before #16 reads
-logged sets. Every other group still satisfies the rule.
+**Merge rule (#55): combine chronologically.** Where multiple FitNotes definitions map to the same canonical `exerciseId`, completed sets are combined in chronological order while keeping `sourceExerciseId` and `sourceExerciseName` on every set for provenance. In ten of the eleven groups at most one source carries completed sets; in the remaining group (`ez-bar-skullcrusher`, ids 181 and 202), both rows represent the exact same isolation movement (`ez_bar`, not an ADR-023 percentage-anchored compound lift) and are explicitly approved to combine. Any new group with more than one populated source must be reviewed and explicitly approved in `scripts/checks/12-merge-precondition.js`.
 
 | Trainer target | FitNotes sources (sets) |
 | --- | --- |
@@ -76,7 +68,7 @@ logged sets. Every other group still satisfies the rule.
 | Cycling - Outdoor | Cycling (0) · Cycling (Outdoor) (0) |
 | Cycling - Stationary Bike | Cycling (Indoor) (0) · Stationary Bike (0) |
 | Lying Leg Curl | Lying Leg Curl (0) · Lying Leg Curl Machine (0) |
-| **EZ-Bar Skullcrusher** | **Lying Triceps Extension (3) · EZ-Bar Skullcrusher (2)** — UNSAFE, #55 |
+| **EZ-Bar Skullcrusher** | **Lying Triceps Extension (3) · EZ-Bar Skullcrusher (2)** — approved same-movement combine (#55) |
 
 ### This is a property of this export, not a guarantee
 

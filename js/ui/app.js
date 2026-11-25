@@ -36,6 +36,7 @@ import {
 } from '../engine/plate-math.js';
 import { prescribeWarmup } from '../engine/warmup.js';
 import { evaluateDeloadTriggers } from '../engine/deload.js';
+import { syncEstimatedMaxes, buildMaxReadout } from '../engine/exercise-max.js';
 import * as db from '../storage/db.js';
 import {
   emptyState, putPlan, toExportJSON, fromImportJSON, toCSV, replaceImportedSets,
@@ -111,6 +112,7 @@ import {
   queryTrainingBias,
   queryHistoryPerLift,
   queryDeloadInputs,
+  queryCompletedSetsForMaxes,
   addBodyMetric,
   renderSvgLineChart,
   renderSvgBarChart,
@@ -2465,6 +2467,42 @@ export function mount(root, defs) {
       return `<li><strong>${esc(t.id)}</strong> [${badge}] — ${esc(t.reason)}</li>`;
     }).join('');
 
+    const loggedMaxSets = queryCompletedSetsForMaxes(appDb);
+    const maxReadout = buildMaxReadout({
+      state: persisted ?? emptyState(),
+      loggedSets: loggedMaxSets,
+      catalog: defs.exercises
+    });
+    const importStaleText = maxReadout.lastImportAt
+      ? `Last FitNotes import: ${maxReadout.lastImportAt.slice(0, 10)} (${maxReadout.daysSinceImport}d ago)${maxReadout.isStale ? ' · Stale (>14d)' : ''}`
+      : 'No FitNotes import recorded yet (stale)';
+    const unresolvedNote = maxReadout.unresolvedSetCount > 0
+      ? `${maxReadout.unresolvedSetCount} unresolved set(s) across ${maxReadout.unresolvedExerciseCount} exercise(s) excluded from progression.`
+      : '0 unresolved imported sets.';
+
+    const anchoredHtml = maxReadout.anchoredLifts.map((row) => {
+      const wm = row.workingMax;
+      const sourceLabel = wm
+        ? (wm.source === 'estimated_low_confidence' ? 'estimated (4–6 reps · low confidence)' : wm.source)
+        : null;
+      const maxBadge = wm
+        ? `<strong>${esc(String(wm.e1rm))} lb</strong> <span class="tag">${esc(sourceLabel)}</span> <span class="note">since ${esc(wm.effectiveDate)}</span>`
+        : `<span class="note">${esc(row.missingReason)}</span>`;
+      const pbTxt = row.personalBest
+        ? ` · Actual PB: <strong>${esc(String(row.personalBest.weight))} ${esc(row.personalBest.weightUnit)} × ${row.personalBest.reps}</strong> (${esc(row.personalBest.date)})`
+        : '';
+      const flagTxt = row.precedenceFlag
+        ? `<div class="note" style="color:var(--accent); margin-top:2px;">↑ ${esc(row.precedenceFlag)}</div>`
+        : '';
+      return `<li><strong>${esc(row.name)}:</strong> ${maxBadge}${pbTxt}${flagTxt}</li>`;
+    }).join('');
+
+    const pbListHtml = maxReadout.personalBests.length
+      ? maxReadout.personalBests.slice(0, 25).map((pb) =>
+          `<li><strong>${esc(pb.name)}:</strong> ${esc(String(pb.weight))} ${esc(pb.weightUnit)} × ${pb.reps} <span class="note">(${esc(pb.date)})</span></li>`
+        ).join('')
+      : '<li class="note">No completed weighted sets logged yet.</li>';
+
     viewTrends.innerHTML = `
       <div class="card">
         <h2 style="margin:0 0 8px;">Date Range</h2>
@@ -2515,6 +2553,24 @@ export function mount(root, defs) {
         <ul style="margin:6px 0 0; padding-left:18px; font-size:0.86rem;">
           ${deloadHtml}
         </ul>
+      </div>
+
+      <div class="card" id="trends-max-readout">
+        <h2 style="margin:0 0 6px;">Maxes, Estimates &amp; Import Staleness</h2>
+        <p class="note" style="margin:0 0 4px;"><strong>${esc(importStaleText)}</strong> · ${esc(unresolvedNote)}</p>
+        <p class="note" style="margin:0 0 8px;">Working maxes (Epley e1RM / entered / tested) feed percentage prescriptions; Actual Personal Bests show heaviest performed sets without estimation.</p>
+        <details open>
+          <summary style="cursor:pointer; font-weight:600;">Anchored Working Maxes (${maxReadout.anchoredLifts.filter((r) => r.workingMax).length}/${maxReadout.anchoredLifts.length})</summary>
+          <ul style="margin:6px 0 0; padding-left:18px; font-size:0.86rem;">
+            ${anchoredHtml}
+          </ul>
+        </details>
+        <details style="margin-top:8px;">
+          <summary style="cursor:pointer; font-weight:600;">Actual Personal Bests — Heaviest Set Performed (${maxReadout.personalBests.length})</summary>
+          <ul style="margin:6px 0 0; padding-left:18px; font-size:0.86rem;">
+            ${pbListHtml}
+          </ul>
+        </details>
       </div>
 
       <div class="card">
@@ -3584,11 +3640,14 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
       // Sets and day notes in ONE state object, so ONE trySave writes both.
       // Two saves could land sets without notes, leaving the two halves of a
       // single import disagreeing with no way to tell (#50).
-      const next = replaceImportedDayNotes(
-        replaceImportedSets(
-          persisted ?? emptyState(), result.sets, new Date().toISOString()
+      const next = syncEstimatedMaxes(
+        replaceImportedDayNotes(
+          replaceImportedSets(
+            persisted ?? emptyState(), result.sets, new Date().toISOString()
+          ),
+          result.dayNotes
         ),
-        result.dayNotes
+        defs.exercises
       );
 
       const { ok, error } = await db.trySave(next);
@@ -4027,7 +4086,7 @@ function paintStatus() {
       ? live
           .slice()
           .sort((a, b) => (a.exerciseId < b.exerciseId ? -1 : 1))
-          .map((r) => r.exerciseId + ' ' + r.e1rm + ' lb (' + r.source + ')')
+          .map((r) => `${r.exerciseId}: ${r.e1rm} lb (${r.source}, ${r.effectiveDate})`)
           .join(' | ')
       : 'No maxes entered yet.';
   }

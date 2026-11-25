@@ -607,3 +607,29 @@ export function queryDeloadInputs(appDb, { days = 14 } = {}) {
     liftSeries: [...byLift.values()]
   };
 }
+
+/**
+ * Query completed weighted sets from AppDB for read-only max/PB readout (#49).
+ */
+export function queryCompletedSetsForMaxes(appDb) {
+  const rows = appDb.exec(`
+    SELECT ls.exercise_id, ws.date, ls.weight_kg, ls.reps, ls.rir
+    FROM logged_sets ls
+    JOIN workout_sessions ws ON ws.id = ls.session_id
+    WHERE ls.is_complete = 1
+      AND ls.weight_kg IS NOT NULL
+      AND ls.weight_kg > 0
+      AND ls.reps IS NOT NULL
+      AND ls.reps > 0
+    ORDER BY ws.date DESC
+  `)[0]?.values ?? [];
+
+  return rows.map(([exerciseId, date, weightKg, reps, rir]) => ({
+    exerciseId,
+    date,
+    weight: Number(weightKg),
+    weightUnit: 'kg',
+    reps: Number(reps),
+    rir: rir !== null ? Number(rir) : null
+  }));
+}

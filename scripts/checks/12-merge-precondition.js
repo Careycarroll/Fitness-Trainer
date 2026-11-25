@@ -45,20 +45,13 @@ const CSV_PATH = join(REPO, 'data', 'fitnotes', 'fitnotes-mapping.csv');
 const MANIFEST_PATH = join(REPO, 'js', 'data', 'fitnotes-mapping.json');
 
 /**
- * Groups permitted to violate the precondition, keyed on resolved exerciseId.
- *
- * Deferred because nothing reads merged history yet: #16 (e1RM from logged
- * sets) and #44 (weekly volume) are both open, so the combined value is
- * computed by no one. A bulk catalog import will re-slug targets and re-tier
- * the manifest, so resolving the mapping by hand now means resolving it twice.
- *
- * Each entry MUST be gone before the issue named in `blocks` lands.
+ * Many-to-one groups explicitly approved to combine chronologically (#55).
+ * Each entry is still staleness-checked below.
  */
-const KNOWN_UNSAFE = {
+const APPROVED_COMBINES = {
   'ez-bar-skullcrusher': {
     issue: '#55',
-    blocks: '#16',
-    note: 'ids 181 (3 sets) and 202 (2 sets); resolve during the bulk catalog import'
+    note: 'ids 181 (3 sets) and 202 (2 sets): same movement (ez_bar isolation, not ADR-023 anchored)'
   }
 };
 
@@ -146,35 +139,26 @@ export default {
       if (populated.length > 1) violations.set(target, populated);
     }
 
-    // Deferrals are printed, never silent.
-    for (const [target, entry] of Object.entries(KNOWN_UNSAFE)) {
+    for (const [target, entry] of Object.entries(APPROVED_COMBINES)) {
       const populated = violations.get(target);
-      console.log(
-        `        SKIP  "${target}" — deferred to ${entry.issue}, must land before ${entry.blocks}: ${entry.note}`
-      );
-      // Staleness guard: a fixed group must not keep its exemption.
       assert(populated !== undefined,
-        `"${target}" is listed in KNOWN_UNSAFE but no longer has two populated sources. ` +
-        `The deferral is stale — delete the entry and close ${entry.issue}.`);
+        `"${target}" is listed in APPROVED_COMBINES (${entry.issue}) but no longer has two populated sources — remove stale entry.`);
     }
 
     for (const [target, populated] of violations) {
-      if (target in KNOWN_UNSAFE) continue;
+      if (target in APPROVED_COMBINES) continue;
       const detail = populated.map((r) => `${r.name} (id ${r.id}, ${r.sets} sets)`).join(' + ');
       assert(false,
         `"${target}" receives completed sets from ${populated.length} FitNotes sources: ${detail}. ` +
-        'data/fitnotes/README.md states that at most one source per group may carry sets; ' +
-        'ADR-023 computes e1RM from logged sets, so merging two histories changes future ' +
-        'prescriptions. Decide the merge rule (combine / prefer one / refuse) and record it, ' +
-        'or add a KNOWN_UNSAFE entry naming the issue that resolves it.'
+        'data/fitnotes/README.md requires unapproved groups to have at most one populated source; ' +
+        'review whether they represent the same movement before adding to APPROVED_COMBINES.'
       );
     }
 
     // Presence of the claim itself: if the README stops making it, this check
     // is guarding a rule nobody has written down.
     const readme = readFileSync(join(REPO, 'data', 'fitnotes', 'README.md'), 'utf8');
-    assert(/at most one\s+source carries completed sets/s.test(readme),
-      'data/fitnotes/README.md no longer states the one-populated-source rule; ' +
-      'check 12 enforces a precondition that is no longer documented');
+    assert(/Merge rule \(#55\): combine chronologically/s.test(readme),
+      'data/fitnotes/README.md no longer documents the many-to-one merge rule (#55)');
   }
 };
