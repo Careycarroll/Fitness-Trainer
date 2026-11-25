@@ -583,7 +583,7 @@ export function mount(root, defs) {
               </select>
             </label>
             <div class="wod-form-actions">
-              <button type="submit" class="primary">Load Workout</button>
+              <button type="button" id="wod-import-logger-btn" class="primary">▶ Import to Logger</button>
               <button type="button" id="wod-export-btn" class="ghost wod-export-btn">Export to FitNotes</button>
             </div>
             <p id="wod-status" class="note" role="status"></p>
@@ -1010,6 +1010,17 @@ export function mount(root, defs) {
   const wodSkillSelect = root.querySelector('[name=wodSkillLevel]');
   if (wodSkillSelect) {
     wodSkillSelect.addEventListener('change', () => wodForm.requestSubmit());
+  }
+
+  const wodImportLoggerBtn = root.querySelector('#wod-import-logger-btn');
+  if (wodImportLoggerBtn) {
+    wodImportLoggerBtn.addEventListener('click', () => {
+      if (!wodProgram || activeMode !== 'wod') {
+        wodForm.requestSubmit();
+      }
+      const startBtn = (wodOut || out)?.querySelector('[data-start-w="0"][data-start-s="0"]');
+      if (startBtn) startBtn.click();
+    });
   }
 
   const wodExportBtn = root.querySelector('#wod-export-btn');
@@ -4332,9 +4343,12 @@ function paint(out) {
   const seedTitle = seedLabel
     ? `Named seed “${esc(seedLabel)}” resolves to ${current.seed}`
     : `Resolved seed ${current.seed}`;
-  const editMessage = edited
-    ? '<p class="edit-note">This draft has local edits, saved automatically. Regenerating replaces them.</p>'
-    : '<p class="edit-note">Sets and reps are editable; draft edits remain only on this screen. Intensity is prescribed as a percentage of 1RM — absolute loads need logged maxes (M7).</p>';
+  const isCrossfitPreset = current?.styleId === 'crossfit' && String(current?.id || '').startsWith('preset-');
+  const editMessage = isCrossfitPreset
+    ? '<p class="edit-note">Prescribed CrossFit benchmark — tap <strong>Import to Logger</strong> (or Start Workout) to log your score.</p>'
+    : edited
+      ? '<p class="edit-note">This draft has local edits, saved automatically. Regenerating replaces them.</p>'
+      : '<p class="edit-note">Sets and reps are editable; draft edits remain only on this screen. Intensity is prescribed as a percentage of 1RM — absolute loads need logged maxes (M7).</p>';
 
   const isWodView = activeMode === 'wod' || (scope === 'session' && current.weeks.length === 1 && current.weeks[0].sessions.length === 1 && (current.name || currentRequest?.benchmarkId || currentRequest?.styleId === 'hiit'));
 
@@ -4388,6 +4402,7 @@ function paint(out) {
 
 export function renderSession(session, w, s, style) {
   const groups = allSetGroups(session);
+  const allowSwap = session?.styleId !== 'crossfit';
   const domainMeta = session.domain === 'load'
     ? `${session.fatigueUsed ?? groups.reduce((n, g) => n + (g.fatigueCost ?? 0), 0)} / ${session.fatigueBudget ?? style.fatigueBudget} fatigue`
     : sessionTiming(session);
@@ -4400,7 +4415,7 @@ export function renderSession(session, w, s, style) {
         <button type="button" class="primary" data-start-w="${w}" data-start-s="${s}">▶ Start Workout</button>
       </div>
       ${session.blocks.length
-        ? `<ul class="blocks">${session.blocks.map((block, b) => renderBlock(block, w, s, b, session.domain)).join('')}</ul>`
+        ? `<ul class="blocks">${session.blocks.map((block, b) => renderBlock(block, w, s, b, session.domain, allowSwap)).join('')}</ul>`
         : emptySession(session)}
       ${renderOmitted(session.omitted)}
       ${session.blockedByGates?.length ? `
@@ -4415,7 +4430,7 @@ export function renderSession(session, w, s, style) {
     </article>`;
 }
 
-function renderBlock(block, w, s, b, domain) {
+function renderBlock(block, w, s, b, domain, allowSwap = true) {
   const type = block.blockType ?? 'straight';
   const heading = type === 'straight'
     ? ''
@@ -4425,12 +4440,12 @@ function renderBlock(block, w, s, b, domain) {
     <li class="block block-${esc(type)}">
       ${heading}
       <ol class="setgroups">
-        ${block.setGroups.map((group, g) => renderSetGroup(group, w, s, b, g, domain, type, block.rounds)).join('')}
+        ${block.setGroups.map((group, g) => renderSetGroup(group, w, s, b, g, domain, type, block.rounds, allowSwap)).join('')}
       </ol>
     </li>`;
 }
 
-function renderSetGroup(group, w, s, b, g, domain, blockType, rounds) {
+function renderSetGroup(group, w, s, b, g, domain, blockType, rounds, allowSwap = true) {
   const p = group;
   const role = group.role ? `<span class="tag">${esc(group.role)}</span>` : '';
   const warmup = group.warmupRequired
@@ -4442,8 +4457,8 @@ function renderSetGroup(group, w, s, b, g, domain, blockType, rounds) {
     : '';
 
   const controls = domain === 'load'
-    ? loadControls(p, w, s, b, g)
-    : timeControls(p, w, s, b, g, rounds);
+    ? loadControls(p, w, s, b, g, allowSwap)
+    : timeControls(p, w, s, b, g, rounds, allowSwap);
 
   let warmupHtml = '';
   if (group.warmupRequired) {
@@ -4482,7 +4497,7 @@ function renderSetGroup(group, w, s, b, g, domain, blockType, rounds) {
     </li>`;
 }
 
-function loadControls(p, w, s, b, g) {
+function loadControls(p, w, s, b, g, allowSwap = true) {
   // No absolute load until logged maxes exist (M7). Percent-of-1RM is all the
   // engine can honestly prescribe, so there is no load branch to fall back to.
   // #78. An AUTHORED load instruction wins over the derived percentage.
@@ -4524,11 +4539,11 @@ function loadControls(p, w, s, b, g) {
       ${numberEdit('reps', p.reps, w, s, b, g, 1)}
       <p class="intensity">${esc(intensity)}</p>
       ${plateHint}
-      ${editActions(w, s, b, g)}
+      ${editActions(w, s, b, g, allowSwap)}
     </div>`;
 }
 
-function timeControls(p, w, s, b, g, rounds) {
+function timeControls(p, w, s, b, g, rounds, allowSwap = true) {
   const details = [
     p.workSeconds != null ? `${p.workSeconds}s work` : '',
     p.restSeconds != null ? `${p.restSeconds}s rest` : '',
@@ -4540,7 +4555,7 @@ function timeControls(p, w, s, b, g, rounds) {
       ${p.workSeconds != null ? numberEdit('workSeconds', p.workSeconds, w, s, b, g, 1, 'work (sec)') : ''}
       ${p.restSeconds != null ? numberEdit('restSeconds', p.restSeconds, w, s, b, g, 1, 'rest (sec)') : ''}
       <p class="intensity">${esc(details || 'timed prescription')}</p>
-      ${editActions(w, s, b, g)}
+      ${editActions(w, s, b, g, allowSwap)}
     </div>`;
 }
 
@@ -4552,10 +4567,10 @@ function numberEdit(field, value, w, s, b, g, step = 1, label = field) {
     </label>`;
 }
 
-function editActions(w, s, b, g) {
+function editActions(w, s, b, g, allowSwap = true) {
   const data = `data-w="${w}" data-s="${s}" data-b="${b}" data-g="${g}"`;
   return `
-    <button class="action-button" data-swap ${data}>Swap</button>
+    ${allowSwap ? `<button class="action-button" data-swap ${data}>Swap</button>` : ''}
     <button class="action-button danger" data-remove ${data}>Remove</button>`;
 }
 
