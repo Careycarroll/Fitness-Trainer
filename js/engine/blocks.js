@@ -13,7 +13,7 @@
  */
 
 /** Every blockType the renderer and editor must handle. */
-export const BLOCK_TYPES = ['straight', 'superset', 'circuit', 'emom', 'amrap'];
+export const BLOCK_TYPES = ['straight', 'superset', 'circuit', 'emom', 'amrap', 'flow'];
 
 /**
  * One exercise plus its prescription.

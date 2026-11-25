@@ -205,7 +205,12 @@ def build_record(row: dict, source: str) -> dict:
     gate = (row["skill_gate"] or "").strip() or None
     reps_for_time = tracking in REPS_FOR_TIME_TRACKING and compound
 
-    if tracking in TIME_TRACKING:
+    if derive_pattern(row) == "mobility":
+        scoring = "mobility"
+        if not 0 < rep_low < rep_high:
+            sys.exit(f"{slug}: mobility row needs 0 < rep_low < rep_high (hold seconds)")
+        time_domain = {"minSeconds": rep_low, "maxSeconds": rep_high}
+    elif tracking in TIME_TRACKING:
         scoring = "both"
         # On time-tracked rows the rep columns hold seconds by authoring
         # convention (plank 30-90, farmer's carry 30-60). Check 03 requires
@@ -304,6 +309,7 @@ def build_record(row: dict, source: str) -> dict:
         # prioritize_joint_load unimplementable.
         "exerciseFamily": row["exercise_family"].strip(),
         "jointLoad": split_tokens(row.get("joint_load", "")),
+        "position": (row.get("position") or "").strip() or None,
         # --- variant axes (#63) ------------------------------------------
         #
         # These replace the single `emphasis` column, which held FIVE unrelated

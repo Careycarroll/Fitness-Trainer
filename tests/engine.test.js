@@ -158,7 +158,7 @@ describe('request contract', () => {
     assert.throws(() => generate(noSeed, defs), RequestError);
   });
   test('rejects an unknown style', () => {
-    assert.throws(() => generate({ ...base, styleId: 'yoga' }, defs), RequestError);
+    assert.throws(() => generate({ ...base, styleId: 'nonexistent-style' }, defs), RequestError);
   });
   test('rejects blockWeeks out of range', () => {
     assert.throws(() => generate({ ...base, blockWeeks: 13 }, defs), RequestError);

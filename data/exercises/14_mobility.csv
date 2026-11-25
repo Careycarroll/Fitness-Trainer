@@ -1,0 +1,25 @@
+name,slug,exercise_family,modality,movement_pattern,primary_muscles,secondary_muscles,equipment,is_compound,fatigue_cost,technical_demand,default_rep_low,default_rep_high,default_rest_sec,is_unilateral,tracking_type,rom_bias,angle,grip_width,grip_orientation,head_bias,joint_load,skill_gate,stabilises,selectable,video_url,position
+Mountain Pose,mountain-pose,yoga_standing,mobility,mobility,abs,quads|calves,bodyweight,FALSE,1,1,20,45,5,FALSE,time,,,,,,,,,TRUE,,standing
+Standing Overhead Reach,standing-overhead-reach,yoga_standing,mobility,mobility,lats|front_delts,abs,bodyweight,FALSE,1,1,20,45,5,FALSE,time,,,,,,shoulder,,,TRUE,,standing
+Warrior I,warrior-one,yoga_lunge,mobility,mobility,hip_flexors|quads,glutes|front_delts,bodyweight,TRUE,1,2,30,60,5,TRUE,time,,,,,,knee|hip,,,TRUE,,standing
+Warrior II,warrior-two,yoga_lunge,mobility,mobility,adductors|quads,glutes|side_delts,bodyweight,TRUE,1,2,30,60,5,TRUE,time,,,,,,knee|hip,,,TRUE,,standing
+Standing Forward Fold,standing-forward-fold,yoga_fold,mobility,mobility,hamstrings|erectors,calves,bodyweight,FALSE,1,1,30,60,5,FALSE,time,,,,,,lower_back,,,TRUE,,hinge
+Halfway Lift,halfway-lift,yoga_fold,mobility,mobility,erectors|hamstrings,,bodyweight,FALSE,1,1,15,30,5,FALSE,time,,,,,,lower_back,,,TRUE,,hinge
+Downward Facing Dog,downward-dog,yoga_inversion,mobility,mobility,calves|hamstrings,lats|front_delts,bodyweight,TRUE,1,2,30,60,5,FALSE,time,,,,,,shoulder|wrist,,,TRUE,,hinge
+High Plank Hold (Flow),flow-high-plank,yoga_plank,mobility,mobility,abs,front_delts|quads,bodyweight,TRUE,1,1,20,45,5,FALSE,time,,,,,,wrist|shoulder,,,TRUE,,plank
+Chaturanga Lower,chaturanga-lower,yoga_plank,mobility,mobility,triceps|chest,abs|front_delts,bodyweight,TRUE,1,3,10,20,5,FALSE,time,,,,,,shoulder|elbow|wrist,,,TRUE,,plank
+Cobra Pose,cobra-pose,yoga_extension,mobility,mobility,erectors|abs,chest,bodyweight,FALSE,1,1,20,45,5,FALSE,time,,,,,,lower_back|wrist,,,TRUE,,prone
+Upward Facing Dog,upward-dog,yoga_extension,mobility,mobility,erectors|abs,chest|front_delts,bodyweight,TRUE,1,2,20,45,5,FALSE,time,,,,,,lower_back|wrist|shoulder,,,TRUE,,prone
+Sphinx Pose,sphinx-pose,yoga_extension,mobility,mobility,erectors,abs,bodyweight,FALSE,1,1,30,60,5,FALSE,time,,,,,,lower_back,,,TRUE,,prone
+Cat-Cow Flow,cat-cow-flow,spine_mobility,mobility,mobility,erectors|abs,,bodyweight,FALSE,1,1,30,60,5,FALSE,time,,,,,,wrist,,,TRUE,,all_fours
+Thread the Needle,thread-the-needle,thoracic_rotation,mobility,mobility,mid_back|rear_delts,obliques,bodyweight,FALSE,1,1,30,60,5,TRUE,time,,,,,,shoulder,,,TRUE,,all_fours
+Child's Pose,childs-pose,yoga_recovery,mobility,mobility,lats|erectors,glutes,bodyweight,FALSE,1,1,30,90,5,FALSE,time,,,,,,knee,,,TRUE,,kneeling
+Low Kneeling Hip Flexor Stretch,low-kneeling-hip-flexor,hip_mobility,mobility,mobility,hip_flexors,quads,bodyweight,FALSE,1,1,30,60,5,TRUE,time,,,,,,knee,,,TRUE,,kneeling
+Pigeon Pose,pigeon-pose,hip_mobility,mobility,mobility,glutes|abductors,hip_flexors,bodyweight,FALSE,1,2,30,75,5,TRUE,time,,,,,,knee|hip,,,TRUE,,seated
+Seated Forward Fold,seated-forward-fold,yoga_fold,mobility,mobility,hamstrings|erectors,,bodyweight,FALSE,1,1,30,60,5,FALSE,time,,,,,,lower_back,,,TRUE,,seated
+Seated Spinal Twist,seated-spinal-twist,thoracic_rotation,mobility,mobility,obliques|mid_back,glutes,bodyweight,FALSE,1,1,30,60,5,TRUE,time,,,,,,lower_back,,,TRUE,,seated
+Butterfly Stretch,butterfly-stretch,hip_mobility,mobility,mobility,adductors,hip_flexors,bodyweight,FALSE,1,1,30,60,5,FALSE,time,,,,,,hip,,,TRUE,,seated
+Pilates Hundred,pilates-hundred,pilates_core,mobility,mobility,abs,hip_flexors,bodyweight,FALSE,1,2,30,60,5,FALSE,time,,,,,,neck,,,TRUE,,supine
+Single Leg Stretch,pilates-single-leg-stretch,pilates_core,mobility,mobility,abs|hip_flexors,,bodyweight,FALSE,1,2,30,60,5,TRUE,time,,,,,,,,,TRUE,,supine
+Supine Figure-4 Stretch,supine-figure-four,hip_mobility,mobility,mobility,glutes|abductors,,bodyweight,FALSE,1,1,30,60,5,TRUE,time,,,,,,hip,,,TRUE,,supine
+Side-Lying Thoracic Open Book,side-lying-open-book,thoracic_rotation,mobility,mobility,mid_back|chest,obliques,bodyweight,FALSE,1,1,30,60,5,TRUE,time,,,,,,shoulder,,,TRUE,,side_lying

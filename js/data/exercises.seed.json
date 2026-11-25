@@ -42,6 +42,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -92,6 +93,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -139,6 +141,7 @@
       "skillGate": null,
       "exerciseFamily": "squat",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -190,6 +193,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -240,6 +244,7 @@
       "skillGate": null,
       "exerciseFamily": "squat",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -286,6 +291,7 @@
       "skillGate": null,
       "exerciseFamily": "squat",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -335,6 +341,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -385,6 +392,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -434,6 +442,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -480,6 +489,7 @@
       "skillGate": null,
       "exerciseFamily": "squat",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -527,6 +537,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -576,6 +587,7 @@
       "skillGate": null,
       "exerciseFamily": "squat",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -622,6 +634,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -667,6 +680,7 @@
       "skillGate": null,
       "exerciseFamily": "machine_squat",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -712,6 +726,7 @@
       "skillGate": null,
       "exerciseFamily": "leg_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -757,6 +772,7 @@
       "skillGate": null,
       "exerciseFamily": "leg_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -801,6 +817,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -847,6 +864,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -894,6 +912,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -942,6 +961,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -990,6 +1010,7 @@
       "skillGate": null,
       "exerciseFamily": "split_squat",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -1038,6 +1059,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -1085,6 +1107,7 @@
       "skillGate": null,
       "exerciseFamily": "split_squat",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -1135,6 +1158,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -1182,6 +1206,7 @@
       "skillGate": null,
       "exerciseFamily": "lunge",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -1228,6 +1253,7 @@
       "skillGate": null,
       "exerciseFamily": "lunge",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -1275,6 +1301,7 @@
       "skillGate": null,
       "exerciseFamily": "step_up",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -1323,6 +1350,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -1373,6 +1401,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -1422,6 +1451,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -1464,6 +1494,7 @@
       "skillGate": null,
       "exerciseFamily": "tke",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -1509,6 +1540,7 @@
       "skillGate": null,
       "exerciseFamily": "sled",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -1556,6 +1588,7 @@
       "skillGate": null,
       "exerciseFamily": "sled",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -1602,6 +1635,7 @@
       "skillGate": null,
       "exerciseFamily": "sled",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -1655,6 +1689,7 @@
         "lower_back",
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -1707,6 +1742,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -1757,6 +1793,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -1808,6 +1845,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -1861,6 +1899,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -1913,6 +1952,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -1965,6 +2005,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -2018,6 +2059,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -2070,6 +2112,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -2121,6 +2164,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -2173,6 +2217,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -2227,6 +2272,7 @@
         "lower_back",
         "shoulder"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -2277,6 +2323,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -2326,6 +2373,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -2377,6 +2425,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -2428,6 +2477,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -2477,6 +2527,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -2526,6 +2577,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -2577,6 +2629,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -2627,6 +2680,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -2677,6 +2731,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -2727,6 +2782,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -2777,6 +2833,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -2824,6 +2881,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -2874,6 +2932,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -2918,6 +2977,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -2969,6 +3029,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -3022,6 +3083,7 @@
         "lower_back",
         "hip"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -3070,6 +3132,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -3121,6 +3184,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -3171,6 +3235,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -3220,6 +3285,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -3266,6 +3332,7 @@
       "jointLoad": [
         "hip"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -3315,6 +3382,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -3366,6 +3434,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -3419,6 +3488,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -3469,6 +3539,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -3520,6 +3591,7 @@
         "lower_back",
         "hip"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -3568,6 +3640,7 @@
       "skillGate": null,
       "exerciseFamily": "deadlift",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -3617,6 +3690,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -3664,6 +3738,7 @@
       "skillGate": null,
       "exerciseFamily": "deadlift",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -3709,6 +3784,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_thrust",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -3753,6 +3829,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_thrust",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -3798,6 +3875,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_thrust",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -3845,6 +3923,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_thrust",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -3889,6 +3968,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_thrust",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -3934,6 +4014,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_thrust",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -3979,6 +4060,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_thrust",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -4023,6 +4105,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_thrust",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -4071,6 +4154,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -4116,6 +4200,7 @@
       "skillGate": null,
       "exerciseFamily": "pull_through",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -4162,6 +4247,7 @@
       "skillGate": null,
       "exerciseFamily": "single_leg_hinge",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -4209,6 +4295,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -4256,6 +4343,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -4300,6 +4388,7 @@
       "skillGate": null,
       "exerciseFamily": "kickback",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -4344,6 +4433,7 @@
       "skillGate": null,
       "exerciseFamily": "kickback",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -4392,6 +4482,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_thrust",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -4442,6 +4533,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -4491,6 +4583,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -4537,6 +4630,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_thrust",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -4589,6 +4683,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -4640,6 +4735,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -4688,6 +4784,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_thrust",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -4737,6 +4834,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -4783,6 +4881,7 @@
       "skillGate": null,
       "exerciseFamily": "glute_kickback",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -4830,6 +4929,7 @@
       "skillGate": null,
       "exerciseFamily": "glute_kickback",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -4876,6 +4976,7 @@
       "skillGate": null,
       "exerciseFamily": "glute_kickback",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -4925,6 +5026,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -4974,6 +5076,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -5024,6 +5127,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -5072,6 +5176,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -5121,6 +5226,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -5170,6 +5276,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -5220,6 +5327,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -5265,6 +5373,7 @@
       "skillGate": null,
       "exerciseFamily": "good_morning",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -5309,6 +5418,7 @@
       "skillGate": null,
       "exerciseFamily": "leg_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -5353,6 +5463,7 @@
       "skillGate": null,
       "exerciseFamily": "leg_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -5397,6 +5508,7 @@
       "skillGate": null,
       "exerciseFamily": "leg_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -5441,6 +5553,7 @@
       "skillGate": null,
       "exerciseFamily": "leg_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -5485,6 +5598,7 @@
       "skillGate": null,
       "exerciseFamily": "leg_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -5533,6 +5647,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -5582,6 +5697,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -5629,6 +5745,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -5674,6 +5791,7 @@
       "skillGate": null,
       "exerciseFamily": "sliding_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -5720,6 +5838,7 @@
       "skillGate": null,
       "exerciseFamily": "sliding_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -5767,6 +5886,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -5818,6 +5938,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -5870,6 +5991,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -5922,6 +6044,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -5973,6 +6096,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -6022,6 +6146,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -6073,6 +6198,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": "wide",
@@ -6115,6 +6241,7 @@
       "skillGate": null,
       "exerciseFamily": "standing_calf_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -6158,6 +6285,7 @@
       "skillGate": null,
       "exerciseFamily": "standing_calf_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -6201,6 +6329,7 @@
       "skillGate": null,
       "exerciseFamily": "standing_calf_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -6244,6 +6373,7 @@
       "skillGate": null,
       "exerciseFamily": "standing_calf_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -6287,6 +6417,7 @@
       "skillGate": null,
       "exerciseFamily": "standing_calf_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -6329,6 +6460,7 @@
       "skillGate": null,
       "exerciseFamily": "standing_calf_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -6371,6 +6503,7 @@
       "skillGate": null,
       "exerciseFamily": "seated_calf_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -6415,6 +6548,7 @@
       "skillGate": null,
       "exerciseFamily": "seated_calf_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -6457,6 +6591,7 @@
       "skillGate": null,
       "exerciseFamily": "leg_press_calf_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -6499,6 +6634,7 @@
       "skillGate": null,
       "exerciseFamily": "tibialis_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -6545,6 +6681,7 @@
       "skillGate": null,
       "exerciseFamily": "seated_calf_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -6589,6 +6726,7 @@
       "skillGate": null,
       "exerciseFamily": "standing_calf_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -6634,6 +6772,7 @@
       "skillGate": null,
       "exerciseFamily": "standing_calf_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -6679,6 +6818,7 @@
       "skillGate": null,
       "exerciseFamily": "tibialis_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -6729,6 +6869,7 @@
         "knee",
         "hip"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -6779,6 +6920,7 @@
         "knee",
         "hip"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -6828,6 +6970,7 @@
       "jointLoad": [
         "hip"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -6872,6 +7015,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_adduction",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -6916,6 +7060,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_adduction",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -6960,6 +7105,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_adduction",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -7011,6 +7157,7 @@
       "jointLoad": [
         "hip"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -7062,6 +7209,7 @@
       "jointLoad": [
         "hip"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -7106,6 +7254,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_abduction",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -7150,6 +7299,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_abduction",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -7195,6 +7345,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_abduction",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -7239,6 +7390,7 @@
       "skillGate": null,
       "exerciseFamily": "band_walk",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -7284,6 +7436,7 @@
       "skillGate": null,
       "exerciseFamily": "hip_abduction",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -7333,6 +7486,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "flat",
       "gripWidth": null,
@@ -7382,6 +7536,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "incline",
       "gripWidth": null,
@@ -7429,6 +7584,7 @@
       "skillGate": null,
       "exerciseFamily": "bench_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "decline",
       "gripWidth": null,
@@ -7475,6 +7631,7 @@
       "skillGate": null,
       "exerciseFamily": "bench_press",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -7523,6 +7680,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "flat",
       "gripWidth": null,
@@ -7571,6 +7729,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "flat",
       "gripWidth": null,
@@ -7619,6 +7778,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "incline",
       "gripWidth": null,
@@ -7665,6 +7825,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "decline",
       "gripWidth": null,
@@ -7710,6 +7871,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_press",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -7755,6 +7917,7 @@
       "skillGate": null,
       "exerciseFamily": "machine_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "flat",
       "gripWidth": null,
@@ -7800,6 +7963,7 @@
       "skillGate": null,
       "exerciseFamily": "machine_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "incline",
       "gripWidth": null,
@@ -7848,6 +8012,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "decline",
       "gripWidth": null,
@@ -7895,6 +8060,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "decline",
       "gripWidth": null,
@@ -7942,6 +8108,7 @@
       "skillGate": null,
       "exerciseFamily": "push_up",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "flat",
       "gripWidth": null,
@@ -7992,6 +8159,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "incline",
       "gripWidth": null,
@@ -8038,6 +8206,7 @@
       "skillGate": null,
       "exerciseFamily": "push_up",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "decline",
       "gripWidth": null,
@@ -8086,6 +8255,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -8132,6 +8302,7 @@
       "skillGate": null,
       "exerciseFamily": "push_up",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -8180,6 +8351,7 @@
       "jointLoad": [
         "wrist"
       ],
+      "position": null,
       "romBias": null,
       "angle": "flat",
       "gripWidth": null,
@@ -8230,6 +8402,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -8278,6 +8451,7 @@
         "wrist",
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -8328,6 +8502,7 @@
         "wrist",
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -8374,6 +8549,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -8419,6 +8595,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "incline",
       "gripWidth": null,
@@ -8463,6 +8640,7 @@
       "skillGate": null,
       "exerciseFamily": "fly",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "decline",
       "gripWidth": null,
@@ -8510,6 +8688,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -8556,6 +8735,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -8606,6 +8786,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -8653,6 +8834,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "decline",
       "gripWidth": null,
@@ -8704,6 +8886,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": "flat",
       "gripWidth": "wide",
@@ -8755,6 +8938,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": "flat",
       "gripWidth": null,
@@ -8803,6 +8987,7 @@
       "skillGate": null,
       "exerciseFamily": "bench_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "flat",
       "gripWidth": null,
@@ -8851,6 +9036,7 @@
       "skillGate": null,
       "exerciseFamily": "bench_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "decline",
       "gripWidth": null,
@@ -8899,6 +9085,7 @@
       "skillGate": null,
       "exerciseFamily": "bench_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "incline",
       "gripWidth": null,
@@ -8946,6 +9133,7 @@
       "skillGate": null,
       "exerciseFamily": "machine_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "decline",
       "gripWidth": null,
@@ -8995,6 +9183,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "flat",
       "gripWidth": null,
@@ -9043,6 +9232,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "flat",
       "gripWidth": null,
@@ -9090,6 +9280,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_press",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": "flat",
       "gripWidth": null,
@@ -9137,6 +9328,7 @@
       "skillGate": null,
       "exerciseFamily": "cable_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "flat",
       "gripWidth": null,
@@ -9184,6 +9376,7 @@
       "skillGate": null,
       "exerciseFamily": "cable_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "incline",
       "gripWidth": null,
@@ -9232,6 +9425,7 @@
       "skillGate": null,
       "exerciseFamily": "cable_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "flat",
       "gripWidth": null,
@@ -9279,6 +9473,7 @@
       "skillGate": null,
       "exerciseFamily": "fly",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": "flat",
       "gripWidth": null,
@@ -9328,6 +9523,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": "decline",
       "gripWidth": null,
@@ -9378,6 +9574,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": "flat",
       "gripWidth": null,
@@ -9425,6 +9622,7 @@
       "skillGate": null,
       "exerciseFamily": "plate_press",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": "flat",
       "gripWidth": null,
@@ -9476,6 +9674,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": "flat",
       "gripWidth": "wide",
@@ -9527,6 +9726,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": "decline",
       "gripWidth": "wide",
@@ -9578,6 +9778,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "flat",
       "gripWidth": null,
@@ -9625,6 +9826,7 @@
       "skillGate": null,
       "exerciseFamily": "push_up",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "flat",
       "gripWidth": "close",
@@ -9674,6 +9876,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": "flat",
       "gripWidth": "wide",
@@ -9723,6 +9926,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": "incline",
       "gripWidth": null,
@@ -9771,6 +9975,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "wide",
@@ -9820,6 +10025,7 @@
         "shoulder",
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "wide",
@@ -9869,6 +10075,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -9914,6 +10121,7 @@
       "skillGate": null,
       "exerciseFamily": "pull_up",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -9960,6 +10168,7 @@
       "skillGate": null,
       "exerciseFamily": "pull_up",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -10005,6 +10214,7 @@
       "skillGate": null,
       "exerciseFamily": "pulldown",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "wide",
@@ -10050,6 +10260,7 @@
       "skillGate": null,
       "exerciseFamily": "pulldown",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "close",
@@ -10095,6 +10306,7 @@
       "skillGate": null,
       "exerciseFamily": "pulldown",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -10140,6 +10352,7 @@
       "skillGate": null,
       "exerciseFamily": "pulldown",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -10188,6 +10401,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -10236,6 +10450,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -10286,6 +10501,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -10335,6 +10551,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -10385,6 +10602,7 @@
         "lower_back",
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -10436,6 +10654,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -10485,6 +10704,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -10532,6 +10752,7 @@
       "skillGate": null,
       "exerciseFamily": "barbell_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -10579,6 +10800,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_row",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -10626,6 +10848,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -10673,6 +10896,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -10723,6 +10947,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -10769,6 +10994,7 @@
       "skillGate": null,
       "exerciseFamily": "cable_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -10815,6 +11041,7 @@
       "skillGate": null,
       "exerciseFamily": "cable_row",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -10861,6 +11088,7 @@
       "skillGate": null,
       "exerciseFamily": "cable_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -10907,6 +11135,7 @@
       "skillGate": null,
       "exerciseFamily": "cable_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -10953,6 +11182,7 @@
       "skillGate": null,
       "exerciseFamily": "cable_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -10999,6 +11229,7 @@
       "skillGate": null,
       "exerciseFamily": "machine_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -11045,6 +11276,7 @@
       "skillGate": null,
       "exerciseFamily": "machine_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -11094,6 +11326,7 @@
       "skillGate": null,
       "exerciseFamily": "inverted_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -11144,6 +11377,7 @@
       "skillGate": null,
       "exerciseFamily": "inverted_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -11192,6 +11426,7 @@
       "skillGate": null,
       "exerciseFamily": "inverted_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -11239,6 +11474,7 @@
       "jointLoad": [
         "neck"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -11286,6 +11522,7 @@
       "jointLoad": [
         "neck"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -11333,6 +11570,7 @@
       "jointLoad": [
         "neck"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -11378,6 +11616,7 @@
       "skillGate": null,
       "exerciseFamily": "shrug",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -11425,6 +11664,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -11469,6 +11709,7 @@
       "skillGate": null,
       "exerciseFamily": "back_extension",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -11517,6 +11758,7 @@
       "skillGate": null,
       "exerciseFamily": "inverted_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -11565,6 +11807,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "wide",
@@ -11614,6 +11857,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -11664,6 +11908,7 @@
       "skillGate": null,
       "exerciseFamily": "barbell_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -11713,6 +11958,7 @@
       "skillGate": null,
       "exerciseFamily": "barbell_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "incline",
       "gripWidth": null,
@@ -11763,6 +12009,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -11811,6 +12058,7 @@
       "skillGate": null,
       "exerciseFamily": "shrug",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -11859,6 +12107,7 @@
       "skillGate": null,
       "exerciseFamily": "shrug",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "wide",
@@ -11909,6 +12158,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -11958,6 +12208,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -12007,6 +12258,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -12055,6 +12307,7 @@
       "skillGate": null,
       "exerciseFamily": "shrug",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -12102,6 +12355,7 @@
       "skillGate": null,
       "exerciseFamily": "pulldown",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -12149,6 +12403,7 @@
       "skillGate": null,
       "exerciseFamily": "pulldown",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -12198,6 +12453,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "wide",
@@ -12245,6 +12501,7 @@
       "skillGate": null,
       "exerciseFamily": "pull_up",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -12291,6 +12548,7 @@
       "skillGate": null,
       "exerciseFamily": "pull_up",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -12339,6 +12597,7 @@
       "skillGate": null,
       "exerciseFamily": "pull_up",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -12389,6 +12648,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -12436,6 +12696,7 @@
       "skillGate": null,
       "exerciseFamily": "pull_up",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -12483,6 +12744,7 @@
       "skillGate": null,
       "exerciseFamily": "machine_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -12529,6 +12791,7 @@
       "skillGate": null,
       "exerciseFamily": "shrug",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -12575,6 +12838,7 @@
       "skillGate": null,
       "exerciseFamily": "shrug",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -12621,6 +12885,7 @@
       "skillGate": null,
       "exerciseFamily": "shrug",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -12669,6 +12934,7 @@
       "skillGate": null,
       "exerciseFamily": "sled_row",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -12719,6 +12985,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -12769,6 +13036,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": "wide",
@@ -12819,6 +13087,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -12868,6 +13137,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "wide",
@@ -12919,6 +13189,7 @@
         "shoulder",
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -12968,6 +13239,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -13019,6 +13291,7 @@
         "shoulder",
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -13067,6 +13340,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -13116,6 +13390,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -13164,6 +13439,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -13211,6 +13487,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -13259,6 +13536,7 @@
       "skillGate": null,
       "exerciseFamily": "landmine_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -13307,6 +13585,7 @@
       "skillGate": null,
       "exerciseFamily": "landmine_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -13356,6 +13635,7 @@
         "shoulder",
         "wrist"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -13406,6 +13686,7 @@
         "shoulder",
         "wrist"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -13452,6 +13733,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -13498,6 +13780,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -13543,6 +13826,7 @@
       "skillGate": null,
       "exerciseFamily": "lateral_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -13587,6 +13871,7 @@
       "skillGate": null,
       "exerciseFamily": "lateral_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -13631,6 +13916,7 @@
       "skillGate": null,
       "exerciseFamily": "lateral_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -13676,6 +13962,7 @@
       "skillGate": null,
       "exerciseFamily": "lateral_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -13720,6 +14007,7 @@
       "skillGate": null,
       "exerciseFamily": "lateral_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -13765,6 +14053,7 @@
       "skillGate": null,
       "exerciseFamily": "lateral_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -13813,6 +14102,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -13859,6 +14149,7 @@
       "skillGate": null,
       "exerciseFamily": "reverse_fly",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -13904,6 +14195,7 @@
       "skillGate": null,
       "exerciseFamily": "reverse_fly",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -13949,6 +14241,7 @@
       "skillGate": null,
       "exerciseFamily": "reverse_fly",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -13995,6 +14288,7 @@
       "skillGate": null,
       "exerciseFamily": "reverse_fly",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -14040,6 +14334,7 @@
       "skillGate": null,
       "exerciseFamily": "face_pull",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -14085,6 +14380,7 @@
       "skillGate": null,
       "exerciseFamily": "face_pull",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -14130,6 +14426,7 @@
       "jointLoad": [
         "neck"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -14175,6 +14472,7 @@
       "jointLoad": [
         "neck"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -14225,6 +14523,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -14275,6 +14574,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -14322,6 +14622,7 @@
       "skillGate": null,
       "exerciseFamily": "overhead_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -14368,6 +14669,7 @@
       "skillGate": null,
       "exerciseFamily": "overhead_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -14416,6 +14718,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_shoulder_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -14462,6 +14765,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_shoulder_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -14510,6 +14814,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_shoulder_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -14556,6 +14861,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_shoulder_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -14603,6 +14909,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_shoulder_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -14651,6 +14958,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_shoulder_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -14697,6 +15005,7 @@
       "skillGate": null,
       "exerciseFamily": "machine_shoulder_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -14745,6 +15054,7 @@
       "skillGate": null,
       "exerciseFamily": "thruster",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -14792,6 +15102,7 @@
       "skillGate": null,
       "exerciseFamily": "jerk",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -14840,6 +15151,7 @@
       "skillGate": null,
       "exerciseFamily": "jerk",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -14889,6 +15201,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -14938,6 +15251,7 @@
       "skillGate": null,
       "exerciseFamily": "landmine_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -14982,6 +15296,7 @@
       "skillGate": null,
       "exerciseFamily": "front_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15027,6 +15342,7 @@
       "skillGate": null,
       "exerciseFamily": "front_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": "incline",
       "gripWidth": null,
@@ -15071,6 +15387,7 @@
       "skillGate": null,
       "exerciseFamily": "front_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15117,6 +15434,7 @@
       "skillGate": null,
       "exerciseFamily": "front_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15162,6 +15480,7 @@
       "skillGate": null,
       "exerciseFamily": "lateral_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15207,6 +15526,7 @@
       "skillGate": null,
       "exerciseFamily": "lateral_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15256,6 +15576,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15303,6 +15624,7 @@
       "skillGate": null,
       "exerciseFamily": "front_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": "incline",
       "gripWidth": null,
@@ -15350,6 +15672,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15396,6 +15719,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15440,6 +15764,7 @@
       "skillGate": null,
       "exerciseFamily": "external_rotation",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15484,6 +15809,7 @@
       "skillGate": null,
       "exerciseFamily": "external_rotation",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15531,6 +15857,7 @@
       "skillGate": null,
       "exerciseFamily": "reverse_fly",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15578,6 +15905,7 @@
       "skillGate": null,
       "exerciseFamily": "reverse_fly",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15625,6 +15953,7 @@
       "skillGate": null,
       "exerciseFamily": "reverse_fly",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15671,6 +16000,7 @@
       "skillGate": null,
       "exerciseFamily": "reverse_fly",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15717,6 +16047,7 @@
       "skillGate": null,
       "exerciseFamily": "reverse_fly",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15765,6 +16096,7 @@
       "skillGate": null,
       "exerciseFamily": "reverse_fly",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "wide",
@@ -15812,6 +16144,7 @@
       "skillGate": null,
       "exerciseFamily": "face_pull",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15859,6 +16192,7 @@
       "skillGate": null,
       "exerciseFamily": "face_pull",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -15907,6 +16241,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -15955,6 +16290,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -16001,6 +16337,7 @@
       "skillGate": null,
       "exerciseFamily": "upright_row",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -16049,6 +16386,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -16099,6 +16437,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -16146,6 +16485,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_shoulder_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -16195,6 +16535,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16241,6 +16582,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16285,6 +16627,7 @@
       "skillGate": null,
       "exerciseFamily": "barbell_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16329,6 +16672,7 @@
       "skillGate": null,
       "exerciseFamily": "barbell_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16373,6 +16717,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16420,6 +16765,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16465,6 +16811,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16510,6 +16857,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16557,6 +16905,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16604,6 +16953,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16648,6 +16998,7 @@
       "skillGate": null,
       "exerciseFamily": "cable_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16694,6 +17045,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16738,6 +17090,7 @@
       "skillGate": null,
       "exerciseFamily": "cable_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16782,6 +17135,7 @@
       "skillGate": null,
       "exerciseFamily": "cable_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16826,6 +17180,7 @@
       "skillGate": null,
       "exerciseFamily": "machine_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16870,6 +17225,7 @@
       "skillGate": null,
       "exerciseFamily": "hammer_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16914,6 +17270,7 @@
       "skillGate": null,
       "exerciseFamily": "hammer_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -16961,6 +17318,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17008,6 +17366,7 @@
         "elbow",
         "wrist"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17053,6 +17412,7 @@
       "jointLoad": [
         "wrist"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17098,6 +17458,7 @@
       "jointLoad": [
         "wrist"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17144,6 +17505,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17190,6 +17552,7 @@
       "skillGate": null,
       "exerciseFamily": "hammer_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17237,6 +17600,7 @@
       "skillGate": null,
       "exerciseFamily": "hammer_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": "incline",
       "gripWidth": null,
@@ -17282,6 +17646,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": "incline",
       "gripWidth": null,
@@ -17327,6 +17692,7 @@
       "skillGate": null,
       "exerciseFamily": "dumbbell_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": "flat",
       "gripWidth": null,
@@ -17371,6 +17737,7 @@
       "skillGate": null,
       "exerciseFamily": "machine_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17416,6 +17783,7 @@
       "skillGate": null,
       "exerciseFamily": "preacher_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -17461,6 +17829,7 @@
       "skillGate": null,
       "exerciseFamily": "preacher_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -17506,6 +17875,7 @@
       "skillGate": null,
       "exerciseFamily": "cable_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17550,6 +17920,7 @@
       "skillGate": null,
       "exerciseFamily": "cable_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17596,6 +17967,7 @@
       "skillGate": null,
       "exerciseFamily": "reverse_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17642,6 +18014,7 @@
       "skillGate": null,
       "exerciseFamily": "reverse_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17686,6 +18059,7 @@
       "skillGate": null,
       "exerciseFamily": "wrist_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17731,6 +18105,7 @@
       "skillGate": null,
       "exerciseFamily": "wrist_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17775,6 +18150,7 @@
       "skillGate": null,
       "exerciseFamily": "wrist_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17819,6 +18195,7 @@
       "skillGate": null,
       "exerciseFamily": "wrist_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17863,6 +18240,7 @@
       "skillGate": null,
       "exerciseFamily": "wrist_roller",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17908,6 +18286,7 @@
       "skillGate": null,
       "exerciseFamily": "forearm_rotation",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17953,6 +18332,7 @@
       "skillGate": null,
       "exerciseFamily": "forearm_rotation",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -17997,6 +18377,7 @@
       "skillGate": null,
       "exerciseFamily": "grip",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18043,6 +18424,7 @@
       "skillGate": null,
       "exerciseFamily": "barbell_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "wide",
@@ -18089,6 +18471,7 @@
       "skillGate": null,
       "exerciseFamily": "barbell_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "close",
@@ -18135,6 +18518,7 @@
       "skillGate": null,
       "exerciseFamily": "barbell_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "close",
@@ -18182,6 +18566,7 @@
       "skillGate": null,
       "exerciseFamily": "reverse_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18228,6 +18613,7 @@
       "skillGate": null,
       "exerciseFamily": "reverse_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18275,6 +18661,7 @@
       "skillGate": null,
       "exerciseFamily": "hammer_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "incline",
       "gripWidth": null,
@@ -18320,6 +18707,7 @@
       "skillGate": null,
       "exerciseFamily": "wrist_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18365,6 +18753,7 @@
       "skillGate": null,
       "exerciseFamily": "wrist_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18410,6 +18799,7 @@
       "skillGate": null,
       "exerciseFamily": "wrist_curl",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18456,6 +18846,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18503,6 +18894,7 @@
         "elbow",
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18550,6 +18942,7 @@
         "elbow",
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18597,6 +18990,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18641,6 +19035,7 @@
       "skillGate": null,
       "exerciseFamily": "overhead_extension",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18685,6 +19080,7 @@
       "skillGate": null,
       "exerciseFamily": "pushdown",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18729,6 +19125,7 @@
       "skillGate": null,
       "exerciseFamily": "pushdown",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18775,6 +19172,7 @@
       "jointLoad": [
         "wrist"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18819,6 +19217,7 @@
       "skillGate": null,
       "exerciseFamily": "pushdown",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18863,6 +19262,7 @@
       "skillGate": null,
       "exerciseFamily": "pushdown",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18910,6 +19310,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -18957,6 +19358,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -19004,6 +19406,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -19053,6 +19456,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "close",
@@ -19103,6 +19507,7 @@
         "elbow",
         "wrist"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "close",
@@ -19151,6 +19556,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "close",
@@ -19199,6 +19605,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -19248,6 +19655,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -19295,6 +19703,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "close",
@@ -19342,6 +19751,7 @@
       "jointLoad": [
         "wrist"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "close",
@@ -19390,6 +19800,7 @@
         "elbow",
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -19434,6 +19845,7 @@
       "skillGate": null,
       "exerciseFamily": "kickback",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -19478,6 +19890,7 @@
       "skillGate": null,
       "exerciseFamily": "kickback",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -19525,6 +19938,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -19572,6 +19986,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": "decline",
       "gripWidth": null,
@@ -19619,6 +20034,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": "incline",
       "gripWidth": null,
@@ -19664,6 +20080,7 @@
       "skillGate": null,
       "exerciseFamily": "skullcrusher",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -19710,6 +20127,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": "overhead",
       "gripWidth": null,
@@ -19755,6 +20173,7 @@
       "skillGate": null,
       "exerciseFamily": "overhead_extension",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": "overhead",
       "gripWidth": null,
@@ -19799,6 +20218,7 @@
       "skillGate": null,
       "exerciseFamily": "overhead_extension",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": "overhead",
       "gripWidth": null,
@@ -19843,6 +20263,7 @@
       "skillGate": null,
       "exerciseFamily": "overhead_extension",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -19887,6 +20308,7 @@
       "skillGate": null,
       "exerciseFamily": "pushdown",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -19931,6 +20353,7 @@
       "skillGate": null,
       "exerciseFamily": "pushdown",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -19979,6 +20402,7 @@
       "skillGate": null,
       "exerciseFamily": "close_grip_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "flat",
       "gripWidth": "close",
@@ -20027,6 +20451,7 @@
       "skillGate": null,
       "exerciseFamily": "close_grip_press",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "flat",
       "gripWidth": "close",
@@ -20071,6 +20496,7 @@
       "skillGate": null,
       "exerciseFamily": "pushdown",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -20118,6 +20544,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": "flat",
       "gripWidth": null,
@@ -20165,6 +20592,7 @@
       "jointLoad": [
         "elbow"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": "flat",
       "gripWidth": "close",
@@ -20213,6 +20641,7 @@
       "skillGate": null,
       "exerciseFamily": "anti_extension",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -20263,6 +20692,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -20311,6 +20741,7 @@
         "lower_back",
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -20359,6 +20790,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -20403,6 +20835,7 @@
       "skillGate": null,
       "exerciseFamily": "anti_extension",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -20450,6 +20883,7 @@
       "skillGate": null,
       "exerciseFamily": "anti_extension",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -20495,6 +20929,7 @@
       "skillGate": null,
       "exerciseFamily": "anti_rotation",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -20540,6 +20975,7 @@
       "skillGate": null,
       "exerciseFamily": "anti_rotation",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -20586,6 +21022,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -20630,6 +21067,7 @@
       "jointLoad": [
         "neck"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -20674,6 +21112,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -20721,6 +21160,7 @@
         "lower_back",
         "neck"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -20766,6 +21206,7 @@
       "skillGate": null,
       "exerciseFamily": "spinal_flexion",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -20814,6 +21255,7 @@
         "shoulder",
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -20861,6 +21303,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -20904,6 +21347,7 @@
       "skillGate": null,
       "exerciseFamily": "leg_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -20949,6 +21393,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -20993,6 +21438,7 @@
       "skillGate": null,
       "exerciseFamily": "leg_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -21043,6 +21489,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -21090,6 +21537,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -21137,6 +21585,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -21185,6 +21634,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -21233,6 +21683,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -21284,6 +21735,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -21330,6 +21782,7 @@
       "jointLoad": [
         "hip"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -21378,6 +21831,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -21426,6 +21880,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -21472,6 +21927,7 @@
       "skillGate": null,
       "exerciseFamily": "spinal_flexion",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -21519,6 +21975,7 @@
       "skillGate": null,
       "exerciseFamily": "spinal_flexion",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -21564,6 +22021,7 @@
       "skillGate": null,
       "exerciseFamily": "spinal_flexion",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -21610,6 +22068,7 @@
       "skillGate": null,
       "exerciseFamily": "spinal_flexion",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -21657,6 +22116,7 @@
       "skillGate": null,
       "exerciseFamily": "side_flexion",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": "decline",
       "gripWidth": null,
@@ -21701,6 +22161,7 @@
       "skillGate": null,
       "exerciseFamily": "side_flexion",
       "jointLoad": [],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -21747,6 +22208,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -21793,6 +22255,7 @@
       "skillGate": null,
       "exerciseFamily": "side_flexion",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -21839,6 +22302,7 @@
       "skillGate": null,
       "exerciseFamily": "leg_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -21885,6 +22349,7 @@
       "skillGate": null,
       "exerciseFamily": "leg_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -21932,6 +22397,7 @@
       "skillGate": null,
       "exerciseFamily": "leg_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -21978,6 +22444,7 @@
       "skillGate": null,
       "exerciseFamily": "leg_raise",
       "jointLoad": [],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -22024,6 +22491,7 @@
       "skillGate": null,
       "exerciseFamily": "rotation",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -22073,6 +22541,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -22119,6 +22588,7 @@
       "skillGate": null,
       "exerciseFamily": "rotation",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -22172,6 +22642,7 @@
         "shoulder",
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -22225,6 +22696,7 @@
         "shoulder",
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -22276,6 +22748,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -22329,6 +22802,7 @@
         "shoulder",
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -22382,6 +22856,7 @@
         "lower_back",
         "wrist"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -22433,6 +22908,7 @@
       "jointLoad": [
         "wrist"
       ],
+      "position": null,
       "romBias": "shortened",
       "angle": null,
       "gripWidth": null,
@@ -22485,6 +22961,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -22536,6 +23013,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -22587,6 +23065,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -22638,6 +23117,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": "wide",
@@ -22687,6 +23167,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -22737,6 +23218,7 @@
       "jointLoad": [
         "wrist"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -22788,6 +23270,7 @@
         "shoulder",
         "wrist"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -22838,6 +23321,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -22887,6 +23371,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -22935,6 +23420,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -22983,6 +23469,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -23029,6 +23516,7 @@
       "skillGate": null,
       "exerciseFamily": "throw",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -23077,6 +23565,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -23124,6 +23613,7 @@
       "skillGate": null,
       "exerciseFamily": "throw",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -23174,6 +23664,7 @@
       "skillGate": null,
       "exerciseFamily": "carry",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -23224,6 +23715,7 @@
       "skillGate": null,
       "exerciseFamily": "carry",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -23274,6 +23766,7 @@
       "skillGate": null,
       "exerciseFamily": "carry",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -23324,6 +23817,7 @@
       "skillGate": null,
       "exerciseFamily": "carry",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -23376,6 +23870,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -23429,6 +23924,7 @@
         "lower_back",
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -23479,6 +23975,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": "stretch",
       "angle": null,
       "gripWidth": null,
@@ -23527,6 +24024,7 @@
       "skillGate": null,
       "exerciseFamily": "grip_hold",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -23572,6 +24070,7 @@
       "skillGate": null,
       "exerciseFamily": "grip_hold",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -23620,6 +24119,7 @@
       "skillGate": null,
       "exerciseFamily": "sled",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -23666,6 +24166,7 @@
       "skillGate": null,
       "exerciseFamily": "sled",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -23719,6 +24220,7 @@
         "wrist",
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -23771,6 +24273,7 @@
         "wrist",
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -23822,6 +24325,7 @@
         "shoulder",
         "elbow"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -23873,6 +24377,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": "wide",
@@ -23925,6 +24430,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": "wide",
@@ -23978,6 +24484,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": "wide",
@@ -24030,6 +24537,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24080,6 +24588,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": "overhead",
       "gripWidth": null,
@@ -24132,6 +24641,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24182,6 +24692,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24234,6 +24745,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24284,6 +24796,7 @@
       "jointLoad": [
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24332,6 +24845,7 @@
       "skillGate": null,
       "exerciseFamily": "sled",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24380,6 +24894,7 @@
       "skillGate": null,
       "exerciseFamily": "sled",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24428,6 +24943,7 @@
       "skillGate": null,
       "exerciseFamily": "throw",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24477,6 +24993,7 @@
       "skillGate": null,
       "exerciseFamily": "walk",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24530,6 +25047,7 @@
         "knee",
         "ankle"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24583,6 +25101,7 @@
         "knee",
         "ankle"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24634,6 +25153,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24685,6 +25205,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24737,6 +25258,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24792,6 +25314,7 @@
         "lower_back",
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24846,6 +25369,7 @@
         "shoulder",
         "lower_back"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24896,6 +25420,7 @@
       "skillGate": null,
       "exerciseFamily": "erg",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24947,6 +25472,7 @@
       "jointLoad": [
         "knee"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -24998,6 +25524,7 @@
       "jointLoad": [
         "ankle"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -25052,6 +25579,7 @@
         "shoulder",
         "wrist"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -25105,6 +25633,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -25158,6 +25687,7 @@
       "jointLoad": [
         "shoulder"
       ],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -25209,6 +25739,7 @@
       "skillGate": null,
       "exerciseFamily": "walk",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -25260,6 +25791,7 @@
       "skillGate": null,
       "exerciseFamily": "cycle",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -25311,6 +25843,7 @@
       "skillGate": null,
       "exerciseFamily": "stair_climber",
       "jointLoad": [],
+      "position": null,
       "romBias": null,
       "angle": null,
       "gripWidth": null,
@@ -25321,6 +25854,1227 @@
       "repHigh": 1800,
       "videoUrl": null,
       "sourceFile": "13_conditioning.csv"
+    },
+    {
+      "id": "mountain-pose",
+      "name": "Mountain Pose",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "quads",
+        "calves"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 20,
+        "maxSeconds": 45
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "yoga_standing",
+      "jointLoad": [],
+      "position": "standing",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 20,
+      "repHigh": 45,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "standing-overhead-reach",
+      "name": "Standing Overhead Reach",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "lats",
+        "front_delts"
+      ],
+      "secondaryMuscles": [
+        "abs"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 20,
+        "maxSeconds": 45
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "yoga_standing",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "position": "standing",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 20,
+      "repHigh": 45,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "warrior-one",
+      "name": "Warrior I",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "hip_flexors",
+        "quads"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "front_delts"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": true,
+      "isCompound": true,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 60
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "yoga_lunge",
+      "jointLoad": [
+        "knee",
+        "hip"
+      ],
+      "position": "standing",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 60,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "warrior-two",
+      "name": "Warrior II",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "adductors",
+        "quads"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "side_delts"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": true,
+      "isCompound": true,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 60
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "yoga_lunge",
+      "jointLoad": [
+        "knee",
+        "hip"
+      ],
+      "position": "standing",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 60,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "standing-forward-fold",
+      "name": "Standing Forward Fold",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "hamstrings",
+        "erectors"
+      ],
+      "secondaryMuscles": [
+        "calves"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 60
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "yoga_fold",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "position": "hinge",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 60,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "halfway-lift",
+      "name": "Halfway Lift",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "erectors",
+        "hamstrings"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 15,
+        "maxSeconds": 30
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "yoga_fold",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "position": "hinge",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 15,
+      "repHigh": 30,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "downward-dog",
+      "name": "Downward Facing Dog",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "calves",
+        "hamstrings"
+      ],
+      "secondaryMuscles": [
+        "lats",
+        "front_delts"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": true,
+      "isCompound": true,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 60
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "yoga_inversion",
+      "jointLoad": [
+        "shoulder",
+        "wrist"
+      ],
+      "position": "hinge",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 60,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "flow-high-plank",
+      "name": "High Plank Hold (Flow)",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "front_delts",
+        "quads"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": true,
+      "isCompound": true,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 20,
+        "maxSeconds": 45
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "yoga_plank",
+      "jointLoad": [
+        "wrist",
+        "shoulder"
+      ],
+      "position": "plank",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 20,
+      "repHigh": 45,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "chaturanga-lower",
+      "name": "Chaturanga Lower",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "triceps",
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "abs",
+        "front_delts"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 3,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": true,
+      "isCompound": true,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 10,
+        "maxSeconds": 20
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "yoga_plank",
+      "jointLoad": [
+        "shoulder",
+        "elbow",
+        "wrist"
+      ],
+      "position": "plank",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 10,
+      "repHigh": 20,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "cobra-pose",
+      "name": "Cobra Pose",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "erectors",
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "chest"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 20,
+        "maxSeconds": 45
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "yoga_extension",
+      "jointLoad": [
+        "lower_back",
+        "wrist"
+      ],
+      "position": "prone",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 20,
+      "repHigh": 45,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "upward-dog",
+      "name": "Upward Facing Dog",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "erectors",
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "chest",
+        "front_delts"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": true,
+      "isCompound": true,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 20,
+        "maxSeconds": 45
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "yoga_extension",
+      "jointLoad": [
+        "lower_back",
+        "wrist",
+        "shoulder"
+      ],
+      "position": "prone",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 20,
+      "repHigh": 45,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "sphinx-pose",
+      "name": "Sphinx Pose",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "erectors"
+      ],
+      "secondaryMuscles": [
+        "abs"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 60
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "yoga_extension",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "position": "prone",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 60,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "cat-cow-flow",
+      "name": "Cat-Cow Flow",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "erectors",
+        "abs"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 60
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "spine_mobility",
+      "jointLoad": [
+        "wrist"
+      ],
+      "position": "all_fours",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 60,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "thread-the-needle",
+      "name": "Thread the Needle",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "mid_back",
+        "rear_delts"
+      ],
+      "secondaryMuscles": [
+        "obliques"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 60
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "thoracic_rotation",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "position": "all_fours",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 60,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "childs-pose",
+      "name": "Child's Pose",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "lats",
+        "erectors"
+      ],
+      "secondaryMuscles": [
+        "glutes"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 90
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "yoga_recovery",
+      "jointLoad": [
+        "knee"
+      ],
+      "position": "kneeling",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 90,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "low-kneeling-hip-flexor",
+      "name": "Low Kneeling Hip Flexor Stretch",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "hip_flexors"
+      ],
+      "secondaryMuscles": [
+        "quads"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 60
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "hip_mobility",
+      "jointLoad": [
+        "knee"
+      ],
+      "position": "kneeling",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 60,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "pigeon-pose",
+      "name": "Pigeon Pose",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "glutes",
+        "abductors"
+      ],
+      "secondaryMuscles": [
+        "hip_flexors"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 75
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "hip_mobility",
+      "jointLoad": [
+        "knee",
+        "hip"
+      ],
+      "position": "seated",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 75,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "seated-forward-fold",
+      "name": "Seated Forward Fold",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "hamstrings",
+        "erectors"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 60
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "yoga_fold",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "position": "seated",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 60,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "seated-spinal-twist",
+      "name": "Seated Spinal Twist",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "obliques",
+        "mid_back"
+      ],
+      "secondaryMuscles": [
+        "glutes"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 60
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "thoracic_rotation",
+      "jointLoad": [
+        "lower_back"
+      ],
+      "position": "seated",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 60,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "butterfly-stretch",
+      "name": "Butterfly Stretch",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "adductors"
+      ],
+      "secondaryMuscles": [
+        "hip_flexors"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 60
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "hip_mobility",
+      "jointLoad": [
+        "hip"
+      ],
+      "position": "seated",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 60,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "pilates-hundred",
+      "name": "Pilates Hundred",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "hip_flexors"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": false,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 60
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "pilates_core",
+      "jointLoad": [
+        "neck"
+      ],
+      "position": "supine",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 60,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "pilates-single-leg-stretch",
+      "name": "Single Leg Stretch",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "abs",
+        "hip_flexors"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 2,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 60
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "pilates_core",
+      "jointLoad": [],
+      "position": "supine",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 60,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "supine-figure-four",
+      "name": "Supine Figure-4 Stretch",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "glutes",
+        "abductors"
+      ],
+      "secondaryMuscles": [],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 60
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "hip_mobility",
+      "jointLoad": [
+        "hip"
+      ],
+      "position": "supine",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 60,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
+    },
+    {
+      "id": "side-lying-open-book",
+      "name": "Side-Lying Thoracic Open Book",
+      "pattern": "mobility",
+      "loadType": "bodyweight",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "mid_back",
+        "chest"
+      ],
+      "secondaryMuscles": [
+        "obliques"
+      ],
+      "stabilises": [],
+      "fatigueCost": 1,
+      "skill": 1,
+      "defaultRIR": 2,
+      "restSeconds": 5,
+      "warmupRequired": false,
+      "unilateral": true,
+      "selectable": true,
+      "isCompound": false,
+      "trackingType": "time",
+      "scoring": "mobility",
+      "timeDomain": {
+        "minSeconds": 30,
+        "maxSeconds": 60
+      },
+      "roundsCapable": true,
+      "repsForTime": false,
+      "kipAllowed": null,
+      "monostructural": false,
+      "skillGate": null,
+      "exerciseFamily": "thoracic_rotation",
+      "jointLoad": [
+        "shoulder"
+      ],
+      "position": "side_lying",
+      "romBias": null,
+      "angle": null,
+      "gripWidth": null,
+      "gripOrientation": null,
+      "headBias": null,
+      "stability": 3,
+      "repLow": 30,
+      "repHigh": 60,
+      "videoUrl": null,
+      "sourceFile": "14_mobility.csv"
     }
   ]
 }

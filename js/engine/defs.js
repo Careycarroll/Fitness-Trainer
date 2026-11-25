@@ -6,6 +6,7 @@ import splitsFile from '../data/splits.json' with { type: 'json' };
 import equipmentFile from '../data/equipment.json' with { type: 'json' };
 import weightsFile from '../data/substitution-weights.json' with { type: 'json' };
 import progressionFile from '../data/progression.json' with { type: 'json' };
+import mobilityFlowsFile from '../data/mobility-flows.json' with { type: 'json' };
 
 export const defs = {
   schemaVersion: 1,
@@ -15,5 +16,6 @@ export const defs = {
   splits: splitsFile.splits,
   equipment: equipmentFile.profiles,
   substitutionWeights: weightsFile.weights,
-  progression: progressionFile
+  progression: progressionFile,
+  mobilityFlows: mobilityFlowsFile.flows
 };

@@ -17,7 +17,7 @@ export const PATTERNS = [
   'squat', 'lunge', 'hinge',
   'push_h', 'push_v', 'pull_h', 'pull_v',
   'carry', 'core', 'isolation', 'explosive', 'locomotion',
-  'monostructural'
+  'monostructural', 'mobility'
 ];
 
 export const LOAD_TYPES = [
@@ -25,7 +25,7 @@ export const LOAD_TYPES = [
   'bodyweight', 'band', 'implement', 'none'
 ];
 
-export const SCORING = ['load', 'time', 'both'];
+export const SCORING = ['load', 'time', 'both', 'mobility'];
 
 // 22 tokens. `back` -> lats/mid_back/upper_back (+ traps, erectors, which were
 // already separate); `shoulders` -> three delt heads; `lowerBack` -> erectors.
@@ -48,7 +48,7 @@ export const MUSCLES = [
   'systemic'
 ];
 
-export const DOMAINS = ['load', 'time'];
+export const DOMAINS = ['load', 'time', 'mobility'];
 
 /**
  * EQUIPMENT — the declared vocabulary (#58).

@@ -38,7 +38,8 @@
         "explosive": 0.0,
         "monostructural": 0.0,
         "isolation": 0.5,
-        "locomotion": 0.2
+        "locomotion": 0.2,
+        "mobility": 0
       },
       "fatigueBudget": 22,
       "exercisesPerSession": {
@@ -93,7 +94,8 @@
         "explosive": 0.0,
         "monostructural": 0.0,
         "isolation": 0.5,
-        "locomotion": 0.2
+        "locomotion": 0.2,
+        "mobility": 0
       },
       "fatigueBudget": 20,
       "exercisesPerSession": {
@@ -148,7 +150,8 @@
         "explosive": 0.0,
         "monostructural": 0.0,
         "isolation": 0.5,
-        "locomotion": 0.2
+        "locomotion": 0.2,
+        "mobility": 0
       },
       "fatigueBudget": 21,
       "exercisesPerSession": {
@@ -203,7 +206,8 @@
         "explosive": 0.0,
         "monostructural": 0.0,
         "isolation": 0.5,
-        "locomotion": 0.2
+        "locomotion": 0.2,
+        "mobility": 0
       },
       "fatigueBudget": 10,
       "exercisesPerSession": {
@@ -252,7 +256,8 @@
         "pull_v": 0.2,
         "explosive": 0.0,
         "isolation": 0.2,
-        "locomotion": 0.6
+        "locomotion": 0.6,
+        "mobility": 0
       },
       "fatigueBudget": 14,
       "exercisesPerSession": {
@@ -297,7 +302,8 @@
         "core": 0.0,
         "explosive": 0.0,
         "isolation": 0.2,
-        "locomotion": 0.6
+        "locomotion": 0.6,
+        "mobility": 0
       },
       "fatigueBudget": 12,
       "exercisesPerSession": {
@@ -342,7 +348,8 @@
         "lunge": 0.4,
         "carry": 0.3,
         "isolation": 0.2,
-        "locomotion": 0.6
+        "locomotion": 0.6,
+        "mobility": 0
       },
       "fatigueBudget": 18,
       "exercisesPerSession": {
@@ -392,7 +399,8 @@
         "push_h": 0.6,
         "carry": 0.5,
         "monostructural": 0.3,
-        "isolation": 0.1
+        "isolation": 0.1,
+        "mobility": 0
       },
       "fatigueBudget": 16,
       "exercisesPerSession": {
@@ -407,6 +415,129 @@
       ],
       "familyRepeatCost": 2,
       "weekRepeatCost": 1
+    },
+    {
+      "id": "yoga",
+      "name": "Yoga Flow",
+      "domain": "mobility",
+      "tier": 2,
+      "fatigueBudget": 10,
+      "accessoryRatio": 0,
+      "patternEmphasis": {
+        "squat": 0,
+        "hinge": 0,
+        "push_h": 0,
+        "push_v": 0,
+        "pull_h": 0,
+        "pull_v": 0,
+        "lunge": 0,
+        "core": 0,
+        "carry": 0,
+        "explosive": 0,
+        "monostructural": 0,
+        "isolation": 0,
+        "locomotion": 0,
+        "mobility": 1
+      },
+      "repRange": null,
+      "intensityBand": null,
+      "setsPerMainLift": null,
+      "restSeconds": {
+        "main": 5,
+        "accessory": 5
+      },
+      "workRest": {
+        "workSeconds": 35,
+        "restSeconds": 5,
+        "rounds": 1
+      },
+      "exercisesPerSession": {
+        "min": 5,
+        "max": 10
+      },
+      "preferredSplitPrefix": "mobility"
+    },
+    {
+      "id": "pilates",
+      "name": "Pilates Mat",
+      "domain": "mobility",
+      "tier": 2,
+      "fatigueBudget": 10,
+      "accessoryRatio": 0,
+      "patternEmphasis": {
+        "squat": 0,
+        "hinge": 0,
+        "push_h": 0,
+        "push_v": 0,
+        "pull_h": 0,
+        "pull_v": 0,
+        "lunge": 0,
+        "core": 0,
+        "carry": 0,
+        "explosive": 0,
+        "monostructural": 0,
+        "isolation": 0,
+        "locomotion": 0,
+        "mobility": 1
+      },
+      "repRange": null,
+      "intensityBand": null,
+      "setsPerMainLift": null,
+      "restSeconds": {
+        "main": 5,
+        "accessory": 5
+      },
+      "workRest": {
+        "workSeconds": 45,
+        "restSeconds": 5,
+        "rounds": 1
+      },
+      "exercisesPerSession": {
+        "min": 5,
+        "max": 10
+      },
+      "preferredSplitPrefix": "mobility"
+    },
+    {
+      "id": "flexibility",
+      "name": "Flexibility & Recovery",
+      "domain": "mobility",
+      "tier": 2,
+      "fatigueBudget": 10,
+      "accessoryRatio": 0,
+      "patternEmphasis": {
+        "squat": 0,
+        "hinge": 0,
+        "push_h": 0,
+        "push_v": 0,
+        "pull_h": 0,
+        "pull_v": 0,
+        "lunge": 0,
+        "core": 0,
+        "carry": 0,
+        "explosive": 0,
+        "monostructural": 0,
+        "isolation": 0,
+        "locomotion": 0,
+        "mobility": 1
+      },
+      "repRange": null,
+      "intensityBand": null,
+      "setsPerMainLift": null,
+      "restSeconds": {
+        "main": 5,
+        "accessory": 5
+      },
+      "workRest": {
+        "workSeconds": 45,
+        "restSeconds": 5,
+        "rounds": 1
+      },
+      "exercisesPerSession": {
+        "min": 5,
+        "max": 10
+      },
+      "preferredSplitPrefix": "mobility"
     }
   ]
 }

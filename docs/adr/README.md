@@ -29,7 +29,7 @@ Nobody reads these front to back. You arrive with a question — start here.
 [003](ADR-003-content-as-data.md) · [006](ADR-006-hand-authored-catalog.md) · [008](ADR-008-catalog-before-logger.md) · [012](ADR-012-data-code-boundary.md) · [016](ADR-016-catalog-authored-as-split-csv.md) · [017](ADR-017-catalog-file-ownership-rule.md) · [028](ADR-028-conditioning-catalog-ownership.md) · [032](ADR-032-workout-of-the-day-and-benchmark-presets.md) · [036](ADR-036-bulk-catalog-source-and-licence.md)
 
 **Catalog vocabularies**
-[009](ADR-009-dual-domain-schema.md) · [018](ADR-018-muscle-token-admission-test.md) · [019](ADR-019-isolation-and-explosive-patterns.md) · [020](ADR-020-joint-load-is-descriptive.md) · [021](ADR-021-retire-machine-equipment-token.md) · [022](ADR-022-equipment-substitution-map.md) · [024](ADR-024-odd-objects-excluded.md) · [025](ADR-025-single-joint-pattern-inconsistency.md) · [026](ADR-026-catalog-schema-reconciliation.md) · [029](ADR-029-defer-metabolic-cost.md) · [030](ADR-030-defer-distance-and-pace.md)
+[009](ADR-009-dual-domain-schema.md) · [018](ADR-018-muscle-token-admission-test.md) · [019](ADR-019-isolation-and-explosive-patterns.md) · [020](ADR-020-joint-load-is-descriptive.md) · [021](ADR-021-retire-machine-equipment-token.md) · [022](ADR-022-equipment-substitution-map.md) · [024](ADR-024-odd-objects-excluded.md) · [025](ADR-025-single-joint-pattern-inconsistency.md) · [026](ADR-026-catalog-schema-reconciliation.md) · [029](ADR-029-defer-metabolic-cost.md) · [030](ADR-030-defer-distance-and-pace.md) · [038](ADR-038-mobility-third-domain.md)
 
 **Progression and history**
 [023](ADR-023-e1rm-from-logged-sets.md)
@@ -77,6 +77,7 @@ Nobody reads these front to back. You arrive with a question — start here.
 | [035](ADR-035-periodization-model-ownership.md) | Periodization model ownership and scope | ACCEPTED | 002, 010, 012, 023 | Linear ramp + planned deload within style bands; no macrocycle layer yet. |
 | [036](ADR-036-bulk-catalog-source-and-licence.md) | Bulk catalog import source, licence, and column policy | ACCEPTED | 006, 012, 016, 026 | `free-exercise-db` (Unlicense) is the sole approved import source; no silent defaults. |
 | [037](ADR-037-movement-equivalence-classes.md) | Movement equivalence classes and implement variations | ACCEPTED | 002, 012, 023, 026 | Derived from `(exerciseFamily, pattern)`; e1RM stays per `exerciseId`. |
+| [038](ADR-038-mobility-third-domain.md) | Mobility as a third domain: yoga, pilates, and flexibility | ACCEPTED | 002, 009, 010, 012, 027 | `mobility` domain uses `flow` blocks, `holdSeconds`, and feasible `position` transitions. |
 
 ---
 

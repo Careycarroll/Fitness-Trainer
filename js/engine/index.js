@@ -9,9 +9,10 @@ import { weeklyVolume, resolveLandmarks } from './volume.js';
 import { chooseTrainingDays, gapClass } from './schedule.js';
 import * as loadDomain from './loadDomain.js';
 import * as intervalDomain from './intervalDomain.js';
+import * as mobilityDomain from './mobilityDomain.js';
 import { validateAvoidJoints } from './safety.js';
 
-const GENERATORS = { load: loadDomain, time: intervalDomain };
+const GENERATORS = { load: loadDomain, time: intervalDomain, mobility: mobilityDomain };
 
 export class RequestError extends Error {}
 
@@ -40,7 +41,9 @@ export function generate(request, defs) {
   const domainCatalog = defs.exercises.filter((e) =>
     style.domain === 'load'
       ? e.scoring === 'load' || e.scoring === 'both'
-      : e.scoring === 'time' || e.scoring === 'both' || e.repsForTime
+      : style.domain === 'mobility'
+        ? e.scoring === 'mobility'
+        : e.scoring === 'time' || e.scoring === 'both' || e.repsForTime
   );
   const requiredPatterns = [
     ...new Set(split.days.flatMap((d) => d.patterns))
@@ -91,7 +94,8 @@ export function generate(request, defs) {
         compressedAccessoryMultiplier:
           defs.progression?.compressedAccessoryMultiplier ?? 1,
         deloadFraction:
-          defs.progression?.models?.['linear-load']?.deloadFraction ?? 0.9
+          defs.progression?.models?.['linear-load']?.deloadFraction ?? 0.9,
+        mobilityFlows: defs.mobilityFlows ?? []
       })
     );
     // #44. Weekly sets per muscle against landmarks.json, which until now no

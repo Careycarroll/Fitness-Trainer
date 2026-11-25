@@ -24,9 +24,9 @@ export default {
           `${s.id}: intensityBand must satisfy 0 < min <= max <= 1`);
         assert(s.setsPerMainLift && s.setsPerMainLift.min <= s.setsPerMainLift.max, `${s.id}: invalid setsPerMainLift`);
       } else {
-        assert(s.workRest !== null, `${s.id}: time-domain style must define workRest`);
+        assert(s.workRest !== null, `${s.id}: ${s.domain}-domain style must define workRest`);
         assert(s.workRest.workSeconds > 0 && s.workRest.rounds > 0, `${s.id}: workRest needs positive workSeconds and rounds`);
-        assert(s.repRange === null && s.intensityBand === null, `${s.id}: time-domain style must null out load fields`);
+        assert(s.repRange === null && s.intensityBand === null, `${s.id}: ${s.domain}-domain style must null out load fields`);
       }
     }
   }

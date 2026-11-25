@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "flows": [
+    {
+      "id": "sun-salutation-a",
+      "name": "Sun Salutation A",
+      "styles": ["yoga"],
+      "poses": [
+        { "exerciseId": "mountain-pose", "holdSeconds": 20 },
+        { "exerciseId": "standing-overhead-reach", "holdSeconds": 15 },
+        { "exerciseId": "standing-forward-fold", "holdSeconds": 25 },
+        { "exerciseId": "halfway-lift", "holdSeconds": 15 },
+        { "exerciseId": "flow-high-plank", "holdSeconds": 20 },
+        { "exerciseId": "chaturanga-lower", "holdSeconds": 10 },
+        { "exerciseId": "upward-dog", "holdSeconds": 20 },
+        { "exerciseId": "downward-dog", "holdSeconds": 40 },
+        { "exerciseId": "standing-forward-fold", "holdSeconds": 25 },
+        { "exerciseId": "mountain-pose", "holdSeconds": 20 }
+      ]
+    },
+    {
+      "id": "sun-salutation-b",
+      "name": "Sun Salutation B",
+      "styles": ["yoga"],
+      "poses": [
+        { "exerciseId": "mountain-pose", "holdSeconds": 20 },
+        { "exerciseId": "standing-forward-fold", "holdSeconds": 25 },
+        { "exerciseId": "flow-high-plank", "holdSeconds": 20 },
+        { "exerciseId": "upward-dog", "holdSeconds": 20 },
+        { "exerciseId": "downward-dog", "holdSeconds": 30 },
+        { "exerciseId": "warrior-one", "holdSeconds": 35 },
+        { "exerciseId": "flow-high-plank", "holdSeconds": 20 },
+        { "exerciseId": "upward-dog", "holdSeconds": 20 },
+        { "exerciseId": "downward-dog", "holdSeconds": 35 },
+        { "exerciseId": "warrior-two", "holdSeconds": 35 },
+        { "exerciseId": "standing-forward-fold", "holdSeconds": 25 },
+        { "exerciseId": "mountain-pose", "holdSeconds": 20 }
+      ]
+    },
+    {
+      "id": "hip-opening-flow",
+      "name": "Hip-Opening Flow",
+      "styles": ["yoga", "flexibility"],
+      "poses": [
+        { "exerciseId": "childs-pose", "holdSeconds": 45 },
+        { "exerciseId": "cat-cow-flow", "holdSeconds": 45 },
+        { "exerciseId": "low-kneeling-hip-flexor", "holdSeconds": 45 },
+        { "exerciseId": "pigeon-pose", "holdSeconds": 60 },
+        { "exerciseId": "butterfly-stretch", "holdSeconds": 45 },
+        { "exerciseId": "supine-figure-four", "holdSeconds": 45 }
+      ]
+    },
+    {
+      "id": "thoracic-spine-series",
+      "name": "Thoracic & Spine Series",
+      "styles": ["yoga", "flexibility"],
+      "poses": [
+        { "exerciseId": "cat-cow-flow", "holdSeconds": 45 },
+        { "exerciseId": "thread-the-needle", "holdSeconds": 45 },
+        { "exerciseId": "sphinx-pose", "holdSeconds": 45 },
+        { "exerciseId": "childs-pose", "holdSeconds": 45 },
+        { "exerciseId": "seated-spinal-twist", "holdSeconds": 45 },
+        { "exerciseId": "side-lying-open-book", "holdSeconds": 45 }
+      ]
+    },
+    {
+      "id": "pilates-mat-core",
+      "name": "Pilates Mat Core Flow",
+      "styles": ["pilates"],
+      "poses": [
+        { "exerciseId": "cat-cow-flow", "holdSeconds": 40 },
+        { "exerciseId": "flow-high-plank", "holdSeconds": 35 },
+        { "exerciseId": "cobra-pose", "holdSeconds": 30 },
+        { "exerciseId": "childs-pose", "holdSeconds": 30 },
+        { "exerciseId": "seated-spinal-twist", "holdSeconds": 30 },
+        { "exerciseId": "pilates-hundred", "holdSeconds": 45 },
+        { "exerciseId": "pilates-single-leg-stretch", "holdSeconds": 45 },
+        { "exerciseId": "supine-figure-four", "holdSeconds": 45 }
+      ]
+    },
+    {
+      "id": "pilates-posture-reset",
+      "name": "Pilates Posture & Spine Flow",
+      "styles": ["pilates"],
+      "poses": [
+        { "exerciseId": "seated-spinal-twist", "holdSeconds": 40 },
+        { "exerciseId": "cat-cow-flow", "holdSeconds": 40 },
+        { "exerciseId": "sphinx-pose", "holdSeconds": 45 },
+        { "exerciseId": "side-lying-open-book", "holdSeconds": 45 },
+        { "exerciseId": "pilates-single-leg-stretch", "holdSeconds": 45 },
+        { "exerciseId": "pilates-hundred", "holdSeconds": 45 }
+      ]
+    },
+    {
+      "id": "lower-recovery",
+      "name": "Lower-Body Post-Lift Recovery",
+      "styles": ["flexibility", "yoga"],
+      "poses": [
+        { "exerciseId": "standing-forward-fold", "holdSeconds": 45 },
+        { "exerciseId": "downward-dog", "holdSeconds": 45 },
+        { "exerciseId": "low-kneeling-hip-flexor", "holdSeconds": 45 },
+        { "exerciseId": "pigeon-pose", "holdSeconds": 60 },
+        { "exerciseId": "seated-forward-fold", "holdSeconds": 45 },
+        { "exerciseId": "supine-figure-four", "holdSeconds": 60 }
+      ]
+    },
+    {
+      "id": "upper-shoulder-opener",
+      "name": "Upper-Body & Shoulder Opener",
+      "styles": ["flexibility", "yoga"],
+      "poses": [
+        { "exerciseId": "standing-overhead-reach", "holdSeconds": 30 },
+        { "exerciseId": "downward-dog", "holdSeconds": 40 },
+        { "exerciseId": "thread-the-needle", "holdSeconds": 45 },
+        { "exerciseId": "cobra-pose", "holdSeconds": 35 },
+        { "exerciseId": "childs-pose", "holdSeconds": 45 },
+        { "exerciseId": "side-lying-open-book", "holdSeconds": 45 }
+      ]
+    },
+    {
+      "id": "desk-reset",
+      "name": "Desk & Neck Mobility Reset",
+      "styles": ["flexibility", "pilates"],
+      "poses": [
+        { "exerciseId": "mountain-pose", "holdSeconds": 30 },
+        { "exerciseId": "standing-overhead-reach", "holdSeconds": 30 },
+        { "exerciseId": "standing-forward-fold", "holdSeconds": 40 },
+        { "exerciseId": "cat-cow-flow", "holdSeconds": 45 },
+        { "exerciseId": "thread-the-needle", "holdSeconds": 45 },
+        { "exerciseId": "seated-spinal-twist", "holdSeconds": 45 }
+      ]
+    },
+    {
+      "id": "evening-wind-down",
+      "name": "Evening Wind-Down Flow",
+      "styles": ["yoga", "flexibility"],
+      "poses": [
+        { "exerciseId": "childs-pose", "holdSeconds": 60 },
+        { "exerciseId": "cat-cow-flow", "holdSeconds": 45 },
+        { "exerciseId": "seated-forward-fold", "holdSeconds": 60 },
+        { "exerciseId": "butterfly-stretch", "holdSeconds": 60 },
+        { "exerciseId": "supine-figure-four", "holdSeconds": 60 }
+      ]
+    }
+  ]
+}

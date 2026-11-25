@@ -479,6 +479,32 @@
         }
       ],
       "sessionsPerWeek": 4
+    },
+    {
+      "id": "mobility-3",
+      "name": "Mobility & Flow \u00d73",
+      "domain": "mobility",
+      "daysPerWeek": 3,
+      "days": [
+        {
+          "label": "Flow A",
+          "patterns": [
+            "mobility"
+          ]
+        },
+        {
+          "label": "Flow B",
+          "patterns": [
+            "mobility"
+          ]
+        },
+        {
+          "label": "Flow C",
+          "patterns": [
+            "mobility"
+          ]
+        }
+      ]
     }
   ]
 }

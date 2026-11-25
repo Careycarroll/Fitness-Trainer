@@ -24,6 +24,7 @@
  */
 import { generate, CoverageError } from '../engine/index.js';
 import { rankSubstitutes } from '../engine/substitution.js';
+import { nextFeasiblePoses } from '../engine/mobilityDomain.js';
 import { allSetGroups, setGroupAt, makeSetGroup, sessionFatigue } from '../engine/blocks.js';
 import { volumeConcerns, resolveLandmarks } from '../engine/volume.js';
 import {
@@ -5109,7 +5110,9 @@ export function renderSession(session, w, s, style) {
   const allowSwap = session?.styleId !== 'crossfit';
   const domainMeta = session.domain === 'load'
     ? `${session.fatigueUsed ?? groups.reduce((n, g) => n + (g.fatigueCost ?? 0), 0)} / ${session.fatigueBudget ?? style.fatigueBudget} fatigue`
-    : sessionTiming(session);
+    : session.domain === 'mobility'
+      ? `Flow · ${groups.length} poses · ~${Math.max(1, Math.round(groups.reduce((n, g) => n + (g.holdSeconds ?? 30) + (g.restSeconds ?? 5), 0) / 60))} min`
+      : sessionTiming(session);
   const timing = '';
 
   return `
@@ -5162,7 +5165,9 @@ function renderSetGroup(group, w, s, b, g, domain, blockType, rounds, allowSwap 
 
   const controls = domain === 'load'
     ? loadControls(p, w, s, b, g, allowSwap)
-    : timeControls(p, w, s, b, g, rounds, allowSwap);
+    : domain === 'mobility'
+      ? mobilityControls(p, w, s, b, g, allowSwap)
+      : timeControls(p, w, s, b, g, rounds, allowSwap);
 
   let warmupHtml = '';
   if (group.warmupRequired) {
@@ -5248,6 +5253,32 @@ function loadControls(p, w, s, b, g, allowSwap = true) {
       ${plateHint}
       ${editActions(w, s, b, g, allowSwap)}
     </div>`;
+}
+
+function mobilityControls(p, w, s, b, g, allowSwap = true) {
+  const exObj = currentDefs?.exercises?.find((e) => e.id === p.exerciseId);
+  const nextPoses = exObj && currentDefs?.exercises
+    ? nextFeasiblePoses(exObj, currentDefs.exercises).slice(0, 6)
+    : [];
+  const details = [
+    p.holdSeconds != null ? `${p.holdSeconds}s hold` : '',
+    p.position ? `position: ${p.position.replace(/_/g, ' ')}` : '',
+    p.restSeconds != null ? `${p.restSeconds}s transition` : ''
+  ].filter(Boolean).join(' · ');
+
+  const nextHtml = nextPoses.length
+    ? `<details class="howto" style="margin-top:4px;">
+         <summary>Feasible next poses (${nextPoses.length})</summary>
+         <p class="note" style="margin:4px 0 0;">${nextPoses.map((np) => `${esc(np.name)} (${esc(np.position?.replace(/_/g, ' ') || '')})`).join(' · ')}</p>
+       </details>`
+    : '';
+
+  return `
+    <div class="block-edit">
+      <p class="intensity">${esc(details || 'mobility hold')}</p>
+      ${editActions(w, s, b, g, allowSwap)}
+    </div>
+    ${nextHtml}`;
 }
 
 function timeControls(p, w, s, b, g, rounds, allowSwap = true) {
