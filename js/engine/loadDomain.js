@@ -66,7 +66,8 @@ const MAX_TOP_COST_COUNT = 1;
 
 export function generateSession({
   style, day, catalog, profile, request, dayIndex, week,
-  gap = null, compressedAccessoryMultiplier = 1
+  gap = null, compressedAccessoryMultiplier = 1,
+  weekIndex = 0, blockWeeks = 1
 }) {
   const rng = createRng(request.seed + dayIndex * 7919);
   const ctx = request.athlete ?? { skillLevel: 2 };
@@ -148,7 +149,7 @@ export function generateSession({
       continue;
     }
 
-    commit(state, chosen, style, { isMain, emphasis, rng, week });
+    commit(state, chosen, style, { isMain, emphasis, rng, week, weekIndex, blockWeeks });
   }
 
   // -----------------------------------------------------------------------
@@ -218,7 +219,9 @@ export function generateSession({
       isMain: false,
       emphasis: style.patternEmphasis[pattern] ?? 0,
       rng,
-      week
+      week,
+      weekIndex,
+      blockWeeks
     });
   }
 
@@ -506,7 +509,7 @@ function cheapestCost(pool, pattern, state) {
   return costs.length ? Math.min(...costs) : null;
 }
 
-function commit(state, exercise, style, { isMain, emphasis, rng, week }) {
+function commit(state, exercise, style, { isMain, emphasis, rng, week, weekIndex = 0, blockWeeks = 1 }) {
   state.fatigueUsed += exercise.fatigueCost;
   state.usedIds.add(exercise.id);
   if (exercise.fatigueCost >= MAX_TOP_COST) state.topCostUsed++;
@@ -521,7 +524,7 @@ function commit(state, exercise, style, { isMain, emphasis, rng, week }) {
     week.usedFamilies.set(fam, (week.usedFamilies.get(fam) ?? 0) + 1);
   }
 
-  state.blocks.push(straightBlock(exercise, prescribe({ exercise, style, isMain, emphasis, rng })));
+  state.blocks.push(straightBlock(exercise, prescribe({ exercise, style, isMain, emphasis, rng, weekIndex, blockWeeks })));
 }
 
 // ---------------------------------------------------------------------------
@@ -551,21 +554,38 @@ export function prescribeRir({ exercise, style, isMain, intensity }) {
   return exercise?.defaultRIR ?? 2;
 }
 
-function prescribe({ exercise, style, isMain, emphasis, rng }) {
+function prescribe({ exercise, style, isMain, emphasis, rng, weekIndex = 0, blockWeeks = 1 }) {
   const { min: repMin, max: repMax } = style.repRange;
   const { min: intMin, max: intMax } = style.intensityBand;
   const { min: setMin, max: setMax } = style.setsPerMainLift;
 
-  // Main work sits at the heavy/low-rep end of the style band; accessories at the light end.
-  const t = isMain ? 0.15 + rng() * 0.25 : 0.6 + rng() * 0.35;
+  const isMultiWeek = blockWeeks > 1;
+  const isDeloadWeek = blockWeeks >= 4 && weekIndex === blockWeeks - 1;
+  let t;
+  if (!isMultiWeek) {
+    // Main work sits at the heavy/low-rep end of the style band; accessories at the light end.
+    t = isMain ? 0.15 + rng() * 0.25 : 0.6 + rng() * 0.35;
+  } else if (isDeloadWeek) {
+    t = isMain ? 0.45 : 0.95;
+  } else {
+    const rampWeeks = blockWeeks >= 4 ? blockWeeks - 1 : blockWeeks;
+    const progress = rampWeeks > 1 ? Math.min(1, weekIndex / (rampWeeks - 1)) : 0;
+    t = isMain ? 0.35 - 0.25 * progress : 0.90 - 0.25 * progress;
+  }
+
   const reps = Math.round(repMin + (repMax - repMin) * t);
   const rawIntensity = round(intMax - (intMax - intMin) * t, 2);
   const anchored = isAnchoredLift(exercise);
   const intensity = anchored ? rawIntensity : null;
-  const rir = prescribeRir({ exercise, style, isMain, intensity });
-  const sets = isMain
+  let rir = prescribeRir({ exercise, style, isMain, intensity });
+  let sets = isMain
     ? Math.round(setMin + (setMax - setMin) * emphasis)
     : Math.max(2, setMin - 1);
+
+  if (isDeloadWeek) {
+    sets = Math.max(2, sets - 1);
+    rir = Math.min(4, rir + 1);
+  }
 
   return {
     role: isMain ? 'main' : 'accessory',

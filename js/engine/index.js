@@ -82,12 +82,16 @@ export function generate(request, defs) {
         profile,
         request: { ...request, seed: request.seed + w * 31 },
         dayIndex,
+        weekIndex: w,
+        blockWeeks: request.blockWeeks,
         week,
         // Recovery state of this session, or null when no availability was
         // given. ADR-015: the only thing the engine derives from weekdays.
         gap: schedule ? gapClass(schedule, dayIndex) : null,
         compressedAccessoryMultiplier:
-          defs.progression?.compressedAccessoryMultiplier ?? 1
+          defs.progression?.compressedAccessoryMultiplier ?? 1,
+        deloadFraction:
+          defs.progression?.models?.['linear-load']?.deloadFraction ?? 0.9
       })
     );
     // #44. Weekly sets per muscle against landmarks.json, which until now no
