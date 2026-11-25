@@ -172,6 +172,33 @@ CREATE TABLE IF NOT EXISTS user_settings (
   key        TEXT PRIMARY KEY,
   value_json TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS meal_logs (
+  id         TEXT PRIMARY KEY,
+  date       TEXT NOT NULL,
+  meal_slot  TEXT NOT NULL DEFAULT 'snack',
+  name       TEXT NOT NULL,
+  calories   INTEGER,
+  protein_g  REAL,
+  carbs_g    REAL,
+  fat_g      REAL,
+  notes      TEXT,
+  created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_meal_logs_date ON meal_logs(date);
+
+CREATE TABLE IF NOT EXISTS meal_presets (
+  id         TEXT PRIMARY KEY,
+  name       TEXT NOT NULL,
+  meal_slot  TEXT NOT NULL DEFAULT 'snack',
+  calories   INTEGER,
+  protein_g  REAL,
+  carbs_g    REAL,
+  fat_g      REAL,
+  notes      TEXT,
+  created_at TEXT NOT NULL
+);
 `;
 
 function makeId(prefix = 'id') {
@@ -328,6 +355,56 @@ export function softResetTrainingMax(db, exerciseId = null) {
   } else {
     db.run('UPDATE exercises SET active_epoch = active_epoch + 1');
   }
+}
+
+/**
+ * Read a JSON setting from `user_settings`.
+ *
+ * @param {object} db
+ * @param {string} key
+ * @param {*} [fallback]
+ * @returns {*}
+ */
+export function getSetting(db, key, fallback = null) {
+  const rows = db.exec('SELECT value_json FROM user_settings WHERE key = ?', [key])[0]?.values;
+  if (!rows?.length) return fallback;
+  try {
+    return JSON.parse(rows[0][0]);
+  } catch {
+    return fallback;
+  }
+}
+
+/**
+ * Persist a JSON setting in `user_settings`.
+ *
+ * @param {object} db
+ * @param {string} key
+ * @param {*} value
+ */
+export function setSetting(db, key, value) {
+  db.run(
+    `INSERT INTO user_settings (key, value_json) VALUES (?, ?)
+     ON CONFLICT(key) DO UPDATE SET value_json = excluded.value_json`,
+    [key, JSON.stringify(value)]
+  );
+}
+
+/**
+ * Return summary counts for the Settings / Backup status card.
+ *
+ * @param {object} db
+ * @returns {{ sessions: number, sets: number, records: number, exercises: number, meals: number }}
+ */
+export function getAppDbStats(db) {
+  const count = (sql) => Number(db.exec(sql)[0]?.values[0][0] ?? 0);
+  return {
+    sessions: count('SELECT COUNT(*) FROM workout_sessions'),
+    sets: count('SELECT COUNT(*) FROM logged_sets'),
+    records: count('SELECT COUNT(*) FROM performance_records'),
+    exercises: count('SELECT COUNT(*) FROM exercises'),
+    meals: count('SELECT COUNT(*) FROM meal_logs')
+  };
 }
 
 function slugifyCustomId(name) {

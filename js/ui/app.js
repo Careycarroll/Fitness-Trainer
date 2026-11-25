@@ -34,6 +34,18 @@ import {
 } from '../storage/state.js';
 import { toFitNotesCSV, planDates } from '../storage/fitnotes-export.js';
 import { inspectDatabase, inspectDate, injectWorkouts, injectCatalog } from '../storage/sqlite-injector.js';
+import {
+  exportAppDb,
+  getAppDbStats,
+  migrateFitNotesToAppDb,
+  getSetting,
+  setSetting
+} from '../storage/app-db.js';
+import {
+  loadPersistedAppDb,
+  savePersistedAppDb,
+  replacePersistedAppDbFromBuffer
+} from '../storage/app-db-store.js';
 import { listBenchmarks, getBenchmark, expandBenchmark, BENCHMARKS } from '../engine/benchmarks.js';
 import {
   extractCatalogFacets,
@@ -589,6 +601,25 @@ export function mount(root, defs) {
             <p id="storage-status" class="note" role="status"></p>
             <div id="import-review"></div>
           </div>
+
+          <div class="card settings-card">
+            <h3>Local SQLite Database & Units</h3>
+            <p class="note" id="appdb-stats">Loading local database…</p>
+            <label style="max-width:240px;">Display Weight Unit
+              <select id="setting-display-unit">
+                <option value="lb" selected>Pounds (lb)</option>
+                <option value="kg">Kilograms (kg)</option>
+              </select>
+            </label>
+            <div class="storage-actions" style="margin-top:10px;">
+              <button type="button" id="appdb-export-btn" class="ghost">Export Database (.db)</button>
+              <button type="button" id="appdb-restore-btn" class="ghost">Restore Database (.db)</button>
+              <button type="button" id="appdb-migrate-btn" class="ghost">Migrate Historical Workouts</button>
+              <input type="file" id="appdb-restore-file" accept=".db,.sqlite" hidden />
+              <input type="file" id="appdb-migrate-file" accept=".fitnotes,.db,.sqlite" hidden />
+            </div>
+            <p id="appdb-status" class="note" role="status"></p>
+          </div>
         </div>
       </section>
     </main>
@@ -672,6 +703,7 @@ export function mount(root, defs) {
       performDateInspection(root.querySelector('#sync-inspect-date')?.value || todayDateString());
     } else if (tabName === 'settings') {
       paintProfiles();
+      refreshAppDbCard();
     }
   };
 
@@ -1110,6 +1142,122 @@ export function mount(root, defs) {
   }
 
   renderCatalog();
+
+  let appDbInstance = null;
+  let appDbPromise = null;
+  const DISPLAY_UNIT_KEY = 'pref:displayUnit';
+
+  async function ensureAppDb() {
+    if (appDbInstance) return appDbInstance;
+    appDbPromise ??= loadPersistedAppDb(defs.exercises).then((instance) => {
+      appDbInstance = instance;
+      return instance;
+    });
+    return appDbPromise;
+  }
+
+  async function refreshAppDbCard() {
+    const statsEl = root.querySelector('#appdb-stats');
+    const unitSel = root.querySelector('#setting-display-unit');
+    try {
+      const appDb = await ensureAppDb();
+      const s = getAppDbStats(appDb);
+      if (statsEl) {
+        statsEl.textContent = `${s.sessions} workouts · ${s.sets} sets · ${s.records} PR records · ${s.meals} meals · ${s.exercises} exercises`;
+      }
+      const savedUnit = getSetting(appDb, 'display_unit', localStorage.getItem(DISPLAY_UNIT_KEY) || 'lb');
+      if (unitSel && (savedUnit === 'lb' || savedUnit === 'kg')) {
+        unitSel.value = savedUnit;
+        localStorage.setItem(DISPLAY_UNIT_KEY, savedUnit);
+      }
+    } catch (err) {
+      if (statsEl) statsEl.textContent = `Database unavailable: ${err.message}`;
+    }
+  }
+
+  const unitSelEl = root.querySelector('#setting-display-unit');
+  if (unitSelEl) {
+    unitSelEl.value = localStorage.getItem(DISPLAY_UNIT_KEY) || 'lb';
+    unitSelEl.addEventListener('change', async () => {
+      const unit = unitSelEl.value === 'kg' ? 'kg' : 'lb';
+      localStorage.setItem(DISPLAY_UNIT_KEY, unit);
+      try {
+        const appDb = await ensureAppDb();
+        setSetting(appDb, 'display_unit', unit);
+        await savePersistedAppDb(appDb);
+      } catch {
+        // localStorage already updated
+      }
+    });
+  }
+
+  const appDbStatusEl = root.querySelector('#appdb-status');
+  const appDbExportBtn = root.querySelector('#appdb-export-btn');
+  const appDbRestoreBtn = root.querySelector('#appdb-restore-btn');
+  const appDbRestoreFile = root.querySelector('#appdb-restore-file');
+  const appDbMigrateBtn = root.querySelector('#appdb-migrate-btn');
+  const appDbMigrateFile = root.querySelector('#appdb-migrate-file');
+
+  if (appDbExportBtn) {
+    appDbExportBtn.addEventListener('click', async () => {
+      try {
+        const appDb = await ensureAppDb();
+        const bytes = exportAppDb(appDb);
+        const blob = new Blob([bytes], { type: 'application/x-sqlite3' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `fitness-trainer-backup-${todayDateString()}.db`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        if (appDbStatusEl) appDbStatusEl.textContent = 'Exported standalone SQLite backup.';
+      } catch (err) {
+        if (appDbStatusEl) appDbStatusEl.textContent = `Export failed: ${err.message}`;
+      }
+    });
+  }
+
+  if (appDbRestoreBtn && appDbRestoreFile) {
+    appDbRestoreBtn.addEventListener('click', () => appDbRestoreFile.click());
+    appDbRestoreFile.addEventListener('change', async () => {
+      const file = appDbRestoreFile.files?.[0];
+      appDbRestoreFile.value = '';
+      if (!file) return;
+      try {
+        const buf = await file.arrayBuffer();
+        appDbInstance = await replacePersistedAppDbFromBuffer(buf, defs.exercises);
+        appDbPromise = Promise.resolve(appDbInstance);
+        await refreshAppDbCard();
+        if (appDbStatusEl) appDbStatusEl.textContent = `Restored database from ${file.name}.`;
+      } catch (err) {
+        if (appDbStatusEl) appDbStatusEl.textContent = `Restore failed: ${err.message}`;
+      }
+    });
+  }
+
+  if (appDbMigrateBtn && appDbMigrateFile) {
+    appDbMigrateBtn.addEventListener('click', () => appDbMigrateFile.click());
+    appDbMigrateFile.addEventListener('change', async () => {
+      const file = appDbMigrateFile.files?.[0];
+      appDbMigrateFile.value = '';
+      if (!file) return;
+      try {
+        if (appDbStatusEl) appDbStatusEl.textContent = 'Migrating workout history…';
+        const buf = await file.arrayBuffer();
+        const appDb = await ensureAppDb();
+        const res = await migrateFitNotesToAppDb(appDb, buf);
+        await savePersistedAppDb(appDb);
+        await refreshAppDbCard();
+        if (appDbStatusEl) {
+          appDbStatusEl.textContent = `Migrated ${res.importedSessions} workouts (${res.importedSets} sets, ${res.recordsCreated} PR records, ${res.skippedDates} already present).`;
+        }
+      } catch (err) {
+        if (appDbStatusEl) appDbStatusEl.textContent = `Migration failed: ${err.message}`;
+      }
+    });
+  }
 
   function renderSyncHub() {
     const queueBadge = root.querySelector('#sync-queue-badge');

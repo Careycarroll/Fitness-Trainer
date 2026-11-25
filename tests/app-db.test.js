@@ -8,6 +8,9 @@ import {
   exportAppDb,
   seedExercises,
   softResetTrainingMax,
+  getSetting,
+  setSetting,
+  getAppDbStats,
   migrateFitNotesToAppDb
 } from '../js/storage/app-db.js';
 import { getSql } from '../js/storage/sqlite-injector.js';
@@ -25,6 +28,8 @@ describe('Standalone AppDB Schema & Migration (ADR-033)', () => {
         'equipment_profiles',
         'exercises',
         'logged_sets',
+        'meal_logs',
+        'meal_presets',
         'performance_records',
         'plans',
         'schema_migrations',
@@ -153,6 +158,28 @@ describe('Standalone AppDB Schema & Migration (ADR-033)', () => {
 
       assert.equal(allTime, 160, 'lifetime PR must remain intact');
       assert.equal(currentEpochBest, 120, 'current epoch baseline reflects post-reset max');
+    } finally {
+      db.close();
+    }
+  });
+
+  test('supports user_settings, meal_logs, meal_presets, and getAppDbStats', async () => {
+    const db = await createAppDb();
+    try {
+      setSetting(db, 'display_unit', 'lb');
+      assert.equal(getSetting(db, 'display_unit'), 'lb');
+      assert.equal(getSetting(db, 'missing_key', 'default'), 'default');
+
+      db.run(
+        "INSERT INTO meal_presets (id, name, meal_slot, calories, protein_g, carbs_g, fat_g, created_at) VALUES ('mp1', 'Chicken & Rice', 'lunch', 650, 50, 70, 14, '2026-11-25T00:00:00Z')"
+      );
+      db.run(
+        "INSERT INTO meal_logs (id, date, meal_slot, name, calories, protein_g, carbs_g, fat_g, created_at) VALUES ('ml1', '2026-11-25', 'lunch', 'Chicken & Rice', 650, 50, 70, 14, '2026-11-25T12:00:00Z')"
+      );
+
+      const stats = getAppDbStats(db);
+      assert.equal(stats.meals, 1);
+      assert.equal(stats.sessions, 0);
     } finally {
       db.close();
     }

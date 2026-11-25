@@ -187,5 +187,5 @@ erDiagram
   non-destructive training-max resets after time off without erasing lifetime
   PRs (`is_pr`).
 - **Supporting tables:** `plans`, `workout_templates`, `equipment_profiles`,
-  `body_metrics`, `user_settings`, and `schema_migrations` (`APP_SCHEMA_VERSION = 1`).
-
+  `body_metrics`, `meal_logs`, `meal_presets`, `user_settings`, and
+  `schema_migrations` (`APP_SCHEMA_VERSION = 1`).
