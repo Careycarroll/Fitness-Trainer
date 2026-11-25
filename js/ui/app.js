@@ -93,9 +93,11 @@ import {
   queryExerciseTrend,
   queryWeeklyWorkouts,
   queryBodyweightTrend,
+  queryTrainingBias,
   addBodyMetric,
   renderSvgLineChart,
   renderSvgBarChart,
+  renderSvgDistributionBars,
   addMealLog,
   deleteMealLog,
   queryMealsForDate,
@@ -2326,6 +2328,8 @@ export function mount(root, defs) {
 
   // --- Trends & Analytics View (#108) ---
   let selectedTrendExerciseId = null;
+  let selectedBiasMode = 'muscles'; // 'muscles' | 'regions' | 'patterns'
+  let selectedBiasDays = '';        // '' (all-time) | '90' | '30'
 
   async function renderTrendsView() {
     if (!viewTrends) return;
@@ -2348,6 +2352,11 @@ export function mount(root, defs) {
     const epochBestDisp = isTime ? trend.currentEpochBest : kgToDisplayNum(trend.currentEpochBest, unit);
 
     const weeks = queryWeeklyWorkouts(appDb, 12);
+    const bias = queryTrainingBias(appDb, { days: selectedBiasDays ? Number(selectedBiasDays) : null });
+    const biasItems = selectedBiasMode === 'regions'
+      ? bias.regions
+      : (selectedBiasMode === 'patterns' ? bias.patterns : bias.muscles);
+
     const bwRows = queryBodyweightTrend(appDb);
     const bwPoints = bwRows.map((r) => ({
       date: r.date,
@@ -2376,6 +2385,31 @@ export function mount(root, defs) {
       </div>
 
       <div class="card">
+        <h2 style="margin:0 0 6px;">Training Bias & Muscle Distribution</h2>
+        <div class="catalog-filters" style="max-width:520px; margin-bottom:8px;">
+          <label>Group By
+            <select id="trends-bias-mode">
+              <option value="muscles"${selectedBiasMode === 'muscles' ? ' selected' : ''}>Muscle Groups</option>
+              <option value="regions"${selectedBiasMode === 'regions' ? ' selected' : ''}>Upper / Lower / Core</option>
+              <option value="patterns"${selectedBiasMode === 'patterns' ? ' selected' : ''}>Movement Patterns</option>
+            </select>
+          </label>
+          <label>Timeframe
+            <select id="trends-bias-days">
+              <option value=""${selectedBiasDays === '' ? ' selected' : ''}>All Time</option>
+              <option value="90"${selectedBiasDays === '90' ? ' selected' : ''}>Last 90 Days</option>
+              <option value="30"${selectedBiasDays === '30' ? ' selected' : ''}>Last 30 Days</option>
+            </select>
+          </label>
+        </div>
+        <div class="trend-kpis">
+          <div class="trend-kpi"><strong>Total Working Sets:</strong> ${bias.totalSets}</div>
+          ${bias.regions.map((r) => `<div class="trend-kpi"><strong>${esc(r.label)}:</strong> ${r.pct}%</div>`).join('')}
+        </div>
+        ${renderSvgDistributionBars(biasItems)}
+      </div>
+
+      <div class="card">
         <h2 style="margin:0 0 6px;">Weekly Consistency (Completed Workouts)</h2>
         ${renderSvgBarChart(weeks)}
       </div>
@@ -2400,6 +2434,12 @@ export function mount(root, defs) {
     viewTrends.addEventListener('change', (e) => {
       if (e.target.id === 'trends-ex-select') {
         selectedTrendExerciseId = e.target.value;
+        renderTrendsView();
+      } else if (e.target.id === 'trends-bias-mode') {
+        selectedBiasMode = e.target.value;
+        renderTrendsView();
+      } else if (e.target.id === 'trends-bias-days') {
+        selectedBiasDays = e.target.value;
         renderTrendsView();
       }
     });

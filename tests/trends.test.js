@@ -6,9 +6,11 @@ import {
   queryExerciseTrend,
   queryWeeklyWorkouts,
   queryBodyweightTrend,
+  queryTrainingBias,
   addBodyMetric,
   renderSvgLineChart,
   renderSvgBarChart,
+  renderSvgDistributionBars,
   addMealLog,
   queryMealsForDate,
   queryMealPresets,
@@ -56,6 +58,29 @@ describe('Graphical Trends & Basic Meal Tracker (#108)', () => {
       const bw = queryBodyweightTrend(db);
       assert.equal(bw.length, 1);
       assert.equal(bw[0].weightKg, 82.5);
+    } finally {
+      db.close();
+    }
+  });
+
+  test('queryTrainingBias classifies Upper vs Lower, muscles, and patterns', async () => {
+    const db = await createAppDb(seed);
+    try {
+      db.run("INSERT INTO workout_sessions (id, date, title, source, status) VALUES ('s1', '2025-05-01', 'Mix', 'custom', 'completed')");
+      db.run("INSERT INTO workout_blocks (id, session_id, order_index, block_type) VALUES ('b1', 's1', 0, 'straight')");
+      db.run("INSERT INTO logged_sets (id, session_id, block_id, exercise_id, order_index, weight_kg, reps, is_complete) VALUES ('set1', 's1', 'b1', 'back-squat', 0, 100, 5, 1)");
+      db.run("INSERT INTO logged_sets (id, session_id, block_id, exercise_id, order_index, weight_kg, reps, is_complete) VALUES ('set2', 's1', 'b1', 'barbell-bench-press', 1, 80, 5, 1)");
+
+      const bias = queryTrainingBias(db);
+      assert.equal(bias.totalSets, 2);
+      assert.ok(bias.regions.some((r) => r.label === 'Lower' && r.value === 1));
+      assert.ok(bias.regions.some((r) => r.label === 'Upper' && r.value === 1));
+      assert.ok(bias.muscles.some((m) => m.label === 'Quads' && m.value === 1));
+      assert.ok(bias.muscles.some((m) => m.label === 'Chest' && m.value === 1));
+
+      const svg = renderSvgDistributionBars(bias.muscles);
+      assert.ok(svg.includes('<svg'));
+      assert.ok(svg.includes('Quads'));
     } finally {
       db.close();
     }

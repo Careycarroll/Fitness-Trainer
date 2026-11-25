@@ -145,6 +145,138 @@ export function queryBodyweightTrend(appDb) {
   }));
 }
 
+const UPPER_MUSCLES = new Set([
+  'chest', 'lats', 'mid_back', 'upper_back', 'traps',
+  'front_delts', 'side_delts', 'rear_delts', 'biceps', 'triceps', 'forearms', 'neck'
+]);
+const LOWER_MUSCLES = new Set([
+  'quads', 'hamstrings', 'glutes', 'adductors', 'abductors', 'calves', 'hip_flexors'
+]);
+const CORE_MUSCLES = new Set(['abs', 'obliques', 'erectors']);
+
+function formatTokenLabel(tok) {
+  return String(tok || '')
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+/**
+ * Analyze training bias across Upper/Lower/Core regions, individual muscle
+ * groups (direct = 1, secondary = 0.5), and movement patterns.
+ *
+ * @param {object} appDb
+ * @param {object} [options]
+ * @param {number|null} [options.days] optional trailing day window (e.g. 30, 90, or null for all-time)
+ */
+export function queryTrainingBias(appDb, { days = null } = {}) {
+  let dateCutoff = null;
+  if (days && Number(days) > 0) {
+    const d = new Date();
+    d.setDate(d.getDate() - Number(days));
+    dateCutoff = d.toISOString().slice(0, 10);
+  }
+
+  const whereDate = dateCutoff ? 'AND ws.date >= ?' : '';
+  const params = dateCutoff ? [dateCutoff] : [];
+
+  const rows = appDb.exec(`
+    SELECT e.pattern, e.primary_muscles, e.secondary_muscles
+    FROM logged_sets ls
+    JOIN workout_sessions ws ON ws.id = ls.session_id
+    JOIN exercises e ON e.id = ls.exercise_id
+    WHERE ls.is_complete = 1
+      AND ls.set_type != 'warmup'
+      ${whereDate}
+  `, params)[0]?.values ?? [];
+
+  const regions = { Upper: 0, Lower: 0, Core: 0 };
+  const muscles = new Map();
+  const patterns = new Map();
+
+  for (const [pattern, primJson, secJson] of rows) {
+    let prim = [];
+    let sec = [];
+    try { prim = JSON.parse(primJson || '[]'); } catch { prim = []; }
+    try { sec = JSON.parse(secJson || '[]'); } catch { sec = []; }
+
+    if (pattern) {
+      const pLabel = formatTokenLabel(pattern);
+      patterns.set(pLabel, (patterns.get(pLabel) || 0) + 1);
+    }
+
+    // Classify set region by its primary muscles
+    const setRegions = new Set();
+    for (const m of prim) {
+      const mLabel = formatTokenLabel(m);
+      muscles.set(mLabel, (muscles.get(mLabel) || 0) + 1);
+      if (UPPER_MUSCLES.has(m)) setRegions.add('Upper');
+      else if (LOWER_MUSCLES.has(m)) setRegions.add('Lower');
+      else if (CORE_MUSCLES.has(m)) setRegions.add('Core');
+    }
+    for (const m of sec) {
+      const mLabel = formatTokenLabel(m);
+      muscles.set(mLabel, (muscles.get(mLabel) || 0) + 0.5);
+    }
+    for (const r of setRegions) {
+      regions[r] += 1;
+    }
+  }
+
+  const toSortedList = (mapOrObj) => {
+    const entries = mapOrObj instanceof Map ? [...mapOrObj.entries()] : Object.entries(mapOrObj);
+    const total = entries.reduce((acc, [, v]) => acc + v, 0) || 1;
+    return entries
+      .filter(([, v]) => v > 0)
+      .sort((a, b) => b[1] - a[1])
+      .map(([label, value]) => ({
+        label,
+        value: Number(value.toFixed(1)),
+        pct: Math.round((value / total) * 100)
+      }));
+  };
+
+  return {
+    totalSets: rows.length,
+    regions: toSortedList(regions),
+    muscles: toSortedList(muscles),
+    patterns: toSortedList(patterns)
+  };
+}
+
+/**
+ * Render clean horizontal SVG distribution bars for training bias.
+ */
+export function renderSvgDistributionBars(items, { width = 560 } = {}) {
+  if (!items?.length) {
+    return '<p class="note" style="margin:8px 0;">No completed sets in this timeframe yet.</p>';
+  }
+
+  const rowH = 26;
+  const height = items.length * rowH + 10;
+  const maxVal = Math.max(1, ...items.map((x) => x.value));
+  const labelW = 138;
+  const valW = 86;
+  const barMaxW = Math.max(80, width - labelW - valW - 12);
+
+  const rowsHtml = items.map((item, idx) => {
+    const y = 6 + idx * rowH;
+    const bw = Math.max(4, (item.value / maxVal) * barMaxW);
+    return `
+      <text x="${labelW - 8}" y="${y + 15}" text-anchor="end" fill="var(--text, #eee)" font-size="12">${escSvg(item.label)}</text>
+      <rect x="${labelW}" y="${y + 4}" width="${bw.toFixed(1)}" height="15" rx="4" fill="var(--accent, #e5484d)">
+        <title>${escSvg(`${item.label}: ${item.value} sets (${item.pct}%)`)}</title>
+      </rect>
+      <text x="${labelW + bw + 6}" y="${y + 15}" text-anchor="start" fill="var(--text-muted, #9aa)" font-size="11">${escSvg(`${item.value} (${item.pct}%)`)}</text>
+    `;
+  }).join('');
+
+  return `
+    <svg class="trend-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Training distribution chart">
+      ${rowsHtml}
+    </svg>
+  `;
+}
+
 export function addBodyMetric(appDb, { date, weightKg, notes = '' }) {
   const id = makeId('bm');
   appDb.run(
