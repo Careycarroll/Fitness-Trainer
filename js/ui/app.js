@@ -584,13 +584,37 @@ export function mount(root, defs) {
               </select>
             </label>
             <div class="wod-form-actions">
-              <button type="button" id="wod-import-logger-btn" class="primary">▶ Import to Logger</button>
+              <button type="button" id="wod-runner-open-btn" class="primary">▶ Start WOD</button>
               <button type="button" id="wod-export-btn" class="ghost wod-export-btn">Export to FitNotes</button>
             </div>
             <p id="wod-status" class="note" role="status"></p>
           </form>
         </aside>
-        <section id="wod-out" class="view-out" aria-live="polite"></section>
+        <div class="view-out">
+          <section id="wod-runner-panel" class="card wod-timer-panel" hidden>
+            <div class="wod-timer-top">
+              <strong id="wod-view-title">WOD Runner</strong>
+              <span class="note" id="wod-view-total">00:00</span>
+            </div>
+            <div class="wod-timer-top" style="margin-top:4px;">
+              <strong id="wod-view-round">Ready</strong>
+              <button type="button" id="wod-view-voice-btn" class="ghost logger-mini-btn">🔊 Voice On</button>
+            </div>
+            <div id="wod-view-clock" class="wod-timer-clock">00:00</div>
+            <div class="wod-timer-cues">
+              <div><span class="note">NOW:</span> <strong id="wod-view-now">—</strong></div>
+              <div><span class="note">NEXT:</span> <span id="wod-view-next">—</span></div>
+            </div>
+            <div class="storage-actions">
+              <button type="button" id="wod-view-toggle-btn" class="primary">▶ Start</button>
+              <button type="button" id="wod-view-reset-btn" class="ghost">↺ Reset</button>
+              <button type="button" id="wod-view-round-btn" class="ghost">+1 Round</button>
+              <button type="button" id="wod-view-save-btn" class="primary">✓ Finish &amp; Save to Log</button>
+              <button type="button" id="wod-view-close-btn" class="ghost">✕ Close</button>
+            </div>
+          </section>
+          <section id="wod-out" class="view-out" aria-live="polite"></section>
+        </div>
       </section>
 
       <!-- 2b. BROWSABLE EXERCISE CATALOG (#83) -->
@@ -1021,14 +1045,13 @@ export function mount(root, defs) {
     wodSkillSelect.addEventListener('change', () => wodForm.requestSubmit());
   }
 
-  const wodImportLoggerBtn = root.querySelector('#wod-import-logger-btn');
-  if (wodImportLoggerBtn) {
-    wodImportLoggerBtn.addEventListener('click', () => {
+  const wodRunnerOpenBtn = root.querySelector('#wod-runner-open-btn');
+  if (wodRunnerOpenBtn) {
+    wodRunnerOpenBtn.addEventListener('click', () => {
       if (!wodProgram || activeMode !== 'wod') {
         wodForm.requestSubmit();
       }
-      const startBtn = (wodOut || out)?.querySelector('[data-start-w="0"][data-start-s="0"]');
-      if (startBtn) startBtn.click();
+      if (wodProgram) openWodRunner(wodProgram);
     });
   }
 
@@ -1932,15 +1955,227 @@ export function mount(root, defs) {
     updateTimerDisplays();
   }
 
+  // In-place WOD Runner state (#view-wod) — commits to AppDB only on Finish & Save (#116)
+  let wodViewTimer = {
+    active: false,
+    title: 'WOD Runner',
+    config: null,
+    running: false,
+    startedMs: 0,
+    accumulatedSec: 0,
+    amrapRounds: 0,
+    lastRound: null,
+    lastPhase: null,
+    lastSpokenSec: null,
+    prepEndMs: 0,
+    prepRemainingSec: 0,
+    lastPrepSpoken: null
+  };
+
+  function getWodTimerElapsedSec(tObj, nowMs = Date.now()) {
+    if (!tObj?.config) return 0;
+    if (!tObj.running) return tObj.accumulatedSec;
+    return tObj.accumulatedSec + Math.floor((nowMs - tObj.startedMs) / 1000);
+  }
+
   function getWodElapsedSec(nowMs = Date.now()) {
-    if (!wodTimer.config) return 0;
-    if (!wodTimer.running) return wodTimer.accumulatedSec;
-    return wodTimer.accumulatedSec + Math.floor((nowMs - wodTimer.startedMs) / 1000);
+    return getWodTimerElapsedSec(wodTimer, nowMs);
+  }
+
+  function tickWodTimerUi(tObj, now, els) {
+    if (!tObj?.config) return;
+    const { clockEl, totalEl, roundEl, nowEl, nextEl, toggleBtn } = els;
+
+    if (tObj.prepEndMs > 0) {
+      const prepRem = Math.max(0, Math.ceil((tObj.prepEndMs - now) / 1000));
+      tObj.prepRemainingSec = prepRem;
+      const firstLabel = tObj.config.stations?.[0]?.name || tObj.config.movements?.[0] || tObj.config.mode?.toUpperCase() || 'workout';
+      if (prepRem > 0) {
+        if (clockEl) clockEl.textContent = `GET READY · ${prepRem}`;
+        if (roundEl) roundEl.textContent = `Next: ${firstLabel}`;
+        if (toggleBtn) toggleBtn.textContent = '⏹ Cancel Prep';
+        if (prepRem !== tObj.lastPrepSpoken) {
+          const isFirstTick = tObj.lastPrepSpoken === null;
+          tObj.lastPrepSpoken = prepRem;
+          playTimerBeep(660, 90);
+          if (isFirstTick && prepRem > 1) {
+            speakAnnouncement(`${firstLabel} in ${prepRem}`, voiceEnabled);
+          } else if (prepRem <= 5) {
+            speakAnnouncement(String(prepRem), voiceEnabled);
+          } else if (prepRem === 10) {
+            speakAnnouncement('10 seconds', voiceEnabled);
+          }
+        }
+        return;
+      }
+      tObj.prepEndMs = 0;
+      tObj.prepRemainingSec = 0;
+      tObj.lastPrepSpoken = null;
+      tObj.startedMs = now;
+      tObj.running = true;
+      tObj.lastRound = 1;
+      tObj.lastPhase = 'work';
+      if (toggleBtn) toggleBtn.textContent = '⏸ Pause';
+      playTimerBeep(990, 220);
+      speakAnnouncement('Begin', voiceEnabled);
+    }
+
+    const elapsed = getWodTimerElapsedSec(tObj, now);
+    const st = computeConditioningState(tObj.config, elapsed);
+    if (clockEl) clockEl.textContent = st.displayClock;
+    if (totalEl) totalEl.textContent = st.totalClock;
+    if (roundEl) {
+      roundEl.textContent = st.totalRounds
+        ? `Round ${st.currentRound || tObj.amrapRounds} / ${st.totalRounds}`
+        : (tObj.config.mode === 'amrap' ? `Rounds: ${tObj.amrapRounds}` : 'In Progress');
+    }
+    if (nowEl) nowEl.textContent = st.currentMovement;
+    if (nextEl) nextEl.textContent = st.nextMovement;
+
+    if (tObj.running) {
+      const isTimedCircuit = tObj.config.mode === 'circuit' && Array.isArray(tObj.config.stations) && tObj.config.stations.length > 0;
+      if (tObj.lastPhase && st.phase !== tObj.lastPhase) {
+        if (st.phase === 'rest') {
+          playTimerBeep(520, 160);
+          speakAnnouncement(isTimedCircuit ? 'Rest' : `Rest. Next: ${st.nextMovement}`, voiceEnabled);
+        } else if (st.phase === 'work') {
+          playTimerBeep(880, 160);
+          speakAnnouncement(isTimedCircuit ? 'Begin' : st.currentMovement, voiceEnabled);
+        }
+      } else if (tObj.lastRound !== null && st.currentRound !== tObj.lastRound && !isTimedCircuit) {
+        playTimerBeep(880, 160);
+        speakAnnouncement(`Round ${st.currentRound}. ${st.currentMovement}`, voiceEnabled);
+      }
+      tObj.lastRound = st.currentRound;
+      tObj.lastPhase = st.phase;
+
+      const pRem = st.phaseRemaining;
+      if (pRem !== null && pRem !== tObj.lastSpokenSec) {
+        tObj.lastSpokenSec = pRem;
+        if (st.completed) {
+          tObj.running = false;
+          tObj.accumulatedSec = elapsed;
+          if (toggleBtn) toggleBtn.textContent = '▶ Start';
+          playTimerBeep(1040, 300);
+          speakAnnouncement('Workout complete', voiceEnabled);
+        } else if (isTimedCircuit) {
+          if (pRem === 5) {
+            const target = st.phase === 'rest'
+              ? st.nextMovement
+              : (st.nextMovement === 'Finish' ? 'Finish' : st.nextMovement);
+            playTimerBeep(660, 80);
+            speakAnnouncement(`${target} in 5`, voiceEnabled);
+          } else if (pRem >= 1 && pRem <= 4) {
+            playTimerBeep(660, 70);
+            speakAnnouncement(String(pRem), voiceEnabled);
+          }
+        } else {
+          if (pRem === 10) speakAnnouncement('10 seconds', voiceEnabled);
+          else if (pRem === 3 || pRem === 2 || pRem === 1) playTimerBeep(660, 80);
+        }
+      }
+    }
+  }
+
+  function openWodRunner(program) {
+    const sess = program?.weeks?.[0]?.sessions?.[0];
+    if (!sess) return;
+    const condBlk = sess.blocks?.find((b) => ['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(b.blockType)) || sess.blocks?.[0];
+    const groups = condBlk?.setGroups || [];
+    const movements = [];
+    const stations = [];
+    for (const g of groups) {
+      const repTxt = g.reps ? `${g.reps} ` : (g.workSeconds ? `${g.workSeconds}s ` : '');
+      movements.push(`${repTxt}${g.name}`);
+      if ((condBlk?.blockType === 'circuit' || sess.format === 'circuit') && g.workSeconds > 0) {
+        stations.push({
+          name: g.name,
+          workSec: Number(g.workSeconds),
+          restSec: g.restSeconds != null ? Number(g.restSeconds) : 15
+        });
+      }
+    }
+    const mode = condBlk?.blockType && ['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(condBlk.blockType)
+      ? condBlk.blockType
+      : (sess.format || 'for_time');
+
+    wodViewTimer = {
+      active: true,
+      title: program.name ? `${program.name} — ${sess.label}` : sess.label,
+      config: {
+        mode,
+        rounds: condBlk?.rounds ?? sess.rounds ?? null,
+        intervalSec: 60,
+        timeCapSec: condBlk?.timeCapSeconds ?? sess.capSeconds ?? null,
+        movements,
+        stations
+      },
+      running: false,
+      startedMs: 0,
+      accumulatedSec: 0,
+      amrapRounds: 0,
+      lastRound: null,
+      lastPhase: null,
+      lastSpokenSec: null,
+      prepEndMs: 0,
+      prepRemainingSec: 0,
+      lastPrepSpoken: null
+    };
+
+    const panel = root.querySelector('#wod-runner-panel');
+    const titleEl = root.querySelector('#wod-view-title');
+    const voiceBtn = root.querySelector('#wod-view-voice-btn');
+    const toggleBtn = root.querySelector('#wod-view-toggle-btn');
+    if (panel) panel.hidden = false;
+    if (titleEl) titleEl.textContent = wodViewTimer.title;
+    if (voiceBtn) voiceBtn.textContent = voiceEnabled ? '🔊 Voice On' : '🔇 Muted';
+    if (toggleBtn) toggleBtn.textContent = '▶ Start';
+    updateTimerDisplays();
+    panel?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function startOrToggleWodTimer(tObj, defaultLabel = '▶ Start') {
+    if (tObj.running) {
+      tObj.accumulatedSec = getWodTimerElapsedSec(tObj);
+      tObj.running = false;
+      return defaultLabel;
+    }
+    if (tObj.prepEndMs > 0) {
+      tObj.prepEndMs = 0;
+      tObj.prepRemainingSec = 0;
+      tObj.lastPrepSpoken = null;
+      return defaultLabel;
+    }
+    const prepSec = Number(localStorage.getItem(WOD_COUNTDOWN_KEY) ?? 3);
+    if (tObj.accumulatedSec === 0 && prepSec > 0) {
+      tObj.prepEndMs = Date.now() + prepSec * 1000;
+      tObj.prepRemainingSec = prepSec;
+      tObj.lastPrepSpoken = null;
+      return '⏹ Cancel Prep';
+    }
+    tObj.startedMs = Date.now();
+    tObj.running = true;
+    if (tObj.accumulatedSec === 0) {
+      playTimerBeep(880, 180);
+      speakAnnouncement(`Starting ${tObj.config?.mode?.toUpperCase() || 'workout'}. Go`, voiceEnabled);
+    }
+    return '⏸ Pause';
   }
 
   function updateTimerDisplays() {
-    if (activeTab !== 'logger' || !viewLogger) return;
     const now = Date.now();
+    if (activeTab === 'wod' && wodViewTimer.active && wodViewTimer.config) {
+      tickWodTimerUi(wodViewTimer, now, {
+        clockEl: root.querySelector('#wod-view-clock'),
+        totalEl: root.querySelector('#wod-view-total'),
+        roundEl: root.querySelector('#wod-view-round'),
+        nowEl: root.querySelector('#wod-view-now'),
+        nextEl: root.querySelector('#wod-view-next'),
+        toggleBtn: root.querySelector('#wod-view-toggle-btn')
+      });
+      return;
+    }
+    if (activeTab !== 'logger' || !viewLogger) return;
 
     const elapsedEl = viewLogger.querySelector('#logger-elapsed-clock');
     if (elapsedEl && activeSessionStartedAt && activeSessionStatus !== 'completed') {
@@ -1972,101 +2207,14 @@ export function mount(root, defs) {
     }
 
     if (wodTimer.config) {
-      const clockEl = viewLogger.querySelector('#wod-timer-clock');
-      const totalEl = viewLogger.querySelector('#wod-timer-total');
-      const roundEl = viewLogger.querySelector('#wod-timer-round');
-      const nowEl = viewLogger.querySelector('#wod-timer-now');
-      const nextEl = viewLogger.querySelector('#wod-timer-next');
-      const toggleBtn = viewLogger.querySelector('#wod-timer-toggle-btn');
-
-      if (wodTimer.prepEndMs > 0) {
-        const prepRem = Math.max(0, Math.ceil((wodTimer.prepEndMs - now) / 1000));
-        wodTimer.prepRemainingSec = prepRem;
-        const firstLabel = wodTimer.config.stations?.[0]?.name || wodTimer.config.movements?.[0] || wodTimer.config.mode?.toUpperCase() || 'workout';
-        if (prepRem > 0) {
-          if (clockEl) clockEl.textContent = `GET READY · ${prepRem}`;
-          if (roundEl) roundEl.textContent = `Next: ${firstLabel}`;
-          if (toggleBtn) toggleBtn.textContent = '⏹ Cancel Prep';
-          if (prepRem !== wodTimer.lastPrepSpoken) {
-            const isFirstTick = wodTimer.lastPrepSpoken === null;
-            wodTimer.lastPrepSpoken = prepRem;
-            playTimerBeep(660, 90);
-            if (isFirstTick && prepRem > 1) {
-              speakAnnouncement(`${firstLabel} in ${prepRem}`, voiceEnabled);
-            } else if (prepRem <= 5) {
-              speakAnnouncement(String(prepRem), voiceEnabled);
-            } else if (prepRem === 10) {
-              speakAnnouncement('10 seconds', voiceEnabled);
-            }
-          }
-          return;
-        }
-        wodTimer.prepEndMs = 0;
-        wodTimer.prepRemainingSec = 0;
-        wodTimer.lastPrepSpoken = null;
-        wodTimer.startedMs = now;
-        wodTimer.running = true;
-        wodTimer.lastRound = 1;
-        wodTimer.lastPhase = 'work';
-        if (toggleBtn) toggleBtn.textContent = '⏸ Pause';
-        playTimerBeep(990, 220);
-        speakAnnouncement('Begin', voiceEnabled);
-      }
-
-      const elapsed = getWodElapsedSec(now);
-      const st = computeConditioningState(wodTimer.config, elapsed);
-      if (clockEl) clockEl.textContent = st.displayClock;
-      if (totalEl) totalEl.textContent = st.totalClock;
-      if (roundEl) {
-        roundEl.textContent = st.totalRounds
-          ? `Round ${st.currentRound || wodTimer.amrapRounds} / ${st.totalRounds}`
-          : (wodTimer.config.mode === 'amrap' ? `Rounds: ${wodTimer.amrapRounds}` : 'In Progress');
-      }
-      if (nowEl) nowEl.textContent = st.currentMovement;
-      if (nextEl) nextEl.textContent = st.nextMovement;
-
-      if (wodTimer.running) {
-        const isTimedCircuit = wodTimer.config.mode === 'circuit' && Array.isArray(wodTimer.config.stations) && wodTimer.config.stations.length > 0;
-        if (wodTimer.lastPhase && st.phase !== wodTimer.lastPhase) {
-          if (st.phase === 'rest') {
-            playTimerBeep(520, 160);
-            speakAnnouncement(isTimedCircuit ? 'Rest' : `Rest. Next: ${st.nextMovement}`, voiceEnabled);
-          } else if (st.phase === 'work') {
-            playTimerBeep(880, 160);
-            speakAnnouncement(isTimedCircuit ? 'Begin' : st.currentMovement, voiceEnabled);
-          }
-        } else if (wodTimer.lastRound !== null && st.currentRound !== wodTimer.lastRound && !isTimedCircuit) {
-          playTimerBeep(880, 160);
-          speakAnnouncement(`Round ${st.currentRound}. ${st.currentMovement}`, voiceEnabled);
-        }
-        wodTimer.lastRound = st.currentRound;
-        wodTimer.lastPhase = st.phase;
-
-        const pRem = st.phaseRemaining;
-        if (pRem !== null && pRem !== wodTimer.lastSpokenSec) {
-          wodTimer.lastSpokenSec = pRem;
-          if (st.completed) {
-            wodTimer.running = false;
-            wodTimer.accumulatedSec = elapsed;
-            playTimerBeep(1040, 300);
-            speakAnnouncement('Workout complete', voiceEnabled);
-          } else if (isTimedCircuit) {
-            if (pRem === 5) {
-              const target = st.phase === 'rest'
-                ? st.nextMovement
-                : (st.nextMovement === 'Finish' ? 'Finish' : st.nextMovement);
-              playTimerBeep(660, 80);
-              speakAnnouncement(`${target} in 5`, voiceEnabled);
-            } else if (pRem >= 1 && pRem <= 4) {
-              playTimerBeep(660, 70);
-              speakAnnouncement(String(pRem), voiceEnabled);
-            }
-          } else {
-            if (pRem === 10) speakAnnouncement('10 seconds', voiceEnabled);
-            else if (pRem === 3 || pRem === 2 || pRem === 1) playTimerBeep(660, 80);
-          }
-        }
-      }
+      tickWodTimerUi(wodTimer, now, {
+        clockEl: viewLogger.querySelector('#wod-timer-clock'),
+        totalEl: viewLogger.querySelector('#wod-timer-total'),
+        roundEl: viewLogger.querySelector('#wod-timer-round'),
+        nowEl: viewLogger.querySelector('#wod-timer-now'),
+        nextEl: viewLogger.querySelector('#wod-timer-next'),
+        toggleBtn: viewLogger.querySelector('#wod-timer-toggle-btn')
+      });
     }
   }
 
@@ -2345,20 +2493,99 @@ export function mount(root, defs) {
     container.addEventListener('click', async (e) => {
       const startBtn = e.target.closest('[data-start-w]');
       if (!startBtn || !current) return;
+      if (container === wodOut || activeMode === 'wod') {
+        openWodRunner(current);
+        return;
+      }
       const wIdx = Number(startBtn.dataset.startW);
       const sIdx = Number(startBtn.dataset.startS);
       const engineSession = current.weeks?.[wIdx]?.sessions?.[sIdx];
       if (!engineSession) return;
       const appDb = await ensureAppDb();
-      const source = activeMode === 'wod' ? 'wod' : 'plan';
       const sessId = createSessionFromEngineSession(appDb, engineSession, todayDateString(), {
         title: current.name ? `${current.name} — ${engineSession.label}` : engineSession.label,
-        source
+        source: 'plan'
       });
       await savePersistedAppDb(appDb);
       openLogger(sessId);
     });
   });
+
+  const wodRunnerPanel = root.querySelector('#wod-runner-panel');
+  if (wodRunnerPanel) {
+    wodRunnerPanel.addEventListener('click', async (e) => {
+      if (e.target.closest('#wod-view-toggle-btn')) {
+        const label = startOrToggleWodTimer(wodViewTimer, '▶ Start');
+        const btn = root.querySelector('#wod-view-toggle-btn');
+        if (btn) btn.textContent = label;
+        updateTimerDisplays();
+        return;
+      }
+      if (e.target.closest('#wod-view-reset-btn')) {
+        wodViewTimer.running = false;
+        wodViewTimer.accumulatedSec = 0;
+        wodViewTimer.lastRound = null;
+        wodViewTimer.lastPhase = null;
+        wodViewTimer.lastSpokenSec = null;
+        wodViewTimer.prepEndMs = 0;
+        wodViewTimer.prepRemainingSec = 0;
+        wodViewTimer.lastPrepSpoken = null;
+        const btn = root.querySelector('#wod-view-toggle-btn');
+        if (btn) btn.textContent = '▶ Start';
+        updateTimerDisplays();
+        return;
+      }
+      if (e.target.closest('#wod-view-round-btn')) {
+        wodViewTimer.amrapRounds += 1;
+        updateTimerDisplays();
+        return;
+      }
+      if (e.target.closest('#wod-view-voice-btn')) {
+        voiceEnabled = !voiceEnabled;
+        localStorage.setItem(VOICE_KEY, voiceEnabled ? '1' : '0');
+        const btn = root.querySelector('#wod-view-voice-btn');
+        if (btn) btn.textContent = voiceEnabled ? '🔊 Voice On' : '🔇 Muted';
+        return;
+      }
+      if (e.target.closest('#wod-view-close-btn')) {
+        wodViewTimer.running = false;
+        wodViewTimer.prepEndMs = 0;
+        wodViewTimer.active = false;
+        wodRunnerPanel.hidden = true;
+        return;
+      }
+      if (e.target.closest('#wod-view-save-btn')) {
+        const engineSession = wodProgram?.weeks?.[0]?.sessions?.[0];
+        if (!engineSession) return;
+        wodViewTimer.running = false;
+        wodViewTimer.prepEndMs = 0;
+        const elapsed = getWodTimerElapsedSec(wodViewTimer);
+        const dateStr = wodDateInput?.value || todayDateString();
+        const appDb = await ensureAppDb();
+        const title = wodProgram.name ? `${wodProgram.name} — ${engineSession.label}` : engineSession.label;
+        const sessId = createSessionFromEngineSession(appDb, engineSession, dateStr, {
+          title,
+          source: 'wod'
+        });
+        appDb.run('UPDATE logged_sets SET is_complete = 1 WHERE session_id = ?', [sessId]);
+        appDb.run(
+          'UPDATE workout_blocks SET duration_sec = ?, rounds_completed = ? WHERE session_id = ?',
+          [elapsed, wodViewTimer.amrapRounds || null, sessId]
+        );
+        appDb.run(
+          "UPDATE workout_sessions SET status = 'completed', completed_at = ? WHERE id = ?",
+          [new Date().toISOString(), sessId]
+        );
+        await savePersistedAppDb(appDb);
+        wodViewTimer.active = false;
+        wodRunnerPanel.hidden = true;
+        const wodStatusEl = root.querySelector('#wod-status');
+        if (wodStatusEl) {
+          wodStatusEl.textContent = `✓ Saved "${title}" (${formatClock(elapsed)}${wodViewTimer.amrapRounds ? `, ${wodViewTimer.amrapRounds} rounds` : ''}) to Workout Log.`;
+        }
+      }
+    });
+  }
 
   if (viewLogger) {
     viewLogger.addEventListener('change', async (e) => {
@@ -2471,28 +2698,7 @@ export function mount(root, defs) {
         return;
       }
       if (e.target.closest('#wod-timer-toggle-btn')) {
-        if (wodTimer.running) {
-          wodTimer.accumulatedSec = getWodElapsedSec();
-          wodTimer.running = false;
-        } else if (wodTimer.prepEndMs > 0) {
-          wodTimer.prepEndMs = 0;
-          wodTimer.prepRemainingSec = 0;
-          wodTimer.lastPrepSpoken = null;
-        } else {
-          const prepSec = Number(localStorage.getItem(WOD_COUNTDOWN_KEY) ?? 3);
-          if (wodTimer.accumulatedSec === 0 && prepSec > 0) {
-            wodTimer.prepEndMs = Date.now() + prepSec * 1000;
-            wodTimer.prepRemainingSec = prepSec;
-            wodTimer.lastPrepSpoken = null;
-          } else {
-            wodTimer.startedMs = Date.now();
-            wodTimer.running = true;
-            if (wodTimer.accumulatedSec === 0) {
-              playTimerBeep(880, 180);
-              speakAnnouncement(`Starting ${wodTimer.config?.mode?.toUpperCase() || 'workout'}. Go`, voiceEnabled);
-            }
-          }
-        }
+        startOrToggleWodTimer(wodTimer, '▶ Start WOD Timer');
         await renderActiveLogger();
         return;
       }
