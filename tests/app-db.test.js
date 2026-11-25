@@ -7,6 +7,7 @@ import {
   openAppDb,
   exportAppDb,
   seedExercises,
+  softResetTrainingMax,
   migrateFitNotesToAppDb
 } from '../js/storage/app-db.js';
 import { getSql } from '../js/storage/sqlite-injector.js';
@@ -132,5 +133,28 @@ describe('Standalone AppDB Schema & Migration (ADR-033)', () => {
     assert.ok(pr > 125, '110kg x 5 should compute e1RM ~128.33kg');
 
     appDb.close();
+  });
+
+  test('softResetTrainingMax increments active_epoch while preserving lifetime PRs', async () => {
+    const seed = JSON.parse(readFileSync('js/data/exercises.seed.json', 'utf8')).exercises;
+    const db = await createAppDb(seed);
+    try {
+      db.run("INSERT INTO performance_records (id, record_type, exercise_id, date, epoch, value_primary, is_pr, is_epoch_pr, created_at) VALUES ('r1', 'e1rm', 'back-squat', '2026-06-01', 1, 160, 1, 1, '2026-06-01T00:00:00Z')");
+      softResetTrainingMax(db, 'back-squat');
+
+      const epoch = db.exec("SELECT active_epoch FROM exercises WHERE id = 'back-squat'")[0].values[0][0];
+      assert.equal(epoch, 2);
+
+      // New comeback record in epoch 2 (lower than lifetime 160kg PR)
+      db.run("INSERT INTO performance_records (id, record_type, exercise_id, date, epoch, value_primary, is_pr, is_epoch_pr, created_at) VALUES ('r2', 'e1rm', 'back-squat', '2026-11-24', 2, 120, 0, 1, '2026-11-24T00:00:00Z')");
+
+      const allTime = db.exec("SELECT MAX(value_primary) FROM performance_records WHERE exercise_id = 'back-squat'")[0].values[0][0];
+      const currentEpochBest = db.exec("SELECT MAX(value_primary) FROM performance_records p JOIN exercises e ON e.id = p.exercise_id WHERE p.exercise_id = 'back-squat' AND p.epoch = e.active_epoch")[0].values[0][0];
+
+      assert.equal(allTime, 160, 'lifetime PR must remain intact');
+      assert.equal(currentEpochBest, 120, 'current epoch baseline reflects post-reset max');
+    } finally {
+      db.close();
+    }
   });
 });

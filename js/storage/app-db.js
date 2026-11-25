@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS exercises (
   default_rest_sec  INTEGER NOT NULL DEFAULT 90,
   user_rest_sec     INTEGER,
   warmup_required   INTEGER NOT NULL DEFAULT 0,
+  active_epoch      INTEGER NOT NULL DEFAULT 1,
   notes             TEXT,
   archived          INTEGER NOT NULL DEFAULT 0
 );
@@ -110,16 +111,18 @@ CREATE TABLE IF NOT EXISTS performance_records (
   exercise_id       TEXT REFERENCES exercises(id),
   benchmark_key     TEXT,
   date              TEXT NOT NULL,
+  epoch             INTEGER NOT NULL DEFAULT 1,
   value_primary     REAL NOT NULL,
   value_secondary   REAL,
   confidence        TEXT NOT NULL DEFAULT 'direct',
   source_session_id TEXT REFERENCES workout_sessions(id) ON DELETE SET NULL,
   source_set_id     TEXT REFERENCES logged_sets(id) ON DELETE SET NULL,
-  is_pr             INTEGER NOT NULL DEFAULT 1,
+  is_pr             INTEGER NOT NULL DEFAULT 0,
+  is_epoch_pr       INTEGER NOT NULL DEFAULT 0,
   created_at        TEXT NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_perf_exercise ON performance_records(exercise_id, record_type);
+CREATE INDEX IF NOT EXISTS idx_perf_exercise ON performance_records(exercise_id, epoch, record_type);
 CREATE INDEX IF NOT EXISTS idx_perf_benchmark ON performance_records(benchmark_key, record_type);
 
 CREATE TABLE IF NOT EXISTS plans (
@@ -310,6 +313,23 @@ export function estimateE1rmKg(weightKg, reps) {
   return Number((weightKg * (1 + reps / 30)).toFixed(4));
 }
 
+/**
+ * Non-destructive soft reset of training maxes after time off.
+ * Increments `active_epoch` for a specific exercise or all exercises so
+ * future prescriptions use only post-reset performance records while
+ * lifetime PRs remain intact in earlier epochs.
+ *
+ * @param {object} db
+ * @param {string|null} [exerciseId] null resets all exercises
+ */
+export function softResetTrainingMax(db, exerciseId = null) {
+  if (exerciseId) {
+    db.run('UPDATE exercises SET active_epoch = active_epoch + 1 WHERE id = ?', [exerciseId]);
+  } else {
+    db.run('UPDATE exercises SET active_epoch = active_epoch + 1');
+  }
+}
+
 function slugifyCustomId(name) {
   const base = String(name || 'exercise')
     .trim()
@@ -492,6 +512,11 @@ export async function migrateFitNotesToAppDb(appDb, fitnotesBuffer, options = {}
         let blockIdx = 0;
         let setIdx = 0;
 
+        // Track best set per exercise within THIS session so every session logs a
+        // performance record (capturing detraining dips as well as all-time PRs).
+        const sessionBestE1rm = new Map();
+        const sessionBestDuration = new Map();
+
         for (const s of sets) {
           const exId = resolveAppExerciseId(s.fnExId);
           if (exId !== currentExId) {
@@ -531,35 +556,52 @@ export async function migrateFitNotesToAppDb(appDb, fitnotesBuffer, options = {}
           if (s.isComplete) {
             const e1rm = estimateE1rmKg(weightVal, s.reps);
             if (e1rm !== null) {
-              const prev = bestE1rm.get(exId) ?? 0;
-              if (e1rm > prev) {
-                bestE1rm.set(exId, e1rm);
-                appDb.run(
-                  `INSERT INTO performance_records (
-                    id, record_type, exercise_id, date, value_primary, value_secondary,
-                    confidence, source_session_id, source_set_id, is_pr, created_at
-                  ) VALUES (?, 'e1rm', ?, ?, ?, ?, 'direct', ?, ?, 1, ?)`,
-                  [makeId('pr'), exId, date, e1rm, s.reps, sessionId, setId, `${date}T12:00:00Z`]
-                );
-                appDb.run('UPDATE logged_sets SET is_pr = 1 WHERE id = ?', [setId]);
-                recordsCreated += 1;
+              const cur = sessionBestE1rm.get(exId);
+              if (!cur || e1rm > cur.value) {
+                sessionBestE1rm.set(exId, { value: e1rm, reps: s.reps, setId });
               }
             } else if (s.durationSec > 0) {
-              const prevDur = bestDuration.get(exId) ?? 0;
-              if (s.durationSec > prevDur) {
-                bestDuration.set(exId, s.durationSec);
-                appDb.run(
-                  `INSERT INTO performance_records (
-                    id, record_type, exercise_id, date, value_primary,
-                    confidence, source_session_id, source_set_id, is_pr, created_at
-                  ) VALUES (?, 'max_duration', ?, ?, ?, 'direct', ?, ?, 1, ?)`,
-                  [makeId('pr'), exId, date, s.durationSec, sessionId, setId, `${date}T12:00:00Z`]
-                );
-                appDb.run('UPDATE logged_sets SET is_pr = 1 WHERE id = ?', [setId]);
-                recordsCreated += 1;
+              const cur = sessionBestDuration.get(exId);
+              if (!cur || s.durationSec > cur.value) {
+                sessionBestDuration.set(exId, { value: s.durationSec, setId });
               }
             }
           }
+        }
+
+        // Persist one performance_record per exercise for this session
+        for (const [exId, best] of sessionBestE1rm) {
+          const prev = bestE1rm.get(exId) ?? 0;
+          const isPr = best.value > prev ? 1 : 0;
+          if (isPr) {
+            bestE1rm.set(exId, best.value);
+            appDb.run('UPDATE logged_sets SET is_pr = 1 WHERE id = ?', [best.setId]);
+          }
+          appDb.run(
+            `INSERT INTO performance_records (
+              id, record_type, exercise_id, date, epoch, value_primary, value_secondary,
+              confidence, source_session_id, source_set_id, is_pr, is_epoch_pr, created_at
+            ) VALUES (?, 'e1rm', ?, ?, 1, ?, ?, 'direct', ?, ?, ?, ?, ?)`,
+            [makeId('pr'), exId, date, best.value, best.reps, sessionId, best.setId, isPr, isPr, `${date}T12:00:00Z`]
+          );
+          recordsCreated += 1;
+        }
+
+        for (const [exId, best] of sessionBestDuration) {
+          const prevDur = bestDuration.get(exId) ?? 0;
+          const isPr = best.value > prevDur ? 1 : 0;
+          if (isPr) {
+            bestDuration.set(exId, best.value);
+            appDb.run('UPDATE logged_sets SET is_pr = 1 WHERE id = ?', [best.setId]);
+          }
+          appDb.run(
+            `INSERT INTO performance_records (
+              id, record_type, exercise_id, date, epoch, value_primary,
+              confidence, source_session_id, source_set_id, is_pr, is_epoch_pr, created_at
+            ) VALUES (?, 'max_duration', ?, ?, 1, ?, 'direct', ?, ?, ?, ?, ?)`,
+            [makeId('pr'), exId, date, best.value, sessionId, best.setId, isPr, isPr, `${date}T12:00:00Z`]
+          );
+          recordsCreated += 1;
         }
       }
       appDb.run('COMMIT;');

@@ -90,3 +90,102 @@ Three platform paths were evaluated:
 Revisit for Phase 2 (Kotlin + Jetpack Compose) once the in-app Logger,
 browsable Catalog (#83), and M8 progression milestones have been used in
 real training and the data/UX model is stable.
+
+---
+
+## Standalone SQLite Schema Reference (`js/storage/app-db.js`)
+
+All weights are stored in canonical kilograms (`weight_kg`) and distances in
+canonical meters (`distance_m`).
+
+```mermaid
+erDiagram
+    exercises ||--o{ logged_sets : "performed in"
+    exercises ||--o{ performance_records : "tracks PRs"
+    workout_sessions ||--|{ workout_blocks : "contains"
+    workout_sessions ||--o{ logged_sets : "owns"
+    workout_blocks ||--o{ logged_sets : "groups"
+    logged_sets ||--o{ logged_sets : "drop set parent"
+    workout_sessions ||--o{ performance_records : "source session"
+    logged_sets ||--o{ performance_records : "source set"
+    plans ||--o{ workout_sessions : "schedules"
+    workout_templates ||--o{ workout_sessions : "instantiates"
+    equipment_profiles ||--o{ workout_sessions : "used at gym"
+
+    exercises {
+        TEXT id PK
+        TEXT name
+        INTEGER is_custom
+        TEXT tracking_type
+        TEXT scoring
+        INTEGER default_rest_sec
+        INTEGER user_rest_sec
+        INTEGER active_epoch
+    }
+    workout_sessions {
+        TEXT id PK
+        TEXT date
+        TEXT title
+        TEXT source
+        TEXT status
+        TEXT equipment_profile_id
+        TEXT location
+        REAL bodyweight_kg
+    }
+    workout_blocks {
+        TEXT id PK
+        TEXT session_id FK
+        INTEGER order_index
+        TEXT block_type
+        INTEGER time_cap_sec
+        INTEGER rounds_target
+        INTEGER rounds_completed
+        INTEGER extra_reps
+        INTEGER duration_sec
+    }
+    logged_sets {
+        TEXT id PK
+        TEXT session_id FK
+        TEXT block_id FK
+        TEXT exercise_id FK
+        TEXT set_type
+        TEXT parent_set_id FK
+        INTEGER drop_index
+        REAL weight_kg
+        INTEGER reps
+        INTEGER duration_sec
+        REAL distance_m
+        INTEGER calories
+        REAL rir
+        TEXT side
+        INTEGER is_complete
+    }
+    performance_records {
+        TEXT id PK
+        TEXT record_type
+        TEXT exercise_id FK
+        TEXT benchmark_key
+        TEXT date
+        INTEGER epoch
+        REAL value_primary
+        REAL value_secondary
+        INTEGER is_pr
+        INTEGER is_epoch_pr
+    }
+```
+
+### Key Schema Design Rules
+
+- **Multi-block workouts:** Each `workout_sessions` row owns ordered
+  `workout_blocks` (`straight`, `superset`, `circuit`, `emom`, `amrap`,
+  `for_time`, `tabata`), so supersets/antagonist supersets only group the
+  exercises in that block and auto-advance round by round.
+- **Drop sets:** `logged_sets.parent_set_id` and `drop_index` link drop
+  stages directly to the parent working set.
+- **Soft resets via `epoch`:** Recording per-session bests in
+  `performance_records` with `epoch` + `exercises.active_epoch` allows
+  non-destructive training-max resets after time off without erasing lifetime
+  PRs (`is_pr`).
+- **Supporting tables:** `plans`, `workout_templates`, `equipment_profiles`,
+  `body_metrics`, `user_settings`, and `schema_migrations` (`APP_SCHEMA_VERSION = 1`).
+
