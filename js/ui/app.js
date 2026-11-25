@@ -1096,9 +1096,14 @@ export function mount(root, defs) {
         const ul = details.querySelector('.cat-subs-list');
         const target = defs.exercises.find((x) => x.id === subsSummary.dataset.catSubs);
         if (!ul || !target) return;
-        const ranked = rankSubstitutes(target, defs.exercises, getActiveProfileObj(), defs.substitutionWeights).slice(0, 5);
+        const ranked = rankSubstitutes(target, defs.exercises, defs.substitutionWeights, getActiveProfileObj(), 5);
         ul.innerHTML = ranked.length
-          ? ranked.map((r) => `<li>${esc(r.exercise.name)} <span class="note">(${Math.round(r.score * 100)}% match)</span></li>`).join('')
+          ? ranked.map((r) => {
+            const eq = (r.exercise.equipment || []).length
+              ? r.exercise.equipment.map(formatCatalogToken).join(', ')
+              : 'Bodyweight';
+            return `<li>${esc(r.exercise.name)} <span class="note">(${esc(eq)})</span></li>`;
+          }).join('')
           : '<li class="note">No substitutes found for your active equipment profile.</li>';
       }
     });
