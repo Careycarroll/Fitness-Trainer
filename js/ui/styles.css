@@ -1337,9 +1337,47 @@ button[disabled] {
   font-size: 1rem;
 }
 
+.settings-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: fit-content;
+  max-width: 100%;
+}
+
+.settings-subtab {
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius) - 2px);
+  background: transparent;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+.settings-subtab:hover {
+  color: var(--text);
+}
+
+.settings-subtab.active {
+  background: var(--accent);
+  color: var(--accent-ink, #0b1015);
+}
+
 .settings-grid {
   display: grid;
   gap: 20px;
+}
+
+.settings-grid[hidden] {
+  display: none;
 }
 
 .settings-card {
@@ -1359,38 +1397,18 @@ button[disabled] {
   .max-entry-box {
     grid-template-columns: 1fr;
   }
+
+  .settings-subnav {
+    width: 100%;
+  }
+
+  .settings-subtab {
+    flex: 1 1 auto;
+    text-align: center;
+  }
 }
 
 /* Display scale & accessibility (#94) */
-.scale-control {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 3px 8px;
-  font-size: 0.85rem;
-  color: var(--muted);
-  cursor: pointer;
-}
-
-.scale-badge {
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--accent);
-}
-
-.scale-control select {
-  background: transparent;
-  border: none;
-  color: var(--text);
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
-  padding: 2px 4px;
-}
-
 .scale-setting-row {
   max-width: 400px;
 }

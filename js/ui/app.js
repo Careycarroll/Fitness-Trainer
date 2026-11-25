@@ -338,15 +338,6 @@ export function mount(root, defs) {
       </div>
 
       <div class="app-actions">
-        <label class="scale-control" title="Adjust text & display scale">
-          <span class="scale-badge" aria-hidden="true">Aa</span>
-          <select id="header-scale-select" aria-label="Text & display scale">
-            <option value="100">100%</option>
-            <option value="115" selected>115%</option>
-            <option value="130">130%</option>
-            <option value="150">150%</option>
-          </select>
-        </label>
         ${import.meta.env.DEV ? `
           <label class="preview-control">Preview
             <select id="preview" aria-label="Responsive preview">
@@ -713,27 +704,20 @@ export function mount(root, defs) {
       <!-- 4. SETTINGS & PROFILE VIEW -->
       <section id="view-settings" class="app-view view-settings" hidden>
         <div class="settings-banner">
-          <h2>Settings, Equipment & Maxes</h2>
-          <p class="note">Configure equipment tokens, track tested 1RM maxes, and manage system JSON archives.</p>
+          <h2>Settings</h2>
+          <p class="note">Manage gym equipment, training defaults, and app/database backups.</p>
         </div>
 
-        <div class="settings-grid">
-          <div class="card settings-card">
-            <h3>Display Scale & Accessibility</h3>
-            <p class="note">Adjust text and UI scaling proportionally across the entire app for comfortable reading on phones and tablets.</p>
-            <div class="scale-setting-row">
-              <label>UI & Font Scale
-                <select id="settings-scale-select">
-                  <option value="100">100% · Standard (Desktop / Compact)</option>
-                  <option value="115" selected>115% · Comfortable (Recommended for mobile)</option>
-                  <option value="130">130% · Large (High visibility)</option>
-                  <option value="150">150% · Extra Large (Maximum readability)</option>
-                </select>
-              </label>
-            </div>
-            <p class="note scale-preview-text">Sample: Barbell Back Squat · 3 sets × 8 reps @ 225 lb (RPE 8)</p>
-          </div>
+        <nav class="settings-subnav" role="tablist" aria-label="Settings sections">
+          <button type="button" class="settings-subtab active" role="tab" aria-selected="true" data-settings-tab="gym">
+            Gym, Equipment &amp; Defaults
+          </button>
+          <button type="button" class="settings-subtab" role="tab" aria-selected="false" data-settings-tab="backup">
+            App &amp; Database Backup
+          </button>
+        </nav>
 
+        <div class="settings-grid settings-panel" data-settings-panel="gym" role="tabpanel">
           <div class="card settings-card">
             <h3>Equipment Profiles</h3>
             <p class="note">Select an equipment profile to edit or create custom gym setups.</p>
@@ -756,7 +740,31 @@ export function mount(root, defs) {
           </div>
 
           <div class="card settings-card">
-            <h3>System Backups & Data History</h3>
+            <h3>Display &amp; Defaults</h3>
+            <p class="note">Adjust default weight units and text/UI scaling across the app.</p>
+            <label style="max-width:240px;">Display Weight Unit
+              <select id="setting-display-unit">
+                <option value="lb" selected>Pounds (lb)</option>
+                <option value="kg">Kilograms (kg)</option>
+              </select>
+            </label>
+            <div class="scale-setting-row">
+              <label>UI &amp; Font Scale
+                <select id="settings-scale-select">
+                  <option value="100">100% · Standard (Desktop / Compact)</option>
+                  <option value="115" selected>115% · Comfortable (Recommended for mobile)</option>
+                  <option value="130">130% · Large (High visibility)</option>
+                  <option value="150">150% · Extra Large (Maximum readability)</option>
+                </select>
+              </label>
+            </div>
+            <p class="note scale-preview-text">Sample: Barbell Back Squat · 3 sets × 8 reps @ 225 lb (RPE 8)</p>
+          </div>
+        </div>
+
+        <div class="settings-grid settings-panel" data-settings-panel="backup" role="tabpanel" hidden>
+          <div class="card settings-card">
+            <h3>System Backups &amp; Data History</h3>
             <div class="storage-actions">
               <button type="button" id="export" class="ghost">Export Backup JSON</button>
               <button type="button" id="import" class="ghost">Import Backup JSON</button>
@@ -775,14 +783,8 @@ export function mount(root, defs) {
           </div>
 
           <div class="card settings-card">
-            <h3>Local SQLite Database & Units</h3>
+            <h3>Local SQLite Database</h3>
             <p class="note" id="appdb-stats">Loading local database…</p>
-            <label style="max-width:240px;">Display Weight Unit
-              <select id="setting-display-unit">
-                <option value="lb" selected>Pounds (lb)</option>
-                <option value="kg">Kilograms (kg)</option>
-              </select>
-            </label>
             <div class="storage-actions" style="margin-top:10px;">
               <button type="button" id="appdb-export-btn" class="ghost">Export Database (.db)</button>
               <button type="button" id="appdb-restore-btn" class="ghost">Restore Database (.db)</button>
@@ -3158,11 +3160,7 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
   function applyDisplayScale(scale) {
     document.documentElement.dataset.scale = scale;
     localStorage.setItem(PREF_SCALE, scale);
-    const headerScale = root.querySelector('#header-scale-select');
     const settingsScale = root.querySelector('#settings-scale-select');
-    if (headerScale && headerScale.value !== scale) {
-      headerScale.value = scale;
-    }
     if (settingsScale && settingsScale.value !== scale) {
       settingsScale.value = scale;
     }
@@ -3170,13 +3168,32 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
 
   applyDisplayScale(savedScale);
 
-  const headerScale = root.querySelector('#header-scale-select');
-  if (headerScale) {
-    headerScale.addEventListener('change', (e) => applyDisplayScale(e.target.value));
-  }
   const settingsScale = root.querySelector('#settings-scale-select');
   if (settingsScale) {
     settingsScale.addEventListener('change', (e) => applyDisplayScale(e.target.value));
+  }
+
+  const PREF_SETTINGS_TAB = 'trainer_settings_tab';
+  const settingsSubtabs = [...root.querySelectorAll('.settings-subtab')];
+  const settingsPanels = [...root.querySelectorAll('.settings-panel')];
+
+  function switchSettingsTab(tabKey) {
+    const valid = settingsPanels.some((p) => p.dataset.settingsPanel === tabKey);
+    const activeKey = valid ? tabKey : 'gym';
+    localStorage.setItem(PREF_SETTINGS_TAB, activeKey);
+    for (const btn of settingsSubtabs) {
+      const isMatch = btn.dataset.settingsTab === activeKey;
+      btn.classList.toggle('active', isMatch);
+      btn.setAttribute('aria-selected', String(isMatch));
+    }
+    for (const panel of settingsPanels) {
+      panel.hidden = panel.dataset.settingsPanel !== activeKey;
+    }
+  }
+
+  switchSettingsTab(localStorage.getItem(PREF_SETTINGS_TAB) || 'gym');
+  for (const btn of settingsSubtabs) {
+    btn.addEventListener('click', () => switchSettingsTab(btn.dataset.settingsTab));
   }
 
   statusEl = root.querySelector('#storage-status');
