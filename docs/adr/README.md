@@ -23,7 +23,7 @@ Nobody reads these front to back. You arrive with a question — start here.
 [001](ADR-001-platform-web-pwa.md) · [004](ADR-004-storage-indexeddb-export.md) · [005](ADR-005-fork-scaffolding.md) · [007](ADR-007-no-deadline-quality-gates.md) · [011](ADR-011-persistence-gate.md) · [031](ADR-031-planner-not-logger.md) · [033](ADR-033-capacitor-android-logger-then-kotlin.md)
 
 **Engine and generation**
-[002](ADR-002-deterministic-rules-engine.md) · [010](ADR-010-styles-as-data.md) · [013](ADR-013-equipment-profiles-and-first-style.md) · [014](ADR-014-editable-profiles-and-whole-session-conditioning.md) · [015](ADR-015-arbitrary-training-days.md) · [027](ADR-027-block-setgroup-nesting.md) · [032](ADR-032-workout-of-the-day-and-benchmark-presets.md) · [034](ADR-034-injury-contraindication-filtering.md) · [035](ADR-035-periodization-model-ownership.md)
+[002](ADR-002-deterministic-rules-engine.md) · [010](ADR-010-styles-as-data.md) · [013](ADR-013-equipment-profiles-and-first-style.md) · [014](ADR-014-editable-profiles-and-whole-session-conditioning.md) · [015](ADR-015-arbitrary-training-days.md) · [027](ADR-027-block-setgroup-nesting.md) · [032](ADR-032-workout-of-the-day-and-benchmark-presets.md) · [034](ADR-034-injury-contraindication-filtering.md) · [035](ADR-035-periodization-model-ownership.md) · [037](ADR-037-movement-equivalence-classes.md)
 
 **Data/code boundary and authoring surface**
 [003](ADR-003-content-as-data.md) · [006](ADR-006-hand-authored-catalog.md) · [008](ADR-008-catalog-before-logger.md) · [012](ADR-012-data-code-boundary.md) · [016](ADR-016-catalog-authored-as-split-csv.md) · [017](ADR-017-catalog-file-ownership-rule.md) · [028](ADR-028-conditioning-catalog-ownership.md) · [032](ADR-032-workout-of-the-day-and-benchmark-presets.md) · [036](ADR-036-bulk-catalog-source-and-licence.md)
@@ -76,6 +76,7 @@ Nobody reads these front to back. You arrive with a question — start here.
 | [034](ADR-034-injury-contraindication-filtering.md) | Joint-load tags may filter exercise selection when athlete constraints are present | ACCEPTED | 020, 012 | `avoidJoints` filters `joint_load` and fails closed on unknown tokens. |
 | [035](ADR-035-periodization-model-ownership.md) | Periodization model ownership and scope | ACCEPTED | 002, 010, 012, 023 | Linear ramp + planned deload within style bands; no macrocycle layer yet. |
 | [036](ADR-036-bulk-catalog-source-and-licence.md) | Bulk catalog import source, licence, and column policy | ACCEPTED | 006, 012, 016, 026 | `free-exercise-db` (Unlicense) is the sole approved import source; no silent defaults. |
+| [037](ADR-037-movement-equivalence-classes.md) | Movement equivalence classes and implement variations | ACCEPTED | 002, 012, 023, 026 | Derived from `(exerciseFamily, pattern)`; e1RM stays per `exerciseId`. |
 
 ---
 

@@ -18,7 +18,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { defs } from '../js/engine/defs.js';
-import { rankSubstitutes, score } from '../js/engine/substitution.js';
+import { rankSubstitutes, rankImplementVariations, sameEquivalenceClass, score } from '../js/engine/substitution.js';
 import { makeSetGroup } from '../js/engine/blocks.js';
 
 const byId = (id) => defs.exercises.find((e) => e.id === id);
@@ -149,5 +149,17 @@ describe('score() itself is unchanged (#52)', () => {
     if (ohSquat) {
       assert.ok(score(t, ohSquat, W, COMMERCIAL, { skillLevel: 1 }) > score(t, ohSquat, W, COMMERCIAL));
     }
+  });
+
+  test('sameEquivalenceClass and rankImplementVariations group (exerciseFamily, pattern) (#52)', () => {
+    const backSquat = byId('back-squat');
+    const gobletSquat = byId('goblet-squat');
+    const jumpSquat = byId('jump-squat');
+    assert.equal(sameEquivalenceClass(backSquat, gobletSquat), true);
+    if (jumpSquat) assert.equal(sameEquivalenceClass(backSquat, jumpSquat), false);
+
+    const vars = rankImplementVariations(backSquat, defs.exercises, W, COMMERCIAL, 5);
+    assert.ok(vars.length > 0);
+    assert.ok(vars.every((v) => v.sameMovement && sameEquivalenceClass(backSquat, v.exercise)));
   });
 });

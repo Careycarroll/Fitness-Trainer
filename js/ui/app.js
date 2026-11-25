@@ -5315,6 +5315,8 @@ function toggleSwapList(out, button, w, s, b, g) {
             ${esc(x.exercise.name)}
           </button>
           <span class="meta">${formatNumber(x.score)} · skill ${x.exercise.skill}/5${
+            x.sameMovement ? ' · same movement' : ''
+          }${
             x.exercise.skill > skillLevel ? ' · ⚠️ above level' : ''
           }${
             x.exercise.fatigueCost > target.fatigueCost

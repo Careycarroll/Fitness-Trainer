@@ -91,13 +91,24 @@ const sharesPrimaryMuscle = (target, candidate) =>
   (target.primaryMuscles ?? []).some((m) => (candidate.primaryMuscles ?? []).includes(m));
 
 /**
- * @returns {Array<{exercise: object, score: number}>} ranked ascending
+ * Derived equivalence class per #52 / ADR-037: same (exerciseFamily, pattern).
+ * Using the pair avoids conflating e.g. jump-squat (explosive) with squat load variants.
+ */
+export const sameEquivalenceClass = (a, b) =>
+  Boolean(a?.exerciseFamily && b?.exerciseFamily && a.exerciseFamily === b.exerciseFamily && a.pattern === b.pattern);
+
+/**
+ * @returns {Array<{exercise: object, score: number, sameMovement: boolean}>} ranked ascending
  */
 export function rankSubstitutes(target, catalog, weights, profile, limit = 5, athlete = null) {
   const avoidJoints = athlete?.avoidJoints;
   return catalog
     .filter((c) => allowsExerciseForJoints(c, avoidJoints).allowed)
-    .map((c) => ({ exercise: c, score: score(target, c, weights, profile, athlete) }))
+    .map((c) => ({
+      exercise: c,
+      score: score(target, c, weights, profile, athlete),
+      sameMovement: sameEquivalenceClass(target, c)
+    }))
     .filter((r) => Number.isFinite(r.score))
     // Fewer results beats padding with something that trains a different muscle.
     .filter((r) => sharesPrimaryMuscle(target, r.exercise))
@@ -105,18 +116,17 @@ export function rankSubstitutes(target, catalog, weights, profile, limit = 5, at
     // filter. Everything the athlete can perform is still offered; the rows
     // someone has actually calibrated simply sort ahead of the ones nobody has.
     //
-    // Without this the swap list degrades as the import lands. Measured on
-    // back-squat after the quads import: wide-stance-back-squat, band-box-squat,
-    // smith-machine-squat and zercher-squat all scored at or above leg-press and
-    // pushed it to position 8, out of a 5-item list. leg-press is the useful
-    // answer when the rack is taken; a Zercher squat needs the same rack.
-    //
-    // Note the scores are honest — a wide-stance squat IS a closer substitute
-    // for a back squat than a leg press. This is about which answer serves the
-    // athlete standing in the gym, not about which is most similar.
+    // Within each tier, same-movement implement variations (#52) sort ahead.
     .sort((a, b) =>
       (a.exercise.selectable === false) - (b.exercise.selectable === false)
+      || (b.sameMovement ? 1 : 0) - (a.sameMovement ? 1 : 0)
       || a.score - b.score
       || a.exercise.id.localeCompare(b.exercise.id))
     .slice(0, limit);
+}
+
+/** Ranked implement variations within the same (exerciseFamily, pattern) equivalence class (#52). */
+export function rankImplementVariations(target, catalog, weights, profile, limit = 3, athlete = null) {
+  const pool = catalog.filter((c) => sameEquivalenceClass(target, c));
+  return rankSubstitutes(target, pool, weights, profile, limit, athlete);
 }
