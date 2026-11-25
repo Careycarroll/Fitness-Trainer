@@ -119,7 +119,6 @@ export function rankSubstitutes(target, catalog, weights, profile, limit = 5, at
     // Within each tier, same-movement implement variations (#52) sort ahead.
     .sort((a, b) =>
       (a.exercise.selectable === false) - (b.exercise.selectable === false)
-      || (b.sameMovement ? 1 : 0) - (a.sameMovement ? 1 : 0)
       || a.score - b.score
       || a.exercise.id.localeCompare(b.exercise.id))
     .slice(0, limit);
