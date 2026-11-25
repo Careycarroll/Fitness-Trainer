@@ -24,7 +24,7 @@
  */
 import { generate, CoverageError } from '../engine/index.js';
 import { rankSubstitutes } from '../engine/substitution.js';
-import { nextFeasiblePoses } from '../engine/mobilityDomain.js';
+import { canTransition, nextFeasiblePoses } from '../engine/mobilityDomain.js';
 import { allSetGroups, setGroupAt, makeSetGroup, sessionFatigue } from '../engine/blocks.js';
 import { volumeConcerns, resolveLandmarks } from '../engine/volume.js';
 import {
@@ -5258,7 +5258,7 @@ function loadControls(p, w, s, b, g, allowSwap = true) {
 function mobilityControls(p, w, s, b, g, allowSwap = true) {
   const exObj = currentDefs?.exercises?.find((e) => e.id === p.exerciseId);
   const nextPoses = exObj && currentDefs?.exercises
-    ? nextFeasiblePoses(exObj, currentDefs.exercises).slice(0, 6)
+    ? nextFeasiblePoses(exObj, currentDefs.exercises)
     : [];
   const details = [
     p.holdSeconds != null ? `${p.holdSeconds}s hold` : '',
@@ -5332,10 +5332,22 @@ function toggleSwapList(out, button, w, s, b, g) {
   // throwing inside a click handler.
   const profile = currentDefs.equipment.find((p) => p.id === currentRequest?.equipmentProfile) ?? null;
   const skillLevel = currentRequest?.athlete?.skillLevel ?? Number(root.querySelector('[name="skillLevel"]')?.value || 2);
-  const alternatives = rankSubstitutes(
-    target, currentDefs.exercises, currentDefs.substitutionWeights, profile, 5,
+  const session = current.weeks[w].sessions[s];
+  const block = session.blocks[b];
+  const prevGroup = g > 0 ? block?.setGroups?.[g - 1] : null;
+  const nextGroup = block?.setGroups?.[g + 1] ?? null;
+  const rawAlternatives = rankSubstitutes(
+    target, currentDefs.exercises, currentDefs.substitutionWeights, profile,
+    session.domain === 'mobility' ? 20 : 5,
     { avoidJoints: getAvoidJoints(), skillLevel }
   );
+  const alternatives = session.domain === 'mobility'
+    ? rawAlternatives.filter((x) =>
+        x.exercise.scoring === 'mobility' &&
+        canTransition(prevGroup?.position, x.exercise.position) &&
+        canTransition(x.exercise.position, nextGroup?.position)
+      ).slice(0, 5)
+    : rawAlternatives;
   const list = document.createElement('ul');
   list.className = 'swap-list';
   list.innerHTML = alternatives.length
@@ -5407,16 +5419,20 @@ export function replaceSetGroup(w, s, b, g, replacementId) {
   const {
     exerciseId, name, pattern, equipment, primaryMuscles, secondaryMuscles,
     stabilises, exerciseFamily, fatigueCost, unilateral, warmupRequired,
+    position: _oldPosition,
     ...prescription
   } = group;
 
-  const next = makeSetGroup(replacement, prescription);
+  const next = makeSetGroup(replacement, {
+    ...prescription,
+    ...(replacement.position ? { position: replacement.position } : {})
+  });
   next.swappedFrom = original;
   session.blocks[b].setGroups[g] = next;
 
   // The header reads this. Without recomputing it, a swap to a costlier row
   // leaves the fatigue line reporting the figure the GENERATOR produced.
-  session.fatigueUsed = sessionFatigue(session);
+  if (session.fatigueUsed !== null) session.fatigueUsed = sessionFatigue(session);
 }
 
 /**

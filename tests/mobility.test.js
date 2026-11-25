@@ -54,4 +54,8 @@ test('nextFeasiblePoses returns only poses reachable from current position (#65)
   assert.ok(next.length > 0);
   assert.ok(next.every((e) => canTransition(plank.position, e.position)));
   assert.equal(next.some((e) => e.id === 'pilates-hundred'), false); // supine cannot follow plank directly
+
+  const cobra = defs.exercises.find((e) => e.id === 'cobra-pose');
+  const fromCobra = nextFeasiblePoses(cobra, defs.exercises);
+  assert.equal(fromCobra.some((e) => e.id === 'childs-pose'), true);
 });
