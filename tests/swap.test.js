@@ -142,4 +142,12 @@ describe('score() itself is unchanged (#52)', () => {
     assert.equal(score(t, byId('box-squat'), W, COMMERCIAL), 12);
     assert.equal(score(t, byId('leg-press'), W, COMMERCIAL), 32);
   });
+
+  test('score() penalizes candidates above athlete.skillLevel (#84)', () => {
+    const t = byId('back-squat');
+    const ohSquat = byId('overhead-squat') || catalog.find((e) => e.pattern === 'squat' && e.skill >= 4);
+    if (ohSquat) {
+      assert.ok(score(t, ohSquat, W, COMMERCIAL, { skillLevel: 1 }) > score(t, ohSquat, W, COMMERCIAL));
+    }
+  });
 });

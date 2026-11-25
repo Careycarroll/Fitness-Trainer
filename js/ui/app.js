@@ -1508,7 +1508,8 @@ export function mount(root, defs) {
         const ul = details.querySelector('.cat-subs-list');
         const target = defs.exercises.find((x) => x.id === subsSummary.dataset.catSubs);
         if (!ul || !target) return;
-        const ranked = rankSubstitutes(target, defs.exercises, defs.substitutionWeights, getActiveProfileObj(), 5, { avoidJoints: getAvoidJoints() });
+        const skillLevel = Number(root.querySelector('[name="skillLevel"]')?.value || 2);
+        const ranked = rankSubstitutes(target, defs.exercises, defs.substitutionWeights, getActiveProfileObj(), 5, { avoidJoints: getAvoidJoints(), skillLevel });
         ul.innerHTML = ranked.length
           ? ranked.map((r) => {
             const eq = (r.exercise.equipment || []).length
@@ -5299,8 +5300,10 @@ function toggleSwapList(out, button, w, s, b, g) {
   // unresolved profile degrades to ranking by similarity alone rather than
   // throwing inside a click handler.
   const profile = currentDefs.equipment.find((p) => p.id === currentRequest?.equipmentProfile) ?? null;
+  const skillLevel = currentRequest?.athlete?.skillLevel ?? Number(root.querySelector('[name="skillLevel"]')?.value || 2);
   const alternatives = rankSubstitutes(
-    target, currentDefs.exercises, currentDefs.substitutionWeights, profile, 5, { avoidJoints: getAvoidJoints() }
+    target, currentDefs.exercises, currentDefs.substitutionWeights, profile, 5,
+    { avoidJoints: getAvoidJoints(), skillLevel }
   );
   const list = document.createElement('ul');
   list.className = 'swap-list';
@@ -5311,7 +5314,9 @@ function toggleSwapList(out, button, w, s, b, g) {
                   data-w="${w}" data-s="${s}" data-b="${b}" data-g="${g}">
             ${esc(x.exercise.name)}
           </button>
-          <span class="meta">${formatNumber(x.score)}${
+          <span class="meta">${formatNumber(x.score)} · skill ${x.exercise.skill}/5${
+            x.exercise.skill > skillLevel ? ' · ⚠️ above level' : ''
+          }${
             x.exercise.fatigueCost > target.fatigueCost
               ? ` · +${x.exercise.fatigueCost - target.fatigueCost} fatigue`
               : ''

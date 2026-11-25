@@ -28,7 +28,7 @@ const canPerform = (exercise, profile) =>
   profile?.assumesAll === true || isPerformable(exercise, ownedOf(profile));
 
 /** Lower is better. Infinity-ish scores mean "not a substitute at all". */
-export function score(target, candidate, weights, profile) {
+export function score(target, candidate, weights, profile, athlete = null) {
   if (candidate.id === target.id) return Number.POSITIVE_INFINITY;
 
   let s = 0;
@@ -38,6 +38,9 @@ export function score(target, candidate, weights, profile) {
 
   s += Math.abs(candidate.fatigueCost - target.fatigueCost) * weights.fatigueCostDelta;
   s += Math.abs(candidate.skill - target.skill) * weights.skillDelta;
+  if (athlete?.skillLevel != null && candidate.skill > athlete.skillLevel) {
+    s += (candidate.skill - athlete.skillLevel) * (weights.skillDelta ?? 2) * 2;
+  }
 
   for (const m of target.primaryMuscles) {
     if (!candidate.primaryMuscles.includes(m)) s += weights.primaryMuscleMissing;
@@ -94,7 +97,7 @@ export function rankSubstitutes(target, catalog, weights, profile, limit = 5, at
   const avoidJoints = athlete?.avoidJoints;
   return catalog
     .filter((c) => allowsExerciseForJoints(c, avoidJoints).allowed)
-    .map((c) => ({ exercise: c, score: score(target, c, weights, profile) }))
+    .map((c) => ({ exercise: c, score: score(target, c, weights, profile, athlete) }))
     .filter((r) => Number.isFinite(r.score))
     // Fewer results beats padding with something that trains a different muscle.
     .filter((r) => sharesPrimaryMuscle(target, r.exercise))
