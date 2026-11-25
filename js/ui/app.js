@@ -915,8 +915,7 @@ export function mount(root, defs) {
   const catCount = root.querySelector('#catalog-count');
   const catList = root.querySelector('#catalog-list');
   const catMoreWrap = root.querySelector('#catalog-more-wrap');
-  const catMoreBtn = root.querySelector('#catalog-more-btn');
-  let catalogLimit = 40;
+  if (catMoreWrap) catMoreWrap.hidden = true;
 
   const facets = extractCatalogFacets(defs.exercises);
   if (catMuscle) {
@@ -942,7 +941,8 @@ export function mount(root, defs) {
 
   function getActiveProfileObj() {
     const pid = eqPicker?.value || localStorage.getItem(PREF_PROFILE) || DEFAULT_PROFILE;
-    return allProfiles().find((p) => p.id === pid) || defs.equipment[0];
+    const profiles = mergeProfiles(shippedProfiles || defs.equipment, persisted?.equipmentProfiles ?? []);
+    return profiles.find((p) => p.id === pid) || defs.equipment[0];
   }
 
   function renderCatalog() {
@@ -965,10 +965,10 @@ export function mount(root, defs) {
     if (catResetBtn) catResetBtn.hidden = !hasFilter;
 
     const matched = filterCatalogExercises(defs.exercises, filters);
-    const visible = matched.slice(0, catalogLimit);
+    const visible = matched;
 
     if (catCount) {
-      catCount.textContent = `Showing ${visible.length} of ${matched.length} matching (${defs.exercises.length} total)`;
+      catCount.textContent = `Showing ${visible.length} of ${defs.exercises.length} exercises`;
     }
 
     if (visible.length === 0) {
@@ -1032,17 +1032,12 @@ export function mount(root, defs) {
       `;
     }).join('');
 
-    if (catMoreWrap) catMoreWrap.hidden = visible.length >= matched.length;
+    if (catMoreWrap) catMoreWrap.hidden = true;
   }
-
-  const resetCatalogAndRender = () => {
-    catalogLimit = 40;
-    renderCatalog();
-  };
 
   [catSearch, catMuscle, catPattern, catEquipment, catTracking, catOwnedOnly].forEach((el) => {
     if (!el) return;
-    el.addEventListener(el === catSearch ? 'input' : 'change', resetCatalogAndRender);
+    el.addEventListener(el === catSearch ? 'input' : 'change', renderCatalog);
   });
 
   if (catResetBtn) {
@@ -1053,13 +1048,6 @@ export function mount(root, defs) {
       if (catEquipment) catEquipment.value = '';
       if (catTracking) catTracking.value = '';
       if (catOwnedOnly) catOwnedOnly.checked = false;
-      resetCatalogAndRender();
-    });
-  }
-
-  if (catMoreBtn) {
-    catMoreBtn.addEventListener('click', () => {
-      catalogLimit += 40;
       renderCatalog();
     });
   }
@@ -1105,6 +1093,8 @@ export function mount(root, defs) {
       }
     });
   }
+
+  renderCatalog();
 
   function renderSyncHub() {
     const queueBadge = root.querySelector('#sync-queue-badge');
