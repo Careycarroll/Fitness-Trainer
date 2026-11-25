@@ -962,7 +962,7 @@ export function mount(root, defs) {
       equipment: catEquipment?.value || '',
       trackingType: catTracking?.value || '',
       onlyMyEquipment: Boolean(catOwnedOnly?.checked),
-      ownedEquipment: profileObj?.owns || [],
+      ownedEquipment: profileObj?.available || [],
       excludeNoEquipment: Boolean(catExcludeBw?.checked)
     };
 
