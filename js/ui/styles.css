@@ -1415,3 +1415,136 @@ button[disabled] {
     justify-content: flex-start;
   }
 }
+
+/* Browsable Exercise Catalog (#83) */
+.view-catalog {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.catalog-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.catalog-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.catalog-head h2 {
+  margin: 0 0 2px;
+}
+
+.catalog-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.catalog-search-wrap {
+  grid-column: span 2;
+}
+
+@media (max-width: 600px) {
+  .catalog-search-wrap {
+    grid-column: span 1;
+  }
+}
+
+.catalog-owned-toggle {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.catalog-owned-toggle input[type="checkbox"] {
+  width: 1.1rem !important;
+  height: 1.1rem !important;
+  min-width: 1.1rem !important;
+  min-height: 1.1rem !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  flex: none !important;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 12px;
+}
+
+.catalog-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.catalog-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.catalog-card-head h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.catalog-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.catalog-badge {
+  font-size: 0.72rem;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.catalog-meta {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.catalog-rest-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+}
+
+.catalog-rest-row input {
+  width: 78px !important;
+  min-height: 32px !important;
+  padding: 4px 8px !important;
+  font-size: 0.85rem;
+}
+
+.catalog-warn {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--warn, #facc15);
+}
+
+.catalog-more-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 6px 0 16px;
+}
