@@ -261,6 +261,7 @@ const BAR_WEIGHT_KEY = 'trainer_default_bar_weight';
 const EZBAR_WEIGHT_KEY = 'trainer_default_ezbar_weight';
 const SSB_WEIGHT_KEY = 'trainer_default_ssb_weight';
 const PLATE_INC_KEY = 'trainer_plate_increment';
+const WOD_COUNTDOWN_KEY = 'trainer_wod_countdown_sec';
 
 function getEquipmentLoadDefaults() {
   const ls = typeof localStorage !== 'undefined' ? localStorage : null;
@@ -796,13 +797,21 @@ export function mount(root, defs) {
                 <input type="number" id="setting-ssb-weight" min="5" max="150" step="0.5" value="65" />
               </label>
             </div>
-            <div class="scale-setting-row">
+            <div class="catalog-filters">
               <label>UI &amp; Font Scale
                 <select id="settings-scale-select">
                   <option value="100">100% · Standard (Desktop / Compact)</option>
                   <option value="115" selected>115% · Comfortable (Recommended for mobile)</option>
                   <option value="130">130% · Large (High visibility)</option>
                   <option value="150">150% · Extra Large (Maximum readability)</option>
+                </select>
+              </label>
+              <label>WOD Timer Prep Countdown
+                <select id="setting-wod-countdown">
+                  <option value="0">0s · Instant Start</option>
+                  <option value="3" selected>3s · 3, 2, 1 (Default)</option>
+                  <option value="5">5s · 5, 4, 3, 2, 1</option>
+                  <option value="10">10s · 10-second prep</option>
                 </select>
               </label>
             </div>
@@ -1477,6 +1486,12 @@ export function mount(root, defs) {
         ssbIn.value = savedSsb;
         localStorage.setItem(SSB_WEIGHT_KEY, savedSsb);
       }
+      const wodCdSel = root.querySelector('#setting-wod-countdown');
+      const savedCd = getSetting(appDb, 'wod_countdown_sec', localStorage.getItem(WOD_COUNTDOWN_KEY) ?? '3');
+      if (wodCdSel && ['0', '3', '5', '10'].includes(String(savedCd))) {
+        wodCdSel.value = String(savedCd);
+        localStorage.setItem(WOD_COUNTDOWN_KEY, String(savedCd));
+      }
     } catch (err) {
       if (statsEl) statsEl.textContent = `Database unavailable: ${err.message}`;
     }
@@ -1532,6 +1547,20 @@ export function mount(root, defs) {
         await savePersistedAppDb(appDb);
       } catch {}
       paint();
+    });
+  }
+
+  const wodCountdownEl = root.querySelector('#setting-wod-countdown');
+  if (wodCountdownEl) {
+    wodCountdownEl.value = localStorage.getItem(WOD_COUNTDOWN_KEY) ?? '3';
+    wodCountdownEl.addEventListener('change', async () => {
+      const sec = ['0', '3', '5', '10'].includes(wodCountdownEl.value) ? wodCountdownEl.value : '3';
+      localStorage.setItem(WOD_COUNTDOWN_KEY, sec);
+      try {
+        const appDb = await ensureAppDb();
+        setSetting(appDb, 'wod_countdown_sec', sec);
+        await savePersistedAppDb(appDb);
+      } catch {}
     });
   }
 
@@ -1875,7 +1904,10 @@ export function mount(root, defs) {
     amrapRounds: 0,
     lastRound: null,
     lastPhase: null,
-    lastSpokenSec: null
+    lastSpokenSec: null,
+    prepEndMs: 0,
+    prepRemainingSec: 0,
+    lastPrepSpoken: null
   };
 
   function getRestRemainingSec(nowMs = Date.now()) {
@@ -1940,13 +1972,40 @@ export function mount(root, defs) {
     }
 
     if (wodTimer.config) {
-      const elapsed = getWodElapsedSec(now);
-      const st = computeConditioningState(wodTimer.config, elapsed);
       const clockEl = viewLogger.querySelector('#wod-timer-clock');
       const totalEl = viewLogger.querySelector('#wod-timer-total');
       const roundEl = viewLogger.querySelector('#wod-timer-round');
       const nowEl = viewLogger.querySelector('#wod-timer-now');
       const nextEl = viewLogger.querySelector('#wod-timer-next');
+      const toggleBtn = viewLogger.querySelector('#wod-timer-toggle-btn');
+
+      if (wodTimer.prepEndMs > 0) {
+        const prepRem = Math.max(0, Math.ceil((wodTimer.prepEndMs - now) / 1000));
+        wodTimer.prepRemainingSec = prepRem;
+        if (prepRem > 0) {
+          if (clockEl) clockEl.textContent = `GET READY · ${prepRem}`;
+          if (roundEl) roundEl.textContent = 'Prep Countdown';
+          if (toggleBtn) toggleBtn.textContent = '⏹ Cancel Prep';
+          if (prepRem !== wodTimer.lastPrepSpoken) {
+            wodTimer.lastPrepSpoken = prepRem;
+            playTimerBeep(660, 90);
+            if (prepRem <= 5) speakAnnouncement(String(prepRem), voiceEnabled);
+            else if (prepRem === 10) speakAnnouncement('10 seconds', voiceEnabled);
+          }
+          return;
+        }
+        wodTimer.prepEndMs = 0;
+        wodTimer.prepRemainingSec = 0;
+        wodTimer.lastPrepSpoken = null;
+        wodTimer.startedMs = now;
+        wodTimer.running = true;
+        if (toggleBtn) toggleBtn.textContent = '⏸ Pause';
+        playTimerBeep(990, 220);
+        speakAnnouncement(`Starting ${wodTimer.config?.mode?.toUpperCase() || 'workout'}. Go`, voiceEnabled);
+      }
+
+      const elapsed = getWodElapsedSec(now);
+      const st = computeConditioningState(wodTimer.config, elapsed);
       if (clockEl) clockEl.textContent = st.displayClock;
       if (totalEl) totalEl.textContent = st.totalClock;
       if (roundEl) {
@@ -1984,7 +2043,7 @@ export function mount(root, defs) {
     }
   }
 
-  setInterval(updateTimerDisplays, 500);
+  setInterval(updateTimerDisplays, 250);
 
   async function openLogger(sessionId) {
     activeLoggerSessionId = sessionId;
@@ -1993,7 +2052,8 @@ export function mount(root, defs) {
     loggerPairBlockId = null;
     wodTimer = {
       blockId: null, config: null, running: false, startedMs: 0,
-      accumulatedSec: 0, amrapRounds: 0, lastRound: null, lastPhase: null, lastSpokenSec: null
+      accumulatedSec: 0, amrapRounds: 0, lastRound: null, lastPhase: null, lastSpokenSec: null,
+      prepEndMs: 0, prepRemainingSec: 0, lastPrepSpoken: null
     };
     switchTab('logger');
     await renderActiveLogger();
@@ -2039,7 +2099,10 @@ export function mount(root, defs) {
         amrapRounds: condBlock.roundsCompleted || 0,
         lastRound: null,
         lastPhase: null,
-        lastSpokenSec: null
+        lastSpokenSec: null,
+        prepEndMs: 0,
+        prepRemainingSec: 0,
+        lastPrepSpoken: null
       };
     } else if (!condBlock) {
       wodTimer.blockId = null;
@@ -2133,13 +2196,13 @@ export function mount(root, defs) {
                   <strong id="wod-timer-round">${wst.totalRounds ? `Round ${wst.currentRound} / ${wst.totalRounds}` : (blk.blockType === 'amrap' ? `Rounds: ${wodTimer.amrapRounds}` : 'Stopwatch')}</strong>
                   <span class="note" id="wod-timer-total">${esc(wst.totalClock)}</span>
                 </div>
-                <div id="wod-timer-clock" class="wod-timer-clock">${esc(wst.displayClock)}</div>
+                <div id="wod-timer-clock" class="wod-timer-clock">${wodTimer.prepEndMs > 0 ? `GET READY · ${wodTimer.prepRemainingSec}` : esc(wst.displayClock)}</div>
                 <div class="wod-timer-cues">
                   <div><span class="note">NOW:</span> <strong id="wod-timer-now">${esc(wst.currentMovement)}</strong></div>
                   <div><span class="note">NEXT:</span> <span id="wod-timer-next">${esc(wst.nextMovement)}</span></div>
                 </div>
                 <div class="storage-actions">
-                  <button type="button" id="wod-timer-toggle-btn" class="primary">${wodTimer.running ? '⏸ Pause' : '▶ Start WOD Timer'}</button>
+                  <button type="button" id="wod-timer-toggle-btn" class="primary">${wodTimer.prepEndMs > 0 ? '⏹ Cancel Prep' : (wodTimer.running ? '⏸ Pause' : '▶ Start WOD Timer')}</button>
                   <button type="button" id="wod-timer-reset-btn" class="ghost">↺ Reset</button>
                   ${blk.blockType === 'amrap' ? '<button type="button" id="wod-timer-round-btn" class="ghost">+1 Round</button>' : ''}
                   <button type="button" id="wod-timer-save-btn" class="ghost">💾 Save Score</button>
@@ -2375,12 +2438,23 @@ export function mount(root, defs) {
         if (wodTimer.running) {
           wodTimer.accumulatedSec = getWodElapsedSec();
           wodTimer.running = false;
+        } else if (wodTimer.prepEndMs > 0) {
+          wodTimer.prepEndMs = 0;
+          wodTimer.prepRemainingSec = 0;
+          wodTimer.lastPrepSpoken = null;
         } else {
-          wodTimer.startedMs = Date.now();
-          wodTimer.running = true;
-          if (wodTimer.accumulatedSec === 0) {
-            playTimerBeep(880, 180);
-            speakAnnouncement(`Starting ${wodTimer.config?.mode?.toUpperCase() || 'workout'}. Go`, voiceEnabled);
+          const prepSec = Number(localStorage.getItem(WOD_COUNTDOWN_KEY) ?? 3);
+          if (wodTimer.accumulatedSec === 0 && prepSec > 0) {
+            wodTimer.prepEndMs = Date.now() + prepSec * 1000;
+            wodTimer.prepRemainingSec = prepSec;
+            wodTimer.lastPrepSpoken = null;
+          } else {
+            wodTimer.startedMs = Date.now();
+            wodTimer.running = true;
+            if (wodTimer.accumulatedSec === 0) {
+              playTimerBeep(880, 180);
+              speakAnnouncement(`Starting ${wodTimer.config?.mode?.toUpperCase() || 'workout'}. Go`, voiceEnabled);
+            }
           }
         }
         await renderActiveLogger();
@@ -2392,6 +2466,9 @@ export function mount(root, defs) {
         wodTimer.lastRound = null;
         wodTimer.lastPhase = null;
         wodTimer.lastSpokenSec = null;
+        wodTimer.prepEndMs = 0;
+        wodTimer.prepRemainingSec = 0;
+        wodTimer.lastPrepSpoken = null;
         await renderActiveLogger();
         return;
       }
