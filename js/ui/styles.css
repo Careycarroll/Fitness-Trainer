@@ -1792,3 +1792,135 @@ button[disabled] {
   font-size: 0.8rem;
   color: var(--text-muted);
 }
+
+/* Active Workout Logger (#106) */
+.view-logger {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.logger-head-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.logger-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.logger-block-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.logger-sets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.logger-set-row {
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.logger-drop-row {
+  margin-left: 18px;
+  border-left: 3px solid var(--accent);
+}
+
+.logger-set-focused {
+  outline: 2px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface-raised));
+}
+
+.logger-set-done {
+  opacity: 0.78;
+}
+
+.logger-set-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.logger-set-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.logger-set-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(74px, 1fr));
+  gap: 8px;
+  align-items: end;
+}
+
+.logger-set-inputs input.logger-in {
+  min-height: 36px !important;
+  padding: 6px 8px !important;
+  font-size: 0.9rem;
+}
+
+.logger-check-wrap {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 6px !important;
+  min-height: 36px;
+  cursor: pointer;
+}
+
+.logger-check-wrap input[type="checkbox"] {
+  width: 1.2rem !important;
+  height: 1.2rem !important;
+  min-width: 1.2rem !important;
+  min-height: 1.2rem !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  flex: none !important;
+}
+
+.logger-mini-btn {
+  min-height: 30px !important;
+  padding: 3px 8px !important;
+  font-size: 0.78rem !important;
+}
+
+.logger-block-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.logger-add-ex-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.logger-add-ex-row input {
+  flex: 1 1 220px;
+}
