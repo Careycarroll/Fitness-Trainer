@@ -1982,3 +1982,61 @@ button[disabled] {
   gap: 4px;
   font-size: 0.9rem;
 }
+
+/* Trends & Meals (#108) */
+.view-trends,
+.view-meals {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.trend-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-top: 8px;
+}
+
+.trend-kpis {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+
+.trend-kpi {
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  font-size: 0.86rem;
+}
+
+.macro-bars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.macro-bar-card {
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  font-size: 0.84rem;
+}
+
+.macro-bar-track {
+  height: 7px;
+  border-radius: 999px;
+  background: var(--surface);
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.macro-bar-fill {
+  height: 100%;
+  background: var(--accent);
+}
