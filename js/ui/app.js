@@ -1524,6 +1524,14 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
   currentDefs = currentDefs ?? defs;
 
   root.querySelector('#profile-editor').addEventListener('change', (e) => {
+    if (e.target.matches('[name=token]')) {
+      const panel = root.querySelector('#profile-editor');
+      const countEl = panel.querySelector('#profile-owned-count');
+      const total = panel.querySelectorAll('[name=token]').length;
+      const checked = panel.querySelectorAll('[name=token]:checked').length;
+      if (countEl) countEl.textContent = `${checked} of ${total} selected.`;
+      return;
+    }
     const sel = e.target.closest('#settings-profile-select');
     if (!sel) return;
     const val = sel.value;
@@ -1534,6 +1542,17 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
   });
 
   root.querySelector('#profile-editor').addEventListener('click', async (e) => {
+    const selAll = e.target.closest('#profile-select-all');
+    const deselAll = e.target.closest('#profile-deselect-all');
+    if (selAll || deselAll) {
+      const panel = root.querySelector('#profile-editor');
+      const boxes = panel.querySelectorAll('[name=token]');
+      boxes.forEach((cb) => { cb.checked = Boolean(selAll); });
+      const countEl = panel.querySelector('#profile-owned-count');
+      if (countEl) countEl.textContent = `${selAll ? boxes.length : 0} of ${boxes.length} selected.`;
+      return;
+    }
+
     const newBtn = e.target.closest('#profile-new');
     if (newBtn) {
       const panel = root.querySelector('#profile-editor');
@@ -2818,8 +2837,12 @@ export function renderProfileEditor(choices, { name = '', editingId = null, auth
     <label>Profile name
       <input type="text" id="profile-name" value="${esc(name)}" placeholder="My Gym" />
     </label>
-    <p class="note">${owned} of ${choices.length} selected. Presence, not quantity (ADR-014):
+    <p class="note"><span id="profile-owned-count">${owned} of ${choices.length} selected.</span> Presence, not quantity (ADR-014):
     tick what you have access to, not how much of it.</p>
+    <div class="storage-actions" style="margin: 4px 0 8px;">
+      <button type="button" id="profile-select-all" class="ghost">Select all</button>
+      <button type="button" id="profile-deselect-all" class="ghost">Deselect all</button>
+    </div>
     <ul class="token-list">
       ${choices.map((c) => `
         <li>
