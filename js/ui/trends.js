@@ -521,3 +521,89 @@ export function logMealFromPreset(appDb, presetId, date, mealSlot = null) {
     notes: row[6] || ''
   });
 }
+
+/**
+ * Query every logged set for one exercise, newest first, grouped by date (#71).
+ */
+export function queryHistoryPerLift(appDb, exerciseId) {
+  const rows = appDb.exec(`
+    SELECT
+      ws.id AS session_id,
+      ws.date,
+      ws.title,
+      ls.weight_kg,
+      ls.reps,
+      ls.duration_sec,
+      ls.rir,
+      ls.set_type,
+      ls.is_complete,
+      ls.is_pr,
+      ls.notes
+    FROM logged_sets ls
+    JOIN workout_sessions ws ON ws.id = ls.session_id
+    WHERE ls.exercise_id = ?
+    ORDER BY ws.date DESC, ls.order_index ASC
+  `, [exerciseId])[0]?.values ?? [];
+
+  const groups = [];
+  const byDate = new Map();
+  for (const [sessionId, date, title, weightKg, reps, durationSec, rir, setType, isComplete, isPr, notes] of rows) {
+    const key = `${date}::${sessionId}`;
+    let g = byDate.get(key);
+    if (!g) {
+      g = { sessionId, date, title, sets: [] };
+      byDate.set(key, g);
+      groups.push(g);
+    }
+    g.sets.push({
+      weightKg: weightKg !== null ? Number(weightKg) : null,
+      reps: reps !== null ? Number(reps) : null,
+      durationSec: durationSec !== null ? Number(durationSec) : null,
+      rir: rir !== null ? Number(rir) : null,
+      setType: setType || 'working',
+      isComplete: Boolean(isComplete),
+      isPr: Boolean(isPr),
+      notes: notes || ''
+    });
+  }
+  return groups;
+}
+
+/**
+ * Query recent RIR values and per-lift active-epoch series for deload evaluation (#70).
+ */
+export function queryDeloadInputs(appDb, { days = 14 } = {}) {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - Number(days));
+  const cutoffStr = cutoff.toISOString().slice(0, 10);
+
+  const rirRows = appDb.exec(`
+    SELECT ls.rir
+    FROM logged_sets ls
+    JOIN workout_sessions ws ON ws.id = ls.session_id
+    WHERE ls.is_complete = 1
+      AND ls.rir IS NOT NULL
+      AND ws.date >= ?
+  `, [cutoffStr])[0]?.values ?? [];
+  const recentRirs = rirRows.map((r) => Number(r[0]));
+
+  const perfRows = appDb.exec(`
+    SELECT p.exercise_id, COALESCE(e.name, p.exercise_id), p.value_primary
+    FROM performance_records p
+    JOIN exercises e ON e.id = p.exercise_id
+    WHERE p.epoch = e.active_epoch
+      AND p.record_type = 'e1rm'
+    ORDER BY p.date ASC, p.created_at ASC
+  `)[0]?.values ?? [];
+
+  const byLift = new Map();
+  for (const [exId, exName, val] of perfRows) {
+    if (!byLift.has(exId)) byLift.set(exId, { exerciseId: exId, exerciseName: exName, values: [] });
+    byLift.get(exId).values.push(Number(val));
+  }
+
+  return {
+    recentRirs,
+    liftSeries: [...byLift.values()]
+  };
+}

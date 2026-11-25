@@ -35,6 +35,7 @@ import {
   DEFAULT_PLATES_KG
 } from '../engine/plate-math.js';
 import { prescribeWarmup } from '../engine/warmup.js';
+import { evaluateDeloadTriggers } from '../engine/deload.js';
 import * as db from '../storage/db.js';
 import {
   emptyState, putPlan, toExportJSON, fromImportJSON, toCSV, replaceImportedSets,
@@ -108,6 +109,8 @@ import {
   queryWeeklyWorkouts,
   queryBodyweightTrend,
   queryTrainingBias,
+  queryHistoryPerLift,
+  queryDeloadInputs,
   addBodyMetric,
   renderSvgLineChart,
   renderSvgBarChart,
@@ -2419,6 +2422,47 @@ export function mount(root, defs) {
       isPr: false
     }));
 
+    const liftHistory = queryHistoryPerLift(appDb, selectedTrendExerciseId);
+    const liftHistoryHtml = liftHistory.length
+      ? liftHistory.slice(0, 20).map((g) => `
+          <div class="logger-set-row" style="margin-bottom:6px;">
+            <div class="logger-set-top">
+              <strong>${esc(g.date)}</strong>
+              <span class="note">${esc(g.title)}</span>
+            </div>
+            <p class="note" style="margin:2px 0 0;">
+              ${g.sets.map((st, idx) => {
+                const val = st.durationSec
+                  ? `${st.durationSec}s`
+                  : `${formatDisplayWeight(st.weightKg, unit)} × ${st.reps ?? 0}`;
+                const rirTxt = st.rir != null ? ` @ RIR ${st.rir}` : '';
+                const prTxt = st.isPr ? ' 🏆' : '';
+                return `S${idx + 1}: ${esc(val + rirTxt + prTxt)}`;
+              }).join(' · ')}
+            </p>
+          </div>
+        `).join('')
+      : '<p class="note" style="margin:6px 0 0;">No sets logged for this exercise yet.</p>';
+
+    const deloadInputs = queryDeloadInputs(appDb, { days: 14 });
+    const activePlanVol = current?.weeks?.[0]?.volume;
+    const weeklyVolList = activePlanVol
+      ? Object.entries(activePlanVol).map(([muscle, sets]) => {
+          const lm = defs.landmarks?.find((l) => l.muscle === muscle);
+          return { muscle, sets: Number(sets || 0), mrv: Number(lm?.mrv || 0) };
+        })
+      : [];
+    const deloadEval = evaluateDeloadTriggers(defs.progression.deloadTriggers, {
+      ...deloadInputs,
+      weeklyVolume: weeklyVolList
+    });
+    const deloadHtml = deloadEval.triggers.map((t) => {
+      const badge = t.status === 'unevaluable'
+        ? 'Unevaluable'
+        : (t.triggered ? '⚠️ Triggered' : '✓ OK');
+      return `<li><strong>${esc(t.id)}</strong> [${badge}] — ${esc(t.reason)}</li>`;
+    }).join('');
+
     viewTrends.innerHTML = `
       <div class="card">
         <h2 style="margin:0 0 8px;">Date Range</h2>
@@ -2458,6 +2502,17 @@ export function mount(root, defs) {
           <div class="trend-kpi"><strong>Active Baseline (Epoch ${trend.activeEpoch}):</strong> ${esc(epochBestDisp + unitSuffix)}</div>
         </div>
         ${renderSvgLineChart(chartPoints, { unitSuffix })}
+        <details style="margin-top:10px;">
+          <summary class="note" style="cursor:pointer; font-weight:600;">History Per Lift (${liftHistory.length} sessions)</summary>
+          <div style="margin-top:8px;">${liftHistoryHtml}</div>
+        </details>
+      </div>
+
+      <div class="card">
+        <h2 style="margin:0 0 6px;">Deload Trigger Status ${deloadEval.anyTriggered ? '⚠️' : ''}</h2>
+        <ul style="margin:6px 0 0; padding-left:18px; font-size:0.86rem;">
+          ${deloadHtml}
+        </ul>
       </div>
 
       <div class="card">
@@ -4164,6 +4219,14 @@ export function renderSession(session, w, s, style) {
         ? `<ul class="blocks">${session.blocks.map((block, b) => renderBlock(block, w, s, b, session.domain)).join('')}</ul>`
         : emptySession(session)}
       ${renderOmitted(session.omitted)}
+      ${session.blockedByGates?.length ? `
+        <details class="blocked-gates" style="margin-top:8px;">
+          <summary class="note" style="cursor:pointer;">${session.blockedByGates.length} exercise(s) gated by skill/safety</summary>
+          <ul class="note" style="margin:4px 0 0; padding-left:18px;">
+            ${session.blockedByGates.map((g) => `<li><strong>${esc(g.id)}</strong>: ${esc(g.reason)}</li>`).join('')}
+          </ul>
+        </details>
+      ` : ''}
       <p class="meta">${domainMeta}${timing ? ` · ${timing}` : ''}</p>
     </article>`;
 }
