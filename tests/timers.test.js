@@ -74,4 +74,36 @@ describe('Workout, Rest & Conditioning Timers (#107)', () => {
     assert.equal(forTime.displayClock, '04:05');
     assert.equal(forTime.completed, false);
   });
+
+  test('computeConditioningState steps through timed circuit stations with work, rest, and round transitions', () => {
+    const cfg = {
+      mode: 'circuit',
+      rounds: 2,
+      stations: [
+        { name: 'Walking', workSec: 30, restSec: 15 },
+        { name: 'Wall Sit', workSec: 30, restSec: 15 }
+      ]
+    };
+
+    const s1Work = computeConditioningState(cfg, 25);
+    assert.equal(s1Work.phase, 'work');
+    assert.equal(s1Work.currentRound, 1);
+    assert.equal(s1Work.currentMovement, 'Walking');
+    assert.equal(s1Work.nextMovement, 'Rest');
+    assert.equal(s1Work.phaseRemaining, 5);
+
+    const s1Rest = computeConditioningState(cfg, 40);
+    assert.equal(s1Rest.phase, 'rest');
+    assert.equal(s1Rest.currentMovement, 'Rest');
+    assert.equal(s1Rest.nextMovement, 'Wall Sit');
+    assert.equal(s1Rest.phaseRemaining, 5);
+
+    const s2Work = computeConditioningState(cfg, 45);
+    assert.equal(s2Work.phase, 'work');
+    assert.equal(s2Work.currentMovement, 'Wall Sit');
+
+    const done = computeConditioningState(cfg, 165);
+    assert.equal(done.completed, true);
+    assert.equal(done.phase, 'done');
+  });
 });

@@ -1982,15 +1982,22 @@ export function mount(root, defs) {
       if (wodTimer.prepEndMs > 0) {
         const prepRem = Math.max(0, Math.ceil((wodTimer.prepEndMs - now) / 1000));
         wodTimer.prepRemainingSec = prepRem;
+        const firstLabel = wodTimer.config.stations?.[0]?.name || wodTimer.config.movements?.[0] || wodTimer.config.mode?.toUpperCase() || 'workout';
         if (prepRem > 0) {
           if (clockEl) clockEl.textContent = `GET READY · ${prepRem}`;
-          if (roundEl) roundEl.textContent = 'Prep Countdown';
+          if (roundEl) roundEl.textContent = `Next: ${firstLabel}`;
           if (toggleBtn) toggleBtn.textContent = '⏹ Cancel Prep';
           if (prepRem !== wodTimer.lastPrepSpoken) {
+            const isFirstTick = wodTimer.lastPrepSpoken === null;
             wodTimer.lastPrepSpoken = prepRem;
             playTimerBeep(660, 90);
-            if (prepRem <= 5) speakAnnouncement(String(prepRem), voiceEnabled);
-            else if (prepRem === 10) speakAnnouncement('10 seconds', voiceEnabled);
+            if (isFirstTick && prepRem > 1) {
+              speakAnnouncement(`${firstLabel} in ${prepRem}`, voiceEnabled);
+            } else if (prepRem <= 5) {
+              speakAnnouncement(String(prepRem), voiceEnabled);
+            } else if (prepRem === 10) {
+              speakAnnouncement('10 seconds', voiceEnabled);
+            }
           }
           return;
         }
@@ -1999,9 +2006,11 @@ export function mount(root, defs) {
         wodTimer.lastPrepSpoken = null;
         wodTimer.startedMs = now;
         wodTimer.running = true;
+        wodTimer.lastRound = 1;
+        wodTimer.lastPhase = 'work';
         if (toggleBtn) toggleBtn.textContent = '⏸ Pause';
         playTimerBeep(990, 220);
-        speakAnnouncement(`Starting ${wodTimer.config?.mode?.toUpperCase() || 'workout'}. Go`, voiceEnabled);
+        speakAnnouncement('Begin', voiceEnabled);
       }
 
       const elapsed = getWodElapsedSec(now);
@@ -2017,12 +2026,18 @@ export function mount(root, defs) {
       if (nextEl) nextEl.textContent = st.nextMovement;
 
       if (wodTimer.running) {
-        if (wodTimer.lastRound !== null && st.currentRound !== wodTimer.lastRound) {
+        const isTimedCircuit = wodTimer.config.mode === 'circuit' && Array.isArray(wodTimer.config.stations) && wodTimer.config.stations.length > 0;
+        if (wodTimer.lastPhase && st.phase !== wodTimer.lastPhase) {
+          if (st.phase === 'rest') {
+            playTimerBeep(520, 160);
+            speakAnnouncement(isTimedCircuit ? 'Rest' : `Rest. Next: ${st.nextMovement}`, voiceEnabled);
+          } else if (st.phase === 'work') {
+            playTimerBeep(880, 160);
+            speakAnnouncement(isTimedCircuit ? 'Begin' : st.currentMovement, voiceEnabled);
+          }
+        } else if (wodTimer.lastRound !== null && st.currentRound !== wodTimer.lastRound && !isTimedCircuit) {
           playTimerBeep(880, 160);
           speakAnnouncement(`Round ${st.currentRound}. ${st.currentMovement}`, voiceEnabled);
-        } else if (wodTimer.lastPhase && st.phase !== wodTimer.lastPhase && st.phase === 'rest') {
-          playTimerBeep(520, 160);
-          speakAnnouncement(`Rest. Next: ${st.nextMovement}`, voiceEnabled);
         }
         wodTimer.lastRound = st.currentRound;
         wodTimer.lastPhase = st.phase;
@@ -2030,13 +2045,25 @@ export function mount(root, defs) {
         const pRem = st.phaseRemaining;
         if (pRem !== null && pRem !== wodTimer.lastSpokenSec) {
           wodTimer.lastSpokenSec = pRem;
-          if (pRem === 10) speakAnnouncement('10 seconds', voiceEnabled);
-          else if (pRem === 3 || pRem === 2 || pRem === 1) playTimerBeep(660, 80);
-          else if (st.completed) {
+          if (st.completed) {
             wodTimer.running = false;
             wodTimer.accumulatedSec = elapsed;
             playTimerBeep(1040, 300);
             speakAnnouncement('Workout complete', voiceEnabled);
+          } else if (isTimedCircuit) {
+            if (pRem === 5) {
+              const target = st.phase === 'rest'
+                ? st.nextMovement
+                : (st.nextMovement === 'Finish' ? 'Finish' : st.nextMovement);
+              playTimerBeep(660, 80);
+              speakAnnouncement(`${target} in 5`, voiceEnabled);
+            } else if (pRem >= 1 && pRem <= 4) {
+              playTimerBeep(660, 70);
+              speakAnnouncement(String(pRem), voiceEnabled);
+            }
+          } else {
+            if (pRem === 10) speakAnnouncement('10 seconds', voiceEnabled);
+            else if (pRem === 3 || pRem === 2 || pRem === 1) playTimerBeep(660, 80);
           }
         }
       }
@@ -2076,12 +2103,20 @@ export function mount(root, defs) {
     const condBlock = blocks.find((b) => ['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(b.blockType));
     if (condBlock && wodTimer.blockId !== condBlock.id) {
       const mvLabels = [];
+      const stations = [];
       const seenMv = new Set();
       for (const st of condBlock.sets) {
         if (!seenMv.has(st.exerciseId)) {
           seenMv.add(st.exerciseId);
           const repTxt = st.reps ? `${st.reps} ` : (st.durationSec ? `${st.durationSec}s ` : '');
           mvLabels.push(`${repTxt}${st.exerciseName}`);
+          if (condBlock.blockType === 'circuit' && st.durationSec > 0) {
+            stations.push({
+              name: st.exerciseName,
+              workSec: Number(st.durationSec),
+              restSec: st.restSec != null ? Number(st.restSec) : 15
+            });
+          }
         }
       }
       wodTimer = {
@@ -2091,7 +2126,8 @@ export function mount(root, defs) {
           rounds: condBlock.roundsTarget,
           intervalSec: 60,
           timeCapSec: condBlock.timeCapSec,
-          movements: mvLabels
+          movements: mvLabels,
+          stations
         },
         running: false,
         startedMs: 0,

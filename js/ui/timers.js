@@ -124,7 +124,69 @@ export function computeConditioningState(config, elapsedSec) {
     };
   }
 
-  // for_time / circuit
+  // timed circuit with per-station work/rest intervals
+  if (mode === 'circuit' && Array.isArray(config.stations) && config.stations.length > 0) {
+    const stations = config.stations.map((s) => ({
+      name: s.name || 'Work',
+      workSec: Math.max(5, Number(s.workSec || 30)),
+      restSec: Math.max(0, Number(s.restSec ?? 15))
+    }));
+    const totalRounds = Math.max(1, Number(config.rounds || 1));
+    const timeline = [];
+    for (let r = 1; r <= totalRounds; r++) {
+      for (let i = 0; i < stations.length; i++) {
+        const st = stations[i];
+        timeline.push({ round: r, stationIdx: i, phase: 'work', name: st.name, duration: st.workSec });
+        const isVeryLast = r === totalRounds && i === stations.length - 1;
+        if (st.restSec > 0 && !isVeryLast) {
+          timeline.push({ round: r, stationIdx: i, phase: 'rest', name: 'Rest', duration: st.restSec });
+        }
+      }
+    }
+    const totalSec = timeline.reduce((sum, seg) => sum + seg.duration, 0);
+    const completed = elapsed >= totalSec;
+    if (completed) {
+      return {
+        mode,
+        completed: true,
+        phase: 'done',
+        displayClock: '00:00',
+        totalClock: '00:00',
+        currentRound: totalRounds,
+        totalRounds,
+        phaseRemaining: 0,
+        currentMovement: 'Complete',
+        nextMovement: 'Finished'
+      };
+    }
+
+    let cursor = 0;
+    for (let idx = 0; idx < timeline.length; idx++) {
+      const seg = timeline[idx];
+      if (elapsed < cursor + seg.duration) {
+        const phaseRemaining = (cursor + seg.duration) - elapsed;
+        const nextSeg = timeline[idx + 1] ?? null;
+        const nextMovement = nextSeg
+          ? (nextSeg.phase === 'rest' ? 'Rest' : nextSeg.name)
+          : 'Finish';
+        return {
+          mode,
+          completed: false,
+          phase: seg.phase,
+          displayClock: formatClock(phaseRemaining),
+          totalClock: formatClock(Math.max(0, totalSec - elapsed)),
+          currentRound: seg.round,
+          totalRounds,
+          phaseRemaining,
+          currentMovement: seg.name,
+          nextMovement
+        };
+      }
+      cursor += seg.duration;
+    }
+  }
+
+  // for_time / untimed circuit
   const cap = config.timeCapSec ? Number(config.timeCapSec) : null;
   const completed = cap ? elapsed >= cap : false;
   return {
