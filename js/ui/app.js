@@ -390,7 +390,7 @@ export function mount(root, defs) {
     <header class="app-bar">
       <div class="app-brand">
         <button type="button" id="nav-menu-btn" class="ghost icon-button nav-menu-btn" aria-label="Open navigation menu" aria-expanded="false">☰</button>
-        <button type="button" id="top-workout-back-btn" class="ghost icon-button" aria-label="Back" hidden>←</button>
+        <button type="button" id="top-workout-back-btn" class="ghost logger-mini-btn" aria-label="Back" hidden>← Workout</button>
         <button type="button" id="top-exercises-btn" class="ghost logger-mini-btn" hidden>☰ Exercises</button>
         <h1 id="nav-current-label" class="app-title">Workout Log</h1>
         <span id="top-exercise-type" class="note" hidden></span>
@@ -2819,6 +2819,7 @@ export function mount(root, defs) {
       if (navCurrentLabel && activeTab === 'logger') navCurrentLabel.textContent = exName;
       if (topWorkoutBackBtn) {
         topWorkoutBackBtn.hidden = activeTab !== 'logger';
+        topWorkoutBackBtn.textContent = '← Workout';
         topWorkoutBackBtn.title = 'Back to Workout';
       }
       if (topExercisesBtn) {
@@ -2921,6 +2922,7 @@ export function mount(root, defs) {
     if (navCurrentLabel && activeTab === 'logger') navCurrentLabel.textContent = session.title || TAB_TITLES.logger;
     if (topWorkoutBackBtn) {
       topWorkoutBackBtn.hidden = activeTab !== 'logger';
+      topWorkoutBackBtn.textContent = '← Log';
       topWorkoutBackBtn.title = 'Back to Log';
     }
     if (topExercisesBtn) topExercisesBtn.hidden = true;
