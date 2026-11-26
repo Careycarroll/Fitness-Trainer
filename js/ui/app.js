@@ -25,6 +25,7 @@
 import { generate, CoverageError } from '../engine/index.js';
 import { rankSubstitutes } from '../engine/substitution.js';
 import { canTransition, nextFeasiblePoses } from '../engine/mobilityDomain.js';
+import { mountExerciseAnimation } from './animator.js';
 import { allSetGroups, setGroupAt, makeSetGroup, sessionFatigue } from '../engine/blocks.js';
 import { volumeConcerns, resolveLandmarks } from '../engine/volume.js';
 import {
@@ -151,11 +152,18 @@ const HAS_INSTRUCTIONS = new Set(instructionSlugs.slugs ?? []);
  * available offline (ADR-001) without sitting on the cold-start path.
  */
 let instructionPromise = null;
+let animationPromise = null;
 
 function loadInstructions() {
   instructionPromise ??= import('../data/instructions.json', { with: { type: 'json' } })
     .then((m) => m.default.instructions ?? {});
   return instructionPromise;
+}
+
+function loadAnimations() {
+  animationPromise ??= import('../data/animations.json', { with: { type: 'json' } })
+    .then((m) => m.default ?? {});
+  return animationPromise;
 }
 
 /**
@@ -174,9 +182,17 @@ async function fillInstructions(summary) {
   if (!list) return;
 
   try {
-    const all = await loadInstructions();
+    const [all, anims] = await Promise.all([loadInstructions(), loadAnimations()]);
     const exId = summary.dataset.howto;
     const entry = all[exId];
+    const exObj = currentDefs?.exercises?.find((x) => x.id === exId) ?? { id: exId };
+    const animSpec = anims?.exercises?.[exId] ?? anims?.families?.[exObj.exerciseFamily];
+    if (animSpec && !details.querySelector('.howto-anim')) {
+      const animDiv = document.createElement('div');
+      animDiv.className = 'howto-anim';
+      list.before(animDiv);
+      mountExerciseAnimation(animDiv, exObj, animSpec);
+    }
     const baseUrl = (typeof import.meta !== 'undefined' && import.meta.env?.BASE_URL) || '/';
     if (!details.querySelector('.howto-images')) {
       const imgs = document.createElement('div');
@@ -188,7 +204,7 @@ async function fillInstructions(summary) {
     }
     list.innerHTML = entry?.steps?.length
       ? entry.steps.map((s) => `<li>${esc(s)}</li>`).join('')
-      : '<li class="note">No instructions recorded for this exercise.</li>';
+      : (animSpec ? '' : '<li class="note">No instructions recorded for this exercise.</li>');
   } catch (err) {
     details.dataset.filled = '';
     list.innerHTML = `<li class="note">Could not load instructions: ${esc(err.message)}</li>`;
@@ -5187,7 +5203,7 @@ function renderSetGroup(group, w, s, b, g, domain, blockType, rounds, allowSwap 
   // #63. Rendered ONLY where text exists — 99 of 307 rows today. A disclosure
   // on the other 208 would open onto an apology, and the review pass fills them
   // in over time rather than all at once.
-  const howto = HAS_INSTRUCTIONS.has(group.exerciseId)
+  const howto = (HAS_INSTRUCTIONS.has(group.exerciseId) || group.exerciseFamily)
     ? `<details class="howto">
         <summary data-howto="${esc(group.exerciseId)}">How to perform</summary>
         <ol class="howto-steps"><li class="note">Loading…</li></ol>
