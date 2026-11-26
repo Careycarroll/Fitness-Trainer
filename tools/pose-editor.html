@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fitness Trainer — Pose & Keyframe Editor</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --border: #334155;
+      --fg: #f1f5f9;
+      --muted: #94a3b8;
+      --primary: #3b82f6;
+      --primary-fg: #ffffff;
+      --code-bg: #0b1120;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --border: #cbd5e1;
+        --fg: #0f172a;
+        --muted: #475569;
+        --primary: #2563eb;
+        --primary-fg: #ffffff;
+        --code-bg: #f1f5f9;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      font-size: 14px;
+    }
+    .wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+    .group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .btn, select {
+      padding: 6px 11px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--fg);
+    }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-primary {
+      background: var(--primary);
+      color: var(--primary-fg);
+      border-color: var(--primary);
+    }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card);
+      display: flex;
+      flex-wrap: wrap;
+      overflow: hidden;
+    }
+    .canvas-pane {
+      padding: 16px;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid var(--border);
+    }
+    canvas {
+      display: block;
+      touch-action: none;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      cursor: crosshair;
+    }
+    .controls-pane {
+      flex: 1;
+      min-width: 280px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+    .kf-list { display: flex; gap: 6px; flex-wrap: wrap; }
+    .kf-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+    }
+    .kf-pill.active {
+      background: var(--primary);
+      color: var(--primary-fg);
+      border-color: var(--primary);
+      font-weight: 600;
+    }
+    .hint { font-size: 12px; color: var(--muted); margin: 8px 0 0; }
+    label.inline { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); cursor: pointer; }
+    input[type="number"] {
+      width: 68px;
+      padding: 4px 6px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--fg);
+      font-size: 12px;
+    }
+    textarea {
+      width: 100%;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--code-bg);
+      color: var(--fg);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      resize: vertical;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="toolbar">
+    <div class="group">
+      <strong>Pose &amp; Keyframe Editor</strong>
+      <select id="presetSelect" onchange="loadPreset(this.value)">
+        <option value="">Load starter pose…</option>
+        <option value="standing">Standing Neutral</option>
+        <option value="squat">Barbell Squat (2 kf)</option>
+        <option value="cobra_dog">Cobra → Down Dog (4 kf)</option>
+        <option value="row">Dumbbell Row (2 kf)</option>
+      </select>
+      <select id="propSelect" onchange="state.prop=this.value; renderKfUI(); draw()">
+        <option value="none">Prop: None</option>
+        <option value="barbell">Prop: Barbell</option>
+        <option value="dumbbell">Prop: Dumbbell</option>
+        <option value="bench">Prop: Bench + DB</option>
+        <option value="mat">Prop: Yoga Mat</option>
+      </select>
+      <button class="btn" onclick="flipFacing()">Flip Facing</button>
+    </div>
+    <label class="inline">
+      <input type="checkbox" id="handlesToggle" checked onchange="showHandles=this.checked; draw()" />
+      Joint handles
+    </label>
+  </div>
+
+  <div class="card">
+    <div class="canvas-pane">
+      <canvas id="editorCanvas" width="300" height="300"></canvas>
+      <p class="hint">Drag cyan dot to move hip · Drag white/grey dots to rotate</p>
+    </div>
+
+    <div class="controls-pane">
+      <div class="row">
+        <div class="group">
+          <button id="playBtn" class="btn btn-primary" onclick="togglePlay()">▶ Play Loop</button>
+          <label class="inline">
+            Duration (ms)
+            <input id="durInput" type="number" min="800" max="10000" step="200" value="3200"
+              onchange="state.duration=Number(this.value)||3200; renderKfUI()" />
+          </label>
+        </div>
+      </div>
+
+      <div>
+        <div class="row" style="margin-bottom: 6px;">
+          <span style="font-size:12px; font-weight:600;">Keyframes</span>
+          <div class="group">
+            <button class="btn" onclick="addKeyframe()">+ Add</button>
+            <button id="resetPrevBtn" class="btn" onclick="resetToPrevKeyframe()" title="Reset current keyframe to the previous keyframe's pose">Reset to Prev KF</button>
+            <button class="btn" onclick="deleteKeyframe()">Delete</button>
+          </div>
+        </div>
+        <div id="kfList" class="kf-list"></div>
+      </div>
+
+      <div class="row" style="font-size:12px;">
+        <span style="color:var(--muted);">Selected: <strong id="selJoint" style="color:var(--fg);">none</strong></span>
+        <button class="btn" onclick="syncBackLimbs()">Match Far Limbs</button>
+      </div>
+
+      <div>
+        <div class="row" style="margin-bottom: 6px;">
+          <span style="font-size:12px; font-weight:600;">Pose JSON</span>
+          <div class="group">
+            <button class="btn" onclick="importJson()">Load JSON</button>
+            <button id="copyBtn" class="btn btn-primary" onclick="copyJson()">Copy JSON</button>
+          </div>
+        </div>
+        <textarea id="jsonBox" rows="8" spellcheck="false"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const PI = Math.PI;
+const RAD = PI / 180;
+const DEG = 180 / PI;
+
+const LEN = { torso: 52, head: 14, thigh: 41, shin: 41, foot: 13, uArm: 26, fArm: 24 };
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+function lerpAngle(a, b, t) {
+  const diff = ((((b - a) % 360) + 540) % 360) - 180;
+  return a + diff * t;
+}
+function easeInOut(t) { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
+function stepFrom(x, y, deg, len) {
+  return [x + Math.cos(deg * RAD) * len, y + Math.sin(deg * RAD) * len];
+}
+
+function palette() {
+  const isLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+  return isLight ? {
+    skin: '#d29b72', skinBack: '#b07b54',
+    top: '#2563eb', topBack: '#1e40af',
+    bottom: '#1e293b', bottomBack: '#0f172a',
+    shoe: '#334155', shoeBack: '#1e293b',
+    hair: '#2d2016',
+    gear: '#64748b', gearDark: '#334155',
+    bench: '#7c2d12', benchPad: '#1e293b',
+    mat: '#0d9488',
+    floor: 'rgba(0,0,0,0.16)'
+  } : {
+    skin: '#d29b72', skinBack: '#a5714c',
+    top: '#3b82f6', topBack: '#1d4ed8',
+    bottom: '#334155', bottomBack: '#1e293b',
+    shoe: '#475569', shoeBack: '#1e293b',
+    hair: '#2d2016',
+    gear: '#94a3b8', gearDark: '#475569',
+    bench: '#9a3412', benchPad: '#334155',
+    mat: '#14b8a6',
+    floor: 'rgba(255,255,255,0.16)'
+  };
+}
+
+function capsule(ctx, x1, y1, r1, x2, y2, r2, color) {
+  const a = Math.atan2(y2 - y1, x2 - x1);
+  const nx = Math.cos(a + PI / 2), ny = Math.sin(a + PI / 2);
+  ctx.beginPath();
+  ctx.moveTo(x1 + nx * r1, y1 + ny * r1);
+  ctx.lineTo(x2 + nx * r2, y2 + ny * r2);
+  ctx.arc(x2, y2, r2, a + PI / 2, a - PI / 2);
+  ctx.lineTo(x1 - nx * r1, y1 - ny * r1);
+  ctx.arc(x1, y1, r1, a - PI / 2, a + PI / 2);
+  ctx.closePath();
+  ctx.fillStyle = color;
+  ctx.fill();
+}
+
+function circle(ctx, x, y, r, color) {
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, PI * 2);
+  ctx.fillStyle = color;
+  ctx.fill();
+}
+
+function jointsOf(s) {
+  const hip = [s.hipX, s.hipY];
+  const sh = stepFrom(hip[0], hip[1], s.torso, LEN.torso);
+  const head = stepFrom(sh[0], sh[1], s.head, LEN.head);
+  const kneeB = stepFrom(hip[0], hip[1], s.thighB, LEN.thigh);
+  const ankleB = stepFrom(kneeB[0], kneeB[1], s.shinB, LEN.shin);
+  const footB = stepFrom(ankleB[0], ankleB[1], s.footB, LEN.foot);
+  const kneeF = stepFrom(hip[0], hip[1], s.thighF, LEN.thigh);
+  const ankleF = stepFrom(kneeF[0], kneeF[1], s.shinF, LEN.shin);
+  const footF = stepFrom(ankleF[0], ankleF[1], s.footF, LEN.foot);
+  const elbowB = stepFrom(sh[0], sh[1], s.uArmB, LEN.uArm);
+  const handB = stepFrom(elbowB[0], elbowB[1], s.fArmB, LEN.fArm);
+  const elbowF = stepFrom(sh[0], sh[1], s.uArmF, LEN.uArm);
+  const handF = stepFrom(elbowF[0], elbowF[1], s.fArmF, LEN.fArm);
+  return { hip, sh, head, kneeB, ankleB, footB, kneeF, ankleF, footF, elbowB, handB, elbowF, handF };
+}
+
+function drawHumanoid(ctx, s, prop) {
+  const p = palette();
+  const facing = s.facing ?? 1;
+  const j = jointsOf(s);
+
+  ctx.strokeStyle = p.floor; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(20, 260); ctx.lineTo(280, 260); ctx.stroke();
+
+  if (prop === 'mat') {
+    ctx.fillStyle = p.mat + '44'; ctx.fillRect(36, 254, 228, 6);
+    ctx.fillStyle = p.mat; ctx.fillRect(36, 258, 228, 3);
+  } else if (prop === 'bench') {
+    ctx.fillStyle = p.bench;
+    ctx.fillRect(84, 226, 6, 34); ctx.fillRect(184, 226, 6, 34);
+    ctx.fillStyle = p.benchPad;
+    ctx.beginPath(); ctx.roundRect(72, 214, 130, 13, 4); ctx.fill();
+  }
+
+  // Far limbs
+  capsule(ctx, j.sh[0], j.sh[1], 5.6, j.elbowB[0], j.elbowB[1], 4.4, p.topBack);
+  capsule(ctx, j.elbowB[0], j.elbowB[1], 4.2, j.handB[0], j.handB[1], 3.3, p.skinBack);
+  circle(ctx, j.handB[0], j.handB[1], 3.5, p.skinBack);
+  capsule(ctx, j.hip[0], j.hip[1], 8.2, j.kneeB[0], j.kneeB[1], 5.8, p.bottomBack);
+  capsule(ctx, j.kneeB[0], j.kneeB[1], 5.5, j.ankleB[0], j.ankleB[1], 3.8, p.skinBack);
+  capsule(ctx, j.ankleB[0], j.ankleB[1], 4.0, j.footB[0], j.footB[1], 3.4, p.shoeBack);
+
+  // Torso
+  capsule(ctx, j.hip[0], j.hip[1], 9.2, j.sh[0], j.sh[1], 11.0, p.top);
+  circle(ctx, j.hip[0], j.hip[1], 8.8, p.bottom);
+
+  // Head
+  capsule(ctx, j.sh[0], j.sh[1], 4.5, j.head[0], j.head[1], 4.5, p.skin);
+  circle(ctx, j.head[0], j.head[1], 10.5, p.skin);
+  const [nx, ny] = stepFrom(j.head[0], j.head[1], s.head + facing * 82, 10.8);
+  circle(ctx, nx, ny, 2.2, p.skin);
+  ctx.beginPath();
+  ctx.arc(j.head[0], j.head[1], 10.8, (s.head - 165 * facing) * RAD, (s.head - 15 * facing) * RAD, facing < 0);
+  ctx.fillStyle = p.hair; ctx.fill();
+
+  // Near leg
+  capsule(ctx, j.hip[0], j.hip[1], 8.6, j.kneeF[0], j.kneeF[1], 6.0, p.bottom);
+  capsule(ctx, j.kneeF[0], j.kneeF[1], 5.8, j.ankleF[0], j.ankleF[1], 4.0, p.skin);
+  capsule(ctx, j.ankleF[0], j.ankleF[1], 4.2, j.footF[0], j.footF[1], 3.6, p.shoe);
+
+  if (prop === 'barbell') {
+    const bx = j.sh[0] - 2 * facing, by = j.sh[1] - 4;
+    circle(ctx, bx, by, 17, p.gearDark);
+    circle(ctx, bx, by, 14, p.gear);
+    circle(ctx, bx, by, 3.5, p.gearDark);
+  }
+
+  // Near arm
+  capsule(ctx, j.sh[0], j.sh[1], 6.0, j.elbowF[0], j.elbowF[1], 4.6, p.top);
+  capsule(ctx, j.elbowF[0], j.elbowF[1], 4.4, j.handF[0], j.handF[1], 3.4, p.skin);
+  circle(ctx, j.handF[0], j.handF[1], 3.6, p.skin);
+
+  if (prop === 'dumbbell' || prop === 'bench') {
+    const [hx, hy] = j.handF;
+    ctx.fillStyle = p.gear; ctx.fillRect(hx - 11, hy - 2.5, 22, 5);
+    ctx.fillStyle = p.gearDark;
+    ctx.beginPath(); ctx.roundRect(hx - 14, hy - 8, 6, 16, 2); ctx.fill();
+    ctx.beginPath(); ctx.roundRect(hx + 8, hy - 8, 6, 16, 2); ctx.fill();
+  }
+
+  return j;
+}
+
+const PRESETS = {
+  standing: {
+    prop: 'none', duration: 2400,
+    keyframes: [{ facing: 1, hipX: 150, hipY: 172, torso: -90, head: -90, thighF: 90, shinF: 90, footF: 0, thighB: 92, shinB: 88, footB: 0, uArmF: 95, fArmF: 90, uArmB: 98, fArmB: 92 }]
+  },
+  squat: {
+    prop: 'barbell', duration: 3400,
+    keyframes: [
+      { facing: 1, hipX: 150, hipY: 172, torso: -88, head: -88, thighF: 92, shinF: 88, footF: 0, thighB: 94, shinB: 86, footB: 0, uArmF: 118, fArmF: -50, uArmB: 122, fArmB: -46 },
+      { facing: 1, hipX: 124, hipY: 214, torso: -50, head: -64, thighF: 8, shinF: 66, footF: 0, thighB: 10, shinB: 64, footB: 0, uArmF: 125, fArmF: -42, uArmB: 129, fArmB: -38 }
+    ]
+  },
+  cobra_dog: {
+    prop: 'mat', duration: 4600,
+    keyframes: [
+      { facing: -1, hipX: 148, hipY: 248, torso: -176, head: -165, thighF: 3, shinF: 2, footF: 85, uArmF: 142, fArmF: 12, uArmB: 145, fArmB: 15 },
+      { facing: -1, hipX: 148, hipY: 248, torso: -140, head: -122, thighF: 3, shinF: 2, footF: 85, uArmF: 110, fArmF: 88, uArmB: 112, fArmB: 90 },
+      { facing: -1, hipX: 148, hipY: 219, torso: -168, head: -164, thighF: 14, shinF: 16, footF: 88, uArmF: 94, fArmF: 90, uArmB: 96, fArmB: 92 },
+      { facing: -1, hipX: 148, hipY: 183, torso: 136, head: 136, thighF: 58, shinF: 62, footF: 0, uArmF: 136, fArmF: 136, uArmB: 138, fArmB: 138 }
+    ]
+  },
+  row: {
+    prop: 'bench', duration: 2600,
+    keyframes: [
+      { facing: 1, hipX: 116, hipY: 174, torso: -10, head: -12, thighF: 64, shinF: 94, footF: 0, thighB: 96, shinB: 180, footB: 180, uArmF: 88, fArmF: 90, uArmB: 90, fArmB: 90 },
+      { facing: 1, hipX: 116, hipY: 174, torso: -10, head: -12, thighF: 64, shinF: 94, footF: 0, thighB: 96, shinB: 180, footB: 180, uArmF: 162, fArmF: 95, uArmB: 90, fArmB: 90 }
+    ]
+  }
+};
+
+const state = {
+  prop: 'none',
+  duration: 3200,
+  activeKf: 0,
+  keyframes: JSON.parse(JSON.stringify(PRESETS.standing.keyframes))
+};
+
+let showHandles = true;
+let playing = false;
+let dragging = null;
+let startTime = null;
+let raf = null;
+
+const HANDLES = [
+  { key: 'hip',    color: '#06b6d4', label: 'hip',      parent: null,     prop: null },
+  { key: 'sh',     color: '#ffffff', label: 'torso',    parent: 'hip',    prop: 'torso' },
+  { key: 'head',   color: '#ffffff', label: 'head',     parent: 'sh',     prop: 'head' },
+  { key: 'kneeF',  color: '#ffffff', label: 'thigh',    parent: 'hip',    prop: 'thighF' },
+  { key: 'ankleF', color: '#ffffff', label: 'shin',     parent: 'kneeF',  prop: 'shinF' },
+  { key: 'footF',  color: '#ffffff', label: 'foot',     parent: 'ankleF', prop: 'footF' },
+  { key: 'elbowF', color: '#ffffff', label: 'upperArm', parent: 'sh',     prop: 'uArmF' },
+  { key: 'handF',  color: '#ffffff', label: 'forearm',  parent: 'elbowF', prop: 'fArmF' },
+  { key: 'kneeB',  color: '#94a3b8', label: 'farThigh', parent: 'hip',    prop: 'thighB' },
+  { key: 'ankleB', color: '#94a3b8', label: 'farShin',  parent: 'kneeB',  prop: 'shinB' },
+  { key: 'elbowB', color: '#94a3b8', label: 'farUArm',  parent: 'sh',     prop: 'uArmB' },
+  { key: 'handB',  color: '#94a3b8', label: 'farFArm',  parent: 'elbowB', prop: 'fArmB' }
+];
+
+function currentPose() { return state.keyframes[state.activeKf]; }
+
+function draw(poseOverride = null) {
+  const canvas = document.getElementById('editorCanvas');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const pose = poseOverride || currentPose();
+  const j = drawHumanoid(ctx, pose, state.prop);
+
+  if (showHandles && !playing) {
+    for (const h of HANDLES) {
+      const [x, y] = j[h.key];
+      ctx.beginPath();
+      ctx.arc(x, y, h.key === 'hip' ? 5.5 : 4.2, 0, PI * 2);
+      ctx.fillStyle = h.color;
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+  }
+}
+
+function renderKfUI() {
+  document.getElementById('kfList').innerHTML = state.keyframes.map((_, i) => `
+    <button class="kf-pill ${i === state.activeKf ? 'active' : ''}" onclick="selectKf(${i})">KF ${i + 1}</button>
+  `).join('');
+  document.getElementById('propSelect').value = state.prop;
+  document.getElementById('durInput').value = state.duration;
+  document.getElementById('resetPrevBtn').disabled = state.keyframes.length < 2;
+  document.getElementById('jsonBox').value = JSON.stringify({
+    prop: state.prop,
+    duration: state.duration,
+    keyframes: state.keyframes
+  }, null, 2);
+}
+
+function selectKf(i) {
+  if (playing) togglePlay();
+  state.activeKf = i;
+  renderKfUI();
+  draw();
+}
+
+function addKeyframe() {
+  if (playing) togglePlay();
+  const clone = JSON.parse(JSON.stringify(currentPose()));
+  state.keyframes.splice(state.activeKf + 1, 0, clone);
+  state.activeKf += 1;
+  renderKfUI();
+  draw();
+}
+
+function resetToPrevKeyframe() {
+  if (state.keyframes.length < 2) return;
+  if (playing) togglePlay();
+  const prevIdx = state.activeKf > 0 ? state.activeKf - 1 : state.keyframes.length - 1;
+  state.keyframes[state.activeKf] = JSON.parse(JSON.stringify(state.keyframes[prevIdx]));
+  renderKfUI();
+  draw();
+}
+
+function deleteKeyframe() {
+  if (state.keyframes.length <= 1) return;
+  if (playing) togglePlay();
+  state.keyframes.splice(state.activeKf, 1);
+  state.activeKf = Math.max(0, state.activeKf - 1);
+  renderKfUI();
+  draw();
+}
+
+function flipFacing() {
+  const s = currentPose();
+  s.facing = -(s.facing ?? 1);
+  renderKfUI();
+  draw();
+}
+
+function syncBackLimbs() {
+  const s = currentPose();
+  s.thighB = s.thighF + 2; s.shinB = s.shinF - 2; s.footB = s.footF;
+  s.uArmB = s.uArmF + 3; s.fArmB = s.fArmF + 3;
+  renderKfUI();
+  draw();
+}
+
+function loadPreset(name) {
+  if (!name || !PRESETS[name]) return;
+  if (playing) togglePlay();
+  const p = PRESETS[name];
+  state.prop = p.prop;
+  state.duration = p.duration;
+  state.keyframes = JSON.parse(JSON.stringify(p.keyframes));
+  state.activeKf = 0;
+  renderKfUI();
+  draw();
+  document.getElementById('presetSelect').value = '';
+}
+
+function copyJson() {
+  navigator.clipboard.writeText(document.getElementById('jsonBox').value);
+  const btn = document.getElementById('copyBtn');
+  btn.textContent = 'Copied!';
+  setTimeout(() => { btn.textContent = 'Copy JSON'; }, 1200);
+}
+
+function importJson() {
+  try {
+    const parsed = JSON.parse(document.getElementById('jsonBox').value);
+    if (Array.isArray(parsed.keyframes) && parsed.keyframes.length) {
+      if (playing) togglePlay();
+      state.prop = parsed.prop || 'none';
+      state.duration = parsed.duration || 3200;
+      state.keyframes = parsed.keyframes;
+      state.activeKf = 0;
+      renderKfUI();
+      draw();
+    }
+  } catch (e) { /* ignore invalid json */ }
+}
+
+const ANGLE_KEYS = new Set(['torso', 'head', 'thighF', 'shinF', 'footF', 'thighB', 'shinB', 'footB', 'uArmF', 'fArmF', 'uArmB', 'fArmB']);
+
+function loopFrame(ts) {
+  if (!startTime) startTime = ts;
+  const kfs = state.keyframes;
+  const n = kfs.length;
+  if (n < 2) { draw(); return; }
+  const t = ((ts - startTime) % state.duration) / state.duration;
+  const segFloat = t * n;
+  const i = Math.floor(segFloat) % n;
+  const next = (i + 1) % n;
+  const eased = easeInOut(segFloat - Math.floor(segFloat));
+  const a = kfs[i], b = kfs[next];
+  const pose = {};
+  for (const k of Object.keys(a)) {
+    pose[k] = ANGLE_KEYS.has(k)
+      ? lerpAngle(a[k], b[k], eased)
+      : (typeof a[k] === 'number' ? lerp(a[k], b[k], eased) : a[k]);
+  }
+  draw(pose);
+  if (playing) raf = requestAnimationFrame(loopFrame);
+}
+
+function togglePlay() {
+  playing = !playing;
+  document.getElementById('playBtn').textContent = playing ? '⏸ Stop' : '▶ Play Loop';
+  if (playing) {
+    startTime = null;
+    raf = requestAnimationFrame(loopFrame);
+  } else {
+    cancelAnimationFrame(raf);
+    draw();
+  }
+}
+
+const canvas = document.getElementById('editorCanvas');
+function canvasPos(e) {
+  const r = canvas.getBoundingClientRect();
+  return [(e.clientX - r.left) * (canvas.width / r.width), (e.clientY - r.top) * (canvas.height / r.height)];
+}
+
+canvas.addEventListener('pointerdown', (e) => {
+  if (playing || !showHandles) return;
+  const [mx, my] = canvasPos(e);
+  const j = jointsOf(currentPose());
+  let best = null, bestD = 16;
+  for (const h of HANDLES) {
+    const [jx, jy] = j[h.key];
+    const d = Math.hypot(mx - jx, my - jy);
+    if (d < bestD) { best = h; bestD = d; }
+  }
+  if (best) {
+    dragging = best;
+    document.getElementById('selJoint').textContent = best.label;
+    canvas.setPointerCapture(e.pointerId);
+  }
+});
+
+canvas.addEventListener('pointermove', (e) => {
+  if (!dragging) return;
+  const [mx, my] = canvasPos(e);
+  const s = currentPose();
+  if (dragging.key === 'hip') {
+    s.hipX = Math.round(mx);
+    s.hipY = Math.round(my);
+  } else {
+    const j = jointsOf(s);
+    const [px, py] = j[dragging.parent];
+    s[dragging.prop] = Math.round(Math.atan2(my - py, mx - px) * DEG);
+  }
+  draw();
+  document.getElementById('jsonBox').value = JSON.stringify({
+    prop: state.prop, duration: state.duration, keyframes: state.keyframes
+  }, null, 2);
+});
+
+canvas.addEventListener('pointerup', () => { dragging = null; });
+if (window.matchMedia) {
+  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => draw());
+}
+
+renderKfUI();
+draw();
+</script>
+</body>
+</html>
