@@ -391,7 +391,10 @@ export function mount(root, defs) {
       <div class="app-brand">
         <button type="button" id="nav-menu-btn" class="ghost icon-button nav-menu-btn" aria-label="Open navigation menu" aria-expanded="false">☰</button>
         <button type="button" id="top-workout-back-btn" class="ghost icon-button" aria-label="Back" hidden>←</button>
+        <button type="button" id="top-exercises-btn" class="ghost logger-mini-btn" hidden>☰ Exercises</button>
         <h1 id="nav-current-label" class="app-title">Workout Log</h1>
+        <span id="top-exercise-type" class="note" hidden></span>
+        <button type="button" id="top-info-btn" class="ghost logger-mini-btn" title="Exercise form &amp; instructions" hidden>ⓘ</button>
       </div>
 
       <div class="app-actions">
@@ -982,6 +985,9 @@ export function mount(root, defs) {
   const navDrawerClose = root.querySelector('#nav-drawer-close');
   const navCurrentLabel = root.querySelector('#nav-current-label');
   const topWorkoutBackBtn = root.querySelector('#top-workout-back-btn');
+  const topExercisesBtn = root.querySelector('#top-exercises-btn');
+  const topExerciseType = root.querySelector('#top-exercise-type');
+  const topInfoBtn = root.querySelector('#top-info-btn');
   const wodForm = root.querySelector('#wod-form');
   const wodOut = root.querySelector('#wod-out');
   const viewLog = root.querySelector('#view-log');
@@ -1036,6 +1042,18 @@ export function mount(root, defs) {
       }
     });
   }
+  if (topExercisesBtn) {
+    topExercisesBtn.addEventListener('click', () => {
+      loggerDrawerOpen = !loggerDrawerOpen;
+      renderActiveLogger();
+    });
+  }
+  if (topInfoBtn) {
+    topInfoBtn.addEventListener('click', () => {
+      activeLoggerSubTab = 'info';
+      renderActiveLogger();
+    });
+  }
   if (navDrawerClose) navDrawerClose.addEventListener('click', closeDrawer);
   if (navDrawerBackdrop) navDrawerBackdrop.addEventListener('click', closeDrawer);
 
@@ -1061,6 +1079,9 @@ export function mount(root, defs) {
     activeMode = tabName === 'wod' ? 'wod' : 'planner';
     if (navCurrentLabel) navCurrentLabel.textContent = TAB_TITLES[tabName] || tabName;
     if (topWorkoutBackBtn) topWorkoutBackBtn.hidden = tabName !== 'logger';
+    if (topExercisesBtn) topExercisesBtn.hidden = !(tabName === 'logger' && activeLoggerExercise);
+    if (topExerciseType) topExerciseType.hidden = !(tabName === 'logger' && activeLoggerExercise);
+    if (topInfoBtn) topInfoBtn.hidden = !(tabName === 'logger' && activeLoggerExercise);
     navTabs.forEach((t) => {
       const isSelected = t.dataset.tab === tabName;
       t.classList.toggle('selected', isSelected);
@@ -2800,18 +2821,18 @@ export function mount(root, defs) {
         topWorkoutBackBtn.hidden = activeTab !== 'logger';
         topWorkoutBackBtn.title = 'Back to Workout';
       }
-      if (topWorkoutBackBtn) topWorkoutBackBtn.hidden = true;
-    viewLogger.innerHTML = `
+      if (topExercisesBtn) {
+        topExercisesBtn.hidden = activeTab !== 'logger';
+        topExercisesBtn.textContent = `☰ Exercises (${workoutExercises.length})`;
+      }
+      if (topExerciseType) {
+        topExerciseType.hidden = activeTab !== 'logger';
+        topExerciseType.textContent = typeLabel;
+      }
+      if (topInfoBtn) topInfoBtn.hidden = activeTab !== 'logger';
+      viewLogger.innerHTML = `
         ${timerBarHtml}
         <div class="card logger-sub-card">
-          <div class="logger-sub-bar">
-            <button type="button" id="logger-drawer-btn" class="ghost logger-mini-btn">☰ Exercises (${workoutExercises.length})</button>
-            <div style="flex:1; min-width:140px;">
-              <strong style="font-size:1.05rem;">${esc(exName)}</strong>
-              <span class="note" style="margin-left:6px;">${esc(typeLabel)}</span>
-            </div>
-            <button type="button" class="ghost logger-mini-btn" data-logger-subtab="info" title="Exercise form & instructions">ⓘ</button>
-          </div>
           ${drawerHtml}
           <div class="logger-sub-tabs">
             <button type="button" class="logger-sub-tab${activeLoggerSubTab === 'track' ? ' active' : ''}" data-logger-subtab="track">Track</button>
@@ -2902,6 +2923,9 @@ export function mount(root, defs) {
       topWorkoutBackBtn.hidden = activeTab !== 'logger';
       topWorkoutBackBtn.title = 'Back to Log';
     }
+    if (topExercisesBtn) topExercisesBtn.hidden = true;
+    if (topExerciseType) topExerciseType.hidden = true;
+    if (topInfoBtn) topInfoBtn.hidden = true;
     viewLogger.innerHTML = `
       ${timerBarHtml}
 
