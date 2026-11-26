@@ -373,10 +373,11 @@ const PRESETS = {
     keyframes: [{ facing: 1, hipX: 150, hipY: 172, torso: -90, head: -90, thighF: 90, shinF: 90, footF: 0, thighB: 92, shinB: 88, footB: 0, uArmF: 95, fArmF: 90, uArmB: 98, fArmB: 92 }]
   },
   squat: {
-    prop: 'barbell', anchor: 'feet', duration: 2800,
+    prop: 'barbell', anchor: 'feet', duration: 3000,
     keyframes: [
-      { facing: 1, hipX: 150, hipY: 174, torso: -88, head: -88, thighF: 92, shinF: 88, footF: 0, thighB: 92, shinB: 88, footB: 0, uArmF: 118, fArmF: -50, uArmB: 121, fArmB: -47 },
-      { facing: 1, hipX: 124, hipY: 214, torso: -50, head: -64, thighF: 8, shinF: 66, footF: 0, thighB: 8, shinB: 66, footB: 0, uArmF: 125, fArmF: -42, uArmB: 128, fArmB: -39 }
+      { facing: 1, hipX: 151, hipY: 172, torso: -80, head: -88, thighF: 84, shinF: 97, footF: 0, thighB: 86, shinB: 95, footB: 0, uArmF: 107, fArmF: -72, uArmB: 110, fArmB: -69 },
+      { facing: 1, hipX: 123, hipY: 191, torso: -44, head: -88, thighF: 33, shinF: 100, footF: 0, thighB: 35, shinB: 98, footB: 0, uArmF: 137, fArmF: -46, uArmB: 140, fArmB: -43 },
+      { facing: 1, hipX: 125, hipY: 225, torso: -36, head: -88, thighF: -13, shinF: 112, footF: 0, thighB: -11, shinB: 110, footB: 0, uArmF: 142, fArmF: -40, uArmB: 145, fArmB: -37 }
     ]
   },
   cobra_dog: {
@@ -491,6 +492,7 @@ function renderKfUI() {
   document.getElementById('resetPrevBtn').disabled = state.keyframes.length < 2;
   document.getElementById('jsonBox').value = JSON.stringify({
     prop: state.prop,
+    anchor: anchorMode,
     duration: state.duration,
     keyframes: state.keyframes
   }, null, 2);
@@ -576,6 +578,8 @@ function importJson() {
       state.duration = parsed.duration || 3200;
       state.keyframes = parsed.keyframes;
       state.activeKf = 0;
+      document.getElementById('anchorSelect').value = parsed.anchor || anchorMode || 'free';
+      setAnchorMode(parsed.anchor || anchorMode || 'free');
       renderKfUI();
       draw();
     }
