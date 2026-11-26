@@ -364,18 +364,18 @@ function drawHumanoid(ctx, s, prop) {
 
 const PRESETS = {
   standing: {
-    prop: 'none', duration: 2400,
+    prop: 'none', anchor: 'feet', duration: 2400,
     keyframes: [{ facing: 1, hipX: 150, hipY: 172, torso: -90, head: -90, thighF: 90, shinF: 90, footF: 0, thighB: 92, shinB: 88, footB: 0, uArmF: 95, fArmF: 90, uArmB: 98, fArmB: 92 }]
   },
   squat: {
-    prop: 'barbell', duration: 3400,
+    prop: 'barbell', anchor: 'feet', duration: 3400,
     keyframes: [
       { facing: 1, hipX: 150, hipY: 172, torso: -88, head: -88, thighF: 92, shinF: 88, footF: 0, thighB: 94, shinB: 86, footB: 0, uArmF: 118, fArmF: -50, uArmB: 122, fArmB: -46 },
       { facing: 1, hipX: 124, hipY: 214, torso: -50, head: -64, thighF: 8, shinF: 66, footF: 0, thighB: 10, shinB: 64, footB: 0, uArmF: 125, fArmF: -42, uArmB: 129, fArmB: -38 }
     ]
   },
   cobra_dog: {
-    prop: 'mat', duration: 4600,
+    prop: 'mat', anchor: 'free', duration: 4600,
     keyframes: [
       { facing: -1, hipX: 148, hipY: 248, torso: -176, head: -165, thighF: 3, shinF: 2, footF: 85, uArmF: 142, fArmF: 12, uArmB: 145, fArmB: 15 },
       { facing: -1, hipX: 148, hipY: 248, torso: -140, head: -122, thighF: 3, shinF: 2, footF: 85, uArmF: 110, fArmF: 88, uArmB: 112, fArmB: 90 },
@@ -384,7 +384,7 @@ const PRESETS = {
     ]
   },
   row: {
-    prop: 'bench', duration: 2600,
+    prop: 'bench', anchor: 'free', duration: 2600,
     keyframes: [
       { facing: 1, hipX: 116, hipY: 174, torso: -10, head: -12, thighF: 64, shinF: 94, footF: 0, thighB: 96, shinB: 180, footB: 180, uArmF: 88, fArmF: 90, uArmB: 90, fArmB: 90 },
       { facing: 1, hipX: 116, hipY: 174, torso: -10, head: -12, thighF: 64, shinF: 94, footF: 0, thighB: 96, shinB: 180, footB: 180, uArmF: 162, fArmF: 95, uArmB: 90, fArmB: 90 }
@@ -547,6 +547,8 @@ function loadPreset(name) {
   state.duration = p.duration;
   state.keyframes = JSON.parse(JSON.stringify(p.keyframes));
   state.activeKf = 0;
+  document.getElementById('anchorSelect').value = p.anchor || 'free';
+  setAnchorMode(p.anchor || 'free');
   renderKfUI();
   draw();
   document.getElementById('presetSelect').value = '';
@@ -592,6 +594,16 @@ function loopFrame(ts) {
     pose[k] = ANGLE_KEYS.has(k)
       ? lerpAngle(a[k], b[k], eased)
       : (typeof a[k] === 'number' ? lerp(a[k], b[k], eased) : a[k]);
+  }
+  if (anchorMode === 'feet') {
+    const baseAnkle = jointsOf(kfs[0]).ankleF;
+    const ik = solveTwoBoneIK(pose.hipX, pose.hipY, baseAnkle[0], baseAnkle[1], LEN.thigh, LEN.shin, pose.facing ?? 1);
+    pose.thighF = ik.a1;
+    pose.shinF = ik.a2;
+    if (mirrorFar) {
+      pose.thighB = ik.a1 + 2;
+      pose.shinB = ik.a2 - 2;
+    }
   }
   draw(pose);
   if (playing) raf = requestAnimationFrame(loopFrame);
