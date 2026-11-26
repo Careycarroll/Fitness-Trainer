@@ -148,11 +148,22 @@
         <option value="mat">Prop: Yoga Mat</option>
       </select>
       <button class="btn" onclick="flipFacing()">Flip Facing</button>
+      <select id="anchorSelect" onchange="setAnchorMode(this.value)" title="Choose whether feet or hands stay planted when moving the body">
+        <option value="free">Anchor: Free (Hip)</option>
+        <option value="feet">Anchor: Feet Planted (IK)</option>
+        <option value="hands">Anchor: Hands Planted (IK)</option>
+      </select>
     </div>
-    <label class="inline">
-      <input type="checkbox" id="handlesToggle" checked onchange="showHandles=this.checked; draw()" />
-      Joint handles
-    </label>
+    <div class="group">
+      <label class="inline">
+        <input type="checkbox" id="mirrorToggle" checked onchange="mirrorFar=this.checked; if(mirrorFar) syncBackLimbs(); draw()" />
+        Mirror far limbs
+      </label>
+      <label class="inline">
+        <input type="checkbox" id="handlesToggle" checked onchange="showHandles=this.checked; draw()" />
+        Joint handles
+      </label>
+    </div>
   </div>
 
   <div class="card">
@@ -389,10 +400,42 @@ const state = {
 };
 
 let showHandles = true;
+let mirrorFar = true;
+let anchorMode = 'free';
+let pinnedTarget = null;
 let playing = false;
 let dragging = null;
 let startTime = null;
 let raf = null;
+
+function solveTwoBoneIK(rootX, rootY, targetX, targetY, L1, L2, bendSign) {
+  let dx = targetX - rootX;
+  let dy = targetY - rootY;
+  const maxReach = L1 + L2 - 0.5;
+  const minReach = Math.abs(L1 - L2) + 0.5;
+  let d = Math.hypot(dx, dy);
+  if (d < minReach) { d = minReach; }
+  if (d > maxReach) {
+    dx = (dx / d) * maxReach;
+    dy = (dy / d) * maxReach;
+    d = maxReach;
+  }
+  const base = Math.atan2(dy, dx);
+  const cosA = Math.max(-1, Math.min(1, (L1 * L1 + d * d - L2 * L2) / (2 * L1 * d)));
+  const a1 = base - bendSign * Math.acos(cosA);
+  const midX = rootX + Math.cos(a1) * L1;
+  const midY = rootY + Math.sin(a1) * L1;
+  const a2 = Math.atan2((rootY + dy) - midY, (rootX + dx) - midX);
+  return { a1: Math.round(a1 * DEG), a2: Math.round(a2 * DEG), clampedTarget: [rootX + dx, rootY + dy] };
+}
+
+function setAnchorMode(mode) {
+  anchorMode = mode;
+  const j = jointsOf(currentPose());
+  if (mode === 'feet') pinnedTarget = j.ankleF;
+  else if (mode === 'hands') pinnedTarget = j.handF;
+  else pinnedTarget = null;
+}
 
 const HANDLES = [
   { key: 'hip',    color: '#06b6d4', label: 'hip',      parent: null,     prop: null },
@@ -420,6 +463,7 @@ function draw(poseOverride = null) {
 
   if (showHandles && !playing) {
     for (const h of HANDLES) {
+      if (mirrorFar && h.key.endsWith('B')) continue;
       const [x, y] = j[h.key];
       ctx.beginPath();
       ctx.arc(x, y, h.key === 'hip' ? 5.5 : 4.2, 0, PI * 2);
@@ -577,12 +621,15 @@ canvas.addEventListener('pointerdown', (e) => {
   const j = jointsOf(currentPose());
   let best = null, bestD = 16;
   for (const h of HANDLES) {
+    if (mirrorFar && h.key.endsWith('B')) continue;
     const [jx, jy] = j[h.key];
     const d = Math.hypot(mx - jx, my - jy);
     if (d < bestD) { best = h; bestD = d; }
   }
   if (best) {
     dragging = best;
+    if (anchorMode === 'feet') pinnedTarget = j.ankleF;
+    else if (anchorMode === 'hands') pinnedTarget = j.handF;
     document.getElementById('selJoint').textContent = best.label;
     canvas.setPointerCapture(e.pointerId);
   }
@@ -592,14 +639,53 @@ canvas.addEventListener('pointermove', (e) => {
   if (!dragging) return;
   const [mx, my] = canvasPos(e);
   const s = currentPose();
+  const facing = s.facing ?? 1;
+
   if (dragging.key === 'hip') {
-    s.hipX = Math.round(mx);
-    s.hipY = Math.round(my);
+    if (anchorMode === 'feet' && pinnedTarget) {
+      const maxReach = LEN.thigh + LEN.shin - 0.5;
+      let dx = mx - pinnedTarget[0];
+      let dy = my - pinnedTarget[1];
+      const d = Math.hypot(dx, dy);
+      if (d > maxReach) {
+        dx = (dx / d) * maxReach;
+        dy = (dy / d) * maxReach;
+      }
+      s.hipX = Math.round(pinnedTarget[0] + dx);
+      s.hipY = Math.round(pinnedTarget[1] + dy);
+      const ik = solveTwoBoneIK(s.hipX, s.hipY, pinnedTarget[0], pinnedTarget[1], LEN.thigh, LEN.shin, facing);
+      s.thighF = ik.a1;
+      s.shinF = ik.a2;
+    } else {
+      s.hipX = Math.round(mx);
+      s.hipY = Math.round(my);
+    }
+    if (anchorMode === 'hands' && pinnedTarget) {
+      const sh = stepFrom(s.hipX, s.hipY, s.torso, LEN.torso);
+      const ik = solveTwoBoneIK(sh[0], sh[1], pinnedTarget[0], pinnedTarget[1], LEN.uArm, LEN.fArm, -facing);
+      s.uArmF = ik.a1;
+      s.fArmF = ik.a2;
+    }
   } else {
     const j = jointsOf(s);
     const [px, py] = j[dragging.parent];
     s[dragging.prop] = Math.round(Math.atan2(my - py, mx - px) * DEG);
+    if (anchorMode === 'hands' && dragging.key === 'sh' && pinnedTarget) {
+      const sh = stepFrom(s.hipX, s.hipY, s.torso, LEN.torso);
+      const ik = solveTwoBoneIK(sh[0], sh[1], pinnedTarget[0], pinnedTarget[1], LEN.uArm, LEN.fArm, -facing);
+      s.uArmF = ik.a1;
+      s.fArmF = ik.a2;
+    }
   }
+
+  if (mirrorFar && !dragging.key.endsWith('B')) {
+    s.thighB = s.thighF + 2;
+    s.shinB = s.shinF - 2;
+    s.footB = s.footF;
+    s.uArmB = s.uArmF + 3;
+    s.fArmB = s.fArmF + 3;
+  }
+
   draw();
   document.getElementById('jsonBox').value = JSON.stringify({
     prop: state.prop, duration: state.duration, keyframes: state.keyframes
