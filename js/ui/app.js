@@ -390,8 +390,8 @@ export function mount(root, defs) {
     <header class="app-bar">
       <div class="app-brand">
         <button type="button" id="nav-menu-btn" class="ghost icon-button nav-menu-btn" aria-label="Open navigation menu" aria-expanded="false">☰</button>
+        <button type="button" id="top-workout-back-btn" class="ghost icon-button" aria-label="Back" hidden>←</button>
         <h1 id="nav-current-label" class="app-title">Workout Log</h1>
-        <button type="button" id="top-workout-back-btn" class="ghost logger-mini-btn" hidden>← Workout</button>
       </div>
 
       <div class="app-actions">
@@ -1024,10 +1024,14 @@ export function mount(root, defs) {
   if (navMenuBtn) navMenuBtn.addEventListener('click', openDrawer);
   if (topWorkoutBackBtn) {
     topWorkoutBackBtn.addEventListener('click', () => {
-      activeLoggerExercise = null;
-      loggerDrawerOpen = false;
-      loggerPairBlockId = null;
-      renderActiveLogger();
+      if (activeLoggerExercise) {
+        activeLoggerExercise = null;
+        loggerDrawerOpen = false;
+        loggerPairBlockId = null;
+        renderActiveLogger();
+      } else {
+        switchTab('log');
+      }
     });
   }
   if (navDrawerClose) navDrawerClose.addEventListener('click', closeDrawer);
@@ -1054,7 +1058,7 @@ export function mount(root, defs) {
     activeTab = tabName;
     activeMode = tabName === 'wod' ? 'wod' : 'planner';
     if (navCurrentLabel) navCurrentLabel.textContent = TAB_TITLES[tabName] || tabName;
-    if (topWorkoutBackBtn) topWorkoutBackBtn.hidden = !(tabName === 'logger' && activeLoggerExercise);
+    if (topWorkoutBackBtn) topWorkoutBackBtn.hidden = tabName !== 'logger';
     navTabs.forEach((t) => {
       const isSelected = t.dataset.tab === tabName;
       t.classList.toggle('selected', isSelected);
@@ -2788,7 +2792,11 @@ export function mount(root, defs) {
           </div>`;
       }
 
-      if (topWorkoutBackBtn) topWorkoutBackBtn.hidden = activeTab !== 'logger';
+      if (navCurrentLabel && activeTab === 'logger') navCurrentLabel.textContent = exName;
+      if (topWorkoutBackBtn) {
+        topWorkoutBackBtn.hidden = activeTab !== 'logger';
+        topWorkoutBackBtn.title = 'Back to Workout';
+      }
       if (topWorkoutBackBtn) topWorkoutBackBtn.hidden = true;
     viewLogger.innerHTML = `
         ${timerBarHtml}
@@ -2886,13 +2894,16 @@ export function mount(root, defs) {
         }).join('')
       : '<div class="card"><p class="note" style="margin:0;">No exercises yet — add your first exercise below.</p></div>';
 
-    if (topWorkoutBackBtn) topWorkoutBackBtn.hidden = true;
+    if (navCurrentLabel && activeTab === 'logger') navCurrentLabel.textContent = session.title || TAB_TITLES.logger;
+    if (topWorkoutBackBtn) {
+      topWorkoutBackBtn.hidden = activeTab !== 'logger';
+      topWorkoutBackBtn.title = 'Back to Log';
+    }
     viewLogger.innerHTML = `
       ${timerBarHtml}
 
       <div class="card logger-head-card">
         <div class="logger-head-top">
-          <button type="button" id="logger-back-btn" class="ghost">← Log</button>
           <span class="catalog-badge">${esc(session.status)}</span>
           <span class="note">${esc(session.date)}</span>
           <div style="margin-left:auto; display:flex; gap:6px; flex-wrap:wrap;">
