@@ -390,9 +390,8 @@ export function mount(root, defs) {
     <header class="app-bar">
       <div class="app-brand">
         <button type="button" id="nav-menu-btn" class="ghost icon-button nav-menu-btn" aria-label="Open navigation menu" aria-expanded="false">☰</button>
-        <span class="app-logo">⚡</span>
-        <h1 class="app-title">Fitness Trainer</h1>
-        <span id="nav-current-label" class="nav-current-label">Workout Log</span>
+        <h1 id="nav-current-label" class="app-title">Workout Log</h1>
+        <button type="button" id="top-workout-back-btn" class="ghost logger-mini-btn" hidden>← Workout</button>
       </div>
 
       <div class="app-actions">
@@ -980,6 +979,7 @@ export function mount(root, defs) {
   const navDrawerBackdrop = root.querySelector('#nav-drawer-backdrop');
   const navDrawerClose = root.querySelector('#nav-drawer-close');
   const navCurrentLabel = root.querySelector('#nav-current-label');
+  const topWorkoutBackBtn = root.querySelector('#top-workout-back-btn');
   const wodForm = root.querySelector('#wod-form');
   const wodOut = root.querySelector('#wod-out');
   const viewLog = root.querySelector('#view-log');
@@ -1022,6 +1022,14 @@ export function mount(root, defs) {
   }
 
   if (navMenuBtn) navMenuBtn.addEventListener('click', openDrawer);
+  if (topWorkoutBackBtn) {
+    topWorkoutBackBtn.addEventListener('click', () => {
+      activeLoggerExercise = null;
+      loggerDrawerOpen = false;
+      loggerPairBlockId = null;
+      renderActiveLogger();
+    });
+  }
   if (navDrawerClose) navDrawerClose.addEventListener('click', closeDrawer);
   if (navDrawerBackdrop) navDrawerBackdrop.addEventListener('click', closeDrawer);
 
@@ -1046,6 +1054,7 @@ export function mount(root, defs) {
     activeTab = tabName;
     activeMode = tabName === 'wod' ? 'wod' : 'planner';
     if (navCurrentLabel) navCurrentLabel.textContent = TAB_TITLES[tabName] || tabName;
+    if (topWorkoutBackBtn) topWorkoutBackBtn.hidden = !(tabName === 'logger' && activeLoggerExercise);
     navTabs.forEach((t) => {
       const isSelected = t.dataset.tab === tabName;
       t.classList.toggle('selected', isSelected);
@@ -2706,13 +2715,23 @@ export function mount(root, defs) {
 
       let subBodyHtml = '';
       if (activeLoggerSubTab === 'track') {
+        const pairBoxHtml = loggerPairBlockId === blk?.id ? `
+          <div class="logger-add-ex-row" style="margin-top:10px;">
+            <input type="text" id="logger-ex-search" list="logger-ex-datalist" placeholder="Pair exercise (e.g. Dumbbell Row)…" autocomplete="off" />
+            <datalist id="logger-ex-datalist">
+              ${defs.exercises.map((e) => `<option value="${esc(e.name)}"></option>`).join('')}
+            </datalist>
+            <button type="button" id="logger-add-ex-btn" class="primary logger-mini-btn">+ Pair Exercise</button>
+            <button type="button" id="logger-cancel-pair-btn" class="ghost logger-mini-btn">Cancel</button>
+          </div>` : '';
         subBodyHtml = `
           ${blk ? buildWodPanelHtml(blk) : ''}
           <div class="logger-sets-list">${detailSetsHtml || '<p class="note">No sets yet.</p>'}</div>
           <div class="logger-block-actions" style="margin-top:10px;">
             <button type="button" class="primary logger-mini-btn" data-logger-add-set="${esc(blk.id)}" data-ex-id="${esc(exId)}">+ Add Set</button>
-            ${blk?.blockType === 'straight' ? `<button type="button" class="ghost logger-mini-btn" data-logger-pair-block="${esc(blk.id)}">+ Pair Superset</button>` : ''}
-          </div>`;
+            ${blk?.blockType === 'straight' && loggerPairBlockId !== blk?.id ? `<button type="button" class="ghost logger-mini-btn" data-logger-pair-block="${esc(blk.id)}">+ Pair Superset</button>` : ''}
+          </div>
+          ${pairBoxHtml}`;
       } else if (activeLoggerSubTab === 'history') {
         const histRes = appDb.exec(
           `SELECT ws.date, ls.weight_kg, ls.reps, ls.duration_sec, ls.rir, ls.is_pr, ls.notes
@@ -2769,11 +2788,12 @@ export function mount(root, defs) {
           </div>`;
       }
 
-      viewLogger.innerHTML = `
+      if (topWorkoutBackBtn) topWorkoutBackBtn.hidden = activeTab !== 'logger';
+      if (topWorkoutBackBtn) topWorkoutBackBtn.hidden = true;
+    viewLogger.innerHTML = `
         ${timerBarHtml}
         <div class="card logger-sub-card">
           <div class="logger-sub-bar">
-            <button type="button" id="logger-sub-back-btn" class="ghost logger-mini-btn">← Workout</button>
             <button type="button" id="logger-drawer-btn" class="ghost logger-mini-btn">☰ Exercises (${workoutExercises.length})</button>
             <div style="flex:1; min-width:140px;">
               <strong style="font-size:1.05rem;">${esc(exName)}</strong>
@@ -2866,6 +2886,7 @@ export function mount(root, defs) {
         }).join('')
       : '<div class="card"><p class="note" style="margin:0;">No exercises yet — add your first exercise below.</p></div>';
 
+    if (topWorkoutBackBtn) topWorkoutBackBtn.hidden = true;
     viewLogger.innerHTML = `
       ${timerBarHtml}
 
