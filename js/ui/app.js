@@ -615,10 +615,6 @@ export function mount(root, defs) {
                 <option value="5">5 · Full Olympic lifts to competition technique</option>
               </select>
             </label>
-            <div class="wod-form-actions">
-              <button type="button" id="wod-runner-open-btn" class="primary">▶ Start WOD</button>
-              <button type="button" id="wod-export-btn" class="ghost wod-export-btn">Export to FitNotes</button>
-            </div>
             <p id="wod-status" class="note" role="status"></p>
           </form>
         </aside>
