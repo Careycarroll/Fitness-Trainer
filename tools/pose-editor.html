@@ -373,10 +373,10 @@ const PRESETS = {
     keyframes: [{ facing: 1, hipX: 150, hipY: 172, torso: -90, head: -90, thighF: 90, shinF: 90, footF: 0, thighB: 92, shinB: 88, footB: 0, uArmF: 95, fArmF: 90, uArmB: 98, fArmB: 92 }]
   },
   squat: {
-    prop: 'barbell', anchor: 'feet', duration: 3400,
+    prop: 'barbell', anchor: 'feet', duration: 2800,
     keyframes: [
-      { facing: 1, hipX: 150, hipY: 172, torso: -88, head: -88, thighF: 92, shinF: 88, footF: 0, thighB: 94, shinB: 86, footB: 0, uArmF: 118, fArmF: -50, uArmB: 122, fArmB: -46 },
-      { facing: 1, hipX: 124, hipY: 214, torso: -50, head: -64, thighF: 8, shinF: 66, footF: 0, thighB: 10, shinB: 64, footB: 0, uArmF: 125, fArmF: -42, uArmB: 129, fArmB: -38 }
+      { facing: 1, hipX: 150, hipY: 174, torso: -88, head: -88, thighF: 92, shinF: 88, footF: 0, thighB: 92, shinB: 88, footB: 0, uArmF: 118, fArmF: -50, uArmB: 121, fArmB: -47 },
+      { facing: 1, hipX: 124, hipY: 214, torso: -50, head: -64, thighF: 8, shinF: 66, footF: 0, thighB: 8, shinB: 66, footB: 0, uArmF: 125, fArmF: -42, uArmB: 128, fArmB: -39 }
     ]
   },
   cobra_dog: {
@@ -432,7 +432,7 @@ function solveTwoBoneIK(rootX, rootY, targetX, targetY, L1, L2, bendSign) {
   const midX = rootX + Math.cos(a1) * L1;
   const midY = rootY + Math.sin(a1) * L1;
   const a2 = Math.atan2((rootY + dy) - midY, (rootX + dx) - midX);
-  return { a1: Math.round(a1 * DEG), a2: Math.round(a2 * DEG), clampedTarget: [rootX + dx, rootY + dy] };
+  return { a1: a1 * DEG, a2: a2 * DEG, clampedTarget: [rootX + dx, rootY + dy] };
 }
 
 function setAnchorMode(mode) {
@@ -633,12 +633,20 @@ function loopFrame(ts) {
   }
   if (anchorMode === 'feet') {
     const baseAnkle = jointsOf(kfs[0]).ankleF;
+    const maxReach = LEN.thigh + LEN.shin - 0.5;
+    let dx = pose.hipX - baseAnkle[0];
+    let dy = pose.hipY - baseAnkle[1];
+    const d = Math.hypot(dx, dy);
+    if (d > maxReach) {
+      pose.hipX = baseAnkle[0] + (dx / d) * maxReach;
+      pose.hipY = baseAnkle[1] + (dy / d) * maxReach;
+    }
     const ik = solveTwoBoneIK(pose.hipX, pose.hipY, baseAnkle[0], baseAnkle[1], LEN.thigh, LEN.shin, pose.facing ?? 1);
     pose.thighF = ik.a1;
     pose.shinF = ik.a2;
     if (mirrorFar) {
-      pose.thighB = ik.a1 + 2;
-      pose.shinB = ik.a2 - 2;
+      pose.thighB = ik.a1;
+      pose.shinB = ik.a2;
     }
   }
   draw(pose);
@@ -702,8 +710,8 @@ canvas.addEventListener('pointermove', (e) => {
       s.hipX = Math.round(pinnedTarget[0] + dx);
       s.hipY = Math.round(pinnedTarget[1] + dy);
       const ik = solveTwoBoneIK(s.hipX, s.hipY, pinnedTarget[0], pinnedTarget[1], LEN.thigh, LEN.shin, facing);
-      s.thighF = ik.a1;
-      s.shinF = ik.a2;
+      s.thighF = Math.round(ik.a1);
+      s.shinF = Math.round(ik.a2);
     } else {
       s.hipX = Math.round(mx);
       s.hipY = Math.round(my);
