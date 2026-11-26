@@ -176,6 +176,11 @@
       <div class="row">
         <div class="group">
           <button id="playBtn" class="btn btn-primary" onclick="togglePlay()">▶ Play Loop</button>
+          <select id="motionSelect" onchange="motionMode=this.value" title="Interpolation curve between keyframes">
+            <option value="spline">Motion: Smooth (Spline)</option>
+            <option value="ease">Motion: Ease (Pause at KF)</option>
+            <option value="linear">Motion: Linear</option>
+          </select>
           <label class="inline">
             Duration (ms)
             <input id="durInput" type="number" min="800" max="10000" step="200" value="3200"
@@ -402,6 +407,7 @@ const state = {
 let showHandles = true;
 let mirrorFar = true;
 let anchorMode = 'free';
+let motionMode = 'spline';
 let pinnedTarget = null;
 let playing = false;
 let dragging = null;
@@ -578,6 +584,19 @@ function importJson() {
 
 const ANGLE_KEYS = new Set(['torso', 'head', 'thighF', 'shinF', 'footF', 'thighB', 'shinB', 'footB', 'uArmF', 'fArmF', 'uArmB', 'fArmB']);
 
+function unwrapAngle(ref, ang) {
+  return ref + (((((ang - ref) % 360) + 540) % 360) - 180);
+}
+function catmull(p0, p1, p2, p3, u) {
+  const u2 = u * u, u3 = u2 * u;
+  return 0.5 * (
+    (2 * p1) +
+    (-p0 + p2) * u +
+    (2 * p0 - 5 * p1 + 4 * p2 - p3) * u2 +
+    (-p0 + 3 * p1 - 3 * p2 + p3) * u3
+  );
+}
+
 function loopFrame(ts) {
   if (!startTime) startTime = ts;
   const kfs = state.keyframes;
@@ -586,14 +605,31 @@ function loopFrame(ts) {
   const t = ((ts - startTime) % state.duration) / state.duration;
   const segFloat = t * n;
   const i = Math.floor(segFloat) % n;
+  const prev = (i - 1 + n) % n;
   const next = (i + 1) % n;
-  const eased = easeInOut(segFloat - Math.floor(segFloat));
-  const a = kfs[i], b = kfs[next];
+  const next2 = (i + 2) % n;
+  const u = segFloat - Math.floor(segFloat);
+  const eased = motionMode === 'ease' ? easeInOut(u) : u;
+  const a0 = kfs[prev], a = kfs[i], b = kfs[next], b2 = kfs[next2];
   const pose = {};
   for (const k of Object.keys(a)) {
-    pose[k] = ANGLE_KEYS.has(k)
-      ? lerpAngle(a[k], b[k], eased)
-      : (typeof a[k] === 'number' ? lerp(a[k], b[k], eased) : a[k]);
+    if (motionMode === 'spline') {
+      if (ANGLE_KEYS.has(k)) {
+        const p1 = a[k];
+        const p0 = unwrapAngle(p1, a0[k]);
+        const p2 = unwrapAngle(p1, b[k]);
+        const p3 = unwrapAngle(p2, b2[k]);
+        pose[k] = catmull(p0, p1, p2, p3, u);
+      } else if (typeof a[k] === 'number') {
+        pose[k] = catmull(a0[k], a[k], b[k], b2[k], u);
+      } else {
+        pose[k] = a[k];
+      }
+    } else {
+      pose[k] = ANGLE_KEYS.has(k)
+        ? lerpAngle(a[k], b[k], eased)
+        : (typeof a[k] === 'number' ? lerp(a[k], b[k], eased) : a[k]);
+    }
   }
   if (anchorMode === 'feet') {
     const baseAnkle = jointsOf(kfs[0]).ankleF;
