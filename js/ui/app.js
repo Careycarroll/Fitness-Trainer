@@ -810,6 +810,12 @@ export function mount(root, defs) {
           </div>
 
           <div class="card settings-card">
+            <h3>Workout Templates</h3>
+            <p class="note">Create, edit, duplicate, or launch reusable workout templates.</p>
+            <div id="template-manager"></div>
+          </div>
+
+          <div class="card settings-card">
             <h3>Known 1RM Maxes</h3>
             <p class="note">Tested 1RM values allow percentage prescriptions to multiply into real barbell weights.</p>
             <div class="max-entry-box">
@@ -1103,6 +1109,7 @@ export function mount(root, defs) {
       performDateInspection(root.querySelector('#sync-inspect-date')?.value || todayDateString());
     } else if (tabName === 'settings') {
       paintProfiles();
+      renderTemplateManager();
       refreshAppDbCard();
     }
   };
@@ -4272,6 +4279,337 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
   // is null, so the editor rendered nothing until the first plan was generated
   // -- an empty panel under a heading, which reads as a broken build (#8).
   currentDefs = currentDefs ?? defs;
+
+  // --- Settings: Workout Template Manager / Editor ---
+  const templateManagerEl = root.querySelector('#template-manager');
+  let editingTemplate = null; // null | { id: string|null, name: string, category: string, items: [...] }
+  let tmplStatusMsg = '';
+
+  function summarizeTemplateBlocks(blocks) {
+    const parts = [];
+    for (const b of blocks || []) {
+      const grouped = new Map();
+      for (const s of b.exercises || []) {
+        const cur = grouped.get(s.exerciseId) || { count: 0, reps: s.reps, durationSec: s.durationSec };
+        cur.count += 1;
+        grouped.set(s.exerciseId, cur);
+      }
+      for (const [exId, info] of grouped.entries()) {
+        const ex = defs.exercises.find((e) => e.id === exId);
+        const label = ex?.name || exId;
+        const target = info.durationSec ? `${info.durationSec}s` : (info.reps ? `${info.reps}` : 'reps');
+        parts.push(`${label} (${info.count}×${target})`);
+      }
+    }
+    return parts.join(', ');
+  }
+
+  function templateJsonToItems(tpl) {
+    const items = [];
+    for (const b of tpl?.blocks || []) {
+      const byEx = new Map();
+      for (const s of b.exercises || []) {
+        if (!byEx.has(s.exerciseId)) {
+          const ex = defs.exercises.find((e) => e.id === s.exerciseId);
+          byEx.set(s.exerciseId, {
+            exerciseId: s.exerciseId,
+            name: ex?.name || s.exerciseId,
+            trackingType: ex?.trackingType || (s.durationSec ? 'time' : 'weight_reps'),
+            sets: 0,
+            reps: s.reps ?? 8,
+            durationSec: s.durationSec ?? null,
+            restSec: s.restSec ?? 90
+          });
+        }
+        byEx.get(s.exerciseId).sets += 1;
+      }
+      items.push(...byEx.values());
+    }
+    return items;
+  }
+
+  async function renderTemplateManager() {
+    if (!templateManagerEl) return;
+    const appDb = await ensureAppDb();
+
+    if (editingTemplate) {
+      const itemsHtml = editingTemplate.items.length
+        ? editingTemplate.items.map((it, idx) => {
+            const isTime = it.trackingType === 'time';
+            return `
+              <div class="logger-set-row" style="margin-bottom:6px;">
+                <div class="logger-set-top">
+                  <strong>${esc(it.name)}</strong>
+                  <div style="margin-left:auto; display:flex; gap:4px;">
+                    <button type="button" class="ghost logger-mini-btn" data-tmpl-up="${idx}" ${idx === 0 ? 'disabled' : ''}>↑</button>
+                    <button type="button" class="ghost logger-mini-btn" data-tmpl-down="${idx}" ${idx === editingTemplate.items.length - 1 ? 'disabled' : ''}>↓</button>
+                    <button type="button" class="ghost logger-mini-btn" data-tmpl-rm="${idx}">✕</button>
+                  </div>
+                </div>
+                <div class="logger-set-inputs">
+                  <label>Sets
+                    <input type="number" min="1" max="20" class="logger-in" data-tmpl-field="sets" data-tmpl-idx="${idx}" value="${it.sets}" />
+                  </label>
+                  ${!isTime ? `
+                    <label>Reps
+                      <input type="number" min="1" max="100" class="logger-in" data-tmpl-field="reps" data-tmpl-idx="${idx}" value="${it.reps ?? 8}" />
+                    </label>
+                  ` : `
+                    <label>Duration (s)
+                      <input type="number" min="5" max="600" class="logger-in" data-tmpl-field="durationSec" data-tmpl-idx="${idx}" value="${it.durationSec ?? 45}" />
+                    </label>
+                  `}
+                  <label>Rest (s)
+                    <input type="number" min="0" step="5" class="logger-in" data-tmpl-field="restSec" data-tmpl-idx="${idx}" value="${it.restSec ?? 90}" />
+                  </label>
+                </div>
+              </div>`;
+          }).join('')
+        : '<p class="note">No exercises yet — add exercises below.</p>';
+
+      templateManagerEl.innerHTML = `
+        <div class="logger-meta-grid" style="margin-bottom:8px;">
+          <label>Template Name
+            <input type="text" id="tmpl-edit-name" value="${esc(editingTemplate.name)}" placeholder="e.g. Upper Body A" />
+          </label>
+          <label>Category
+            <select id="tmpl-edit-cat">
+              ${['custom', 'strength', 'hypertrophy', 'mobility', 'wod'].map((c) =>
+                `<option value="${c}"${editingTemplate.category === c ? ' selected' : ''}>${c}</option>`
+              ).join('')}
+            </select>
+          </label>
+        </div>
+        ${itemsHtml}
+        <div class="logger-add-ex-row" style="margin:10px 0;">
+          <input type="text" id="tmpl-ex-search" list="tmpl-ex-datalist" placeholder="Add exercise (e.g. Back Squat)…" autocomplete="off" />
+          <datalist id="tmpl-ex-datalist">
+            ${defs.exercises.map((e) => `<option value="${esc(e.name)}"></option>`).join('')}
+          </datalist>
+          <button type="button" id="tmpl-add-ex-btn" class="ghost">+ Add Exercise</button>
+        </div>
+        <div class="storage-actions">
+          <button type="button" id="tmpl-save-btn" class="primary">Save Template</button>
+          <button type="button" id="tmpl-cancel-btn" class="ghost">Cancel</button>
+        </div>
+        ${tmplStatusMsg ? `<p class="note" style="margin-top:6px;">${esc(tmplStatusMsg)}</p>` : ''}
+      `;
+      return;
+    }
+
+    const rows = appDb.exec(
+      'SELECT id, name, category, template_json, last_used_at FROM workout_templates ORDER BY last_used_at DESC, name ASC'
+    )[0]?.values ?? [];
+
+    const listHtml = rows.length
+      ? rows.map(([id, name, cat, jsonStr]) => {
+          let summary = '';
+          try {
+            summary = summarizeTemplateBlocks(JSON.parse(jsonStr).blocks);
+          } catch { summary = ''; }
+          return `
+            <div class="logger-set-row" style="margin-bottom:8px;">
+              <div class="logger-set-top">
+                <strong>${esc(name)}</strong>
+                <span class="catalog-badge">${esc(cat || 'custom')}</span>
+                <div style="margin-left:auto; display:flex; gap:6px; flex-wrap:wrap;">
+                  <button type="button" class="primary logger-mini-btn" data-tmpl-start="${esc(id)}">Start Today</button>
+                  <button type="button" class="ghost logger-mini-btn" data-tmpl-edit="${esc(id)}">Edit</button>
+                  <button type="button" class="ghost logger-mini-btn" data-tmpl-dup="${esc(id)}">Duplicate</button>
+                  <button type="button" class="ghost logger-mini-btn" data-tmpl-del="${esc(id)}">Delete</button>
+                </div>
+              </div>
+              <p class="note" style="margin:2px 0 0;">${esc(summary || 'Empty template')}</p>
+            </div>`;
+        }).join('')
+      : '<p class="note">No saved templates yet. Create one here or save one from an active workout.</p>';
+
+    templateManagerEl.innerHTML = `
+      <div class="storage-actions" style="margin-bottom:10px;">
+        <button type="button" id="tmpl-new-btn" class="primary">+ New Template</button>
+      </div>
+      ${listHtml}
+      ${tmplStatusMsg ? `<p class="note" style="margin-top:6px;">${esc(tmplStatusMsg)}</p>` : ''}
+    `;
+  }
+
+  if (templateManagerEl) {
+    templateManagerEl.addEventListener('change', (e) => {
+      if (!editingTemplate) return;
+      if (e.target.id === 'tmpl-edit-name') {
+        editingTemplate.name = e.target.value;
+        return;
+      }
+      if (e.target.id === 'tmpl-edit-cat') {
+        editingTemplate.category = e.target.value;
+        return;
+      }
+      const field = e.target.dataset.tmplField;
+      const idx = Number(e.target.dataset.tmplIdx);
+      if (field && Number.isInteger(idx) && editingTemplate.items[idx]) {
+        editingTemplate.items[idx][field] = Math.max(0, Math.round(Number(e.target.value) || 0));
+      }
+    });
+
+    templateManagerEl.addEventListener('click', async (e) => {
+      const appDb = await ensureAppDb();
+      tmplStatusMsg = '';
+
+      if (e.target.closest('#tmpl-new-btn')) {
+        editingTemplate = { id: null, name: 'New Template', category: 'custom', items: [] };
+        await renderTemplateManager();
+        return;
+      }
+      if (e.target.closest('#tmpl-cancel-btn')) {
+        editingTemplate = null;
+        await renderTemplateManager();
+        return;
+      }
+      if (e.target.closest('#tmpl-add-ex-btn') && editingTemplate) {
+        const q = (templateManagerEl.querySelector('#tmpl-ex-search')?.value || '').trim().toLowerCase();
+        const match = defs.exercises.find((x) => x.name.toLowerCase() === q) ||
+          defs.exercises.find((x) => x.name.toLowerCase().includes(q));
+        if (!match) {
+          tmplStatusMsg = 'Pick a valid exercise from the catalog list.';
+          await renderTemplateManager();
+          return;
+        }
+        editingTemplate.items.push({
+          exerciseId: match.id,
+          name: match.name,
+          trackingType: match.trackingType || 'weight_reps',
+          sets: 3,
+          reps: match.trackingType === 'time' ? null : 8,
+          durationSec: match.trackingType === 'time' ? 45 : null,
+          restSec: match.defaultRestSec || 90
+        });
+        await renderTemplateManager();
+        return;
+      }
+
+      const upBtn = e.target.closest('[data-tmpl-up]');
+      if (upBtn && editingTemplate) {
+        const i = Number(upBtn.dataset.tmplUp);
+        if (i > 0) {
+          const [it] = editingTemplate.items.splice(i, 1);
+          editingTemplate.items.splice(i - 1, 0, it);
+          await renderTemplateManager();
+        }
+        return;
+      }
+      const downBtn = e.target.closest('[data-tmpl-down]');
+      if (downBtn && editingTemplate) {
+        const i = Number(downBtn.dataset.tmplDown);
+        if (i < editingTemplate.items.length - 1) {
+          const [it] = editingTemplate.items.splice(i, 1);
+          editingTemplate.items.splice(i + 1, 0, it);
+          await renderTemplateManager();
+        }
+        return;
+      }
+      const rmBtn = e.target.closest('[data-tmpl-rm]');
+      if (rmBtn && editingTemplate) {
+        const i = Number(rmBtn.dataset.tmplRm);
+        editingTemplate.items.splice(i, 1);
+        await renderTemplateManager();
+        return;
+      }
+
+      if (e.target.closest('#tmpl-save-btn') && editingTemplate) {
+        const name = (templateManagerEl.querySelector('#tmpl-edit-name')?.value || editingTemplate.name || 'Template').trim();
+        const category = templateManagerEl.querySelector('#tmpl-edit-cat')?.value || editingTemplate.category || 'custom';
+        const payload = {
+          blocks: editingTemplate.items.map((it) => ({
+            blockType: 'straight',
+            title: null,
+            exercises: Array.from({ length: Math.max(1, it.sets || 1) }, () => ({
+              exerciseId: it.exerciseId,
+              setType: 'working',
+              weightKg: null,
+              reps: it.trackingType === 'time' ? null : (it.reps || 8),
+              durationSec: it.trackingType === 'time' ? (it.durationSec || 45) : null,
+              restSec: it.restSec ?? 90
+            }))
+          }))
+        };
+        const now = new Date().toISOString();
+        if (editingTemplate.id) {
+          appDb.run(
+            'UPDATE workout_templates SET name = ?, category = ?, template_json = ?, updated_at = ? WHERE id = ?',
+            [name, category, JSON.stringify(payload), now, editingTemplate.id]
+          );
+          tmplStatusMsg = `Updated "${name}".`;
+        } else {
+          const newId = `tmpl_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+          appDb.run(
+            `INSERT INTO workout_templates (id, name, category, source, template_json, last_used_at, created_at, updated_at)
+             VALUES (?, ?, ?, 'user', ?, ?, ?, ?)`,
+            [newId, name, category, JSON.stringify(payload), now, now, now]
+          );
+          tmplStatusMsg = `Created "${name}".`;
+        }
+        editingTemplate = null;
+        await savePersistedAppDb(appDb);
+        await renderTemplateManager();
+        return;
+      }
+
+      const editBtn = e.target.closest('[data-tmpl-edit]');
+      if (editBtn) {
+        const id = editBtn.dataset.tmplEdit;
+        const row = appDb.exec('SELECT name, category, template_json FROM workout_templates WHERE id = ?', [id])[0]?.values?.[0];
+        if (row) {
+          editingTemplate = {
+            id,
+            name: row[0],
+            category: row[1] || 'custom',
+            items: templateJsonToItems(JSON.parse(row[2]))
+          };
+          await renderTemplateManager();
+        }
+        return;
+      }
+
+      const dupBtn = e.target.closest('[data-tmpl-dup]');
+      if (dupBtn) {
+        const id = dupBtn.dataset.tmplDup;
+        const row = appDb.exec('SELECT name, category, template_json FROM workout_templates WHERE id = ?', [id])[0]?.values?.[0];
+        if (row) {
+          const now = new Date().toISOString();
+          const newId = `tmpl_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+          appDb.run(
+            `INSERT INTO workout_templates (id, name, category, source, template_json, last_used_at, created_at, updated_at)
+             VALUES (?, ?, ?, 'user', ?, ?, ?, ?)`,
+            [newId, `${row[0]} (Copy)`, row[1] || 'custom', row[2], now, now, now]
+          );
+          await savePersistedAppDb(appDb);
+          tmplStatusMsg = `Duplicated "${row[0]}".`;
+          await renderTemplateManager();
+        }
+        return;
+      }
+
+      const delBtn = e.target.closest('[data-tmpl-del]');
+      if (delBtn) {
+        const id = delBtn.dataset.tmplDel;
+        if (!window.confirm('Delete this workout template?')) return;
+        appDb.run('DELETE FROM workout_templates WHERE id = ?', [id]);
+        await savePersistedAppDb(appDb);
+        tmplStatusMsg = 'Template deleted.';
+        await renderTemplateManager();
+        return;
+      }
+
+      const startBtn = e.target.closest('[data-tmpl-start]');
+      if (startBtn) {
+        const sid = createSessionFromTemplate(appDb, startBtn.dataset.tmplStart, todayDateString());
+        if (sid) {
+          await savePersistedAppDb(appDb);
+          await openLogger(sid);
+        }
+      }
+    });
+  }
 
   root.querySelector('#profile-editor').addEventListener('change', (e) => {
     if (e.target.matches('[name=token]')) {
