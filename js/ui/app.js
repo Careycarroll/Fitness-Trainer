@@ -391,9 +391,9 @@ export function mount(root, defs) {
       <div class="app-brand">
         <button type="button" id="nav-menu-btn" class="ghost icon-button nav-menu-btn" aria-label="Open navigation menu" aria-expanded="false">☰</button>
         <button type="button" id="top-workout-back-btn" class="ghost logger-mini-btn" aria-label="Back" hidden>← Workout</button>
-        <button type="button" id="top-exercises-btn" class="ghost logger-mini-btn" hidden>☰ Exercises</button>
         <h1 id="nav-current-label" class="app-title">Workout Log</h1>
         <span id="top-exercise-type" class="note" hidden></span>
+        <select id="top-exercises-select" class="logger-top-select" aria-label="Switch exercise in workout" hidden></select>
         <button type="button" id="top-info-btn" class="ghost logger-mini-btn" title="Exercise form &amp; instructions" hidden>ⓘ</button>
       </div>
 
@@ -985,7 +985,7 @@ export function mount(root, defs) {
   const navDrawerClose = root.querySelector('#nav-drawer-close');
   const navCurrentLabel = root.querySelector('#nav-current-label');
   const topWorkoutBackBtn = root.querySelector('#top-workout-back-btn');
-  const topExercisesBtn = root.querySelector('#top-exercises-btn');
+  const topExercisesSelect = root.querySelector('#top-exercises-select');
   const topExerciseType = root.querySelector('#top-exercise-type');
   const topInfoBtn = root.querySelector('#top-info-btn');
   const wodForm = root.querySelector('#wod-form');
@@ -1042,10 +1042,15 @@ export function mount(root, defs) {
       }
     });
   }
-  if (topExercisesBtn) {
-    topExercisesBtn.addEventListener('click', () => {
-      loggerDrawerOpen = !loggerDrawerOpen;
-      renderActiveLogger();
+  if (topExercisesSelect) {
+    topExercisesSelect.addEventListener('change', () => {
+      const [blockId, exerciseId] = (topExercisesSelect.value || '').split('::');
+      if (blockId && exerciseId) {
+        activeLoggerExercise = { blockId, exerciseId };
+        activeLoggerSubTab = 'track';
+        loggerPairBlockId = null;
+        renderActiveLogger();
+      }
     });
   }
   if (topInfoBtn) {
@@ -1079,7 +1084,7 @@ export function mount(root, defs) {
     activeMode = tabName === 'wod' ? 'wod' : 'planner';
     if (navCurrentLabel) navCurrentLabel.textContent = TAB_TITLES[tabName] || tabName;
     if (topWorkoutBackBtn) topWorkoutBackBtn.hidden = tabName !== 'logger';
-    if (topExercisesBtn) topExercisesBtn.hidden = !(tabName === 'logger' && activeLoggerExercise);
+    if (topExercisesSelect) topExercisesSelect.hidden = !(tabName === 'logger' && activeLoggerExercise);
     if (topExerciseType) topExerciseType.hidden = !(tabName === 'logger' && activeLoggerExercise);
     if (topInfoBtn) topInfoBtn.hidden = !(tabName === 'logger' && activeLoggerExercise);
     navTabs.forEach((t) => {
@@ -2715,31 +2720,24 @@ export function mount(root, defs) {
       const exName = exSets[0]?.exerciseName || exObj?.name || exId;
       const typeLabel = blk ? blockLabel(blk.blockType) : 'Straight Set';
 
+      const partnerExercises = [];
+      const seenPartner = new Set();
+      for (const s of blk?.sets || []) {
+        if (s.exerciseId !== exId && !seenPartner.has(s.exerciseId)) {
+          seenPartner.add(s.exerciseId);
+          partnerExercises.push({ id: s.exerciseId, name: s.exerciseName });
+        }
+      }
+      const supersetNote = partnerExercises.length
+        ? `${typeLabel} w/ ${partnerExercises.map((p) => p.name).join(', ')}`
+        : typeLabel;
+
       let workNum = 0;
       const detailSetsHtml = exSets.map((st) => {
         const isDrop = st.setType === 'drop' && st.parentSetId;
         if (!isDrop) workNum += 1;
         return buildSetDetailHtml(st, workNum, blk, false);
       }).join('');
-
-      const drawerHtml = loggerDrawerOpen ? `
-        <div class="card logger-drawer">
-          <div class="logger-drawer-head">
-            <strong>${workoutExercises.length} EXERCISE${workoutExercises.length === 1 ? '' : 'S'} IN WORKOUT</strong>
-            <button type="button" id="logger-drawer-close-btn" class="ghost logger-mini-btn">✕</button>
-          </div>
-          <div class="logger-drawer-list">
-            ${workoutExercises.map((we) => {
-              const isAct = we.blockId === blk?.id && we.exerciseId === exId;
-              return `
-                <button type="button" class="logger-drawer-item${isAct ? ' active' : ''}"
-                        data-logger-select-ex="${esc(we.exerciseId)}" data-logger-select-block="${esc(we.blockId)}">
-                  <span>${esc(we.exerciseName)}</span>
-                  <span class="note">${we.setCount} set${we.setCount === 1 ? '' : 's'}${we.doneCount === we.setCount && we.setCount > 0 ? ' ✓' : ''}</span>
-                </button>`;
-            }).join('')}
-          </div>
-        </div>` : '';
 
       let subBodyHtml = '';
       if (activeLoggerSubTab === 'track') {
@@ -2752,11 +2750,15 @@ export function mount(root, defs) {
             <button type="button" id="logger-add-ex-btn" class="primary logger-mini-btn">+ Pair Exercise</button>
             <button type="button" id="logger-cancel-pair-btn" class="ghost logger-mini-btn">Cancel</button>
           </div>` : '';
+        const partnerChipsHtml = partnerExercises.map((p) =>
+          `<button type="button" class="ghost logger-mini-btn" data-logger-select-ex="${esc(p.id)}" data-logger-select-block="${esc(blk.id)}">⇄ ${esc(p.name)}</button>`
+        ).join('');
         subBodyHtml = `
           ${blk ? buildWodPanelHtml(blk) : ''}
           <div class="logger-sets-list">${detailSetsHtml || '<p class="note">No sets yet.</p>'}</div>
           <div class="logger-block-actions" style="margin-top:10px;">
             <button type="button" class="primary logger-mini-btn" data-logger-add-set="${esc(blk.id)}" data-ex-id="${esc(exId)}">+ Add Set</button>
+            ${partnerChipsHtml}
             ${blk?.blockType === 'straight' && loggerPairBlockId !== blk?.id ? `<button type="button" class="ghost logger-mini-btn" data-logger-pair-block="${esc(blk.id)}">+ Pair Superset</button>` : ''}
           </div>
           ${pairBoxHtml}`;
@@ -2822,19 +2824,22 @@ export function mount(root, defs) {
         topWorkoutBackBtn.textContent = '← Workout';
         topWorkoutBackBtn.title = 'Back to Workout';
       }
-      if (topExercisesBtn) {
-        topExercisesBtn.hidden = activeTab !== 'logger';
-        topExercisesBtn.textContent = `☰ Exercises (${workoutExercises.length})`;
+      if (topExercisesSelect) {
+        topExercisesSelect.hidden = activeTab !== 'logger';
+        topExercisesSelect.innerHTML = workoutExercises.map((we) => {
+          const val = `${we.blockId}::${we.exerciseId}`;
+          const isAct = we.blockId === blk?.id && we.exerciseId === exId;
+          return `<option value="${esc(val)}"${isAct ? ' selected' : ''}>${esc(we.exerciseName)} (${we.doneCount}/${we.setCount})</option>`;
+        }).join('');
       }
       if (topExerciseType) {
         topExerciseType.hidden = activeTab !== 'logger';
-        topExerciseType.textContent = typeLabel;
+        topExerciseType.textContent = supersetNote;
       }
       if (topInfoBtn) topInfoBtn.hidden = activeTab !== 'logger';
       viewLogger.innerHTML = `
         ${timerBarHtml}
         <div class="card logger-sub-card">
-          ${drawerHtml}
           <div class="logger-sub-tabs">
             <button type="button" class="logger-sub-tab${activeLoggerSubTab === 'track' ? ' active' : ''}" data-logger-subtab="track">Track</button>
             <button type="button" class="logger-sub-tab${activeLoggerSubTab === 'history' ? ' active' : ''}" data-logger-subtab="history">History</button>
@@ -2881,7 +2886,9 @@ export function mount(root, defs) {
 
           const exCardsHtml = blockExercises.map((ex) => {
             const exObj = defs.exercises.find((e) => e.id === ex.id);
+            const partners = blockExercises.filter((other) => other.id !== ex.id).map((other) => other.name);
             const cat = (exObj?.primaryMuscles || []).slice(0, 2).join(', ') || typeLabel;
+            const supersetTag = partners.length ? ` · ${typeLabel} w/ ${partners.join(', ')}` : (isSuperset ? ` · ${typeLabel}` : '');
             const exSets = blk.sets.filter((s) => s.exerciseId === ex.id);
             const setLinesHtml = exSets.map((st, idx) => {
               const isTime = st.trackingType === 'time';
@@ -2906,7 +2913,7 @@ export function mount(root, defs) {
                 <div class="logger-overview-head">
                   <div>
                     <strong>${esc(ex.name)}</strong>
-                    <span class="note" style="margin-left:6px;">${esc(cat)}${isSuperset ? ` · ${esc(typeLabel)}` : ''}</span>
+                    <span class="note" style="margin-left:6px;">${esc(cat)}${esc(supersetTag)}</span>
                   </div>
                   <span class="note">Track →</span>
                 </div>
@@ -2925,7 +2932,7 @@ export function mount(root, defs) {
       topWorkoutBackBtn.textContent = '← Log';
       topWorkoutBackBtn.title = 'Back to Log';
     }
-    if (topExercisesBtn) topExercisesBtn.hidden = true;
+    if (topExercisesSelect) topExercisesSelect.hidden = true;
     if (topExerciseType) topExerciseType.hidden = true;
     if (topInfoBtn) topInfoBtn.hidden = true;
     viewLogger.innerHTML = `
@@ -3186,6 +3193,13 @@ export function mount(root, defs) {
           const active = loadActiveWorkout(appDb, activeLoggerSessionId);
           const blk = active?.blocks.find((b) => b.id === blockId);
           loggerFocusSetId = nextSupersetFocusSetId(blk, setId);
+          if (loggerFocusSetId && activeLoggerExercise) {
+            const nextSet = blk?.sets.find((s) => s.id === loggerFocusSetId);
+            if (nextSet) {
+              activeLoggerExercise = { blockId: blk.id, exerciseId: nextSet.exerciseId };
+              activeLoggerSubTab = 'track';
+            }
+          }
           const completedSet = blk?.sets.find((s) => s.id === setId);
           if (completedSet && !['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(blk.blockType)) {
             startCountdownTimer(completedSet.restSec || 90, 'rest', `Rest (${completedSet.exerciseName})`);
