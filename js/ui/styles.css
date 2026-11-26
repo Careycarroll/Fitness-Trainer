@@ -1901,6 +1901,184 @@ button[disabled] {
   font-size: 0.9rem;
 }
 
+.logger-overview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.logger-overview-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.logger-overview-card:hover {
+  border-color: var(--accent);
+}
+
+.logger-overview-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logger-overview-sets {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.logger-overview-set {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.88rem;
+  padding: 2px 0;
+}
+
+.logger-overview-set.done {
+  opacity: 0.72;
+}
+
+.logger-overview-num {
+  width: 22px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.logger-overview-badges {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+}
+
+.logger-done-tick {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.logger-notes-details {
+  margin-top: 8px;
+}
+
+.logger-notes-details summary {
+  cursor: pointer;
+}
+
+.logger-sub-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logger-sub-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin: 10px 0;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+
+.logger-sub-tab {
+  background: transparent;
+  border: none;
+  padding: 7px 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.logger-sub-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.logger-drawer {
+  margin: 10px 0;
+  background: var(--surface-raised);
+}
+
+.logger-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.logger-drawer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.logger-drawer-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.logger-drawer-item.active {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+  font-weight: 600;
+}
+
+.logger-pr-strip {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  margin-bottom: 10px;
+  font-size: 0.86rem;
+}
+
+.logger-hist-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.logger-hist-day {
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+}
+
+.logger-hist-sets {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+
 .logger-check-wrap {
   display: flex !important;
   flex-direction: row !important;
