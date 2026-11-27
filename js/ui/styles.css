@@ -1969,6 +1969,48 @@ button[disabled] {
   gap: 8px;
 }
 
+.logger-step-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.logger-step-btn {
+  padding: 4px 8px;
+  min-width: 28px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.logger-step-btn:hover {
+  border-color: var(--accent);
+}
+
+.logger-track-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+}
+
+.logger-last-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .logger-set-row {
   padding: 8px 10px;
   border-radius: var(--radius);

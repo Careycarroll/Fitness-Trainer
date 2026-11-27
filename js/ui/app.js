@@ -104,7 +104,10 @@ import {
   startWorkoutSession,
   finishWorkoutSession,
   saveSessionAsTemplate,
-  createSessionFromTemplate
+  createSessionFromTemplate,
+  getLastExercisePerformance,
+  getExerciseBestMetrics,
+  insertWarmupSets
 } from './logger.js';
 import {
   formatClock,
@@ -2793,7 +2796,7 @@ export function mount(root, defs) {
     }
     updateTimerDisplays();
 
-    const buildSetDetailHtml = (st, idxNum, blk, isSuperset) => {
+    const buildSetDetailHtml = (st, idxNum, blk, isSuperset, lastSetHint = '') => {
       const isDrop = st.setType === 'drop' && st.parentSetId;
       const badge = isDrop ? `↳ Drop ${st.dropIndex ?? ''}` : (st.setType === 'warmup' ? 'Warm' : `S${idxNum}`);
       const isBw = st.trackingType === 'bodyweight_reps';
@@ -2803,11 +2806,12 @@ export function mount(root, defs) {
       const focused = loggerFocusSetId === st.id ? ' logger-set-focused' : '';
       const completedCls = st.isComplete ? ' logger-set-done' : '';
       const exObj = defs.exercises.find((e) => e.id === st.exerciseId);
+      const eqDefaults = getEquipmentLoadDefaults();
+      const weightStep = Number(eqDefaults.plateIncrement) > 0 ? Number(eqDefaults.plateIncrement) : (unit === 'kg' ? 2.5 : 5);
       let plateHintHtml = '';
       if (!isTime && weightVal && isPlateLoaded(exObj)) {
-        const ld = getEquipmentLoadDefaults();
-        const barWt = barWeightFor(exObj, { unit, barWeights: ld.barWeights });
-        const pm = computePlateLoad(weightVal, { barWeight: barWt, plates: ld.plates, unit });
+        const barWt = barWeightFor(exObj, { unit, barWeights: eqDefaults.barWeights });
+        const pm = computePlateLoad(weightVal, { barWeight: barWt, plates: eqDefaults.plates, unit });
         plateHintHtml = pm.achievable
           ? `<p class="note" style="margin:2px 0 0;">🏋️ ${esc(pm.formatted)}</p>`
           : `<p class="catalog-warn" style="margin:2px 0 0;">⚠️ ${esc(pm.reason)}</p>`;
@@ -2818,6 +2822,7 @@ export function mount(root, defs) {
             <span class="logger-set-badge">${esc(badge)}</span>
             ${isSuperset ? `<strong class="logger-set-ex">${esc(st.exerciseName)}</strong>` : ''}
             ${st.isPr ? '<span class="catalog-badge" title="Personal Record">🏆 PR</span>' : ''}
+            ${lastSetHint ? `<span class="note">${esc(lastSetHint)}</span>` : ''}
             <label class="logger-rest-edit" style="margin-left:auto;">Rest
               <input type="number" min="0" step="5" class="logger-in logger-rest-in" data-set-field="restSec" data-set-id="${esc(st.id)}" value="${st.restSec ?? 90}" aria-label="Rest seconds" />s
             </label>
@@ -2828,10 +2833,18 @@ export function mount(root, defs) {
           <div class="logger-set-inputs">
             ${!isTime ? `
               <label>${esc(weightLabel)}
-                <input type="number" step="0.5" min="0" class="logger-in" data-set-field="weightKg" data-set-id="${esc(st.id)}" value="${esc(String(weightVal))}" placeholder="${isBw ? '0' : 'lb'}" />
+                <div class="logger-step-wrap">
+                  <button type="button" class="logger-step-btn" data-set-step="-1" data-step-field="weightKg" data-step-delta="${weightStep}" data-set-id="${esc(st.id)}" aria-label="Decrease weight">−</button>
+                  <input type="number" step="0.5" min="0" class="logger-in" data-set-field="weightKg" data-set-id="${esc(st.id)}" value="${esc(String(weightVal))}" placeholder="${isBw ? '0' : unit}" />
+                  <button type="button" class="logger-step-btn" data-set-step="1" data-step-field="weightKg" data-step-delta="${weightStep}" data-set-id="${esc(st.id)}" aria-label="Increase weight">+</button>
+                </div>
               </label>
               <label>Reps
-                <input type="number" step="1" min="0" class="logger-in" data-set-field="reps" data-set-id="${esc(st.id)}" value="${st.reps ?? ''}" placeholder="0" />
+                <div class="logger-step-wrap">
+                  <button type="button" class="logger-step-btn" data-set-step="-1" data-step-field="reps" data-step-delta="1" data-set-id="${esc(st.id)}" aria-label="Decrease reps">−</button>
+                  <input type="number" step="1" min="0" class="logger-in" data-set-field="reps" data-set-id="${esc(st.id)}" value="${st.reps ?? ''}" placeholder="0" />
+                  <button type="button" class="logger-step-btn" data-set-step="1" data-step-field="reps" data-step-delta="1" data-set-id="${esc(st.id)}" aria-label="Increase reps">+</button>
+                </div>
               </label>
             ` : `
               <label>Duration (s)
@@ -2900,15 +2913,56 @@ export function mount(root, defs) {
         ? `${blockTitleOrType} w/ ${partnerExercises.map((p) => p.name).join(', ')}`
         : blockTitleOrType;
 
+      const lastPerf = getLastExercisePerformance(appDb, exId, activeLoggerSessionId);
+      const bestPrior = getExerciseBestMetrics(appDb, exId, activeLoggerSessionId);
+      const lastWorkSets = lastPerf ? lastPerf.sets.filter((s) => s.setType !== 'warmup') : [];
+      let workIdx = 0;
       let workNum = 0;
       const detailSetsHtml = exSets.map((st) => {
         const isDrop = st.setType === 'drop' && st.parentSetId;
-        if (!isDrop) workNum += 1;
-        return buildSetDetailHtml(st, workNum, blk, false);
+        const isWarmup = st.setType === 'warmup';
+        if (!isDrop && !isWarmup) workNum += 1;
+        let lastHint = '';
+        if (!isDrop && !isWarmup) {
+          const prevSt = lastWorkSets[workIdx];
+          workIdx += 1;
+          if (prevSt) {
+            lastHint = prevSt.durationSec
+              ? `Last: ${prevSt.durationSec}s`
+              : `Last: ${kgToDisplay(prevSt.weightKg, unit) || 0} ${unit} × ${prevSt.reps ?? 0}`;
+          }
+        }
+        return buildSetDetailHtml(st, isWarmup ? 0 : workNum, blk, false, lastHint);
       }).join('');
+
+      let liveEst1RmKg = 0;
+      for (const st of exSets) {
+        if (st.weightKg > 0 && st.reps > 0) {
+          const est = st.reps === 1 ? st.weightKg : st.weightKg * (1 + st.reps / 30);
+          if (est > liveEst1RmKg) liveEst1RmKg = est;
+        }
+      }
+      const bestEstKg = Math.max(liveEst1RmKg, bestPrior.bestEst1RmKg);
+      const isWeightReps = (exSets[0]?.trackingType || exObj?.trackingType || 'weight_reps') === 'weight_reps';
 
       let subBodyHtml = '';
       if (activeLoggerSubTab === 'track') {
+        const lastSummaryTxt = lastPerf
+          ? lastWorkSets.slice(0, 4).map((s) => (s.durationSec ? `${s.durationSec}s` : `${kgToDisplay(s.weightKg, unit) || 0}×${s.reps ?? 0}`)).join(', ')
+          : '';
+        const trackMetaHtml = (lastPerf || bestEstKg > 0) ? `
+          <div class="logger-track-meta">
+            ${lastPerf ? `
+              <div class="logger-last-banner">
+                <span class="note"><strong>Last (${esc(lastPerf.date)}):</strong> ${esc(lastSummaryTxt)}${lastWorkSets.length > 4 ? ` (+${lastWorkSets.length - 4})` : ''}</span>
+                <button type="button" class="ghost logger-mini-btn" data-logger-copy-last="${esc(blk.id)}::${esc(exId)}">📋 Copy Last</button>
+              </div>` : ''}
+            ${bestEstKg > 0 ? `
+              <span class="note" title="Estimated 1RM using Epley formula — estimate only">
+                📈 Est. 1RM: <strong>~${esc(String(kgToDisplay(liveEst1RmKg || bestEstKg, unit)))} ${esc(unit)}</strong> <em>(estimate)</em>
+                ${bestPrior.bestEst1RmKg > 0 ? ` · All-time est: ~${esc(String(kgToDisplay(bestPrior.bestEst1RmKg, unit)))} ${esc(unit)}` : ''}
+              </span>` : ''}
+          </div>` : '';
         const pairBoxHtml = loggerPairBlockId === blk?.id ? `
           <div class="logger-add-ex-row" style="margin-top:10px;">
             <input type="text" id="logger-ex-search" list="logger-ex-datalist" placeholder="Pair exercise (e.g. Dumbbell Row)…" autocomplete="off" />
@@ -2923,9 +2977,12 @@ export function mount(root, defs) {
         ).join('');
         subBodyHtml = `
           ${blk ? buildWodPanelHtml(blk) : ''}
+          ${trackMetaHtml}
+          ${loggerStatusMsg ? `<p class="note" style="color:var(--accent); font-weight:600; margin:0 0 8px;">${esc(loggerStatusMsg)}</p>` : ''}
           <div class="logger-sets-list">${detailSetsHtml || '<p class="note">No sets yet.</p>'}</div>
           <div class="logger-block-actions" style="margin-top:10px;">
             <button type="button" class="primary logger-mini-btn" data-logger-add-set="${esc(blk.id)}" data-ex-id="${esc(exId)}">+ Add Set</button>
+            ${isWeightReps ? `<button type="button" class="ghost logger-mini-btn" data-logger-add-warmups="${esc(blk.id)}" data-ex-id="${esc(exId)}" title="Insert ramped warm-up sets">+ Warm-ups</button>` : ''}
             ${partnerChipsHtml}
             ${(blk?.blockType === 'straight' || blk?.blockType === 'superset') && loggerPairBlockId !== blk?.id ? `<button type="button" class="ghost logger-mini-btn" data-logger-pair-block="${esc(blk.id)}">${blk?.blockType === 'superset' ? '+ Add to Giant Set' : '+ Pair Superset'}</button>` : ''}
           </div>
@@ -3438,8 +3495,18 @@ export function mount(root, defs) {
             }
           }
           const completedSet = blk?.sets.find((s) => s.id === setId);
-          if (completedSet && !['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(blk.blockType)) {
-            startCountdownTimer(completedSet.restSec || 90, 'rest', `Rest (${completedSet.exerciseName})`);
+          if (completedSet) {
+            const bestPrior = getExerciseBestMetrics(appDb, completedSet.exerciseId, activeLoggerSessionId);
+            const wKg = Number(completedSet.weightKg || 0);
+            const reps = Number(completedSet.reps || 0);
+            const est1RmKg = wKg > 0 && reps > 0 ? (reps === 1 ? wKg : wKg * (1 + reps / 30)) : 0;
+            if (wKg > 0 && (wKg > bestPrior.bestWeightKg || (bestPrior.bestEst1RmKg > 0 && est1RmKg > bestPrior.bestEst1RmKg))) {
+              appDb.run('UPDATE logged_sets SET is_pr = 1 WHERE id = ?', [setId]);
+              loggerStatusMsg = `🏆 New PR on ${completedSet.exerciseName}! (Est. 1RM ~${kgToDisplay(est1RmKg, unit)} ${unit})`;
+            }
+            if (!['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(blk.blockType)) {
+              startCountdownTimer(completedSet.restSec || 90, 'rest', `Rest (${completedSet.exerciseName})`);
+            }
           }
         } else {
           loggerFocusSetId = null;
@@ -3664,6 +3731,86 @@ export function mount(root, defs) {
         addExerciseToWorkout(appDb, activeLoggerSessionId, exact.id, { blockId: loggerPairBlockId });
         loggerPairBlockId = null;
         loggerStatusMsg = `Added ${exact.name}.`;
+        await savePersistedAppDb(appDb);
+        await renderActiveLogger();
+        return;
+      }
+      const stepBtn = e.target.closest('[data-set-step]');
+      if (stepBtn) {
+        const setId = stepBtn.dataset.setId;
+        const field = stepBtn.dataset.stepField;
+        const dir = Number(stepBtn.dataset.setStep || 1);
+        const delta = Number(stepBtn.dataset.stepDelta || 1);
+        const row = stepBtn.closest('.logger-set-row');
+        const input = row?.querySelector(`input[data-set-field="${field}"]`);
+        const unit = getDisplayUnit();
+        const curr = Number(input?.value || 0);
+        const nextDisplay = Math.max(0, Math.round((curr + dir * delta) * 100) / 100);
+        if (input) input.value = String(nextDisplay);
+        const dbVal = field === 'weightKg' ? displayToKg(nextDisplay, unit) : Math.round(nextDisplay);
+        updateSetFields(appDb, setId, { [field]: dbVal });
+        await savePersistedAppDb(appDb);
+        await renderActiveLogger();
+        return;
+      }
+      const copyLastBtn = e.target.closest('[data-logger-copy-last]');
+      if (copyLastBtn) {
+        const [bId, xId] = copyLastBtn.dataset.loggerCopyLast.split('::');
+        const lastPerf = getLastExercisePerformance(appDb, xId, activeLoggerSessionId);
+        const active = loadActiveWorkout(appDb, activeLoggerSessionId);
+        const blk = active?.blocks.find((b) => b.id === bId);
+        const workSets = (blk?.sets || []).filter((s) => s.exerciseId === xId && s.setType !== 'warmup' && !s.parentSetId);
+        const prevWork = (lastPerf?.sets || []).filter((s) => s.setType !== 'warmup');
+        workSets.forEach((ws, idx) => {
+          const src = prevWork[idx] || prevWork[prevWork.length - 1];
+          if (!src) return;
+          updateSetFields(appDb, ws.id, {
+            weightKg: src.weightKg ?? ws.weightKg,
+            reps: src.reps ?? ws.reps,
+            durationSec: src.durationSec ?? ws.durationSec,
+            rir: src.rir ?? ws.rir
+          });
+        });
+        loggerStatusMsg = `Copied sets from ${lastPerf?.date || 'last session'}.`;
+        await savePersistedAppDb(appDb);
+        await renderActiveLogger();
+        return;
+      }
+      const warmupsBtn = e.target.closest('[data-logger-add-warmups]');
+      if (warmupsBtn) {
+        const bId = warmupsBtn.dataset.loggerAddWarmups;
+        const xId = warmupsBtn.dataset.exId;
+        const unit = getDisplayUnit();
+        const eqDefaults = getEquipmentLoadDefaults();
+        const inc = Number(eqDefaults.plateIncrement) > 0 ? Number(eqDefaults.plateIncrement) : (unit === 'kg' ? 2.5 : 5);
+        const exObj = defs.exercises.find((x) => x.id === xId);
+        const barWt = isPlateLoaded(exObj) ? barWeightFor(exObj, { unit, barWeights: eqDefaults.barWeights }) : inc * 2;
+        const active = loadActiveWorkout(appDb, activeLoggerSessionId);
+        const blk = active?.blocks.find((b) => b.id === bId);
+        const firstWork = (blk?.sets || []).find((s) => s.exerciseId === xId && s.setType !== 'warmup' && s.weightKg > 0);
+        const lastPerf = !firstWork ? getLastExercisePerformance(appDb, xId, activeLoggerSessionId) : null;
+        const refKg = firstWork?.weightKg || lastPerf?.sets?.find((s) => s.weightKg > 0)?.weightKg || 0;
+        const workDisplay = refKg > 0 ? kgToDisplay(refKg, unit) : barWt * 2;
+        const roundToInc = (v) => Math.max(barWt, Math.round(v / inc) * inc);
+        const rawSpecs = [
+          { w: barWt, reps: 10 },
+          { w: roundToInc(workDisplay * 0.55), reps: 5 },
+          { w: roundToInc(workDisplay * 0.75), reps: 3 },
+          { w: roundToInc(workDisplay * 0.88), reps: 1 }
+        ];
+        const deduped = [];
+        for (const sp of rawSpecs) {
+          if (sp.w < workDisplay && !deduped.some((d) => d.w === sp.w)) deduped.push(sp);
+        }
+        if (!deduped.length) deduped.push({ w: barWt, reps: 8 });
+        insertWarmupSets(
+          appDb,
+          activeLoggerSessionId,
+          bId,
+          xId,
+          deduped.map((sp) => ({ weightKg: displayToKg(sp.w, unit), reps: sp.reps, restSec: 60 }))
+        );
+        loggerStatusMsg = `Added ${deduped.length} warm-up set(s).`;
         await savePersistedAppDb(appDb);
         await renderActiveLogger();
         return;

@@ -788,3 +788,100 @@ export function createSessionFromTemplate(appDb, templateId, date) {
   }
   return sessionId;
 }
+
+/**
+ * Fetch the most recent prior session's sets for an exercise (excluding current session).
+ */
+export function getLastExercisePerformance(appDb, exerciseId, excludeSessionId) {
+  const sessRow = appDb.exec(
+    `SELECT ws.id, ws.date
+     FROM logged_sets ls
+     JOIN workout_sessions ws ON ws.id = ls.session_id
+     WHERE ls.exercise_id = ? AND ls.session_id != ?
+     ORDER BY ls.is_complete DESC, ws.date DESC, ws.created_at DESC
+     LIMIT 1`,
+    [exerciseId, excludeSessionId || '']
+  )[0]?.values?.[0];
+  if (!sessRow) return null;
+  const [prevSessId, prevDate] = sessRow;
+  const rows = appDb.exec(
+    `SELECT weight_kg, reps, duration_sec, rir, set_type, is_complete
+     FROM logged_sets
+     WHERE session_id = ? AND exercise_id = ?
+     ORDER BY order_index ASC`,
+    [prevSessId, exerciseId]
+  )[0]?.values ?? [];
+  const completed = rows.filter((r) => Number(r[5]) === 1);
+  const chosen = completed.length ? completed : rows;
+  return {
+    date: prevDate,
+    sets: chosen.map((r) => ({
+      weightKg: r[0],
+      reps: r[1],
+      durationSec: r[2],
+      rir: r[3],
+      setType: r[4] || 'working'
+    }))
+  };
+}
+
+/**
+ * Best historical weight & estimated 1RM (Epley) for an exercise outside the current session.
+ */
+export function getExerciseBestMetrics(appDb, exerciseId, excludeSessionId) {
+  const rows = appDb.exec(
+    `SELECT weight_kg, reps
+     FROM logged_sets
+     WHERE exercise_id = ? AND session_id != ? AND is_complete = 1 AND weight_kg > 0`,
+    [exerciseId, excludeSessionId || '']
+  )[0]?.values ?? [];
+  let bestWeightKg = 0;
+  let bestEst1RmKg = 0;
+  for (const [wKg, reps] of rows) {
+    const w = Number(wKg || 0);
+    const r = Number(reps || 0);
+    if (w > bestWeightKg) bestWeightKg = w;
+    if (w > 0 && r > 0) {
+      const est = r === 1 ? w : w * (1 + r / 30);
+      if (est > bestEst1RmKg) bestEst1RmKg = est;
+    }
+  }
+  return { bestWeightKg, bestEst1RmKg };
+}
+
+/**
+ * Insert warm-up sets before the first existing set of an exercise in a block.
+ */
+export function insertWarmupSets(appDb, sessionId, blockId, exerciseId, specs) {
+  if (!specs?.length) return [];
+  const existing = appDb.exec(
+    `SELECT id, block_id, exercise_id, order_index
+     FROM logged_sets WHERE session_id = ?
+     ORDER BY order_index ASC`,
+    [sessionId]
+  )[0]?.values ?? [];
+
+  const firstIdx = existing.findIndex((r) => r[1] === blockId && r[2] === exerciseId);
+  const insertAt = firstIdx >= 0 ? Number(existing[firstIdx][3]) : existing.length;
+
+  for (let i = existing.length - 1; i >= 0; i--) {
+    const [sid, , , ord] = existing[i];
+    if (Number(ord) >= insertAt) {
+      appDb.run('UPDATE logged_sets SET order_index = ? WHERE id = ?', [Number(ord) + specs.length, sid]);
+    }
+  }
+
+  const createdIds = [];
+  specs.forEach((sp, i) => {
+    const id = makeId('set');
+    createdIds.push(id);
+    appDb.run(
+      `INSERT INTO logged_sets (
+        id, session_id, block_id, exercise_id, order_index, set_type,
+        weight_kg, reps, rest_sec, is_complete
+      ) VALUES (?, ?, ?, ?, ?, 'warmup', ?, ?, ?, 0)`,
+      [id, sessionId, blockId, exerciseId, insertAt + i, sp.weightKg ?? null, sp.reps ?? null, sp.restSec ?? 60]
+    );
+  });
+  return createdIds;
+}
