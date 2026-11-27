@@ -4939,6 +4939,18 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
 
   function openPlateLoaderModal(targetWeight, barWeight, plates, unit) {
     document.querySelector('.ex-picker-backdrop')?.remove();
+    const { barWeights } = getEquipmentLoadDefaults();
+    const barOptions = [
+      { key: 'barbell', label: `Standard Barbell (${barWeights.barbell} ${unit})`, weight: barWeights.barbell },
+      { key: 'ez_bar', label: `EZ-Bar (${barWeights.ez_bar} ${unit})`, weight: barWeights.ez_bar },
+      { key: 'trap_bar', label: `Trap / Hex Bar (${barWeights.trap_bar} ${unit})`, weight: barWeights.trap_bar },
+      { key: 'safety_bar', label: `Safety Squat Bar (${barWeights.safety_bar} ${unit})`, weight: barWeights.safety_bar },
+      { key: 'custom', label: 'Custom Bar Weight…', weight: barWeight }
+    ];
+    let activeBarWeight = Number(barWeight) || barWeights.barbell;
+    const matchedOpt = barOptions.find((o) => o.key !== 'custom' && Math.abs(o.weight - activeBarWeight) < 0.01);
+    const initialBarKey = matchedOpt ? matchedOpt.key : 'custom';
+
     const sortedPlates = [...(plates || (unit === 'kg' ? [20, 15, 10, 5, 2.5, 1.25] : [45, 35, 25, 10, 5, 2.5]))]
       .map(Number)
       .filter((p) => p > 0)
@@ -4968,10 +4980,18 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
           <button type="button" class="ghost logger-mini-btn ex-picker-close" aria-label="Close">✕</button>
         </div>
         <div style="display:flex; gap:10px; align-items:end; flex-wrap:wrap;">
-          <label style="flex:1 1 130px;">Target Weight (${esc(unit)})
-            <input type="number" id="plate-modal-weight" step="0.5" min="0" value="${esc(String(targetWeight || barWeight))}" />
+          <label style="flex:1 1 120px;">Target Weight (${esc(unit)})
+            <input type="number" id="plate-modal-weight" step="0.5" min="0" value="${esc(String(targetWeight || activeBarWeight))}" />
           </label>
-          <button type="button" id="plate-modal-reset" class="ghost logger-mini-btn" style="margin-bottom:2px;">↺ Bar (${esc(String(barWeight))} ${esc(unit)})</button>
+          <label style="flex:1 1 160px;">Bar Type
+            <select id="plate-modal-bar">
+              ${barOptions.map((o) => `<option value="${esc(o.key)}"${o.key === initialBarKey ? ' selected' : ''}>${esc(o.label)}</option>`).join('')}
+            </select>
+          </label>
+          <label id="plate-custom-bar-wrap" style="flex:0 1 90px;"${initialBarKey === 'custom' ? '' : ' hidden'}>Bar (${esc(unit)})
+            <input type="number" id="plate-custom-bar-in" step="0.5" min="0" value="${esc(String(activeBarWeight))}" />
+          </label>
+          <button type="button" id="plate-modal-reset" class="ghost logger-mini-btn" style="margin-bottom:2px;">↺ Bar (${esc(String(activeBarWeight))} ${esc(unit)})</button>
         </div>
         <div class="plate-quick-row" aria-label="Add or remove plate pair per side">
           <button type="button" id="plate-mode-toggle" class="ghost logger-mini-btn plate-mode-toggle" data-mode="add" title="Switch between adding and removing plates">+ Add / side</button>
@@ -4988,6 +5008,10 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
     document.body.append(backdrop);
 
     const weightIn = backdrop.querySelector('#plate-modal-weight');
+    const barSelect = backdrop.querySelector('#plate-modal-bar');
+    const customBarWrap = backdrop.querySelector('#plate-custom-bar-wrap');
+    const customBarIn = backdrop.querySelector('#plate-custom-bar-in');
+    const resetBtn = backdrop.querySelector('#plate-modal-reset');
     const bodyEl = backdrop.querySelector('#plate-modal-body');
     const modeToggleBtn = backdrop.querySelector('#plate-mode-toggle');
     let plateMode = 'add';
@@ -5005,7 +5029,8 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
 
     function renderDiagram() {
       const val = Number(weightIn?.value || 0);
-      const pm = computePlateLoad(val, { barWeight, plates: sortedPlates, unit });
+      if (resetBtn) resetBtn.textContent = `↺ Bar (${activeBarWeight} ${unit})`;
+      const pm = computePlateLoad(val, { barWeight: activeBarWeight, plates: sortedPlates, unit });
       const flatPlates = [];
       for (const item of pm.perSide || []) {
         for (let i = 0; i < item.count; i++) flatPlates.push(item.plate);
@@ -5022,7 +5047,7 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
         <div class="plate-bar-diagram" aria-label="Visual barbell loading diagram">
           <div class="plate-side plate-side-left">${renderSide([...flatPlates].reverse())}</div>
           <div class="plate-sleeve"></div>
-          <div class="plate-bar-shaft">${esc(String(barWeight))}${esc(unit)}</div>
+          <div class="plate-bar-shaft">${esc(String(activeBarWeight))}${esc(unit)}</div>
           <div class="plate-sleeve"></div>
           <div class="plate-side plate-side-right">${renderSide(flatPlates)}</div>
         </div>
@@ -5035,13 +5060,28 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
 
     renderDiagram();
     weightIn?.addEventListener('input', renderDiagram);
+    barSelect?.addEventListener('change', () => {
+      const key = barSelect.value;
+      if (customBarWrap) customBarWrap.hidden = key !== 'custom';
+      if (key === 'custom') {
+        activeBarWeight = Math.max(0, Number(customBarIn?.value || 0));
+      } else {
+        const opt = barOptions.find((o) => o.key === key);
+        if (opt) activeBarWeight = opt.weight;
+      }
+      renderDiagram();
+    });
+    customBarIn?.addEventListener('input', () => {
+      activeBarWeight = Math.max(0, Number(customBarIn.value || 0));
+      renderDiagram();
+    });
     backdrop.addEventListener('click', (ev) => {
       if (ev.target === backdrop || ev.target.closest('.ex-picker-close')) {
         backdrop.remove();
         return;
       }
       if (ev.target.closest('#plate-modal-reset') && weightIn) {
-        weightIn.value = String(barWeight);
+        weightIn.value = String(activeBarWeight);
         renderDiagram();
         return;
       }
@@ -5060,8 +5100,8 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
       if (addBtn && weightIn) {
         const p = Number(addBtn.dataset.addPlate || 0);
         const dir = plateMode === 'sub' ? -1 : 1;
-        const curr = Math.max(barWeight, Number(weightIn.value || barWeight));
-        const next = Math.max(barWeight, Math.round((curr + dir * p * 2) * 100) / 100);
+        const curr = Math.max(activeBarWeight, Number(weightIn.value || activeBarWeight));
+        const next = Math.max(activeBarWeight, Math.round((curr + dir * p * 2) * 100) / 100);
         weightIn.value = String(next);
         renderDiagram();
       }
