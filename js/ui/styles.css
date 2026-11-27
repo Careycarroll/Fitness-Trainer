@@ -1823,19 +1823,79 @@ button[disabled] {
   gap: 12px;
 }
 
-.logger-head-top {
+.logger-head-bar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.logger-head-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.logger-location-input {
+  max-width: 280px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+}
+
+.logger-head-actions {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 10px;
 }
 
-.logger-meta-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+@media (min-width: 720px) {
+  .logger-head-bar {
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+  .logger-head-fields {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .logger-head-actions {
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+  }
+}
+
+.logger-overview-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 10px;
-  margin-bottom: 8px;
+  flex-wrap: wrap;
+  padding: 6px 4px 12px;
+  border-top: 1px solid var(--border);
+}
+
+.logger-footer-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.app-title.is-editable {
+  cursor: pointer;
+}
+
+.app-title-input {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  min-width: 160px;
+  max-width: min(340px, 52vw);
 }
 
 .logger-block-head {
@@ -1983,6 +2043,38 @@ button[disabled] {
   justify-content: space-between;
   gap: 8px;
   flex-wrap: wrap;
+}
+
+.logger-superset-badge-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 2px 6px;
+  margin-left: -6px;
+  cursor: pointer;
+  color: inherit;
+}
+
+.logger-superset-badge-btn:hover {
+  background: var(--surface-raised);
+  border-color: var(--border);
+}
+
+.logger-edit-hint {
+  font-size: 0.72rem;
+  color: var(--muted);
+  opacity: 0.75;
+}
+
+.logger-superset-title-input {
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  min-width: 160px;
+  max-width: 260px;
 }
 
 .logger-superset-badge {

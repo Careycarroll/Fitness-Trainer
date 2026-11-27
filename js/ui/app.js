@@ -94,6 +94,7 @@ import {
   updateSetFields,
   deleteSet,
   updateSessionMeta,
+  updateBlockTitle,
   deleteWorkoutSession,
   moveWorkoutBlock,
   moveExerciseInBlock,
@@ -397,6 +398,8 @@ export function mount(root, defs) {
         <button type="button" id="nav-menu-btn" class="ghost icon-button nav-menu-btn" aria-label="Open navigation menu" aria-expanded="false">☰</button>
         <button type="button" id="top-workout-back-btn" class="ghost logger-mini-btn" aria-label="Back" hidden>← Workout</button>
         <h1 id="nav-current-label" class="app-title">Workout Log</h1>
+        <button type="button" id="top-title-edit-btn" class="ghost logger-mini-btn" title="Rename workout" aria-label="Rename workout" hidden>✎</button>
+        <input type="text" id="top-title-input" class="app-title-input" aria-label="Workout title" hidden />
         <span id="top-exercise-type" class="note" hidden></span>
         <select id="top-exercises-select" class="logger-top-select" aria-label="Switch exercise in workout" hidden></select>
         <button type="button" id="top-info-btn" class="ghost logger-mini-btn" title="Exercise form &amp; instructions" hidden>ⓘ</button>
@@ -989,6 +992,8 @@ export function mount(root, defs) {
   const navDrawerBackdrop = root.querySelector('#nav-drawer-backdrop');
   const navDrawerClose = root.querySelector('#nav-drawer-close');
   const navCurrentLabel = root.querySelector('#nav-current-label');
+  const topTitleEditBtn = root.querySelector('#top-title-edit-btn');
+  const topTitleInput = root.querySelector('#top-title-input');
   const topWorkoutBackBtn = root.querySelector('#top-workout-back-btn');
   const topExercisesSelect = root.querySelector('#top-exercises-select');
   const topExerciseType = root.querySelector('#top-exercise-type');
@@ -1064,6 +1069,52 @@ export function mount(root, defs) {
       renderActiveLogger();
     });
   }
+  const canEditTopWorkoutTitle = () =>
+    activeTab === 'logger' && !activeLoggerExercise && Boolean(activeLoggerSessionId);
+  const beginTopTitleEdit = () => {
+    if (!canEditTopWorkoutTitle() || !topTitleInput || !navCurrentLabel) return;
+    topTitleInput.value = navCurrentLabel.textContent || '';
+    navCurrentLabel.hidden = true;
+    if (topTitleEditBtn) topTitleEditBtn.hidden = true;
+    topTitleInput.hidden = false;
+    topTitleInput.focus();
+    topTitleInput.select();
+  };
+  const commitTopTitleEdit = async (save) => {
+    if (!topTitleInput || topTitleInput.hidden) return;
+    const nextTitle = topTitleInput.value.trim() || 'Workout';
+    topTitleInput.hidden = true;
+    if (navCurrentLabel) {
+      if (save) navCurrentLabel.textContent = nextTitle;
+      navCurrentLabel.hidden = false;
+    }
+    if (topTitleEditBtn) topTitleEditBtn.hidden = !canEditTopWorkoutTitle();
+    if (save && activeLoggerSessionId) {
+      const appDb = await ensureAppDb();
+      updateSessionMeta(appDb, activeLoggerSessionId, { title: nextTitle });
+      await savePersistedAppDb(appDb);
+    }
+  };
+  if (topTitleEditBtn) topTitleEditBtn.addEventListener('click', beginTopTitleEdit);
+  if (navCurrentLabel) {
+    navCurrentLabel.addEventListener('click', () => {
+      if (canEditTopWorkoutTitle()) beginTopTitleEdit();
+    });
+  }
+  if (topTitleInput) {
+    topTitleInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        topTitleInput.blur();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        commitTopTitleEdit(false);
+      }
+    });
+    topTitleInput.addEventListener('blur', () => {
+      commitTopTitleEdit(true);
+    });
+  }
   if (navDrawerClose) navDrawerClose.addEventListener('click', closeDrawer);
   if (navDrawerBackdrop) navDrawerBackdrop.addEventListener('click', closeDrawer);
 
@@ -1087,7 +1138,13 @@ export function mount(root, defs) {
     if (tabName === activeTab) return;
     activeTab = tabName;
     activeMode = tabName === 'wod' ? 'wod' : 'planner';
-    if (navCurrentLabel) navCurrentLabel.textContent = TAB_TITLES[tabName] || tabName;
+    if (navCurrentLabel) {
+      navCurrentLabel.textContent = TAB_TITLES[tabName] || tabName;
+      navCurrentLabel.hidden = false;
+      navCurrentLabel.classList.toggle('is-editable', tabName === 'logger' && !activeLoggerExercise && Boolean(activeLoggerSessionId));
+    }
+    if (topTitleInput) topTitleInput.hidden = true;
+    if (topTitleEditBtn) topTitleEditBtn.hidden = !(tabName === 'logger' && !activeLoggerExercise && activeLoggerSessionId);
     if (topWorkoutBackBtn) topWorkoutBackBtn.hidden = tabName !== 'logger';
     if (topExercisesSelect) topExercisesSelect.hidden = !(tabName === 'logger' && activeLoggerExercise);
     if (topExerciseType) topExerciseType.hidden = !(tabName === 'logger' && activeLoggerExercise);
@@ -2733,9 +2790,10 @@ export function mount(root, defs) {
           partnerExercises.push({ id: s.exerciseId, name: s.exerciseName });
         }
       }
+      const blockTitleOrType = blk?.title || typeLabel;
       const supersetNote = partnerExercises.length
-        ? `${typeLabel} w/ ${partnerExercises.map((p) => p.name).join(', ')}`
-        : typeLabel;
+        ? `${blockTitleOrType} w/ ${partnerExercises.map((p) => p.name).join(', ')}`
+        : blockTitleOrType;
 
       let workNum = 0;
       const detailSetsHtml = exSets.map((st) => {
@@ -2842,6 +2900,12 @@ export function mount(root, defs) {
         topExerciseType.textContent = supersetNote;
       }
       if (topInfoBtn) topInfoBtn.hidden = activeTab !== 'logger';
+      if (topTitleEditBtn) topTitleEditBtn.hidden = true;
+      if (topTitleInput) topTitleInput.hidden = true;
+      if (navCurrentLabel) {
+        navCurrentLabel.hidden = false;
+        navCurrentLabel.classList.remove('is-editable');
+      }
       viewLogger.innerHTML = `
         ${timerBarHtml}
         <div class="card logger-sub-card">
@@ -2888,9 +2952,10 @@ export function mount(root, defs) {
               blockExercises.push({ id: st.exerciseId, name: st.exerciseName });
             }
           }
-          const groupLabel = blk.blockType === 'circuit'
+          const defaultGroupLabel = blk.blockType === 'circuit'
             ? `Circuit (${blockExercises.length})`
             : (blockExercises.length >= 3 ? `Giant Set (${blockExercises.length})` : `Superset (${blockExercises.length})`);
+          const groupLabel = blk.title || defaultGroupLabel;
           const typeLabel = blockExercises.length >= 3 && blk.blockType === 'superset' ? 'Giant Set' : blockLabel(blk.blockType);
 
           const exCardsHtml = blockExercises.map((ex, eIdx) => {
@@ -2957,7 +3022,10 @@ export function mount(root, defs) {
             return `
               <article class="logger-superset-group" data-ss-color="${colorIdx}">
                 <div class="logger-superset-head">
-                  <span class="logger-superset-badge">${esc(groupLabel)}</span>
+                  <button type="button" class="logger-superset-badge-btn" data-logger-rename-block="${esc(blk.id)}" data-current-title="${esc(blk.title || '')}" data-default-label="${esc(defaultGroupLabel)}" title="Rename group">
+                    <span class="logger-superset-badge">${esc(groupLabel)}</span>
+                    <span class="logger-edit-hint" aria-hidden="true">✎</span>
+                  </button>
                   <div class="logger-superset-actions">
                     ${groupOrderBtns}
                     <button type="button" class="ghost logger-mini-btn" data-logger-pair-block="${esc(blk.id)}">+ Add to Group</button>
@@ -2971,7 +3039,13 @@ export function mount(root, defs) {
         }).join('')
       : '<div class="card"><p class="note" style="margin:0;">No exercises yet — add your first exercise below.</p></div>';
 
-    if (navCurrentLabel && activeTab === 'logger') navCurrentLabel.textContent = session.title || TAB_TITLES.logger;
+    if (navCurrentLabel) {
+      if (activeTab === 'logger') navCurrentLabel.textContent = session.title || TAB_TITLES.logger;
+      navCurrentLabel.hidden = false;
+      navCurrentLabel.classList.toggle('is-editable', activeTab === 'logger');
+    }
+    if (topTitleInput) topTitleInput.hidden = true;
+    if (topTitleEditBtn) topTitleEditBtn.hidden = activeTab !== 'logger';
     if (topWorkoutBackBtn) {
       topWorkoutBackBtn.hidden = activeTab !== 'logger';
       topWorkoutBackBtn.textContent = '← Log';
@@ -2991,29 +3065,21 @@ export function mount(root, defs) {
       ${timerBarHtml}
 
       <div class="card logger-head-card">
-        <div class="logger-head-top">
-          <span class="catalog-badge">${esc(session.status)}</span>
-          <span class="note">Created: ${esc(session.date)}${startTimeLabel ? ` · Started: ${esc(startTimeLabel)}` : ''}</span>
-          <div style="margin-left:auto; display:flex; gap:6px; flex-wrap:wrap;">
+        <div class="logger-head-bar">
+          <div class="logger-head-fields">
+            <input type="text" id="logger-location" class="logger-location-input" value="${esc(session.location)}" placeholder="📍 Location / Gym" aria-label="Location / Gym" />
+            <details class="logger-notes-details"${session.notes ? ' open' : ''}>
+              <summary class="note">Workout Notes${session.notes ? ' (saved)' : ''}</summary>
+              <textarea id="logger-notes" rows="2" placeholder="How did you feel, sleep, tweaks, etc.">${esc(session.notes)}</textarea>
+            </details>
+          </div>
+          <div class="logger-head-actions">
             <button type="button" id="logger-edit-order-btn" class="${loggerEditOrder ? 'primary' : 'ghost'}">${loggerEditOrder ? '✓ Done Editing' : '⇅ Reorder / Group'}</button>
             <button type="button" id="logger-save-tmpl-btn" class="ghost">Save Template</button>
             ${primaryActionBtn}
-            <button type="button" id="logger-delete-btn" class="ghost">Delete</button>
           </div>
         </div>
-        <div class="logger-meta-grid">
-          <label>Workout Title
-            <input type="text" id="logger-title" value="${esc(session.title)}" />
-          </label>
-          <label>Location / Gym
-            <input type="text" id="logger-location" value="${esc(session.location)}" placeholder="e.g. Home Garage" />
-          </label>
-        </div>
-        <details class="logger-notes-details"${session.notes ? ' open' : ''}>
-          <summary class="note">Workout Notes${session.notes ? ' (saved)' : ''}</summary>
-          <textarea id="logger-notes" rows="2" placeholder="How did you feel, sleep, tweaks, etc.">${esc(session.notes)}</textarea>
-        </details>
-        ${loggerStatusMsg ? `<p class="note" style="color:var(--accent); font-weight:600; margin:4px 0 0;">${esc(loggerStatusMsg)}</p>` : ''}
+        ${loggerStatusMsg ? `<p class="note" style="color:var(--accent); font-weight:600; margin:6px 0 0;">${esc(loggerStatusMsg)}</p>` : ''}
       </div>
 
       <div class="logger-overview-list">${blocksHtml}</div>
@@ -3028,6 +3094,14 @@ export function mount(root, defs) {
           <button type="button" id="logger-add-ex-btn" class="primary">${loggerPairBlockId ? '+ Pair Exercise' : '+ Add Exercise'}</button>
           ${loggerPairBlockId ? '<button type="button" id="logger-cancel-pair-btn" class="ghost">Cancel Pair</button>' : ''}
         </div>
+      </div>
+
+      <div class="logger-overview-footer">
+        <div class="logger-footer-meta">
+          <span class="catalog-badge">${esc(session.status)}</span>
+          <span class="note">Created: ${esc(session.date)}${startTimeLabel ? ` · Started: ${esc(startTimeLabel)}` : ''}</span>
+        </div>
+        <button type="button" id="logger-delete-btn" class="ghost logger-mini-btn">Delete Workout</button>
       </div>
     `;
   }
@@ -3277,6 +3351,43 @@ export function mount(root, defs) {
       if (e.target.closest('#logger-edit-order-btn')) {
         loggerEditOrder = !loggerEditOrder;
         await renderActiveLogger();
+        return;
+      }
+      const renameBlkBtn = e.target.closest('[data-logger-rename-block]');
+      if (renameBlkBtn) {
+        const blkId = renameBlkBtn.dataset.loggerRenameBlock;
+        const currentTitle = renameBlkBtn.dataset.currentTitle || '';
+        const defaultLbl = renameBlkBtn.dataset.defaultLabel || 'Superset';
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'logger-superset-title-input';
+        input.value = currentTitle;
+        input.placeholder = defaultLbl;
+        input.setAttribute('aria-label', 'Superset or giant set name');
+        renameBlkBtn.replaceWith(input);
+        input.focus();
+        input.select();
+        let finished = false;
+        const finishRename = async (save) => {
+          if (finished) return;
+          finished = true;
+          if (save) {
+            const db = await ensureAppDb();
+            updateBlockTitle(db, blkId, input.value);
+            await savePersistedAppDb(db);
+          }
+          await renderActiveLogger();
+        };
+        input.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Enter') {
+            ev.preventDefault();
+            finishRename(true);
+          } else if (ev.key === 'Escape') {
+            ev.preventDefault();
+            finishRename(false);
+          }
+        });
+        input.addEventListener('blur', () => finishRename(true));
         return;
       }
       const blkUpBtn = e.target.closest('[data-logger-blk-up]');

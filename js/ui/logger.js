@@ -446,6 +446,15 @@ export function updateSessionMeta(appDb, sessionId, fields) {
 }
 
 /**
+ * Update a workout block's custom title (e.g. custom Superset / Giant Set name).
+ * Passing an empty string clears the custom title back to NULL.
+ */
+export function updateBlockTitle(appDb, blockId, title) {
+  const trimmed = (title || '').trim();
+  appDb.run('UPDATE workout_blocks SET title = ? WHERE id = ?', [trimmed || null, blockId]);
+}
+
+/**
  * Delete an entire workout session.
  */
 export function deleteWorkoutSession(appDb, sessionId) {
