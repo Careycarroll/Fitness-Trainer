@@ -2947,7 +2947,7 @@ export function mount(root, defs) {
 
           const wodHtml = buildWodPanelHtml(blk);
           if (isGrouped && blockExercises.length > 1) {
-            const colorIdx = ssGroupIdx % 4;
+            const colorIdx = ssGroupIdx % 16;
             ssGroupIdx += 1;
             const groupOrderBtns = loggerEditOrder ? `
               <button type="button" class="ghost logger-mini-btn" data-logger-blk-up="${esc(blk.id)}" ${bIdx === 0 ? 'disabled' : ''}>↑</button>
