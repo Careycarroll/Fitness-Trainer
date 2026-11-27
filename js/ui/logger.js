@@ -798,7 +798,7 @@ export function getLastExercisePerformance(appDb, exerciseId, excludeSessionId) 
      FROM logged_sets ls
      JOIN workout_sessions ws ON ws.id = ls.session_id
      WHERE ls.exercise_id = ? AND ls.session_id != ?
-     ORDER BY ls.is_complete DESC, ws.date DESC, ws.created_at DESC
+     ORDER BY ls.is_complete DESC, ws.date DESC, ws.started_at DESC, ws.id DESC
      LIMIT 1`,
     [exerciseId, excludeSessionId || '']
   )[0]?.values?.[0];
