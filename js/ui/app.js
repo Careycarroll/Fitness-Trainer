@@ -1984,7 +1984,7 @@ export function mount(root, defs) {
       : '<p class="note" style="margin:6px 0 0;">No sets recorded yet — ready to log.</p>';
 
     return `
-      <article class="card log-session-card">
+      <article class="card log-session-card" role="button" tabindex="0" data-open-session="${esc(sess.id)}">
         <div class="log-session-head">
           <div>
             <strong>${esc(sess.title)}</strong>
@@ -3175,6 +3175,14 @@ export function mount(root, defs) {
     panel.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-open-session]');
       if (btn) openLogger(btn.dataset.openSession);
+    });
+    panel.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const card = e.target.closest('.log-session-card[data-open-session]');
+      if (card) {
+        e.preventDefault();
+        openLogger(card.dataset.openSession);
+      }
     });
   });
 
