@@ -165,16 +165,20 @@ select:focus-visible {
 }
 
 .app-timer-bar {
-  flex-basis: 100%;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
   flex-wrap: wrap;
-  gap: 8px;
-  padding: 6px 12px;
+  gap: 6px 10px;
+  padding: 3px 10px;
   background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border));
-  border-radius: var(--radius);
+  border-radius: 9999px;
+}
+
+.app-timer-elapsed {
+  font-size: 0.86rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .app-timer-bar[hidden] {
@@ -1053,13 +1057,18 @@ button[disabled] {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .app-brand h1 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: -0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .app-logo {
@@ -1887,6 +1896,10 @@ button[disabled] {
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
+}
+
+.logger-head-actions button {
+  white-space: nowrap;
 }
 
 @media (min-width: 720px) {

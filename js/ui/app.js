@@ -406,6 +406,21 @@ export function mount(root, defs) {
       </div>
 
       <div class="app-actions">
+        <div id="top-timer-bar" class="app-timer-bar" hidden>
+          <div class="logger-timer-row">
+            <span class="app-timer-elapsed">⏱️ <strong id="logger-elapsed-clock">00:00</strong></span>
+            <button type="button" id="logger-voice-btn" class="ghost logger-mini-btn" title="Toggle voice announcements" aria-label="Toggle voice announcements">🔊</button>
+            <button type="button" id="logger-manual-rest-btn" class="ghost logger-mini-btn">Rest 60s</button>
+          </div>
+          <div id="logger-rest-box" class="logger-rest-box" hidden>
+            <span id="logger-rest-label" class="note">Rest</span>
+            <strong id="logger-rest-clock" class="logger-rest-clock">00:00</strong>
+            <button type="button" id="rest-minus-btn" class="ghost logger-mini-btn">-15s</button>
+            <button type="button" id="rest-plus-btn" class="ghost logger-mini-btn">+15s</button>
+            <button type="button" id="rest-toggle-btn" class="ghost logger-mini-btn">Pause</button>
+            <button type="button" id="rest-skip-btn" class="ghost logger-mini-btn">Skip</button>
+          </div>
+        </div>
         ${import.meta.env.DEV ? `
           <label class="preview-control">Preview
             <select id="preview" aria-label="Responsive preview">
@@ -415,22 +430,6 @@ export function mount(root, defs) {
             </select>
           </label>` : ''}
         <span class="build-stamp" title="Build timestamp">${__BUILD__}</span>
-      </div>
-
-      <div id="top-timer-bar" class="app-timer-bar" hidden>
-        <div class="logger-timer-row">
-          <span>⏱️ <strong id="logger-elapsed-clock">00:00</strong></span>
-          <button type="button" id="logger-voice-btn" class="ghost logger-mini-btn">🔊 Voice On</button>
-          <button type="button" id="logger-manual-rest-btn" class="ghost logger-mini-btn">Rest 60s</button>
-        </div>
-        <div id="logger-rest-box" class="logger-rest-box" hidden>
-          <span id="logger-rest-label" class="note">Rest</span>
-          <strong id="logger-rest-clock" class="logger-rest-clock">00:00</strong>
-          <button type="button" id="rest-minus-btn" class="ghost logger-mini-btn">-15s</button>
-          <button type="button" id="rest-plus-btn" class="ghost logger-mini-btn">+15s</button>
-          <button type="button" id="rest-toggle-btn" class="ghost logger-mini-btn">Pause</button>
-          <button type="button" id="rest-skip-btn" class="ghost logger-mini-btn">Skip</button>
-        </div>
       </div>
     </header>
 
@@ -1098,7 +1097,7 @@ export function mount(root, defs) {
         voiceEnabled = !voiceEnabled;
         localStorage.setItem(VOICE_PREF_KEY, String(voiceEnabled));
         const vb = topTimerBar.querySelector('#logger-voice-btn');
-        if (vb) vb.textContent = voiceEnabled ? '🔊 Voice On' : '🔇 Muted';
+        if (vb) vb.textContent = voiceEnabled ? '🔊' : '🔇';
         return;
       }
       if (e.target.closest('#logger-manual-rest-btn')) {
@@ -2751,7 +2750,7 @@ export function mount(root, defs) {
     if (topTimerBar) {
       topTimerBar.hidden = activeTab !== 'logger';
       const voiceBtn = topTimerBar.querySelector('#logger-voice-btn');
-      if (voiceBtn) voiceBtn.textContent = voiceEnabled ? '🔊 Voice On' : '🔇 Muted';
+      if (voiceBtn) voiceBtn.textContent = voiceEnabled ? '🔊' : '🔇';
       const elapsedEl = topTimerBar.querySelector('#logger-elapsed-clock');
       if (elapsedEl) elapsedEl.textContent = formatClock(computeElapsedSec(session.startedAt));
     }
