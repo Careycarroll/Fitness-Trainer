@@ -3347,22 +3347,42 @@ export function mount(root, defs) {
       const pairBtn = e.target.closest('[data-logger-pair-block]');
       if (pairBtn) {
         loggerPairBlockId = pairBtn.dataset.loggerPairBlock;
-        await renderActiveLogger();
-        viewLogger.querySelector('#logger-ex-search')?.focus();
+        openExercisePickerModal({
+          title: 'Pair Superset Exercise',
+          onSelect: async (match) => {
+            const dbInst = await ensureAppDb();
+            addExerciseToWorkout(dbInst, activeLoggerSessionId, match.id, { blockId: loggerPairBlockId });
+            loggerPairBlockId = null;
+            loggerStatusMsg = `Paired ${match.name}.`;
+            await savePersistedAppDb(dbInst);
+            await renderActiveLogger();
+          },
+          onCancel: () => { loggerPairBlockId = null; }
+        });
         return;
       }
       if (e.target.closest('#logger-add-ex-btn')) {
-        const q = (viewLogger.querySelector('#logger-ex-search')?.value || '').trim().toLowerCase();
-        const match = defs.exercises.find((x) => x.name.toLowerCase() === q) ||
-          defs.exercises.find((x) => x.name.toLowerCase().includes(q));
-        if (!match) {
-          loggerStatusMsg = 'Pick a valid exercise from the catalog list.';
-          await renderActiveLogger();
+        const rawQ = (viewLogger.querySelector('#logger-ex-search')?.value || '').trim();
+        const q = rawQ.toLowerCase();
+        const exact = q ? defs.exercises.find((x) => x.name.toLowerCase() === q) : null;
+        if (!exact) {
+          openExercisePickerModal({
+            title: loggerPairBlockId ? 'Pair Superset Exercise' : 'Select Exercise to Add',
+            initialQuery: rawQ,
+            onSelect: async (match) => {
+              const dbInst = await ensureAppDb();
+              addExerciseToWorkout(dbInst, activeLoggerSessionId, match.id, { blockId: loggerPairBlockId });
+              loggerPairBlockId = null;
+              loggerStatusMsg = `Added ${match.name}.`;
+              await savePersistedAppDb(dbInst);
+              await renderActiveLogger();
+            }
+          });
           return;
         }
-        addExerciseToWorkout(appDb, activeLoggerSessionId, match.id, { blockId: loggerPairBlockId });
+        addExerciseToWorkout(appDb, activeLoggerSessionId, exact.id, { blockId: loggerPairBlockId });
         loggerPairBlockId = null;
-        loggerStatusMsg = `Added ${match.name}.`;
+        loggerStatusMsg = `Added ${exact.name}.`;
         await savePersistedAppDb(appDb);
         await renderActiveLogger();
         return;
@@ -4316,6 +4336,84 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
   // -- an empty panel under a heading, which reads as a broken build (#8).
   currentDefs = currentDefs ?? defs;
 
+  function openExercisePickerModal({ title = 'Select Exercise', initialQuery = '', onSelect, onCancel } = {}) {
+    document.querySelector('.ex-picker-backdrop')?.remove();
+    const backdrop = document.createElement('div');
+    backdrop.className = 'ex-picker-backdrop';
+    backdrop.innerHTML = `
+      <div class="card ex-picker-modal" role="dialog" aria-modal="true" aria-label="${esc(title)}">
+        <div class="ex-picker-head">
+          <strong>${esc(title)}</strong>
+          <button type="button" class="ghost logger-mini-btn ex-picker-close" aria-label="Close">✕</button>
+        </div>
+        <input type="search" class="ex-picker-input" placeholder="Search by name, muscle, or equipment…" value="${esc(initialQuery)}" autocomplete="off" />
+        <div class="ex-picker-chips">
+          ${['all', 'chest', 'lats', 'quads', 'hamstrings', 'glutes', 'shoulders', 'biceps', 'triceps', 'abs', 'mobility'].map((c, idx) =>
+            `<button type="button" class="ghost logger-mini-btn ex-picker-chip${idx === 0 ? ' active' : ''}" data-chip="${esc(c)}">${esc(c === 'all' ? 'All' : c)}</button>`
+          ).join('')}
+        </div>
+        <div class="ex-picker-list"></div>
+      </div>`;
+    document.body.append(backdrop);
+
+    const input = backdrop.querySelector('.ex-picker-input');
+    const listEl = backdrop.querySelector('.ex-picker-list');
+    let activeChip = 'all';
+
+    function close() {
+      backdrop.remove();
+      if (onCancel) onCancel();
+    }
+
+    function renderList() {
+      const q = (input.value || '').trim().toLowerCase();
+      const matches = defs.exercises.filter((ex) => {
+        if (activeChip === 'mobility' && ex.scoring !== 'mobility') return false;
+        if (activeChip !== 'all' && activeChip !== 'mobility') {
+          const allM = [...(ex.primaryMuscles || []), ...(ex.secondaryMuscles || [])];
+          if (!allM.some((m) => m.includes(activeChip))) return false;
+        }
+        if (!q) return true;
+        const hay = `${ex.name} ${(ex.primaryMuscles || []).join(' ')} ${(ex.equipment || []).join(' ')} ${ex.movementPattern || ''}`.toLowerCase();
+        return hay.includes(q);
+      });
+      listEl.innerHTML = matches.length
+        ? matches.slice(0, 60).map((ex) => {
+            const meta = [...(ex.primaryMuscles || []).slice(0, 2), ...(ex.equipment || []).slice(0, 2)].join(' · ');
+            return `
+              <button type="button" class="ex-picker-item" data-pick-ex="${esc(ex.id)}">
+                <strong>${esc(ex.name)}</strong>
+                <span class="note">${esc(meta)}</span>
+              </button>`;
+          }).join('')
+        : '<p class="note" style="padding:12px 4px;">No matching exercises found. Try a different search.</p>';
+    }
+
+    input.addEventListener('input', renderList);
+    backdrop.addEventListener('click', (ev) => {
+      if (ev.target === backdrop || ev.target.closest('.ex-picker-close')) {
+        close();
+        return;
+      }
+      const chip = ev.target.closest('[data-chip]');
+      if (chip) {
+        activeChip = chip.dataset.chip;
+        backdrop.querySelectorAll('.ex-picker-chip').forEach((c) => c.classList.toggle('active', c === chip));
+        renderList();
+        return;
+      }
+      const pick = ev.target.closest('[data-pick-ex]');
+      if (pick) {
+        const ex = defs.exercises.find((x) => x.id === pick.dataset.pickEx);
+        backdrop.remove();
+        if (ex && onSelect) onSelect(ex);
+      }
+    });
+
+    renderList();
+    setTimeout(() => input.focus(), 0);
+  }
+
   // --- Settings: Workout Template Manager / Editor ---
   const templateManagerEl = root.querySelector('#template-manager');
   let editingTemplate = null; // null | { id: string|null, name: string, category: string, items: [...] }
@@ -4502,22 +4600,36 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
         return;
       }
       if (e.target.closest('#tmpl-add-ex-btn') && editingTemplate) {
-        const q = (templateManagerEl.querySelector('#tmpl-ex-search')?.value || '').trim().toLowerCase();
-        const match = defs.exercises.find((x) => x.name.toLowerCase() === q) ||
-          defs.exercises.find((x) => x.name.toLowerCase().includes(q));
-        if (!match) {
-          tmplStatusMsg = 'Pick a valid exercise from the catalog list.';
-          await renderTemplateManager();
+        const rawQ = (templateManagerEl.querySelector('#tmpl-ex-search')?.value || '').trim();
+        const q = rawQ.toLowerCase();
+        const exact = q ? defs.exercises.find((x) => x.name.toLowerCase() === q) : null;
+        if (!exact) {
+          openExercisePickerModal({
+            title: 'Add Exercise to Template',
+            initialQuery: rawQ,
+            onSelect: async (match) => {
+              editingTemplate.items.push({
+                exerciseId: match.id,
+                name: match.name,
+                trackingType: match.trackingType || 'weight_reps',
+                sets: 3,
+                reps: match.trackingType === 'time' ? null : 8,
+                durationSec: match.trackingType === 'time' ? 45 : null,
+                restSec: match.defaultRestSec || 90
+              });
+              await renderTemplateManager();
+            }
+          });
           return;
         }
         editingTemplate.items.push({
-          exerciseId: match.id,
-          name: match.name,
-          trackingType: match.trackingType || 'weight_reps',
+          exerciseId: exact.id,
+          name: exact.name,
+          trackingType: exact.trackingType || 'weight_reps',
           sets: 3,
-          reps: match.trackingType === 'time' ? null : 8,
-          durationSec: match.trackingType === 'time' ? 45 : null,
-          restSec: match.defaultRestSec || 90
+          reps: exact.trackingType === 'time' ? null : 8,
+          durationSec: exact.trackingType === 'time' ? 45 : null,
+          restSec: exact.defaultRestSec || 90
         });
         await renderTemplateManager();
         return;
