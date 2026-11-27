@@ -396,7 +396,7 @@ export function mount(root, defs) {
     <header class="app-bar">
       <div class="app-brand">
         <button type="button" id="nav-menu-btn" class="ghost icon-button nav-menu-btn" aria-label="Open navigation menu" aria-expanded="false">☰</button>
-        <button type="button" id="top-workout-back-btn" class="ghost logger-mini-btn" aria-label="Back" hidden>← Workout</button>
+        <button type="button" id="top-workout-back-btn" class="app-back-pill" aria-label="Back" hidden>← Workout</button>
         <h1 id="nav-current-label" class="app-title">Workout Log</h1>
         <button type="button" id="top-title-edit-btn" class="ghost logger-mini-btn" title="Rename workout" aria-label="Rename workout" hidden>✎</button>
         <input type="text" id="top-title-input" class="app-title-input" aria-label="Workout title" hidden />
@@ -415,6 +415,22 @@ export function mount(root, defs) {
             </select>
           </label>` : ''}
         <span class="build-stamp" title="Build timestamp">${__BUILD__}</span>
+      </div>
+
+      <div id="top-timer-bar" class="app-timer-bar" hidden>
+        <div class="logger-timer-row">
+          <span>⏱️ <strong id="logger-elapsed-clock">00:00</strong></span>
+          <button type="button" id="logger-voice-btn" class="ghost logger-mini-btn">🔊 Voice On</button>
+          <button type="button" id="logger-manual-rest-btn" class="ghost logger-mini-btn">Rest 60s</button>
+        </div>
+        <div id="logger-rest-box" class="logger-rest-box" hidden>
+          <span id="logger-rest-label" class="note">Rest</span>
+          <strong id="logger-rest-clock" class="logger-rest-clock">00:00</strong>
+          <button type="button" id="rest-minus-btn" class="ghost logger-mini-btn">-15s</button>
+          <button type="button" id="rest-plus-btn" class="ghost logger-mini-btn">+15s</button>
+          <button type="button" id="rest-toggle-btn" class="ghost logger-mini-btn">Pause</button>
+          <button type="button" id="rest-skip-btn" class="ghost logger-mini-btn">Skip</button>
+        </div>
       </div>
     </header>
 
@@ -1005,6 +1021,7 @@ export function mount(root, defs) {
   const topExercisesSelect = root.querySelector('#top-exercises-select');
   const topExerciseType = root.querySelector('#top-exercise-type');
   const topInfoBtn = root.querySelector('#top-info-btn');
+  const topTimerBar = root.querySelector('#top-timer-bar');
   const wodForm = root.querySelector('#wod-form');
   const wodOut = root.querySelector('#wod-out');
   const viewLog = root.querySelector('#view-log');
@@ -1073,6 +1090,53 @@ export function mount(root, defs) {
     topInfoBtn.addEventListener('click', () => {
       activeLoggerSubTab = 'info';
       renderActiveLogger();
+    });
+  }
+  if (topTimerBar) {
+    topTimerBar.addEventListener('click', (e) => {
+      if (e.target.closest('#logger-voice-btn')) {
+        voiceEnabled = !voiceEnabled;
+        localStorage.setItem(VOICE_PREF_KEY, String(voiceEnabled));
+        const vb = topTimerBar.querySelector('#logger-voice-btn');
+        if (vb) vb.textContent = voiceEnabled ? '🔊 Voice On' : '🔇 Muted';
+        return;
+      }
+      if (e.target.closest('#logger-manual-rest-btn')) {
+        startCountdownTimer(60, 'rest', 'Rest');
+        updateTimerDisplays();
+        return;
+      }
+      if (e.target.closest('#rest-minus-btn')) {
+        if (restTimer.running) restTimer.endMs -= 15000;
+        else restTimer.pausedRemainingSec = Math.max(0, restTimer.pausedRemainingSec - 15);
+        updateTimerDisplays();
+        return;
+      }
+      if (e.target.closest('#rest-plus-btn')) {
+        if (restTimer.running) restTimer.endMs += 15000;
+        else restTimer.pausedRemainingSec += 15;
+        updateTimerDisplays();
+        return;
+      }
+      if (e.target.closest('#rest-toggle-btn')) {
+        if (restTimer.running) {
+          restTimer.pausedRemainingSec = getRestRemainingSec();
+          restTimer.running = false;
+        } else {
+          restTimer.endMs = Date.now() + restTimer.pausedRemainingSec * 1000;
+          restTimer.running = true;
+        }
+        const tb = topTimerBar.querySelector('#rest-toggle-btn');
+        if (tb) tb.textContent = restTimer.running ? 'Pause' : 'Resume';
+        updateTimerDisplays();
+        return;
+      }
+      if (e.target.closest('#rest-skip-btn')) {
+        restTimer.active = false;
+        restTimer.running = false;
+        cancelRestNotifications();
+        updateTimerDisplays();
+      }
     });
   }
   const canEditTopWorkoutTitle = () =>
@@ -1155,6 +1219,7 @@ export function mount(root, defs) {
     if (topExercisesSelect) topExercisesSelect.hidden = !(tabName === 'logger' && activeLoggerExercise);
     if (topExerciseType) topExerciseType.hidden = !(tabName === 'logger' && activeLoggerExercise);
     if (topInfoBtn) topInfoBtn.hidden = !(tabName === 'logger' && activeLoggerExercise);
+    if (topTimerBar) topTimerBar.hidden = !(tabName === 'logger' && activeLoggerSessionId);
     navTabs.forEach((t) => {
       const isSelected = t.dataset.tab === tabName;
       t.classList.toggle('selected', isSelected);
@@ -2528,16 +2593,22 @@ export function mount(root, defs) {
     }
     if (activeTab !== 'logger' || !viewLogger) return;
 
-    const elapsedEl = viewLogger.querySelector('#logger-elapsed-clock');
-    if (elapsedEl && activeSessionStartedAt && activeSessionStatus !== 'completed') {
-      elapsedEl.textContent = formatClock(computeElapsedSec(activeSessionStartedAt, now));
+    const elapsedEl = root.querySelector('#logger-elapsed-clock');
+    if (elapsedEl) {
+      if (activeSessionStartedAt && activeSessionStatus !== 'completed') {
+        elapsedEl.textContent = formatClock(computeElapsedSec(activeSessionStartedAt, now));
+      } else if (!activeSessionStartedAt) {
+        elapsedEl.textContent = '00:00';
+      }
     }
 
-    const restBox = viewLogger.querySelector('#logger-rest-box');
-    const restClock = viewLogger.querySelector('#logger-rest-clock');
-    const restLbl = viewLogger.querySelector('#logger-rest-label');
+    const restBox = root.querySelector('#logger-rest-box');
+    const restClock = root.querySelector('#logger-rest-clock');
+    const restLbl = root.querySelector('#logger-rest-label');
+    const restToggle = root.querySelector('#rest-toggle-btn');
     if (restBox && restClock) {
       restBox.hidden = !restTimer.active;
+      if (restToggle) restToggle.textContent = restTimer.running ? 'Pause' : 'Resume';
       if (restTimer.active) {
         const rem = getRestRemainingSec(now);
         restClock.textContent = formatClock(rem);
@@ -2677,22 +2748,14 @@ export function mount(root, defs) {
       if (!stillPresent) activeLoggerExercise = null;
     }
 
-    const timerBarHtml = `
-      <div class="card logger-timer-bar">
-        <div class="logger-timer-row">
-          <span>⏱️ <strong id="logger-elapsed-clock">${esc(formatClock(computeElapsedSec(session.startedAt)))}</strong></span>
-          <button type="button" id="logger-voice-btn" class="ghost logger-mini-btn">${voiceEnabled ? '🔊 Voice On' : '🔇 Muted'}</button>
-          <button type="button" id="logger-manual-rest-btn" class="ghost logger-mini-btn">Rest 60s</button>
-        </div>
-        <div id="logger-rest-box" class="logger-rest-box" ${restTimer.active ? '' : 'hidden'}>
-          <span id="logger-rest-label" class="note">${esc(restTimer.label)}</span>
-          <strong id="logger-rest-clock" class="logger-rest-clock">${esc(formatClock(getRestRemainingSec()))}</strong>
-          <button type="button" id="rest-minus-btn" class="ghost logger-mini-btn">-15s</button>
-          <button type="button" id="rest-plus-btn" class="ghost logger-mini-btn">+15s</button>
-          <button type="button" id="rest-toggle-btn" class="ghost logger-mini-btn">${restTimer.running ? 'Pause' : 'Resume'}</button>
-          <button type="button" id="rest-skip-btn" class="ghost logger-mini-btn">Skip</button>
-        </div>
-      </div>`;
+    if (topTimerBar) {
+      topTimerBar.hidden = activeTab !== 'logger';
+      const voiceBtn = topTimerBar.querySelector('#logger-voice-btn');
+      if (voiceBtn) voiceBtn.textContent = voiceEnabled ? '🔊 Voice On' : '🔇 Muted';
+      const elapsedEl = topTimerBar.querySelector('#logger-elapsed-clock');
+      if (elapsedEl) elapsedEl.textContent = formatClock(computeElapsedSec(session.startedAt));
+    }
+    updateTimerDisplays();
 
     const buildSetDetailHtml = (st, idxNum, blk, isSuperset) => {
       const isDrop = st.setType === 'drop' && st.parentSetId;
@@ -2913,7 +2976,6 @@ export function mount(root, defs) {
         navCurrentLabel.classList.remove('is-editable');
       }
       viewLogger.innerHTML = `
-        ${timerBarHtml}
         <div class="card logger-sub-card">
           <div class="logger-sub-tabs">
             <button type="button" class="logger-sub-tab${activeLoggerSubTab === 'track' ? ' active' : ''}" data-logger-subtab="track">Track</button>
@@ -3067,8 +3129,6 @@ export function mount(root, defs) {
       : '<button type="button" id="logger-finish-btn" class="primary">✓ Finish Workout</button>';
 
     viewLogger.innerHTML = `
-      ${timerBarHtml}
-
       <div class="card logger-head-card">
         <div class="logger-head-bar">
           <div class="logger-head-fields">
@@ -3464,16 +3524,6 @@ export function mount(root, defs) {
         await renderActiveLogger();
         return;
       }
-      if (e.target.closest('#logger-voice-btn')) {
-        voiceEnabled = !voiceEnabled;
-        localStorage.setItem(VOICE_PREF_KEY, String(voiceEnabled));
-        await renderActiveLogger();
-        return;
-      }
-      if (e.target.closest('#logger-manual-rest-btn')) {
-        startCountdownTimer(60, 'rest', 'Rest');
-        return;
-      }
       const holdBtn = e.target.closest('[data-logger-hold-set]');
       if (holdBtn) {
         const setId = holdBtn.dataset.loggerHoldSet;
@@ -3491,36 +3541,6 @@ export function mount(root, defs) {
           label: holdBtn.dataset.loggerHoldName || 'Hold',
           durationSec: dur
         });
-        return;
-      }
-      if (e.target.closest('#rest-minus-btn')) {
-        if (restTimer.running) restTimer.endMs -= 15000;
-        else restTimer.pausedRemainingSec = Math.max(0, restTimer.pausedRemainingSec - 15);
-        updateTimerDisplays();
-        return;
-      }
-      if (e.target.closest('#rest-plus-btn')) {
-        if (restTimer.running) restTimer.endMs += 15000;
-        else restTimer.pausedRemainingSec += 15;
-        updateTimerDisplays();
-        return;
-      }
-      if (e.target.closest('#rest-toggle-btn')) {
-        if (restTimer.running) {
-          restTimer.pausedRemainingSec = getRestRemainingSec();
-          restTimer.running = false;
-        } else {
-          restTimer.endMs = Date.now() + restTimer.pausedRemainingSec * 1000;
-          restTimer.running = true;
-        }
-        await renderActiveLogger();
-        return;
-      }
-      if (e.target.closest('#rest-skip-btn')) {
-        restTimer.active = false;
-        restTimer.running = false;
-        cancelRestNotifications();
-        await renderActiveLogger();
         return;
       }
       if (e.target.closest('#wod-timer-toggle-btn')) {
