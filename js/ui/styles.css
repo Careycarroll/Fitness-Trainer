@@ -2018,12 +2018,17 @@ button[disabled] {
   align-self: flex-start;
 }
 
+.plate-modal-body {
+  min-height: 190px;
+}
+
 .plate-bar-diagram {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 2px;
-  padding: 16px 8px;
+  height: 110px;
+  padding: 12px 8px;
   background: var(--surface-raised);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -2095,6 +2100,11 @@ button[disabled] {
   font-size: 0.72rem;
   font-weight: 700;
   white-space: nowrap;
+}
+
+.plate-per-side-list {
+  min-height: 52px;
+  align-content: flex-start;
 }
 
 .plate-per-side-list,

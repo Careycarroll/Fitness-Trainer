@@ -4977,7 +4977,13 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
           <span class="note">Add / side:</span>
           ${sortedPlates.map((p) => `<button type="button" class="plate-quick-btn ${plateClass(p)}" data-add-plate="${p}">+${p}</button>`).join('')}
         </div>
-        <div id="plate-modal-body"></div>
+        <div class="plate-quick-row" aria-label="Preset total weights">
+          <span class="note">Presets:</span>
+          ${(unit === 'kg' ? [60, 80, 100, 120, 140, 160, 180] : [135, 185, 225, 275, 315, 365, 405]).map((w) =>
+            `<button type="button" class="ghost logger-mini-btn" data-preset-weight="${w}">${w}</button>`
+          ).join('')}
+        </div>
+        <div id="plate-modal-body" class="plate-modal-body"></div>
       </div>`;
     document.body.append(backdrop);
 
@@ -5023,6 +5029,12 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
       }
       if (ev.target.closest('#plate-modal-reset') && weightIn) {
         weightIn.value = String(barWeight);
+        renderDiagram();
+        return;
+      }
+      const presetBtn = ev.target.closest('[data-preset-weight]');
+      if (presetBtn && weightIn) {
+        weightIn.value = presetBtn.dataset.presetWeight;
         renderDiagram();
         return;
       }
