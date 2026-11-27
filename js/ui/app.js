@@ -1044,7 +1044,6 @@ export function mount(root, defs) {
     topWorkoutBackBtn.addEventListener('click', () => {
       if (activeLoggerExercise) {
         activeLoggerExercise = null;
-        loggerDrawerOpen = false;
         loggerPairBlockId = null;
         renderActiveLogger();
       } else {
@@ -3437,12 +3436,6 @@ export function mount(root, defs) {
       }
       if (e.target.closest('#logger-sub-back-btn')) {
         activeLoggerExercise = null;
-        loggerDrawerOpen = false;
-        await renderActiveLogger();
-        return;
-      }
-      if (e.target.closest('#logger-drawer-btn') || e.target.closest('#logger-drawer-close-btn')) {
-        loggerDrawerOpen = !loggerDrawerOpen;
         await renderActiveLogger();
         return;
       }
@@ -3461,7 +3454,6 @@ export function mount(root, defs) {
           exerciseId: selectExBtn.dataset.loggerSelectEx
         };
         activeLoggerSubTab = 'track';
-        loggerDrawerOpen = false;
         await renderActiveLogger();
         return;
       }
@@ -3627,7 +3619,7 @@ export function mount(root, defs) {
         return;
       }
       if (e.target.closest('#logger-save-tmpl-btn')) {
-        const name = window.prompt('Template name:', viewLogger.querySelector('#logger-title')?.value || 'My Routine');
+        const name = window.prompt('Template name:', navCurrentLabel?.textContent?.trim() || 'My Routine');
         if (name) {
           saveSessionAsTemplate(appDb, activeLoggerSessionId, name);
           await savePersistedAppDb(appDb);
