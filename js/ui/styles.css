@@ -2595,6 +2595,17 @@ button[disabled] {
   margin-top: 8px;
 }
 
+.logger-block-actions .ghost {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px 10px !important;
+}
+
+.logger-block-actions .ghost:hover {
+  border-color: var(--accent);
+}
+
 .logger-add-ex-row {
   display: flex;
   gap: 8px;
