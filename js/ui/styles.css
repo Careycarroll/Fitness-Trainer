@@ -2046,13 +2046,40 @@ button[disabled] {
   font-size: 0.68rem;
   font-weight: 700;
   color: #fff;
-  background: #3b82f6;
+  background: #2563eb;
+  border: 1px solid rgba(255, 255, 255, 0.22);
 }
 
-.plate-disc.plate-35 { background: #eab308; color: #111; }
-.plate-disc.plate-25 { background: #22c55e; color: #111; }
-.plate-disc.plate-10 { background: #94a3b8; color: #111; }
-.plate-disc.plate-small { background: #64748b; }
+.plate-disc.plate-red,
+.plate-quick-btn.plate-red { background: #dc2626; color: #fff; }
+.plate-disc.plate-blue,
+.plate-quick-btn.plate-blue { background: #2563eb; color: #fff; }
+.plate-disc.plate-yellow,
+.plate-quick-btn.plate-yellow { background: #eab308; color: #111; }
+.plate-disc.plate-green,
+.plate-quick-btn.plate-green { background: #16a34a; color: #fff; }
+.plate-disc.plate-white,
+.plate-quick-btn.plate-white { background: #f8fafc; color: #111; border-color: #94a3b8; }
+
+.plate-quick-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.plate-quick-btn {
+  padding: 4px 10px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.plate-quick-btn:hover {
+  filter: brightness(1.1);
+}
 
 .plate-sleeve {
   width: 10px;
