@@ -2998,6 +2998,10 @@ export function mount(root, defs) {
         const partnerChipsHtml = partnerExercises.map((p) =>
           `<button type="button" class="ghost logger-mini-btn" data-logger-select-ex="${esc(p.id)}" data-logger-select-block="${esc(blk.id)}">⇄ ${esc(p.name)}</button>`
         ).join('');
+        const eqDefaults = getEquipmentLoadDefaults();
+        const topSetWt = exSets.find((s) => s.weightKg > 0)?.weightKg;
+        const defaultPlateTarget = topSetWt ? kgToDisplay(topSetWt, unit) : (unit === 'kg' ? 60 : 135);
+        const defaultBarWt = barWeightFor(exObj, { unit, barWeights: eqDefaults.barWeights });
         subBodyHtml = `
           ${blk ? buildWodPanelHtml(blk) : ''}
           ${trackMetaHtml}
@@ -3006,6 +3010,7 @@ export function mount(root, defs) {
           <div class="logger-block-actions" style="margin-top:10px;">
             <button type="button" class="primary logger-mini-btn" data-logger-add-set="${esc(blk.id)}" data-ex-id="${esc(exId)}">+ Add Set</button>
             ${isWeightReps ? `<button type="button" class="ghost logger-mini-btn" data-logger-add-warmups="${esc(blk.id)}" data-ex-id="${esc(exId)}" title="Insert ramped warm-up sets">+ Warm-ups</button>` : ''}
+            ${isWeightReps ? `<button type="button" class="ghost logger-mini-btn" data-logger-plates="${esc(String(defaultPlateTarget))}" data-logger-bar="${esc(String(defaultBarWt))}" title="Open visual barbell plate calculator">🏋️ Plates</button>` : ''}
             <button type="button" class="ghost logger-mini-btn" data-logger-swap-ex="${esc(blk.id)}::${esc(exId)}" title="Swap exercise for an available alternative">⇄ Swap</button>
             ${partnerChipsHtml}
             ${(blk?.blockType === 'straight' || blk?.blockType === 'superset') && loggerPairBlockId !== blk?.id ? `<button type="button" class="ghost logger-mini-btn" data-logger-pair-block="${esc(blk.id)}">${blk?.blockType === 'superset' ? '+ Add to Giant Set' : '+ Pair Superset'}</button>` : ''}
@@ -4934,34 +4939,50 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
 
   function openPlateLoaderModal(targetWeight, barWeight, plates, unit) {
     document.querySelector('.ex-picker-backdrop')?.remove();
-    const pm = computePlateLoad(targetWeight, { barWeight, plates, unit });
-    const flatPlates = [];
-    for (const item of pm.perSide || []) {
-      for (let i = 0; i < item.count; i++) flatPlates.push(item.plate);
-    }
-    const maxP = Math.max(45, ...flatPlates, 1);
-    const plateClass = (p) => {
-      const v = Number(p);
-      if (v >= 45 || (unit === 'kg' && v >= 20)) return 'plate-45';
-      if (v >= 35 || (unit === 'kg' && v >= 15)) return 'plate-35';
-      if (v >= 25 || (unit === 'kg' && v >= 10)) return 'plate-25';
-      if (v >= 10 || (unit === 'kg' && v >= 5)) return 'plate-10';
-      return 'plate-small';
-    };
-    const renderSide = (arr) => arr.map((p) => {
-      const h = Math.max(30, Math.min(72, Math.round(28 + (p / maxP) * 44)));
-      return `<span class="plate-disc ${plateClass(p)}" style="height:${h}px;" title="${p} ${esc(unit)}">${p}</span>`;
-    }).join('');
-
     const backdrop = document.createElement('div');
     backdrop.className = 'ex-picker-backdrop';
     backdrop.innerHTML = `
       <div class="card ex-picker-modal plate-modal" role="dialog" aria-modal="true" aria-label="Barbell Plate Loader">
         <div class="ex-picker-head">
-          <strong>🏋️ Plate Loader — ${esc(String(targetWeight))} ${esc(unit)}</strong>
+          <strong>🏋️ Plate Loader</strong>
           <button type="button" class="ghost logger-mini-btn ex-picker-close" aria-label="Close">✕</button>
         </div>
-        <p class="note" style="margin:0;">Bar: <strong>${esc(String(barWeight))} ${esc(unit)}</strong> · ${esc(pm.formatted || pm.reason)}</p>
+        <div style="display:flex; gap:10px; align-items:end; flex-wrap:wrap;">
+          <label style="flex:1 1 130px;">Target Weight (${esc(unit)})
+            <input type="number" id="plate-modal-weight" step="0.5" min="0" value="${esc(String(targetWeight || barWeight))}" />
+          </label>
+          <span class="note" style="padding-bottom:8px;">Bar: <strong>${esc(String(barWeight))} ${esc(unit)}</strong></span>
+        </div>
+        <div id="plate-modal-body"></div>
+      </div>`;
+    document.body.append(backdrop);
+
+    const weightIn = backdrop.querySelector('#plate-modal-weight');
+    const bodyEl = backdrop.querySelector('#plate-modal-body');
+
+    function renderDiagram() {
+      const val = Number(weightIn?.value || 0);
+      const pm = computePlateLoad(val, { barWeight, plates, unit });
+      const flatPlates = [];
+      for (const item of pm.perSide || []) {
+        for (let i = 0; i < item.count; i++) flatPlates.push(item.plate);
+      }
+      const maxP = Math.max(45, ...flatPlates, 1);
+      const plateClass = (p) => {
+        const v = Number(p);
+        if (v >= 45 || (unit === 'kg' && v >= 20)) return 'plate-45';
+        if (v >= 35 || (unit === 'kg' && v >= 15)) return 'plate-35';
+        if (v >= 25 || (unit === 'kg' && v >= 10)) return 'plate-25';
+        if (v >= 10 || (unit === 'kg' && v >= 5)) return 'plate-10';
+        return 'plate-small';
+      };
+      const renderSide = (arr) => arr.map((p) => {
+        const h = Math.max(30, Math.min(72, Math.round(28 + (p / maxP) * 44)));
+        return `<span class="plate-disc ${plateClass(p)}" style="height:${h}px;" title="${p} ${esc(unit)}">${p}</span>`;
+      }).join('');
+
+      bodyEl.innerHTML = `
+        <p class="note" style="margin:0 0 8px;">${esc(pm.formatted || pm.reason)}</p>
         <div class="plate-bar-diagram" aria-label="Visual barbell loading diagram">
           <div class="plate-side plate-side-left">${renderSide([...flatPlates].reverse())}</div>
           <div class="plate-sleeve"></div>
@@ -4969,13 +4990,15 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
           <div class="plate-sleeve"></div>
           <div class="plate-side plate-side-right">${renderSide(flatPlates)}</div>
         </div>
-        <div class="plate-per-side-list">
+        <div class="plate-per-side-list" style="margin-top:8px;">
           ${(pm.perSide || []).length
             ? pm.perSide.map((it) => `<span class="catalog-badge">${it.count} × ${it.plate} ${esc(unit)} / side</span>`).join('')
             : '<span class="note">Bar only — no plates needed.</span>'}
-        </div>
-      </div>`;
-    document.body.append(backdrop);
+        </div>`;
+    }
+
+    renderDiagram();
+    weightIn?.addEventListener('input', renderDiagram);
     backdrop.addEventListener('click', (ev) => {
       if (ev.target === backdrop || ev.target.closest('.ex-picker-close')) backdrop.remove();
     });
