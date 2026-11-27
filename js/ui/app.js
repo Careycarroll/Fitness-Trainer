@@ -651,6 +651,7 @@ export function mount(root, defs) {
                 <option value="5">5 · Full Olympic lifts to competition technique</option>
               </select>
             </label>
+            <button type="submit" id="wod-regenerate-btn" class="primary">↻ Regenerate Workout</button>
             <p id="wod-status" class="note" role="status"></p>
           </form>
         </aside>
@@ -1290,14 +1291,16 @@ export function mount(root, defs) {
   const benchmarkDesc = root.querySelector('#benchmark-desc');
   const trackSelect = root.querySelector('[name=wodTrack]');
 
+  let wodRoll = 0;
+
   trackSelect.addEventListener('change', () => {
     benchmarkPicker.hidden = trackSelect.value !== 'crossfit';
     if (hiitTimePicker) hiitTimePicker.hidden = trackSelect.value !== 'hiit';
-    wodForm.requestSubmit();
+    generateWodFromForm();
   });
 
   if (wodTimeSelect) {
-    wodTimeSelect.addEventListener('change', () => wodForm.requestSubmit());
+    wodTimeSelect.addEventListener('change', () => generateWodFromForm());
   }
 
   benchmarkSelect.addEventListener('change', () => {
@@ -1307,17 +1310,20 @@ export function mount(root, defs) {
       const b = getBenchmark(benchmarkSelect.value);
       if (b && benchmarkDesc) benchmarkDesc.textContent = b.description;
     }
-    wodForm.requestSubmit();
+    generateWodFromForm();
   });
 
   const wodDateInput = root.querySelector('[name=wodDate]');
   if (wodDateInput) {
-    wodDateInput.addEventListener('change', () => wodForm.requestSubmit());
+    wodDateInput.addEventListener('change', () => {
+      wodRoll = 0;
+      generateWodFromForm();
+    });
   }
 
   const wodSkillSelect = root.querySelector('[name=wodSkillLevel]');
   if (wodSkillSelect) {
-    wodSkillSelect.addEventListener('change', () => wodForm.requestSubmit());
+    wodSkillSelect.addEventListener('change', () => generateWodFromForm());
   }
 
   const wodRunnerOpenBtn = root.querySelector('#wod-runner-open-btn');
@@ -1339,12 +1345,11 @@ export function mount(root, defs) {
     });
   }
 
-  wodForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const f = new FormData(e.target);
+  function generateWodFromForm() {
+    const f = new FormData(wodForm);
     const track = f.get('wodTrack');
     const dateStr = f.get('wodDate') || todayDateString();
-    const seed = dateAsSeed(dateStr);
+    const seed = dateAsSeed(dateStr) + wodRoll;
     const weekday = weekdayOf(dateStr);
     const equipmentProfile = f.get('wodEquipmentProfile');
     const skillLevel = Number(f.get('wodSkillLevel'));
@@ -1384,9 +1389,14 @@ export function mount(root, defs) {
           splitFit: null,
           weeks: [{ week: 1, sessions: [session] }]
         };
+        if (wodStatusEl) {
+          const estMin = Math.max(1, Math.round((session.estimatedSeconds || 0) / 60));
+          const rnds = session.blocks?.[0]?.rounds;
+          wodStatusEl.textContent = rnds ? `${rnds} rounds · ~${estMin} min` : `~${estMin} min`;
+        }
       } catch (err) {
         current = null;
-        out.innerHTML = err instanceof CoverageError
+        (wodOut || out).innerHTML = err instanceof CoverageError
           ? coverageHtml(err, currentDefs, currentRequest)
           : genericErrorHtml(err);
         return;
@@ -1430,6 +1440,14 @@ export function mount(root, defs) {
     const exportStart = root.querySelector('#export-start');
     if (exportStart) exportStart.value = dateStr;
     paintDates();
+  }
+
+  wodForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (e.submitter?.id === 'wod-regenerate-btn') {
+      wodRoll += 1;
+    }
+    generateWodFromForm();
   });
 
   // FitNotes Sync Hub & Staging handlers
