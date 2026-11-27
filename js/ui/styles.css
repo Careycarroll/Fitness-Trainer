@@ -2011,6 +2011,95 @@ button[disabled] {
   flex-wrap: wrap;
 }
 
+.logger-plate-btn {
+  margin-top: 2px;
+  padding: 2px 8px;
+  font-size: 0.78rem;
+  align-self: flex-start;
+}
+
+.plate-bar-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 16px 8px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+
+.plate-side {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.plate-disc {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  padding: 0 3px;
+  border-radius: 3px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #fff;
+  background: #3b82f6;
+}
+
+.plate-disc.plate-35 { background: #eab308; color: #111; }
+.plate-disc.plate-25 { background: #22c55e; color: #111; }
+.plate-disc.plate-10 { background: #94a3b8; color: #111; }
+.plate-disc.plate-small { background: #64748b; }
+
+.plate-sleeve {
+  width: 10px;
+  height: 14px;
+  background: var(--muted);
+  border-radius: 2px;
+}
+
+.plate-bar-shaft {
+  padding: 4px 14px;
+  background: var(--border);
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.plate-per-side-list,
+.summary-muscles,
+.summary-rpe-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.summary-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.summary-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+}
+
+.summary-rpe-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .logger-set-row {
   padding: 8px 10px;
   border-radius: var(--radius);

@@ -431,7 +431,7 @@ export function deleteSet(appDb, setId) {
  * Update workout session metadata (title, notes, location, status).
  */
 export function updateSessionMeta(appDb, sessionId, fields) {
-  const allowed = { title: 'title', notes: 'notes', location: 'location', status: 'status' };
+  const allowed = { title: 'title', notes: 'notes', location: 'location', status: 'status', sessionRpe: 'session_rpe' };
   const sets = [];
   const vals = [];
   for (const [k, col] of Object.entries(allowed)) {
@@ -443,6 +443,17 @@ export function updateSessionMeta(appDb, sessionId, fields) {
   if (!sets.length) return;
   vals.push(sessionId);
   appDb.run(`UPDATE workout_sessions SET ${sets.join(', ')} WHERE id = ?`, vals);
+}
+
+/**
+ * Swap an exercise inside a workout block for a substitute while keeping existing set slots.
+ */
+export function swapExerciseInBlock(appDb, blockId, oldExerciseId, newExerciseId) {
+  if (!blockId || !oldExerciseId || !newExerciseId || oldExerciseId === newExerciseId) return;
+  appDb.run(
+    `UPDATE logged_sets SET exercise_id = ?, is_pr = 0 WHERE block_id = ? AND exercise_id = ?`,
+    [newExerciseId, blockId, oldExerciseId]
+  );
 }
 
 /**
@@ -638,9 +649,13 @@ export function startWorkoutSession(appDb, sessionId) {
  */
 export function finishWorkoutSession(appDb, sessionId) {
   const now = new Date().toISOString();
-  const sessRow = appDb.exec('SELECT date FROM workout_sessions WHERE id = ?', [sessionId])[0]?.values?.[0];
-  if (!sessRow) return { completedSets: 0, newPrs: [] };
+  const sessRow = appDb.exec('SELECT date, started_at FROM workout_sessions WHERE id = ?', [sessionId])[0]?.values?.[0];
+  if (!sessRow) return { completedSets: 0, newPrs: [], totalVolumeKg: 0, durationSec: null, exerciseIds: [] };
   const date = sessRow[0];
+  const startedAt = sessRow[1];
+  const durationSec = startedAt
+    ? Math.max(0, Math.round((new Date(now).getTime() - new Date(startedAt).getTime()) / 1000))
+    : null;
 
   appDb.run(
     `UPDATE workout_sessions SET status = 'completed', completed_at = ? WHERE id = ?`,
@@ -710,7 +725,22 @@ export function finishWorkoutSession(appDb, sessionId) {
     );
   }
 
-  return { completedSets: completedRows.length, newPrs };
+  let totalVolumeKg = 0;
+  const exIdSet = new Set();
+  for (const [, exId, wKg, reps] of completedRows) {
+    exIdSet.add(exId);
+    const w = wKg ? Number(wKg) : 0;
+    const r = reps ? Number(reps) : 0;
+    if (w > 0 && r > 0) totalVolumeKg += w * r;
+  }
+
+  return {
+    completedSets: completedRows.length,
+    newPrs,
+    totalVolumeKg: Math.round(totalVolumeKg * 100) / 100,
+    durationSec,
+    exerciseIds: [...exIdSet]
+  };
 }
 
 /**

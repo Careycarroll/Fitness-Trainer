@@ -68,6 +68,7 @@ import {
   cancelRestNotifications
 } from '../storage/capacitor-bridge.js';
 import { listBenchmarks, getBenchmark, expandBenchmark, BENCHMARKS } from '../engine/benchmarks.js';
+import { isAvailable } from '../engine/substitution.js';
 import {
   extractCatalogFacets,
   filterCatalogExercises,
@@ -95,6 +96,7 @@ import {
   deleteSet,
   updateSessionMeta,
   updateBlockTitle,
+  swapExerciseInBlock,
   deleteWorkoutSession,
   moveWorkoutBlock,
   moveExerciseInBlock,
@@ -2832,7 +2834,9 @@ export function mount(root, defs) {
         const barWt = barWeightFor(exObj, { unit, barWeights: eqDefaults.barWeights });
         const pm = computePlateLoad(weightVal, { barWeight: barWt, plates: eqDefaults.plates, unit });
         plateHintHtml = pm.achievable
-          ? `<p class="note" style="margin:2px 0 0;">🏋️ ${esc(pm.formatted)}</p>`
+          ? (pm.perSide.length
+              ? `<button type="button" class="ghost logger-plate-btn" data-logger-plates="${esc(String(weightVal))}" data-logger-bar="${esc(String(barWt))}" title="Open visual plate loader">🏋️ ${esc(pm.formatted)} · Bar</button>`
+              : `<p class="note" style="margin:2px 0 0;">🏋️ ${esc(pm.formatted)}</p>`)
           : `<p class="catalog-warn" style="margin:2px 0 0;">⚠️ ${esc(pm.reason)}</p>`;
       }
       return `
@@ -3002,6 +3006,7 @@ export function mount(root, defs) {
           <div class="logger-block-actions" style="margin-top:10px;">
             <button type="button" class="primary logger-mini-btn" data-logger-add-set="${esc(blk.id)}" data-ex-id="${esc(exId)}">+ Add Set</button>
             ${isWeightReps ? `<button type="button" class="ghost logger-mini-btn" data-logger-add-warmups="${esc(blk.id)}" data-ex-id="${esc(exId)}" title="Insert ramped warm-up sets">+ Warm-ups</button>` : ''}
+            <button type="button" class="ghost logger-mini-btn" data-logger-swap-ex="${esc(blk.id)}::${esc(exId)}" title="Swap exercise for an available alternative">⇄ Swap</button>
             ${partnerChipsHtml}
             ${(blk?.blockType === 'straight' || blk?.blockType === 'superset') && loggerPairBlockId !== blk?.id ? `<button type="button" class="ghost logger-mini-btn" data-logger-pair-block="${esc(blk.id)}">${blk?.blockType === 'superset' ? '+ Add to Giant Set' : '+ Pair Superset'}</button>` : ''}
           </div>
@@ -3834,6 +3839,42 @@ export function mount(root, defs) {
         await renderActiveLogger();
         return;
       }
+      const swapExBtn = e.target.closest('[data-logger-swap-ex]');
+      if (swapExBtn) {
+        const [bId, oldExId] = swapExBtn.dataset.loggerSwapEx.split('::');
+        const oldEx = defs.exercises.find((x) => x.id === oldExId);
+        const profileId = eqPicker?.value || localStorage.getItem(PREF_PROFILE) || selectedProfile;
+        const profile = defs.equipment.find((p) => p.id === profileId) || null;
+        openExercisePickerModal({
+          title: `Swap ${oldEx?.name || 'Exercise'}`,
+          filterLabel: oldEx?.pattern ? `Same pattern (${oldEx.pattern}) & available equipment` : 'Available equipment',
+          filterFn: (cand) => {
+            if (cand.id === oldExId) return false;
+            if (oldEx?.pattern && cand.pattern !== oldEx.pattern) return false;
+            if (profile && !isAvailable(cand, profile)) return false;
+            return true;
+          },
+          onSelect: async (match) => {
+            const dbInst = await ensureAppDb();
+            swapExerciseInBlock(dbInst, bId, oldExId, match.id);
+            activeLoggerExercise = { blockId: bId, exerciseId: match.id };
+            activeLoggerSubTab = 'track';
+            loggerStatusMsg = `Swapped to ${match.name}.`;
+            await savePersistedAppDb(dbInst);
+            await renderActiveLogger();
+          }
+        });
+        return;
+      }
+      const plateBtn = e.target.closest('[data-logger-plates]');
+      if (plateBtn) {
+        const targetWt = Number(plateBtn.dataset.loggerPlates);
+        const barWt = Number(plateBtn.dataset.loggerBar);
+        const unit = getDisplayUnit();
+        const eqDefaults = getEquipmentLoadDefaults();
+        openPlateLoaderModal(targetWt, barWt, eqDefaults.plates, unit);
+        return;
+      }
       const addSetBtn = e.target.closest('[data-logger-add-set]');
       if (addSetBtn) {
         addSetToBlock(appDb, activeLoggerSessionId, addSetBtn.dataset.loggerAddSet, addSetBtn.dataset.exId);
@@ -3873,12 +3914,19 @@ export function mount(root, defs) {
         return;
       }
       if (e.target.closest('#logger-finish-btn')) {
+        const activeSnap = loadActiveWorkout(appDb, activeLoggerSessionId);
         const res = finishWorkoutSession(appDb, activeLoggerSessionId);
         await savePersistedAppDb(appDb);
         loggerStatusMsg = res.newPrs.length
           ? `Workout completed! 🏆 ${res.newPrs.length} new PR(s): ${res.newPrs.map((p) => p.exerciseName).join(', ')}`
           : `Workout completed (${res.completedSets} completed sets saved).`;
         await renderActiveLogger();
+        openWorkoutSummaryModal({
+          sessionId: activeLoggerSessionId,
+          title: activeSnap?.session?.title || 'Workout',
+          unit: getDisplayUnit(),
+          ...res
+        });
         return;
       }
       if (e.target.closest('#logger-delete-btn')) {
@@ -4797,7 +4845,7 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
   // -- an empty panel under a heading, which reads as a broken build (#8).
   currentDefs = currentDefs ?? defs;
 
-  function openExercisePickerModal({ title = 'Select Exercise', initialQuery = '', onSelect, onCancel } = {}) {
+  function openExercisePickerModal({ title = 'Select Exercise', initialQuery = '', filterFn = null, filterLabel = '', onSelect, onCancel } = {}) {
     document.querySelector('.ex-picker-backdrop')?.remove();
     const backdrop = document.createElement('div');
     backdrop.className = 'ex-picker-backdrop';
@@ -4808,6 +4856,11 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
           <button type="button" class="ghost logger-mini-btn ex-picker-close" aria-label="Close">✕</button>
         </div>
         <input type="search" class="ex-picker-input" placeholder="Search by name, muscle, or equipment…" value="${esc(initialQuery)}" autocomplete="off" />
+        ${filterFn ? `
+          <label class="note" style="display:inline-flex; flex-direction:row; align-items:center; gap:6px; cursor:pointer;">
+            <input type="checkbox" class="ex-picker-filter-cb" checked />
+            <span>${esc(filterLabel || 'Match pattern & equipment')}</span>
+          </label>` : ''}
         <div class="ex-picker-chips">
           ${['all', 'chest', 'lats', 'quads', 'hamstrings', 'glutes', 'shoulders', 'biceps', 'triceps', 'abs', 'mobility'].map((c, idx) =>
             `<button type="button" class="ghost logger-mini-btn ex-picker-chip${idx === 0 ? ' active' : ''}" data-chip="${esc(c)}">${esc(c === 'all' ? 'All' : c)}</button>`
@@ -4818,6 +4871,7 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
     document.body.append(backdrop);
 
     const input = backdrop.querySelector('.ex-picker-input');
+    const filterCb = backdrop.querySelector('.ex-picker-filter-cb');
     const listEl = backdrop.querySelector('.ex-picker-list');
     let activeChip = 'all';
 
@@ -4828,7 +4882,9 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
 
     function renderList() {
       const q = (input.value || '').trim().toLowerCase();
+      const applyCustomFilter = Boolean(filterFn && (!filterCb || filterCb.checked));
       const matches = defs.exercises.filter((ex) => {
+        if (applyCustomFilter && !filterFn(ex)) return false;
         if (activeChip === 'mobility' && ex.scoring !== 'mobility') return false;
         if (activeChip !== 'all' && activeChip !== 'mobility') {
           const allM = [...(ex.primaryMuscles || []), ...(ex.secondaryMuscles || [])];
@@ -4851,6 +4907,7 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
     }
 
     input.addEventListener('input', renderList);
+    if (filterCb) filterCb.addEventListener('change', renderList);
     backdrop.addEventListener('click', (ev) => {
       if (ev.target === backdrop || ev.target.closest('.ex-picker-close')) {
         close();
@@ -4873,6 +4930,114 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
 
     renderList();
     setTimeout(() => input.focus(), 0);
+  }
+
+  function openPlateLoaderModal(targetWeight, barWeight, plates, unit) {
+    document.querySelector('.ex-picker-backdrop')?.remove();
+    const pm = computePlateLoad(targetWeight, { barWeight, plates, unit });
+    const flatPlates = [];
+    for (const item of pm.perSide || []) {
+      for (let i = 0; i < item.count; i++) flatPlates.push(item.plate);
+    }
+    const maxP = Math.max(45, ...flatPlates, 1);
+    const plateClass = (p) => {
+      const v = Number(p);
+      if (v >= 45 || (unit === 'kg' && v >= 20)) return 'plate-45';
+      if (v >= 35 || (unit === 'kg' && v >= 15)) return 'plate-35';
+      if (v >= 25 || (unit === 'kg' && v >= 10)) return 'plate-25';
+      if (v >= 10 || (unit === 'kg' && v >= 5)) return 'plate-10';
+      return 'plate-small';
+    };
+    const renderSide = (arr) => arr.map((p) => {
+      const h = Math.max(30, Math.min(72, Math.round(28 + (p / maxP) * 44)));
+      return `<span class="plate-disc ${plateClass(p)}" style="height:${h}px;" title="${p} ${esc(unit)}">${p}</span>`;
+    }).join('');
+
+    const backdrop = document.createElement('div');
+    backdrop.className = 'ex-picker-backdrop';
+    backdrop.innerHTML = `
+      <div class="card ex-picker-modal plate-modal" role="dialog" aria-modal="true" aria-label="Barbell Plate Loader">
+        <div class="ex-picker-head">
+          <strong>🏋️ Plate Loader — ${esc(String(targetWeight))} ${esc(unit)}</strong>
+          <button type="button" class="ghost logger-mini-btn ex-picker-close" aria-label="Close">✕</button>
+        </div>
+        <p class="note" style="margin:0;">Bar: <strong>${esc(String(barWeight))} ${esc(unit)}</strong> · ${esc(pm.formatted || pm.reason)}</p>
+        <div class="plate-bar-diagram" aria-label="Visual barbell loading diagram">
+          <div class="plate-side plate-side-left">${renderSide([...flatPlates].reverse())}</div>
+          <div class="plate-sleeve"></div>
+          <div class="plate-bar-shaft">${esc(String(barWeight))}${esc(unit)}</div>
+          <div class="plate-sleeve"></div>
+          <div class="plate-side plate-side-right">${renderSide(flatPlates)}</div>
+        </div>
+        <div class="plate-per-side-list">
+          ${(pm.perSide || []).length
+            ? pm.perSide.map((it) => `<span class="catalog-badge">${it.count} × ${it.plate} ${esc(unit)} / side</span>`).join('')
+            : '<span class="note">Bar only — no plates needed.</span>'}
+        </div>
+      </div>`;
+    document.body.append(backdrop);
+    backdrop.addEventListener('click', (ev) => {
+      if (ev.target === backdrop || ev.target.closest('.ex-picker-close')) backdrop.remove();
+    });
+  }
+
+  function openWorkoutSummaryModal({ sessionId, title, unit, completedSets = 0, newPrs = [], totalVolumeKg = 0, durationSec = null, exerciseIds = [] }) {
+    document.querySelector('.ex-picker-backdrop')?.remove();
+    const muscles = [...new Set(
+      exerciseIds.flatMap((id) => defs.exercises.find((e) => e.id === id)?.primaryMuscles || [])
+    )].slice(0, 8);
+    const volDisplay = totalVolumeKg > 0 ? `${kgToDisplay(totalVolumeKg, unit).toLocaleString()} ${unit}` : `0 ${unit}`;
+    const durDisplay = durationSec != null ? formatClock(durationSec) : '—';
+
+    const backdrop = document.createElement('div');
+    backdrop.className = 'ex-picker-backdrop';
+    backdrop.innerHTML = `
+      <div class="card ex-picker-modal summary-modal" role="dialog" aria-modal="true" aria-label="Workout Summary">
+        <div class="ex-picker-head">
+          <strong>✓ Workout Complete — ${esc(title)}</strong>
+          <button type="button" class="ghost logger-mini-btn ex-picker-close" aria-label="Close">✕</button>
+        </div>
+        <div class="summary-stats-grid">
+          <div class="summary-stat"><span class="note">Duration</span><strong>${esc(durDisplay)}</strong></div>
+          <div class="summary-stat"><span class="note">Total Volume</span><strong>${esc(volDisplay)}</strong></div>
+          <div class="summary-stat"><span class="note">Sets Completed</span><strong>${completedSets}</strong></div>
+          <div class="summary-stat"><span class="note">PRs Broken</span><strong>${newPrs.length ? `🏆 ${newPrs.length}` : '0'}</strong></div>
+        </div>
+        ${newPrs.length ? `<p class="note" style="margin:0; color:var(--accent);"><strong>PRs:</strong> ${esc(newPrs.map((p) => p.exerciseName).join(', '))}</p>` : ''}
+        ${muscles.length ? `<div class="summary-muscles">${muscles.map((m) => `<span class="catalog-badge">${esc(m)}</span>`).join('')}</div>` : ''}
+        <label style="margin-top:4px;">Session RPE (1–10)
+          <div class="summary-rpe-row">
+            ${[6, 7, 8, 9, 10].map((v) => `<button type="button" class="ghost logger-mini-btn summary-rpe-btn" data-rpe="${v}">${v}</button>`).join('')}
+            <input type="number" id="summary-rpe-input" min="1" max="10" step="0.5" placeholder="e.g. 8" style="max-width:90px;" />
+          </div>
+        </label>
+        <div class="storage-actions" style="justify-content:flex-end;">
+          <button type="button" id="summary-save-close-btn" class="primary">Save &amp; Done</button>
+        </div>
+      </div>`;
+    document.body.append(backdrop);
+    const rpeInput = backdrop.querySelector('#summary-rpe-input');
+    backdrop.addEventListener('click', async (ev) => {
+      if (ev.target === backdrop || ev.target.closest('.ex-picker-close')) {
+        backdrop.remove();
+        return;
+      }
+      const rpeBtn = ev.target.closest('.summary-rpe-btn');
+      if (rpeBtn && rpeInput) {
+        rpeInput.value = rpeBtn.dataset.rpe;
+        backdrop.querySelectorAll('.summary-rpe-btn').forEach((b) => b.classList.toggle('active', b === rpeBtn));
+        return;
+      }
+      if (ev.target.closest('#summary-save-close-btn')) {
+        const rpeVal = rpeInput?.value ? Number(rpeInput.value) : null;
+        if (rpeVal != null && Number.isFinite(rpeVal) && sessionId) {
+          const dbInst = await ensureAppDb();
+          updateSessionMeta(dbInst, sessionId, { sessionRpe: Math.min(10, Math.max(1, rpeVal)) });
+          await savePersistedAppDb(dbInst);
+        }
+        backdrop.remove();
+      }
+    });
   }
 
   // --- Settings: Workout Template Manager / Editor ---
