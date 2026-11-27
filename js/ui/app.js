@@ -415,7 +415,6 @@ export function mount(root, defs) {
             </select>
           </label>` : ''}
         <span class="build-stamp" title="Build timestamp">${__BUILD__}</span>
-        <button id="theme" class="ghost icon-button" aria-label="Toggle theme">◐</button>
       </div>
     </header>
 
@@ -859,8 +858,27 @@ export function mount(root, defs) {
           </div>
 
           <div class="card settings-card">
-            <h3>Display &amp; Defaults</h3>
-            <p class="note">Adjust default weight units, bar weights, smallest plate increments, and text/UI scaling across the app.</p>
+            <h3>Appearance &amp; UI</h3>
+            <p class="note">Customize the color theme and text/UI scaling across the app.</p>
+            <div class="catalog-filters" style="align-items:end;">
+              <label>UI &amp; Font Scale
+                <select id="settings-scale-select">
+                  <option value="100" selected>100% · Standard (Default)</option>
+                  <option value="115">115% · Comfortable (Mobile)</option>
+                  <option value="130">130% · Large (High visibility)</option>
+                  <option value="150">150% · Extra Large (Maximum readability)</option>
+                </select>
+              </label>
+              <label>Theme
+                <button type="button" id="theme" class="ghost" aria-label="Toggle theme">◐ Dark</button>
+              </label>
+            </div>
+            <p class="note scale-preview-text">Sample: Barbell Back Squat · 3 sets × 8 reps @ 225 lb (RPE 8)</p>
+          </div>
+
+          <div class="card settings-card">
+            <h3>Equipment &amp; Training Defaults</h3>
+            <p class="note">Adjust default weight units, bar weights, smallest plate increments, WOD countdowns, and joint exclusions.</p>
             <div class="catalog-filters">
               <label>Display Weight Unit
                 <select id="setting-display-unit">
@@ -888,16 +906,6 @@ export function mount(root, defs) {
               <label>Safety Squat Bar Weight
                 <input type="number" id="setting-ssb-weight" min="5" max="150" step="0.5" value="65" />
               </label>
-            </div>
-            <div class="catalog-filters">
-              <label>UI &amp; Font Scale
-                <select id="settings-scale-select">
-                  <option value="100">100% · Standard (Desktop / Compact)</option>
-                  <option value="115" selected>115% · Comfortable (Recommended for mobile)</option>
-                  <option value="130">130% · Large (High visibility)</option>
-                  <option value="150">150% · Extra Large (Maximum readability)</option>
-                </select>
-              </label>
               <label>WOD Timer Prep Countdown
                 <select id="setting-wod-countdown">
                   <option value="0">0s · Instant Start</option>
@@ -907,7 +915,6 @@ export function mount(root, defs) {
                 </select>
               </label>
             </div>
-            <p class="note scale-preview-text">Sample: Barbell Back Squat · 3 sets × 8 reps @ 225 lb (RPE 8)</p>
             <fieldset style="border:1px solid var(--border); border-radius:var(--radius); padding:10px 12px;">
               <legend style="font-weight:600; font-size:0.9rem; padding:0 6px;">Joint / Injury Exclusions</legend>
               <p class="note" style="margin:0 0 8px;">Not medical guidance — excludes exercises tagged with selected joint loads during generation and swaps.</p>
@@ -4489,15 +4496,22 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
     document.documentElement.dataset.preview = preview.value;
   }
 
-  root.querySelector('#theme').addEventListener('click', () => {
-    const el = document.documentElement;
-    el.dataset.theme = el.dataset.theme === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('theme', el.dataset.theme);
-  });
-  document.documentElement.dataset.theme = localStorage.getItem('theme') ?? 'dark';
+  const themeBtn = root.querySelector('#theme');
+  const applyTheme = (theme) => {
+    const resolved = theme === 'light' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = resolved;
+    localStorage.setItem('theme', resolved);
+    if (themeBtn) themeBtn.textContent = resolved === 'light' ? '◐ Light' : '◐ Dark';
+  };
+  applyTheme(localStorage.getItem('theme') || 'dark');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+    });
+  }
 
   const PREF_SCALE = 'trainer_display_scale';
-  const savedScale = localStorage.getItem(PREF_SCALE) || '115';
+  const savedScale = localStorage.getItem(PREF_SCALE) || '100';
 
   function applyDisplayScale(scale) {
     document.documentElement.dataset.scale = scale;
