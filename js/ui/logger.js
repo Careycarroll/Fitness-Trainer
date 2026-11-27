@@ -164,7 +164,7 @@ export function createSessionFromEngineSession(appDb, engineSession, date, { tit
  */
 export function loadActiveWorkout(appDb, sessionId) {
   const sRow = appDb.exec(
-    `SELECT id, date, started_at, completed_at, title, source, status, location, session_rpe, notes
+    `SELECT id, date, started_at, completed_at, title, source, status, location, session_rpe, notes, bodyweight_kg
      FROM workout_sessions WHERE id = ?`,
     [sessionId]
   )[0]?.values?.[0];
@@ -180,7 +180,8 @@ export function loadActiveWorkout(appDb, sessionId) {
     status: sRow[6],
     location: sRow[7] || '',
     sessionRpe: sRow[8],
-    notes: sRow[9] || ''
+    notes: sRow[9] || '',
+    bodyweightKg: sRow[10] ?? null
   };
 
   const bRows = appDb.exec(
@@ -431,7 +432,7 @@ export function deleteSet(appDb, setId) {
  * Update workout session metadata (title, notes, location, status).
  */
 export function updateSessionMeta(appDb, sessionId, fields) {
-  const allowed = { title: 'title', notes: 'notes', location: 'location', status: 'status', sessionRpe: 'session_rpe' };
+  const allowed = { title: 'title', notes: 'notes', location: 'location', status: 'status', sessionRpe: 'session_rpe', bodyweightKg: 'bodyweight_kg' };
   const sets = [];
   const vals = [];
   for (const [k, col] of Object.entries(allowed)) {

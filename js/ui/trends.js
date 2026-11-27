@@ -263,6 +263,58 @@ export function queryTrainingBias(appDb, { days = null, startDate = null, endDat
 }
 
 /**
+ * Compute trailing 7-day completed working sets per muscle vs. MEV/MAV/MRV landmarks.
+ */
+export function queryWeeklyMuscleVolume(appDb, landmarksMap = {}, { days = 7 } = {}) {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - Math.max(1, Number(days) || 7));
+  const startDate = cutoff.toISOString().slice(0, 10);
+
+  const rows = appDb.exec(`
+    SELECT e.primary_muscles, e.secondary_muscles
+    FROM logged_sets ls
+    JOIN workout_sessions ws ON ws.id = ls.session_id
+    JOIN exercises e ON e.id = ls.exercise_id
+    WHERE ls.is_complete = 1 AND ls.set_type != 'warmup' AND ws.date >= ?
+  `, [startDate])[0]?.values ?? [];
+
+  const counts = new Map();
+  for (const [primJson, secJson] of rows) {
+    let prim = [];
+    let sec = [];
+    try { prim = JSON.parse(primJson || '[]'); } catch { prim = []; }
+    try { sec = JSON.parse(secJson || '[]'); } catch { sec = []; }
+    for (const m of prim) counts.set(m, (counts.get(m) || 0) + 1);
+    for (const m of sec) counts.set(m, (counts.get(m) || 0) + 0.5);
+  }
+
+  const allMuscles = new Set([...Object.keys(landmarksMap || {}), ...counts.keys()]);
+  const out = [];
+  for (const m of allMuscles) {
+    const lm = landmarksMap?.[m];
+    const sets = Math.round((counts.get(m) || 0) * 10) / 10;
+    const mev = Number(lm?.mev ?? 0);
+    const mav = Number(lm?.mav ?? 0);
+    const mrv = Number(lm?.mrv ?? 0);
+    if (sets === 0 && !lm) continue;
+    let zone = 'optimal';
+    if (mrv > 0 && sets > mrv) zone = 'over';
+    else if (mrv > 0 && sets >= mrv - 2) zone = 'high';
+    else if (mev > 0 && sets < mev) zone = 'under';
+    out.push({
+      muscle: m,
+      label: formatTokenLabel(m),
+      sets,
+      mev,
+      mav,
+      mrv,
+      zone
+    });
+  }
+  return out.sort((a, b) => b.sets - a.sets || a.label.localeCompare(b.label));
+}
+
+/**
  * Render clean horizontal SVG distribution bars for training bias.
  */
 export function renderSvgDistributionBars(items, { width = 560 } = {}) {
@@ -341,7 +393,7 @@ export function renderSvgLineChart(points, { width = 560, height = 180, unitSuff
   const dots = coords.map((c) => {
     const info = `${c.date}: ${c.value}${unitSuffix}${c.isPr ? ' 🏆 PR' : ''}`;
     return `
-      <g class="trend-point" data-chart-info="${escSvg(info)}" tabindex="0">
+      <g class="trend-point" data-chart-info="${escSvg(info)}" data-chart-date="${escSvg(c.date)}" tabindex="0">
         <circle cx="${c.x}" cy="${c.y}" r="12" fill="transparent" />
         <circle class="trend-dot" cx="${c.x}" cy="${c.y}" r="${c.isPr ? 5 : 3.5}" fill="${c.isPr ? '#facc15' : 'var(--accent, #e5484d)'}" />
         <title>${escSvg(info)}</title>

@@ -130,6 +130,7 @@ import {
   queryDeloadInputs,
   queryCompletedSetsForMaxes,
   queryRecentHistoryForPlanner,
+  queryWeeklyMuscleVolume,
   addBodyMetric,
   renderSvgLineChart,
   renderSvgBarChart,
@@ -2967,13 +2968,30 @@ export function mount(root, defs) {
       }
       const bestEstKg = Math.max(liveEst1RmKg, bestPrior.bestEst1RmKg);
       const isWeightReps = (exSets[0]?.trackingType || exObj?.trackingType || 'weight_reps') === 'weight_reps';
+      const knownMaxEntry = (persisted?.exerciseMaxes || [])
+        .filter((m) => m.exerciseId === exId && m.e1rm > 0)
+        .sort((a, b) => (a.effectiveDate < b.effectiveDate ? 1 : -1))[0];
+      const known1RmDisp = knownMaxEntry
+        ? (unit === 'kg' ? Math.round(knownMaxEntry.e1rm * 0.45359237 * 10) / 10 : Number(knownMaxEntry.e1rm))
+        : 0;
+      const ref1RmDisp = known1RmDisp > 0 ? known1RmDisp : (bestEstKg > 0 ? kgToDisplay(bestEstKg, unit) : 0);
+      const eqDefaultsForPct = getEquipmentLoadDefaults();
+      const pctInc = Number(eqDefaultsForPct.plateIncrement) > 0 ? Number(eqDefaultsForPct.plateIncrement) : (unit === 'kg' ? 2.5 : 5);
 
       let subBodyHtml = '';
       if (activeLoggerSubTab === 'track') {
         const lastSummaryTxt = lastPerf
           ? lastWorkSets.slice(0, 4).map((s) => (s.durationSec ? `${s.durationSec}s` : `${kgToDisplay(s.weightKg, unit) || 0}×${s.reps ?? 0}`)).join(', ')
           : '';
-        const trackMetaHtml = (lastPerf || bestEstKg > 0) ? `
+        const pctChipsHtml = isWeightReps && ref1RmDisp > 0 ? `
+          <div class="logger-pct-row" title="Tap to fill next working set (${known1RmDisp > 0 ? 'Known 1RM' : 'Est. 1RM'})">
+            <span class="note">% of ${known1RmDisp > 0 ? '1RM' : 'Est. 1RM'}:</span>
+            ${[65, 70, 75, 80, 85, 90].map((pct) => {
+              const w = Math.max(pctInc, Math.round((ref1RmDisp * (pct / 100)) / pctInc) * pctInc);
+              return `<button type="button" class="ghost logger-mini-btn" data-logger-pct-wt="${w}" data-block-id="${esc(blk.id)}" data-ex-id="${esc(exId)}">${pct}% · ${w}</button>`;
+            }).join('')}
+          </div>` : '';
+        const trackMetaHtml = (lastPerf || bestEstKg > 0 || pctChipsHtml) ? `
           <div class="logger-track-meta">
             ${lastPerf ? `
               <div class="logger-last-banner">
@@ -2985,6 +3003,7 @@ export function mount(root, defs) {
                 📈 Est. 1RM: <strong>~${esc(String(kgToDisplay(liveEst1RmKg || bestEstKg, unit)))} ${esc(unit)}</strong> <em>(estimate)</em>
                 ${bestPrior.bestEst1RmKg > 0 ? ` · All-time est: ~${esc(String(kgToDisplay(bestPrior.bestEst1RmKg, unit)))} ${esc(unit)}` : ''}
               </span>` : ''}
+            ${pctChipsHtml}
           </div>` : '';
         const pairBoxHtml = loggerPairBlockId === blk?.id ? `
           <div class="logger-add-ex-row" style="margin-top:10px;">
@@ -3287,6 +3306,9 @@ export function mount(root, defs) {
         <div class="logger-footer-meta">
           <span class="catalog-badge">${esc(session.status)}</span>
           <span class="note">Created: ${esc(session.date)}${startTimeLabel ? ` · Started: ${esc(startTimeLabel)}` : ''}</span>
+          <label class="logger-bw-inline">⚖️ BW (${esc(unit)})
+            <input type="number" step="0.1" min="20" id="logger-bw-input" value="${esc(session.bodyweightKg ? String(kgToDisplay(session.bodyweightKg, unit)) : '')}" placeholder="—" />
+          </label>
         </div>
         <button type="button" id="logger-delete-btn" class="ghost logger-mini-btn">Delete Workout</button>
       </div>
@@ -3484,6 +3506,17 @@ export function mount(root, defs) {
       }
       if (e.target.id === 'logger-notes') {
         updateSessionMeta(appDb, activeLoggerSessionId, { notes: e.target.value });
+        await savePersistedAppDb(appDb);
+        return;
+      }
+      if (e.target.id === 'logger-bw-input') {
+        const rawBw = Number(e.target.value);
+        const bwKg = Number.isFinite(rawBw) && rawBw > 20 ? displayToKg(rawBw, unit) : null;
+        updateSessionMeta(appDb, activeLoggerSessionId, { bodyweightKg: bwKg });
+        if (bwKg) {
+          const sessDate = loadActiveWorkout(appDb, activeLoggerSessionId)?.session?.date || todayDateString();
+          addBodyMetric(appDb, { date: sessDate, weightKg: bwKg });
+        }
         await savePersistedAppDb(appDb);
         return;
       }
@@ -3780,6 +3813,24 @@ export function mount(root, defs) {
         updateSetFields(appDb, setId, { [field]: dbVal });
         await savePersistedAppDb(appDb);
         await renderActiveLogger();
+        return;
+      }
+      const pctBtn = e.target.closest('[data-logger-pct-wt]');
+      if (pctBtn) {
+        const targetDisp = Number(pctBtn.dataset.loggerPctWt);
+        const bId = pctBtn.dataset.blockId;
+        const xId = pctBtn.dataset.exId;
+        const unit = getDisplayUnit();
+        const active = loadActiveWorkout(appDb, activeLoggerSessionId);
+        const blk = active?.blocks.find((b) => b.id === bId);
+        const workSets = (blk?.sets || []).filter((s) => s.exerciseId === xId && s.setType !== 'warmup' && !s.parentSetId);
+        const targetSet = workSets.find((s) => !s.isComplete) || workSets[workSets.length - 1];
+        if (targetSet && targetDisp > 0) {
+          updateSetFields(appDb, targetSet.id, { weightKg: displayToKg(targetDisp, unit) });
+          loggerStatusMsg = `Filled ${targetDisp} ${unit} on next working set.`;
+          await savePersistedAppDb(appDb);
+          await renderActiveLogger();
+        }
         return;
       }
       const copyLastBtn = e.target.closest('[data-logger-copy-last]');
@@ -4101,9 +4152,9 @@ export function mount(root, defs) {
         </div>
       </div>
 
-      <div class="card">
+      <div class="card" id="trends-lift-chart-card">
         <div class="log-toolbar-top">
-          <h2 style="margin:0;">Lift & Benchmark Progression</h2>
+          <h2 style="margin:0;">Lift &amp; Benchmark Progression</h2>
           <button type="button" id="trends-soft-reset-btn" class="ghost">↺ Soft Reset Baseline</button>
         </div>
         <label style="max-width:340px; margin-top:8px;">Exercise
@@ -4118,10 +4169,33 @@ export function mount(root, defs) {
           <div class="trend-kpi"><strong>Active Baseline (Epoch ${trend.activeEpoch}):</strong> ${esc(epochBestDisp + unitSuffix)}</div>
         </div>
         ${renderSvgLineChart(chartPoints, { unitSuffix })}
+        <div id="trends-point-drilldown"></div>
         <details style="margin-top:10px;">
           <summary class="note" style="cursor:pointer; font-weight:600;">History Per Lift (${liftHistory.length} sessions)</summary>
           <div style="margin-top:8px;">${liftHistoryHtml}</div>
         </details>
+      </div>
+
+      <div class="card">
+        <h2 style="margin:0 0 4px;">Weekly Muscle Volume vs. Landmarks (Last 7d)</h2>
+        <p class="note" style="margin:0 0 8px;">Completed working sets (1× primary, 0.5× secondary) compared against your MEV / MAV / MRV targets.</p>
+        ${(() => {
+          const wv = queryWeeklyMuscleVolume(appDb, lmMap, { days: 7 });
+          if (!wv.length) return '<p class="note">Log workouts or configure landmarks in Settings to track weekly volume.</p>';
+          return `<div class="trend-vol-grid">${wv.slice(0, 16).map((item) => {
+            const cap = item.mrv || item.mav || Math.max(10, item.sets);
+            const pct = Math.min(100, Math.round((item.sets / Math.max(1, cap)) * 100));
+            const targetTxt = item.mrv ? `MEV ${item.mev} · MRV ${item.mrv}` : `${item.sets} sets`;
+            return `
+              <div class="trend-vol-item">
+                <div class="trend-vol-head">
+                  <strong>${esc(item.label)}</strong>
+                  <span class="note">${item.sets} / ${esc(targetTxt)}</span>
+                </div>
+                <div class="trend-vol-track"><div class="trend-vol-fill zone-${esc(item.zone)}" style="width:${pct}%"></div></div>
+              </div>`;
+          }).join('')}</div>`;
+        })()}
       </div>
 
       <div class="card">
@@ -4223,6 +4297,25 @@ export function mount(root, defs) {
     viewTrends.addEventListener('pointermove', (e) => inspectChartTarget(e.target));
     viewTrends.addEventListener('click', async (e) => {
       inspectChartTarget(e.target);
+      const pt = e.target.closest('.trend-point[data-chart-date]');
+      if (pt && pt.closest('#trends-lift-chart-card')) {
+        const dt = pt.dataset.chartDate;
+        const drillEl = viewTrends.querySelector('#trends-point-drilldown');
+        if (drillEl && dt) {
+          const appDb = await ensureAppDb();
+          const unit = getDisplayUnit();
+          const daySessions = queryHistoryPerLift(appDb, selectedTrendExerciseId).filter((g) => g.date === dt);
+          drillEl.innerHTML = daySessions.length
+            ? `<div class="trend-drilldown">
+                 <strong>${esc(dt)} — ${esc(daySessions.map((d) => d.title).join(', '))}</strong>
+                 <p class="note" style="margin:4px 0 0;">${daySessions.flatMap((g) => g.sets.map((st, idx) => {
+                   const val = st.durationSec ? `${st.durationSec}s` : `${formatDisplayWeight(st.weightKg, unit)} × ${st.reps ?? 0}`;
+                   return `S${idx + 1}: ${esc(val)}${st.rir != null ? ` @ RIR ${st.rir}` : ''}${st.isPr ? ' 🏆' : ''}`;
+                 })).join(' · ')}</p>
+               </div>`
+            : `<div class="trend-drilldown"><span class="note">No set details recorded for ${esc(dt)}.</span></div>`;
+        }
+      }
       if (e.target.closest('#trends-soft-reset-btn')) {
         if (!window.confirm('Soft reset your active baseline for this exercise? Your all-time PRs remain intact.')) return;
         const appDb = await ensureAppDb();
