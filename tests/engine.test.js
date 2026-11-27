@@ -418,4 +418,13 @@ describe('prescriptions are sane', () => {
       }
     }
   });
+
+  test('hiit respects sessionMinutes time constraint by scaling rounds/stations', () => {
+    for (const mins of [15, 20, 30]) {
+      const p = generate({ ...base, styleId: 'hiit', daysPerWeek: 1, sessionMinutes: mins }, defs);
+      const s = p.weeks[0].sessions[0];
+      assert.ok(s.estimatedSeconds <= mins * 60, `hiit ${mins}m exceeded cap: ${s.estimatedSeconds}s`);
+      assert.ok(s.blocks[0].rounds >= 1, 'rounds should remain >= 1');
+    }
+  });
 });

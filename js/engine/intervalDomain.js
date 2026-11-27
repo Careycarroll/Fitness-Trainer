@@ -96,7 +96,13 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
 
   const wr = style.workRest;
   const isAmrap = wr.restSeconds === 0 && wr.rounds === 1;
-  const stationWindow = stationWindowFor(style, wr, isAmrap);
+  const maxSeconds = Number.isFinite(request.sessionMinutes) && request.sessionMinutes > 0
+    ? Math.round(request.sessionMinutes * 60)
+    : null;
+  const effectiveWr = isAmrap && maxSeconds
+    ? { ...wr, workSeconds: Math.min(wr.workSeconds, maxSeconds) }
+    : wr;
+  const stationWindow = stationWindowFor(style, effectiveWr, isAmrap);
   const setGroups = [];
   const omitted = [];
   let fatigueUsed = 0;
@@ -205,6 +211,20 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
     });
   }
 
+  let rounds = effectiveWr.rounds;
+  let roundSeconds = setGroups.reduce((s, sg) => s + sg.workSeconds + sg.restSeconds, 0);
+  if (!isAmrap && maxSeconds && roundSeconds > 0 && roundSeconds * rounds > maxSeconds) {
+    if (roundSeconds <= maxSeconds) {
+      rounds = Math.max(1, Math.floor(maxSeconds / roundSeconds));
+    } else {
+      rounds = 1;
+      while (setGroups.length > 1 && roundSeconds > maxSeconds) {
+        setGroups.pop();
+        roundSeconds = setGroups.reduce((s, sg) => s + sg.workSeconds + sg.restSeconds, 0);
+      }
+    }
+  }
+
   // An AMRAP is one unbroken effort against a cap; intervals are rounds of
   // work/rest. Both are ONE block containing every movement, because the
   // rounds and the cap describe the group and there is nowhere else to put
@@ -215,15 +235,14 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
           // An AMRAP's round count is what the athlete PRODUCES against the
           // cap, so prescribing `rounds: 1` stated a target that does not
           // exist. Null says "not prescribed"; the cap carries the intent.
-          rounds: isAmrap ? null : wr.rounds,
-          timeCapSeconds: isAmrap ? wr.workSeconds : null
+          rounds: isAmrap ? null : rounds,
+          timeCapSeconds: isAmrap ? effectiveWr.workSeconds : null
         })
       ]
     : [];
 
   // An AMRAP lasts exactly its cap, however many rounds the athlete produces.
-  const roundSeconds = setGroups.reduce((s, sg) => s + sg.workSeconds + sg.restSeconds, 0);
-  const totalSeconds = isAmrap ? wr.workSeconds : roundSeconds * wr.rounds;
+  const totalSeconds = isAmrap ? effectiveWr.workSeconds : roundSeconds * rounds;
 
   return {
     domain: DOMAIN,
@@ -231,8 +250,8 @@ export function generateSession({ style, day, catalog, profile, request, dayInde
     styleId: style.id,
     format: isAmrap ? 'amrap' : 'intervals',
     // Consistent with the block: an AMRAP's rounds are produced, not prescribed.
-    rounds: isAmrap ? null : wr.rounds,
-    capSeconds: wr.workSeconds,
+    rounds: isAmrap ? null : rounds,
+    capSeconds: effectiveWr.workSeconds,
     blocks,
     omitted,
     estimatedSeconds: totalSeconds,

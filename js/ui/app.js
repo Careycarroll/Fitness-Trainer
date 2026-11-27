@@ -610,6 +610,17 @@ export function mount(root, defs) {
                 <option value="crossfit">CrossFit Challenge</option>
               </select>
             </label>
+            <div id="hiit-time-picker">
+              <label>Time Limit
+                <select name="wodSessionMinutes">
+                  <option value="15">15 min · Quick Blast</option>
+                  <option value="20">20 min · Express</option>
+                  <option value="30" selected>30 min · Standard</option>
+                  <option value="45">45 min · Extended</option>
+                  <option value="60">60 min · Full (No Cap)</option>
+                </select>
+              </label>
+            </div>
             <div id="benchmark-picker" hidden>
               <label>Challenge Workout
                 <select name="benchmarkId">
@@ -1272,6 +1283,8 @@ export function mount(root, defs) {
     tab.addEventListener('click', () => switchTab(tab.dataset.tab));
   });
 
+  const hiitTimePicker = root.querySelector('#hiit-time-picker');
+  const wodTimeSelect = root.querySelector('[name=wodSessionMinutes]');
   const benchmarkPicker = root.querySelector('#benchmark-picker');
   const benchmarkSelect = root.querySelector('[name=benchmarkId]');
   const benchmarkDesc = root.querySelector('#benchmark-desc');
@@ -1279,8 +1292,13 @@ export function mount(root, defs) {
 
   trackSelect.addEventListener('change', () => {
     benchmarkPicker.hidden = trackSelect.value !== 'crossfit';
+    if (hiitTimePicker) hiitTimePicker.hidden = trackSelect.value !== 'hiit';
     wodForm.requestSubmit();
   });
+
+  if (wodTimeSelect) {
+    wodTimeSelect.addEventListener('change', () => wodForm.requestSubmit());
+  }
 
   benchmarkSelect.addEventListener('change', () => {
     if (benchmarkSelect.value === 'daily') {
@@ -1338,13 +1356,14 @@ export function mount(root, defs) {
     if (wodStatusEl) wodStatusEl.textContent = '';
 
     if (track === 'hiit') {
+      const sessionMinutes = Number(f.get('wodSessionMinutes')) || 30;
       currentRequest = {
         schemaVersion: 1,
         styleId: 'hiit',
         daysPerWeek: 1,
         blockWeeks: 1,
         equipmentProfile,
-        sessionMinutes: 45,
+        sessionMinutes,
         seed,
         athlete: { skillLevel },
         history: []
