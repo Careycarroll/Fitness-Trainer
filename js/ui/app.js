@@ -2993,9 +2993,9 @@ export function mount(root, defs) {
               </div>` : '';
 
             return `
-              <div class="logger-overview-card${isGrouped ? ' in-group' : ''}">
-                <div class="logger-overview-head" role="button" tabindex="0"
-                     data-logger-select-ex="${esc(ex.id)}" data-logger-select-block="${esc(blk.id)}">
+              <div class="logger-overview-card${isGrouped ? ' in-group' : ''}" role="button" tabindex="0"
+                   data-logger-select-ex="${esc(ex.id)}" data-logger-select-block="${esc(blk.id)}">
+                <div class="logger-overview-head">
                   <div>
                     <strong>${esc(ex.name)}</strong>
                     <span class="note" style="margin-left:6px;">${esc(cat)}</span>
@@ -3003,8 +3003,7 @@ export function mount(root, defs) {
                   <span class="note">Track →</span>
                 </div>
                 ${editControlsHtml}
-                <div class="logger-overview-sets" role="button" tabindex="0"
-                     data-logger-select-ex="${esc(ex.id)}" data-logger-select-block="${esc(blk.id)}">
+                <div class="logger-overview-sets">
                   ${setLinesHtml || '<span class="note">Tap to log sets</span>'}
                 </div>
               </div>`;
@@ -3453,7 +3452,9 @@ export function mount(root, defs) {
         await renderActiveLogger();
         return;
       }
-      const selectExBtn = e.target.closest('[data-logger-select-ex]');
+      const selectExBtn = !e.target.closest('.logger-edit-controls')
+        ? e.target.closest('[data-logger-select-ex]')
+        : null;
       if (selectExBtn) {
         activeLoggerExercise = {
           blockId: selectExBtn.dataset.loggerSelectBlock,
