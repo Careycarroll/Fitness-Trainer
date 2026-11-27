@@ -107,7 +107,8 @@ import {
   createSessionFromTemplate,
   getLastExercisePerformance,
   getExerciseBestMetrics,
-  insertWarmupSets
+  insertWarmupSets,
+  seedSampleWorkouts
 } from './logger.js';
 import {
   formatClock,
@@ -987,6 +988,7 @@ export function mount(root, defs) {
               <button type="button" id="appdb-export-btn" class="ghost">Export Database (.db)</button>
               <button type="button" id="appdb-restore-btn" class="ghost">Restore Database (.db)</button>
               <button type="button" id="appdb-migrate-btn" class="ghost">Migrate Historical Workouts</button>
+              <button type="button" id="appdb-seed-demo-btn" class="ghost">Load Sample Workouts (Demo)</button>
               <input type="file" id="appdb-restore-file" accept=".db,.sqlite" hidden />
               <input type="file" id="appdb-migrate-file" accept=".fitnotes,.db,.sqlite" hidden />
             </div>
@@ -1917,6 +1919,23 @@ export function mount(root, defs) {
   const appDbRestoreFile = root.querySelector('#appdb-restore-file');
   const appDbMigrateBtn = root.querySelector('#appdb-migrate-btn');
   const appDbMigrateFile = root.querySelector('#appdb-migrate-file');
+  const appDbSeedDemoBtn = root.querySelector('#appdb-seed-demo-btn');
+
+  if (appDbSeedDemoBtn) {
+    appDbSeedDemoBtn.addEventListener('click', async () => {
+      try {
+        const appDb = await ensureAppDb();
+        const count = seedSampleWorkouts(appDb, todayDateString());
+        await savePersistedAppDb(appDb);
+        await refreshAppDbCard();
+        if (appDbStatusEl) {
+          appDbStatusEl.textContent = `Loaded ${count} sample workouts (4 completed across 2 weeks + Today's Upper). Check Trends & Workout Log!`;
+        }
+      } catch (err) {
+        if (appDbStatusEl) appDbStatusEl.textContent = `Demo seed failed: ${err.message}`;
+      }
+    });
+  }
 
   if (appDbExportBtn) {
     appDbExportBtn.addEventListener('click', async () => {

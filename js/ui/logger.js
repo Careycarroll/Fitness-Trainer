@@ -885,3 +885,146 @@ export function insertWarmupSets(appDb, sessionId, blockId, exerciseId, specs) {
   });
   return createdIds;
 }
+
+/**
+ * Seed 4 completed progressive workouts + 1 planned workout for today (idempotent via demo-* IDs).
+ * Useful for testing Trends graphs, Last-session Copy, Warm-ups, Steppers, and Est. 1RM PRs.
+ */
+export function seedSampleWorkouts(appDb, todayStr) {
+  appDb.run("DELETE FROM workout_sessions WHERE id LIKE 'demo-%'");
+  const baseDate = new Date(`${todayStr}T12:00:00Z`);
+  const daysAgo = (n) => {
+    const d = new Date(baseDate.getTime() - n * 86400000);
+    return d.toISOString().slice(0, 10);
+  };
+  const LB = 0.45359237;
+  const insertSession = (id, date, title, status, blocks) => {
+    const started = status === 'completed' ? `${date}T17:00:00.000Z` : null;
+    const completed = status === 'completed' ? `${date}T17:52:00.000Z` : null;
+    appDb.run(
+      `INSERT INTO workout_sessions (id, date, started_at, completed_at, title, source, status)
+       VALUES (?, ?, ?, ?, ?, 'custom', ?)`,
+      [id, date, started, completed, title, status]
+    );
+    let sOrder = 0;
+    blocks.forEach((b, bIdx) => {
+      const blkId = `${id}-blk-${bIdx}`;
+      appDb.run(
+        `INSERT INTO workout_blocks (id, session_id, order_index, block_type, title)
+         VALUES (?, ?, ?, ?, ?)`,
+        [blkId, id, bIdx, b.blockType || 'straight', b.title || null]
+      );
+      for (const s of b.sets) {
+        const isDone = status === 'completed' ? 1 : 0;
+        appDb.run(
+          `INSERT INTO logged_sets (
+            id, session_id, block_id, exercise_id, order_index, set_type,
+            weight_kg, reps, duration_sec, rir, rest_sec, is_complete, is_pr
+          ) VALUES (?, ?, ?, ?, ?, 'working', ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            `${id}-set-${sOrder}`,
+            id,
+            blkId,
+            s.exerciseId,
+            sOrder,
+            s.lb != null ? Math.round(s.lb * LB * 1000) / 1000 : null,
+            s.reps ?? null,
+            s.durationSec ?? null,
+            s.rir ?? 2,
+            s.restSec ?? 90,
+            isDone,
+            s.isPr ? 1 : 0
+          ]
+        );
+        sOrder += 1;
+      }
+    });
+  };
+
+  insertSession('demo-lower-1', daysAgo(14), 'Lower A (Week 1)', 'completed', [
+    { sets: [
+      { exerciseId: 'back-squat', lb: 185, reps: 8, isPr: true },
+      { exerciseId: 'back-squat', lb: 185, reps: 8 },
+      { exerciseId: 'back-squat', lb: 185, reps: 8 }
+    ] },
+    { sets: [
+      { exerciseId: 'conventional-deadlift', lb: 225, reps: 5, restSec: 120, isPr: true },
+      { exerciseId: 'conventional-deadlift', lb: 225, reps: 5, restSec: 120 }
+    ] },
+    { sets: [
+      { exerciseId: 'plank', durationSec: 45, restSec: 60 },
+      { exerciseId: 'plank', durationSec: 45, restSec: 60 }
+    ] }
+  ]);
+
+  insertSession('demo-upper-1', daysAgo(11), 'Upper A (Week 1)', 'completed', [
+    { sets: [
+      { exerciseId: 'barbell-bench-press', lb: 155, reps: 8, isPr: true },
+      { exerciseId: 'barbell-bench-press', lb: 155, reps: 8 },
+      { exerciseId: 'barbell-bench-press', lb: 155, reps: 7 }
+    ] },
+    { blockType: 'superset', title: 'Push/Pull A', sets: [
+      { exerciseId: 'overhead-press', lb: 95, reps: 8, isPr: true },
+      { exerciseId: 'barbell-row', lb: 135, reps: 8, isPr: true },
+      { exerciseId: 'overhead-press', lb: 95, reps: 8 },
+      { exerciseId: 'barbell-row', lb: 135, reps: 8 }
+    ] },
+    { sets: [
+      { exerciseId: 'pull-up', reps: 8 },
+      { exerciseId: 'pull-up', reps: 7 }
+    ] }
+  ]);
+
+  insertSession('demo-lower-2', daysAgo(7), 'Lower A (Week 2)', 'completed', [
+    { sets: [
+      { exerciseId: 'back-squat', lb: 195, reps: 8, isPr: true },
+      { exerciseId: 'back-squat', lb: 195, reps: 8 },
+      { exerciseId: 'back-squat', lb: 195, reps: 8 }
+    ] },
+    { sets: [
+      { exerciseId: 'conventional-deadlift', lb: 245, reps: 5, restSec: 120, isPr: true },
+      { exerciseId: 'conventional-deadlift', lb: 245, reps: 5, restSec: 120 }
+    ] },
+    { sets: [
+      { exerciseId: 'plank', durationSec: 60, restSec: 60 },
+      { exerciseId: 'plank', durationSec: 60, restSec: 60 }
+    ] }
+  ]);
+
+  insertSession('demo-upper-2', daysAgo(4), 'Upper A (Week 2)', 'completed', [
+    { sets: [
+      { exerciseId: 'barbell-bench-press', lb: 165, reps: 8, isPr: true },
+      { exerciseId: 'barbell-bench-press', lb: 165, reps: 8 },
+      { exerciseId: 'barbell-bench-press', lb: 165, reps: 8 }
+    ] },
+    { blockType: 'superset', title: 'Push/Pull A', sets: [
+      { exerciseId: 'overhead-press', lb: 100, reps: 8, isPr: true },
+      { exerciseId: 'barbell-row', lb: 145, reps: 8, isPr: true },
+      { exerciseId: 'overhead-press', lb: 100, reps: 8 },
+      { exerciseId: 'barbell-row', lb: 145, reps: 8 }
+    ] },
+    { sets: [
+      { exerciseId: 'pull-up', reps: 9 },
+      { exerciseId: 'pull-up', reps: 8 }
+    ] }
+  ]);
+
+  insertSession('demo-today', todayStr, "Today's Upper (Demo)", 'planned', [
+    { sets: [
+      { exerciseId: 'barbell-bench-press', lb: null, reps: null },
+      { exerciseId: 'barbell-bench-press', lb: null, reps: null },
+      { exerciseId: 'barbell-bench-press', lb: null, reps: null }
+    ] },
+    { blockType: 'superset', title: 'Push/Pull A', sets: [
+      { exerciseId: 'overhead-press', lb: null, reps: null },
+      { exerciseId: 'barbell-row', lb: null, reps: null },
+      { exerciseId: 'overhead-press', lb: null, reps: null },
+      { exerciseId: 'barbell-row', lb: null, reps: null }
+    ] },
+    { sets: [
+      { exerciseId: 'pull-up', reps: null },
+      { exerciseId: 'pull-up', reps: null }
+    ] }
+  ]);
+  return 5;
+}
