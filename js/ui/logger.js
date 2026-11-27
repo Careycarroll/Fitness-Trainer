@@ -36,12 +36,11 @@ export function displayToKg(val, unit = 'lb') {
  */
 export function createFreestyleSession(appDb, date, title = '') {
   const id = makeId('sess');
-  const now = new Date().toISOString();
   const finalTitle = title.trim() || `Freestyle Workout (${date})`;
   appDb.run(
     `INSERT INTO workout_sessions (id, date, started_at, title, source, status)
-     VALUES (?, ?, ?, ?, 'custom', 'in_progress')`,
-    [id, date, now, finalTitle]
+     VALUES (?, ?, NULL, ?, 'custom', 'planned')`,
+    [id, date, finalTitle]
   );
   return id;
 }
@@ -52,13 +51,12 @@ export function createFreestyleSession(appDb, date, title = '') {
  */
 export function createSessionFromEngineSession(appDb, engineSession, date, { title, source = 'plan' } = {}) {
   const sessionId = makeId('sess');
-  const now = new Date().toISOString();
   const finalTitle = title || engineSession.label || engineSession.dayLabel || `Workout (${date})`;
 
   appDb.run(
     `INSERT INTO workout_sessions (id, date, started_at, title, source, status, notes)
-     VALUES (?, ?, ?, ?, ?, 'in_progress', ?)`,
-    [sessionId, date, now, finalTitle, source, engineSession.notes || null]
+     VALUES (?, ?, NULL, ?, ?, 'planned', ?)`,
+    [sessionId, date, finalTitle, source, engineSession.notes || null]
   );
 
   const blocks = engineSession.blocks || [];
@@ -487,6 +485,18 @@ export function nextSupersetFocusSetId(block, completedSetId) {
   return anyNext ? anyNext.id : null;
 }
 
+export function startWorkoutSession(appDb, sessionId) {
+  const now = new Date().toISOString();
+  appDb.run(
+    `UPDATE workout_sessions
+     SET started_at = COALESCE(started_at, ?),
+         status = CASE WHEN status = 'planned' THEN 'in_progress' ELSE status END
+     WHERE id = ?`,
+    [now, sessionId]
+  );
+  return now;
+}
+
 /**
  * Complete a workout session, persist per-session performance records,
  * and flag any new all-time or active-epoch PRs.
@@ -618,8 +628,8 @@ export function createSessionFromTemplate(appDb, templateId, date) {
 
   appDb.run(
     `INSERT INTO workout_sessions (id, date, started_at, title, source, status, template_id)
-     VALUES (?, ?, ?, ?, 'template', 'in_progress', ?)`,
-    [sessionId, date, now, name, templateId]
+     VALUES (?, ?, NULL, ?, 'template', 'planned', ?)`,
+    [sessionId, date, name, templateId]
   );
   appDb.run('UPDATE workout_templates SET last_used_at = ? WHERE id = ?', [now, templateId]);
 

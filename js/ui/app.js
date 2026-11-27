@@ -96,6 +96,7 @@ import {
   updateSessionMeta,
   deleteWorkoutSession,
   nextSupersetFocusSetId,
+  startWorkoutSession,
   finishWorkoutSession,
   saveSessionAsTemplate,
   createSessionFromTemplate
@@ -2935,16 +2936,23 @@ export function mount(root, defs) {
     if (topExercisesSelect) topExercisesSelect.hidden = true;
     if (topExerciseType) topExerciseType.hidden = true;
     if (topInfoBtn) topInfoBtn.hidden = true;
+    const startTimeLabel = session.startedAt
+      ? new Date(session.startedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      : null;
+    const primaryActionBtn = session.status === 'planned'
+      ? '<button type="button" id="logger-start-btn" class="primary">▶ Start Workout</button>'
+      : '<button type="button" id="logger-finish-btn" class="primary">✓ Finish Workout</button>';
+
     viewLogger.innerHTML = `
       ${timerBarHtml}
 
       <div class="card logger-head-card">
         <div class="logger-head-top">
           <span class="catalog-badge">${esc(session.status)}</span>
-          <span class="note">${esc(session.date)}</span>
+          <span class="note">Created: ${esc(session.date)}${startTimeLabel ? ` · Started: ${esc(startTimeLabel)}` : ''}</span>
           <div style="margin-left:auto; display:flex; gap:6px; flex-wrap:wrap;">
             <button type="button" id="logger-save-tmpl-btn" class="ghost">Save Template</button>
-            <button type="button" id="logger-finish-btn" class="primary">✓ Finish Workout</button>
+            ${primaryActionBtn}
             <button type="button" id="logger-delete-btn" class="ghost">Delete</button>
           </div>
         </div>
@@ -3190,6 +3198,7 @@ export function mount(root, defs) {
         const checked = cb.checked;
         updateSetFields(appDb, setId, { isComplete: checked });
         if (checked) {
+          startWorkoutSession(appDb, activeLoggerSessionId);
           const active = loadActiveWorkout(appDb, activeLoggerSessionId);
           const blk = active?.blocks.find((b) => b.id === blockId);
           loggerFocusSetId = nextSupersetFocusSetId(blk, setId);
@@ -3267,6 +3276,7 @@ export function mount(root, defs) {
         const liveSec = durInput && durInput.value !== '' ? Number(durInput.value) : Number(holdBtn.dataset.loggerHoldSec || 60);
         const dur = Math.max(1, Math.round(liveSec || 60));
         updateSetFields(appDb, setId, { durationSec: dur });
+        startWorkoutSession(appDb, activeLoggerSessionId);
         await savePersistedAppDb(appDb);
         openHoldOverlay({
           setId,
@@ -3416,6 +3426,13 @@ export function mount(root, defs) {
           loggerStatusMsg = `Saved template "${name}".`;
           await renderActiveLogger();
         }
+        return;
+      }
+      if (e.target.closest('#logger-start-btn')) {
+        startWorkoutSession(appDb, activeLoggerSessionId);
+        loggerStatusMsg = 'Workout started — timer running.';
+        await savePersistedAppDb(appDb);
+        await renderActiveLogger();
         return;
       }
       if (e.target.closest('#logger-finish-btn')) {
