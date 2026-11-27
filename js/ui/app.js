@@ -95,6 +95,10 @@ import {
   deleteSet,
   updateSessionMeta,
   deleteWorkoutSession,
+  moveWorkoutBlock,
+  moveExerciseInBlock,
+  linkBlocksIntoSuperset,
+  unlinkExerciseFromSuperset,
   nextSupersetFocusSetId,
   startWorkoutSession,
   finishWorkoutSession,
@@ -2052,7 +2056,7 @@ export function mount(root, defs) {
   let activeLoggerSessionId = null;
   let activeLoggerExercise = null; // { blockId, exerciseId } | null
   let activeLoggerSubTab = 'track'; // 'track' | 'history' | 'info'
-  let loggerDrawerOpen = false;
+  let loggerEditOrder = false;
   let loggerFocusSetId = null;
   let loggerStatusMsg = '';
   let loggerPairBlockId = null;
@@ -2508,7 +2512,7 @@ export function mount(root, defs) {
     activeLoggerSessionId = sessionId;
     activeLoggerExercise = null;
     activeLoggerSubTab = 'track';
-    loggerDrawerOpen = false;
+    loggerEditOrder = false;
     loggerFocusSetId = null;
     loggerStatusMsg = '';
     loggerPairBlockId = null;
@@ -2760,7 +2764,7 @@ export function mount(root, defs) {
           <div class="logger-block-actions" style="margin-top:10px;">
             <button type="button" class="primary logger-mini-btn" data-logger-add-set="${esc(blk.id)}" data-ex-id="${esc(exId)}">+ Add Set</button>
             ${partnerChipsHtml}
-            ${blk?.blockType === 'straight' && loggerPairBlockId !== blk?.id ? `<button type="button" class="ghost logger-mini-btn" data-logger-pair-block="${esc(blk.id)}">+ Pair Superset</button>` : ''}
+            ${(blk?.blockType === 'straight' || blk?.blockType === 'superset') && loggerPairBlockId !== blk?.id ? `<button type="button" class="ghost logger-mini-btn" data-logger-pair-block="${esc(blk.id)}">${blk?.blockType === 'superset' ? '+ Add to Giant Set' : '+ Pair Superset'}</button>` : ''}
           </div>
           ${pairBoxHtml}`;
       } else if (activeLoggerSubTab === 'history') {
@@ -2871,11 +2875,11 @@ export function mount(root, defs) {
       return;
     }
 
-    // LEVEL 1: Workout Overview (clean, scannable FitNotes-style cards without RIR/Notes clutter)
+    // LEVEL 1: Workout Overview (clean, scannable FitNotes-style cards with physical superset/giant-set groups)
+    let ssGroupIdx = 0;
     const blocksHtml = blocks.length
       ? blocks.map((blk, bIdx) => {
-          const typeLabel = blockLabel(blk.blockType);
-          const isSuperset = blk.blockType === 'superset' || blk.blockType === 'circuit';
+          const isGrouped = blk.blockType === 'superset' || blk.blockType === 'circuit';
           const blockExercises = [];
           const seenEx = new Set();
           for (const st of blk.sets) {
@@ -2884,12 +2888,14 @@ export function mount(root, defs) {
               blockExercises.push({ id: st.exerciseId, name: st.exerciseName });
             }
           }
+          const groupLabel = blk.blockType === 'circuit'
+            ? `Circuit (${blockExercises.length})`
+            : (blockExercises.length >= 3 ? `Giant Set (${blockExercises.length})` : `Superset (${blockExercises.length})`);
+          const typeLabel = blockExercises.length >= 3 && blk.blockType === 'superset' ? 'Giant Set' : blockLabel(blk.blockType);
 
-          const exCardsHtml = blockExercises.map((ex) => {
+          const exCardsHtml = blockExercises.map((ex, eIdx) => {
             const exObj = defs.exercises.find((e) => e.id === ex.id);
-            const partners = blockExercises.filter((other) => other.id !== ex.id).map((other) => other.name);
             const cat = (exObj?.primaryMuscles || []).slice(0, 2).join(', ') || typeLabel;
-            const supersetTag = partners.length ? ` · ${typeLabel} w/ ${partners.join(', ')}` : (isSuperset ? ` · ${typeLabel}` : '');
             const exSets = blk.sets.filter((s) => s.exerciseId === ex.id);
             const setLinesHtml = exSets.map((st, idx) => {
               const isTime = st.trackingType === 'time';
@@ -2908,21 +2914,59 @@ export function mount(root, defs) {
                 </div>`;
             }).join('');
 
+            const editControlsHtml = loggerEditOrder ? `
+              <div class="logger-edit-controls">
+                ${isGrouped ? `
+                  <button type="button" class="ghost logger-mini-btn" data-logger-ex-up="${esc(blk.id)}::${esc(ex.id)}" ${eIdx === 0 ? 'disabled' : ''}>↑</button>
+                  <button type="button" class="ghost logger-mini-btn" data-logger-ex-down="${esc(blk.id)}::${esc(ex.id)}" ${eIdx === blockExercises.length - 1 ? 'disabled' : ''}>↓</button>
+                  <button type="button" class="ghost logger-mini-btn" data-logger-unlink="${esc(blk.id)}::${esc(ex.id)}" title="Split out into standalone exercise">Unlink</button>
+                ` : `
+                  <button type="button" class="ghost logger-mini-btn" data-logger-blk-up="${esc(blk.id)}" ${bIdx === 0 ? 'disabled' : ''}>↑</button>
+                  <button type="button" class="ghost logger-mini-btn" data-logger-blk-down="${esc(blk.id)}" ${bIdx === blocks.length - 1 ? 'disabled' : ''}>↓</button>
+                  ${bIdx > 0 ? `<button type="button" class="ghost logger-mini-btn" data-logger-link-prev="${esc(blk.id)}::${esc(blocks[bIdx - 1].id)}" title="Group into superset / giant set with above">🔗 Link w/ Above</button>` : ''}
+                `}
+              </div>` : '';
+
             return `
-              <div class="logger-overview-card" role="button" tabindex="0"
-                   data-logger-select-ex="${esc(ex.id)}" data-logger-select-block="${esc(blk.id)}">
-                <div class="logger-overview-head">
+              <div class="logger-overview-card${isGrouped ? ' in-group' : ''}">
+                <div class="logger-overview-head" role="button" tabindex="0"
+                     data-logger-select-ex="${esc(ex.id)}" data-logger-select-block="${esc(blk.id)}">
                   <div>
                     <strong>${esc(ex.name)}</strong>
-                    <span class="note" style="margin-left:6px;">${esc(cat)}${esc(supersetTag)}</span>
+                    <span class="note" style="margin-left:6px;">${esc(cat)}</span>
                   </div>
                   <span class="note">Track →</span>
                 </div>
-                <div class="logger-overview-sets">${setLinesHtml || '<span class="note">Tap to log sets</span>'}</div>
+                ${editControlsHtml}
+                <div class="logger-overview-sets" role="button" tabindex="0"
+                     data-logger-select-ex="${esc(ex.id)}" data-logger-select-block="${esc(blk.id)}">
+                  ${setLinesHtml || '<span class="note">Tap to log sets</span>'}
+                </div>
               </div>`;
           }).join('');
 
           const wodHtml = buildWodPanelHtml(blk);
+          if (isGrouped && blockExercises.length > 1) {
+            const colorIdx = ssGroupIdx % 4;
+            ssGroupIdx += 1;
+            const groupOrderBtns = loggerEditOrder ? `
+              <button type="button" class="ghost logger-mini-btn" data-logger-blk-up="${esc(blk.id)}" ${bIdx === 0 ? 'disabled' : ''}>↑</button>
+              <button type="button" class="ghost logger-mini-btn" data-logger-blk-down="${esc(blk.id)}" ${bIdx === blocks.length - 1 ? 'disabled' : ''}>↓</button>
+              ${bIdx > 0 ? `<button type="button" class="ghost logger-mini-btn" data-logger-link-prev="${esc(blk.id)}::${esc(blocks[bIdx - 1].id)}">🔗 Link w/ Above</button>` : ''}
+            ` : '';
+            return `
+              <article class="logger-superset-group" data-ss-color="${colorIdx}">
+                <div class="logger-superset-head">
+                  <span class="logger-superset-badge">${esc(groupLabel)}</span>
+                  <div class="logger-superset-actions">
+                    ${groupOrderBtns}
+                    <button type="button" class="ghost logger-mini-btn" data-logger-pair-block="${esc(blk.id)}">+ Add to Group</button>
+                  </div>
+                </div>
+                ${wodHtml}
+                <div class="logger-superset-body">${exCardsHtml}</div>
+              </article>`;
+          }
           return wodHtml ? `<article class="card logger-block-card">${wodHtml}${exCardsHtml}</article>` : exCardsHtml;
         }).join('')
       : '<div class="card"><p class="note" style="margin:0;">No exercises yet — add your first exercise below.</p></div>';
@@ -2951,6 +2995,7 @@ export function mount(root, defs) {
           <span class="catalog-badge">${esc(session.status)}</span>
           <span class="note">Created: ${esc(session.date)}${startTimeLabel ? ` · Started: ${esc(startTimeLabel)}` : ''}</span>
           <div style="margin-left:auto; display:flex; gap:6px; flex-wrap:wrap;">
+            <button type="button" id="logger-edit-order-btn" class="${loggerEditOrder ? 'primary' : 'ghost'}">${loggerEditOrder ? '✓ Done Editing' : '⇅ Reorder / Group'}</button>
             <button type="button" id="logger-save-tmpl-btn" class="ghost">Save Template</button>
             ${primaryActionBtn}
             <button type="button" id="logger-delete-btn" class="ghost">Delete</button>
@@ -3227,6 +3272,57 @@ export function mount(root, defs) {
 
       if (e.target.closest('#logger-back-btn')) {
         switchTab('log');
+        return;
+      }
+      if (e.target.closest('#logger-edit-order-btn')) {
+        loggerEditOrder = !loggerEditOrder;
+        await renderActiveLogger();
+        return;
+      }
+      const blkUpBtn = e.target.closest('[data-logger-blk-up]');
+      if (blkUpBtn) {
+        moveWorkoutBlock(appDb, activeLoggerSessionId, blkUpBtn.dataset.loggerBlkUp, -1);
+        await savePersistedAppDb(appDb);
+        await renderActiveLogger();
+        return;
+      }
+      const blkDownBtn = e.target.closest('[data-logger-blk-down]');
+      if (blkDownBtn) {
+        moveWorkoutBlock(appDb, activeLoggerSessionId, blkDownBtn.dataset.loggerBlkDown, 1);
+        await savePersistedAppDb(appDb);
+        await renderActiveLogger();
+        return;
+      }
+      const exUpBtn = e.target.closest('[data-logger-ex-up]');
+      if (exUpBtn) {
+        const [bId, xId] = exUpBtn.dataset.loggerExUp.split('::');
+        moveExerciseInBlock(appDb, activeLoggerSessionId, bId, xId, -1);
+        await savePersistedAppDb(appDb);
+        await renderActiveLogger();
+        return;
+      }
+      const exDownBtn = e.target.closest('[data-logger-ex-down]');
+      if (exDownBtn) {
+        const [bId, xId] = exDownBtn.dataset.loggerExDown.split('::');
+        moveExerciseInBlock(appDb, activeLoggerSessionId, bId, xId, 1);
+        await savePersistedAppDb(appDb);
+        await renderActiveLogger();
+        return;
+      }
+      const linkPrevBtn = e.target.closest('[data-logger-link-prev]');
+      if (linkPrevBtn) {
+        const [srcId, tgtId] = linkPrevBtn.dataset.loggerLinkPrev.split('::');
+        linkBlocksIntoSuperset(appDb, activeLoggerSessionId, srcId, tgtId);
+        await savePersistedAppDb(appDb);
+        await renderActiveLogger();
+        return;
+      }
+      const unlinkBtn = e.target.closest('[data-logger-unlink]');
+      if (unlinkBtn) {
+        const [bId, xId] = unlinkBtn.dataset.loggerUnlink.split('::');
+        unlinkExerciseFromSuperset(appDb, activeLoggerSessionId, bId, xId);
+        await savePersistedAppDb(appDb);
+        await renderActiveLogger();
         return;
       }
       if (e.target.closest('#logger-sub-back-btn')) {

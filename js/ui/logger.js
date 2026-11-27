@@ -452,6 +452,132 @@ export function deleteWorkoutSession(appDb, sessionId) {
   appDb.run('DELETE FROM workout_sessions WHERE id = ?', [sessionId]);
 }
 
+function reindexSessionBlocks(appDb, sessionId) {
+  const rows = appDb.exec(
+    'SELECT id FROM workout_blocks WHERE session_id = ? ORDER BY order_index ASC',
+    [sessionId]
+  )[0]?.values ?? [];
+  rows.forEach(([id], idx) => {
+    appDb.run('UPDATE workout_blocks SET order_index = ? WHERE id = ?', [idx, id]);
+  });
+}
+
+function reindexSessionSets(appDb, sessionId) {
+  const rows = appDb.exec(
+    `SELECT ls.id FROM logged_sets ls
+     JOIN workout_blocks wb ON wb.id = ls.block_id
+     WHERE ls.session_id = ?
+     ORDER BY wb.order_index ASC, ls.order_index ASC`,
+    [sessionId]
+  )[0]?.values ?? [];
+  rows.forEach(([id], idx) => {
+    appDb.run('UPDATE logged_sets SET order_index = ? WHERE id = ?', [idx, id]);
+  });
+}
+
+/**
+ * Move an entire workout block (straight exercise or superset/giant set) up (-1) or down (+1).
+ */
+export function moveWorkoutBlock(appDb, sessionId, blockId, direction) {
+  const rows = appDb.exec(
+    'SELECT id FROM workout_blocks WHERE session_id = ? ORDER BY order_index ASC',
+    [sessionId]
+  )[0]?.values ?? [];
+  const ids = rows.map((r) => r[0]);
+  const idx = ids.indexOf(blockId);
+  const targetIdx = idx + direction;
+  if (idx < 0 || targetIdx < 0 || targetIdx >= ids.length) return false;
+  [ids[idx], ids[targetIdx]] = [ids[targetIdx], ids[idx]];
+  ids.forEach((id, i) => appDb.run('UPDATE workout_blocks SET order_index = ? WHERE id = ?', [i, id]));
+  reindexSessionSets(appDb, sessionId);
+  return true;
+}
+
+/**
+ * Move an exercise up (-1) or down (+1) within a superset/giant-set block.
+ */
+export function moveExerciseInBlock(appDb, sessionId, blockId, exerciseId, direction) {
+  const rows = appDb.exec(
+    'SELECT id, exercise_id FROM logged_sets WHERE block_id = ? ORDER BY order_index ASC',
+    [blockId]
+  )[0]?.values ?? [];
+  const order = [];
+  const groups = new Map();
+  for (const [sid, exId] of rows) {
+    if (!groups.has(exId)) {
+      groups.set(exId, []);
+      order.push(exId);
+    }
+    groups.get(exId).push(sid);
+  }
+  const idx = order.indexOf(exerciseId);
+  const targetIdx = idx + direction;
+  if (idx < 0 || targetIdx < 0 || targetIdx >= order.length) return false;
+  [order[idx], order[targetIdx]] = [order[targetIdx], order[idx]];
+  let pos = 0;
+  for (const exId of order) {
+    for (const sid of groups.get(exId)) {
+      appDb.run('UPDATE logged_sets SET order_index = ? WHERE id = ?', [pos++, sid]);
+    }
+  }
+  reindexSessionSets(appDb, sessionId);
+  return true;
+}
+
+/**
+ * Merge `sourceBlockId` into `targetBlockId` as a superset / giant set.
+ */
+export function linkBlocksIntoSuperset(appDb, sessionId, sourceBlockId, targetBlockId) {
+  if (!sourceBlockId || !targetBlockId || sourceBlockId === targetBlockId) return false;
+  const maxOrder = Number(
+    appDb.exec('SELECT COALESCE(MAX(order_index), -1) FROM logged_sets WHERE block_id = ?', [targetBlockId])[0]?.values?.[0]?.[0] ?? -1
+  );
+  const srcSets = appDb.exec(
+    'SELECT id FROM logged_sets WHERE block_id = ? ORDER BY order_index ASC',
+    [sourceBlockId]
+  )[0]?.values ?? [];
+  srcSets.forEach(([sid], i) => {
+    appDb.run('UPDATE logged_sets SET block_id = ?, order_index = ? WHERE id = ?', [targetBlockId, maxOrder + 1 + i, sid]);
+  });
+  appDb.run(`UPDATE workout_blocks SET block_type = 'superset' WHERE id = ? AND block_type = 'straight'`, [targetBlockId]);
+  appDb.run('DELETE FROM workout_blocks WHERE id = ?', [sourceBlockId]);
+  reindexSessionBlocks(appDb, sessionId);
+  reindexSessionSets(appDb, sessionId);
+  return true;
+}
+
+/**
+ * Pull one exercise out of a superset/giant-set block into its own straight block.
+ */
+export function unlinkExerciseFromSuperset(appDb, sessionId, blockId, exerciseId) {
+  const blkRow = appDb.exec('SELECT order_index FROM workout_blocks WHERE id = ?', [blockId])[0]?.values?.[0];
+  if (!blkRow) return false;
+  const baseIdx = Number(blkRow[0]);
+  const allBlocks = appDb.exec(
+    'SELECT id, order_index FROM workout_blocks WHERE session_id = ? ORDER BY order_index ASC',
+    [sessionId]
+  )[0]?.values ?? [];
+  for (const [id, ord] of allBlocks) {
+    if (Number(ord) > baseIdx) {
+      appDb.run('UPDATE workout_blocks SET order_index = ? WHERE id = ?', [Number(ord) + 1, id]);
+    }
+  }
+  const newBlockId = makeId('blk');
+  appDb.run(
+    `INSERT INTO workout_blocks (id, session_id, order_index, block_type) VALUES (?, ?, ?, 'straight')`,
+    [newBlockId, sessionId, baseIdx + 1]
+  );
+  appDb.run('UPDATE logged_sets SET block_id = ? WHERE block_id = ? AND exercise_id = ?', [newBlockId, blockId, exerciseId]);
+
+  const remEx = appDb.exec('SELECT COUNT(DISTINCT exercise_id) FROM logged_sets WHERE block_id = ?', [blockId])[0]?.values?.[0]?.[0] ?? 0;
+  if (Number(remEx) <= 1) {
+    appDb.run(`UPDATE workout_blocks SET block_type = 'straight' WHERE id = ? AND block_type = 'superset'`, [blockId]);
+  }
+  reindexSessionBlocks(appDb, sessionId);
+  reindexSessionSets(appDb, sessionId);
+  return true;
+}
+
 /**
  * Given a superset/antagonist-superset/circuit block and the setId just completed,
  * return the next incomplete setId in alternating exercise order (auto-advance).
