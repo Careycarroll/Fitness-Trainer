@@ -4973,8 +4973,8 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
           </label>
           <button type="button" id="plate-modal-reset" class="ghost logger-mini-btn" style="margin-bottom:2px;">↺ Bar (${esc(String(barWeight))} ${esc(unit)})</button>
         </div>
-        <div class="plate-quick-row" aria-label="Add plate pair per side">
-          <span class="note">Add / side:</span>
+        <div class="plate-quick-row" aria-label="Add or remove plate pair per side">
+          <button type="button" id="plate-mode-toggle" class="ghost logger-mini-btn plate-mode-toggle" data-mode="add" title="Switch between adding and removing plates">+ Add / side</button>
           ${sortedPlates.map((p) => `<button type="button" class="plate-quick-btn ${plateClass(p)}" data-add-plate="${p}">+${p}</button>`).join('')}
         </div>
         <div class="plate-quick-row" aria-label="Preset total weights">
@@ -4989,6 +4989,19 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
 
     const weightIn = backdrop.querySelector('#plate-modal-weight');
     const bodyEl = backdrop.querySelector('#plate-modal-body');
+    const modeToggleBtn = backdrop.querySelector('#plate-mode-toggle');
+    let plateMode = 'add';
+
+    function updatePlateButtons() {
+      const sign = plateMode === 'sub' ? '−' : '+';
+      if (modeToggleBtn) {
+        modeToggleBtn.textContent = plateMode === 'sub' ? '− Remove / side' : '+ Add / side';
+        modeToggleBtn.classList.toggle('is-sub', plateMode === 'sub');
+      }
+      backdrop.querySelectorAll('[data-add-plate]').forEach((btn) => {
+        btn.textContent = `${sign}${btn.dataset.addPlate}`;
+      });
+    }
 
     function renderDiagram() {
       const val = Number(weightIn?.value || 0);
@@ -5038,11 +5051,18 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
         renderDiagram();
         return;
       }
+      if (ev.target.closest('#plate-mode-toggle')) {
+        plateMode = plateMode === 'add' ? 'sub' : 'add';
+        updatePlateButtons();
+        return;
+      }
       const addBtn = ev.target.closest('[data-add-plate]');
       if (addBtn && weightIn) {
         const p = Number(addBtn.dataset.addPlate || 0);
+        const dir = plateMode === 'sub' ? -1 : 1;
         const curr = Math.max(barWeight, Number(weightIn.value || barWeight));
-        weightIn.value = String(Math.round((curr + p * 2) * 100) / 100);
+        const next = Math.max(barWeight, Math.round((curr + dir * p * 2) * 100) / 100);
+        weightIn.value = String(next);
         renderDiagram();
       }
     });

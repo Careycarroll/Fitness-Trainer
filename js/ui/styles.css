@@ -2086,6 +2086,16 @@ button[disabled] {
   filter: brightness(1.1);
 }
 
+.plate-mode-toggle {
+  font-weight: 700;
+  border-color: var(--border);
+}
+
+.plate-mode-toggle.is-sub {
+  border-color: #dc2626;
+  color: #f87171;
+}
+
 .plate-sleeve {
   width: 10px;
   height: 14px;
