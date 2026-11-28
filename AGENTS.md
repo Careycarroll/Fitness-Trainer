@@ -174,25 +174,22 @@ untouched while the earlier ones are already saved.
 
 ## Verifying your own work
 
-After any patch, verify three things in one block: **residual**, **gate**,
-**behaviour**.
+**Do NOT run `npm run check`, `npm run build`, `npm run cap:sync`, or full
+test/build validation automatically** unless the user explicitly asks you to.
+To save tokens, the human runs verification manually.
+
+At the end of each implementation, provide a single copy/pasteable terminal
+command block that chains the gate (`npm run check && npm run cap:sync`),
+`git add`, `git commit`, and `git push origin main` for the user to run:
 
 ```bash
-cd "$(git rev-parse --show-toplevel)" &&
-{
-  echo "=== RESIDUAL (expect none) ==="
-  grep -n 'oldFieldName' js/ui/app.js || echo "none"
-
-  echo "=== GATE ==="
-  npm run check 2>&1 | grep -E 'validators,|# (pass|fail) '
-
-  echo "=== BEHAVIOUR ==="
-  node -e '/* generate something and print it */'
-} 2>&1 | tee /tmp/verify.txt | pbcopy
+cd "$(git rev-parse --show-toplevel)" && \
+  npm run check && \
+  npm run cap:sync && \
+  git add <changed-files> && \
+  git commit -m "type(scope): summary" && \
+  git push origin main
 ```
-
-A green gate proves internal consistency, **not** that the change did what it
-claimed. Always include a behavioural check that prints real output.
 
 ---
 
@@ -270,7 +267,8 @@ State known limitations in the message rather than omitting them.
   that supersedes or refines it. Add it to *both* tables in `docs/adr/README.md`.
 - **`js/data/exercises.seed.json` is generated.** Edit `data/exercises/*.csv`
   and run `npm run build:seed`.
-- **Gate before committing:** `npm run check && npm run build`.
+- **Gate before committing:** `npm run check && npm run cap:sync` (run by the
+  human via the copy/pasteable command block provided at the end of each task).
 - **Determinism (ADR-002):** the same seed must produce byte-identical output.
   Any change to selection needs a before/after comparison across styles and
   profiles proving unrelated output is unchanged.
