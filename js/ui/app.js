@@ -3942,7 +3942,7 @@ export function mount(root, defs) {
         const field = stepBtn.dataset.stepField;
         const dir = Number(stepBtn.dataset.setStep || 1);
         const delta = Number(stepBtn.dataset.stepDelta || 1);
-        const row = viewLogger.querySelector(`[data-set-id="${CSS.escape(setId)}"]`) || stepBtn.closest('.logger-set-row');
+        const row = viewLogger.querySelector(`.logger-compact-row[data-set-id="${CSS.escape(setId)}"], .logger-set-row[data-set-id="${CSS.escape(setId)}"]`) || stepBtn.closest('.logger-set-row');
         const input = row?.querySelector(`input[data-set-field="${field}"]`);
         const unit = getDisplayUnit();
         const curr = Number(input?.value || 0);
