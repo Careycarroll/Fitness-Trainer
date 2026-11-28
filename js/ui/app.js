@@ -3125,8 +3125,8 @@ export function mount(root, defs) {
         const partnerChipsHtml = partnerExercises.map((p) =>
           `<button type="button" class="ghost logger-mini-btn" data-logger-select-ex="${esc(p.id)}" data-logger-select-block="${esc(blk.id)}">⇄ ${esc(p.name)}</button>`
         ).join('');
-        const topSetWt = exSets.find((s) => s.weightKg > 0)?.weightKg;
-        const defaultPlateTarget = topSetWt ? kgToDisplay(topSetWt, unit) : (unit === 'kg' ? 60 : 135);
+        const targetSetWt = focusedSet?.weightKg || exSets.find((s) => s.weightKg > 0)?.weightKg;
+        const defaultPlateTarget = targetSetWt ? kgToDisplay(targetSetWt, unit) : (unit === 'kg' ? 60 : 135);
         const defaultBarWt = barWeightFor(exObj, { unit, barWeights: eqDefaults.barWeights });
         const groupPillHtml = (blk && (blk.blockType !== 'straight' || partnerExercises.length > 0))
           ? `<div class="logger-group-pill"${activeGroupColorIdx != null ? ` data-ss-color="${activeGroupColorIdx}"` : ''}>${esc(supersetNote)}</div>`
@@ -4248,7 +4248,23 @@ export function mount(root, defs) {
         const barWt = Number(plateBtn.dataset.loggerBar);
         const unit = getDisplayUnit();
         const eqDefaults = getEquipmentLoadDefaults();
-        openPlateLoaderModal(targetWt, barWt, eqDefaults.plates, unit);
+        let targetSetId = plateBtn.closest('[data-set-id]')?.dataset.setId || loggerFocusSetId || null;
+        if (!targetSetId && activeLoggerExercise) {
+          const active = loadActiveWorkout(appDb, activeLoggerSessionId);
+          const blk = active?.blocks.find((b) => b.id === activeLoggerExercise.blockId);
+          const exSets = (blk?.sets || []).filter((s) => s.exerciseId === activeLoggerExercise.exerciseId);
+          targetSetId = (exSets.find((s) => !s.isComplete) || exSets[0])?.id || null;
+        }
+        const onApplyWeight = targetSetId ? async (wtDisp) => {
+          if (!(wtDisp >= 0)) return;
+          const dbInst = await ensureAppDb();
+          updateSetFields(dbInst, targetSetId, { weightKg: displayToKg(wtDisp, unit) });
+          loggerFocusSetId = targetSetId;
+          loggerStatusMsg = `Set weight to ${wtDisp} ${unit}.`;
+          await savePersistedAppDb(dbInst);
+          await renderActiveLogger();
+        } : null;
+        openPlateLoaderModal(targetWt, barWt, eqDefaults.plates, unit, onApplyWeight);
         return;
       }
       const addSetBtn = e.target.closest('[data-logger-add-set]');
@@ -5351,7 +5367,7 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
     setTimeout(() => input.focus(), 0);
   }
 
-  function openPlateLoaderModal(targetWeight, barWeight, plates, unit) {
+  function openPlateLoaderModal(targetWeight, barWeight, plates, unit, onApplyWeight = null) {
     document.querySelector('.ex-picker-backdrop')?.remove();
     const { barWeights } = getEquipmentLoadDefaults();
     const barOptions = [
@@ -5418,6 +5434,7 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
           ).join('')}
         </div>
         <div id="plate-modal-body" class="plate-modal-body"></div>
+        ${onApplyWeight ? `<button type="button" id="plate-modal-apply" class="primary" style="width:100%;">✓ Use ${esc(String(targetWeight || activeBarWeight))} ${esc(unit)} on Set</button>` : ''}
       </div>`;
     document.body.append(backdrop);
 
@@ -5427,6 +5444,7 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
     const customBarIn = backdrop.querySelector('#plate-custom-bar-in');
     const resetBtn = backdrop.querySelector('#plate-modal-reset');
     const bodyEl = backdrop.querySelector('#plate-modal-body');
+    const applyBtn = backdrop.querySelector('#plate-modal-apply');
     const modeToggleBtn = backdrop.querySelector('#plate-mode-toggle');
     let plateMode = 'add';
 
@@ -5444,6 +5462,7 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
     function renderDiagram() {
       const val = Number(weightIn?.value || 0);
       if (resetBtn) resetBtn.textContent = `↺ Bar (${activeBarWeight} ${unit})`;
+      if (applyBtn) applyBtn.textContent = `✓ Use ${val} ${unit} on Set`;
       const pm = computePlateLoad(val, { barWeight: activeBarWeight, plates: sortedPlates, unit });
       const flatPlates = [];
       for (const item of pm.perSide || []) {
@@ -5489,6 +5508,13 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
       activeBarWeight = Math.max(0, Number(customBarIn.value || 0));
       renderDiagram();
     });
+    if (applyBtn && onApplyWeight) {
+      applyBtn.addEventListener('click', async () => {
+        const val = Number(weightIn?.value || 0);
+        backdrop.remove();
+        await onApplyWeight(val);
+      });
+    }
     backdrop.addEventListener('click', (ev) => {
       if (ev.target === backdrop || ev.target.closest('.ex-picker-close')) {
         backdrop.remove();
