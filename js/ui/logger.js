@@ -624,9 +624,11 @@ export function unlinkExerciseFromSuperset(appDb, sessionId, blockId, exerciseId
   );
   appDb.run('UPDATE logged_sets SET block_id = ? WHERE block_id = ? AND exercise_id = ?', [newBlockId, blockId, exerciseId]);
 
-  const remEx = appDb.exec('SELECT COUNT(DISTINCT exercise_id) FROM logged_sets WHERE block_id = ?', [blockId])[0]?.values?.[0]?.[0] ?? 0;
-  if (Number(remEx) <= 1) {
-    appDb.run(`UPDATE workout_blocks SET block_type = 'straight' WHERE id = ? AND block_type = 'superset'`, [blockId]);
+  const remEx = Number(appDb.exec('SELECT COUNT(DISTINCT exercise_id) FROM logged_sets WHERE block_id = ?', [blockId])[0]?.values?.[0]?.[0] ?? 0);
+  if (remEx === 0) {
+    appDb.run('DELETE FROM workout_blocks WHERE id = ?', [blockId]);
+  } else if (remEx === 1) {
+    appDb.run(`UPDATE workout_blocks SET block_type = 'straight' WHERE id = ?`, [blockId]);
   }
   reindexSessionBlocks(appDb, sessionId);
   reindexSessionSets(appDb, sessionId);

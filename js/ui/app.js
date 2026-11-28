@@ -2775,7 +2775,7 @@ export function mount(root, defs) {
     activeSessionStartedAt = session.startedAt;
     activeSessionStatus = session.status;
 
-    const condBlocks = blocks.filter((b) => ['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(b.blockType));
+    const condBlocks = blocks.filter((b) => (b.sets || []).length > 0 && ['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(b.blockType));
     const condBlock = condBlocks.find((b) => b.id === wodTimer.blockId) || condBlocks[0] || null;
     const condExCount = condBlock ? new Set((condBlock.sets || []).map((s) => s.exerciseId)).size : 0;
     const condSetCount = condBlock ? (condBlock.sets || []).filter((s) => s.setType !== 'warmup' && !s.parentSetId).length : 0;
@@ -3002,7 +3002,7 @@ export function mount(root, defs) {
 
     const buildWodPanelHtml = (blk) => {
       const isCond = ['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(blk.blockType);
-      if (!isCond) return '';
+      if (!isCond || !(blk.sets || []).length) return '';
       if (wodTimer.blockId !== blk.id) {
         return `<div class="wod-timer-activate"><button type="button" class="ghost logger-mini-btn" data-wod-activate-block="${esc(blk.id)}">⏱️ Open ${esc(blockLabel(blk.blockType))} Timer</button></div>`;
       }
