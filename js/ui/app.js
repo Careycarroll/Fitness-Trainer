@@ -448,10 +448,11 @@ export function mount(root, defs) {
     <div id="nav-drawer-backdrop" class="nav-drawer-backdrop" hidden></div>
     <aside id="nav-drawer" class="nav-drawer" aria-label="Main Navigation" hidden>
       <div class="nav-drawer-head">
-        <strong>Menu</strong>
+        <strong id="nav-drawer-title">Menu</strong>
         <button type="button" id="nav-drawer-close" class="ghost icon-button" aria-label="Close menu">✕</button>
       </div>
-      <nav class="nav-drawer-links">
+      <div id="nav-drawer-workout" class="nav-drawer-workout" hidden></div>
+      <nav id="nav-drawer-links" class="nav-drawer-links">
         <button type="button" class="nav-tab selected" data-tab="log">
           <span class="tab-icon">📅</span><span class="tab-label">Workout Log</span>
         </button>
@@ -1085,10 +1086,103 @@ export function mount(root, defs) {
     if (navMenuBtn) navMenuBtn.setAttribute('aria-expanded', 'false');
   }
 
+  const navDrawerTitle = root.querySelector('#nav-drawer-title');
+  const navDrawerWorkout = root.querySelector('#nav-drawer-workout');
+  const navDrawerLinks = root.querySelector('#nav-drawer-links');
+
+  async function renderDrawerWorkout() {
+    if (!navDrawerWorkout || !navDrawerLinks) return;
+    const inWorkout = activeTab === 'logger' && activeLoggerSessionId;
+    navDrawerWorkout.hidden = !inWorkout;
+    navDrawerLinks.hidden = Boolean(inWorkout);
+    if (navDrawerTitle) navDrawerTitle.textContent = inWorkout ? 'Workout Exercises' : 'Menu';
+    if (!inWorkout) {
+      navDrawerWorkout.innerHTML = '';
+      return;
+    }
+    const appDb = await ensureAppDb();
+    const active = loadActiveWorkout(appDb, activeLoggerSessionId);
+    const blocks = active?.blocks || [];
+    let ssIdx = 0;
+    const groupsHtml = blocks.map((blk) => {
+      const exList = [];
+      const seen = new Set();
+      for (const st of blk.sets || []) {
+        if (!seen.has(st.exerciseId)) {
+          seen.add(st.exerciseId);
+          const sets = blk.sets.filter((s) => s.exerciseId === st.exerciseId);
+          exList.push({
+            id: st.exerciseId,
+            name: st.exerciseName,
+            done: sets.filter((s) => s.isComplete).length,
+            total: sets.length
+          });
+        }
+      }
+      if (!exList.length) return '';
+      const isGrouped = isGroupedBlockType(blk.blockType) && exList.length > 1;
+      const btnsHtml = exList.map((ex) => {
+        const isCurr = activeLoggerExercise?.blockId === blk.id && activeLoggerExercise?.exerciseId === ex.id;
+        const doneAll = ex.total > 0 && ex.done === ex.total;
+        return `
+          <button type="button" class="nav-drawer-ex-btn${isCurr ? ' active' : ''}" data-drawer-ex="${esc(ex.id)}" data-drawer-block="${esc(blk.id)}">
+            <span class="nav-drawer-ex-name">${esc(ex.name)}</span>
+            <span class="note">${ex.done}/${ex.total}${doneAll ? ' ✓' : ''}</span>
+          </button>`;
+      }).join('');
+      if (isGrouped) {
+        const colorIdx = ssIdx % 16;
+        ssIdx += 1;
+        const grpLbl = blk.title || (blk.blockType === 'superset' ? (exList.length >= 3 ? 'Giant Set' : 'Superset') : blockLabel(blk.blockType));
+        return `
+          <div class="logger-superset-group nav-drawer-group" data-ss-color="${colorIdx}">
+            <span class="logger-superset-badge">${esc(grpLbl)}</span>
+            ${btnsHtml}
+          </div>`;
+      }
+      return btnsHtml;
+    }).join('');
+    navDrawerWorkout.innerHTML = `
+      ${activeLoggerExercise ? '<button type="button" id="nav-drawer-to-overview" class="ghost nav-drawer-top-btn">← Workout Overview</button>' : ''}
+      <div class="nav-drawer-ex-list">${groupsHtml || '<p class="note">No exercises yet.</p>'}</div>
+      <div class="nav-drawer-footer">
+        <button type="button" id="nav-drawer-home-btn" class="ghost nav-drawer-top-btn">🏠 Calendar / Home</button>
+      </div>`;
+  }
+
   function openDrawer() {
+    renderDrawerWorkout();
     if (navDrawer) navDrawer.hidden = false;
     if (navDrawerBackdrop) navDrawerBackdrop.hidden = false;
     if (navMenuBtn) navMenuBtn.setAttribute('aria-expanded', 'true');
+  }
+
+  if (navDrawerWorkout) {
+    navDrawerWorkout.addEventListener('click', (e) => {
+      if (e.target.closest('#nav-drawer-home-btn')) {
+        closeDrawer();
+        switchTab('log');
+        return;
+      }
+      if (e.target.closest('#nav-drawer-to-overview')) {
+        activeLoggerExercise = null;
+        loggerPairBlockId = null;
+        closeDrawer();
+        renderActiveLogger();
+        return;
+      }
+      const exBtn = e.target.closest('[data-drawer-ex]');
+      if (exBtn) {
+        activeLoggerExercise = {
+          blockId: exBtn.dataset.drawerBlock,
+          exerciseId: exBtn.dataset.drawerEx
+        };
+        activeLoggerSubTab = 'track';
+        loggerPairBlockId = null;
+        closeDrawer();
+        renderActiveLogger();
+      }
+    });
   }
 
   if (navMenuBtn) navMenuBtn.addEventListener('click', openDrawer);
