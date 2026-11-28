@@ -1143,7 +1143,6 @@ export function mount(root, defs) {
       return btnsHtml;
     }).join('');
     navDrawerWorkout.innerHTML = `
-      ${activeLoggerExercise ? '<button type="button" id="nav-drawer-to-overview" class="ghost nav-drawer-top-btn">← Workout Overview</button>' : ''}
       <div class="nav-drawer-ex-list">${groupsHtml || '<p class="note">No exercises yet.</p>'}</div>
       <div class="nav-drawer-footer">
         <button type="button" id="nav-drawer-home-btn" class="ghost nav-drawer-top-btn">🏠 Calendar / Home</button>
@@ -1162,13 +1161,6 @@ export function mount(root, defs) {
       if (e.target.closest('#nav-drawer-home-btn')) {
         closeDrawer();
         switchTab('log');
-        return;
-      }
-      if (e.target.closest('#nav-drawer-to-overview')) {
-        activeLoggerExercise = null;
-        loggerPairBlockId = null;
-        closeDrawer();
-        renderActiveLogger();
         return;
       }
       const exBtn = e.target.closest('[data-drawer-ex]');
