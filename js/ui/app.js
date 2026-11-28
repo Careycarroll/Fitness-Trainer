@@ -5728,8 +5728,8 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
     return parts.join(', ');
   }
 
-  function templateJsonToItems(tpl) {
-    const items = [];
+  function templateJsonToBlocks(tpl) {
+    const out = [];
     for (const b of tpl?.blocks || []) {
       const byEx = new Map();
       for (const s of b.exercises || []) {
@@ -5747,79 +5747,343 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
         }
         byEx.get(s.exerciseId).sets += 1;
       }
-      items.push(...byEx.values());
+      const items = [...byEx.values()];
+      if (items.length) {
+        out.push({
+          blockType: b.blockType || 'straight',
+          title: b.title || null,
+          items
+        });
+      }
     }
-    return items;
+    return out;
   }
 
-  async function renderTemplateManager() {
-    if (!templateManagerEl) return;
-    const appDb = await ensureAppDb();
+  function balanceTemplateBlock(blk) {
+    if (!blk || blk.items.length < 2) return;
+    const maxSets = Math.max(...blk.items.map((it) => Math.max(1, it.sets || 1)));
+    for (const it of blk.items) it.sets = maxSets;
+  }
 
-    if (editingTemplate) {
-      const itemsHtml = editingTemplate.items.length
-        ? editingTemplate.items.map((it, idx) => {
+  let tmplGroupSel = new Set();
+  let tmplGroupType = 'superset';
+
+  function renderTemplateEditorModal() {
+    document.querySelector('#tmpl-editor-backdrop')?.remove();
+    if (!editingTemplate) return;
+    const backdrop = document.createElement('div');
+    backdrop.id = 'tmpl-editor-backdrop';
+    backdrop.className = 'tmpl-modal-backdrop';
+
+    let ssIdx = 0;
+    const blocksHtml = editingTemplate.blocks.length
+      ? editingTemplate.blocks.map((blk, bIdx) => {
+          const isGrouped = isGroupedBlockType(blk.blockType) && blk.items.length > 1;
+          const itemsHtml = blk.items.map((it, iIdx) => {
             const isTime = it.trackingType === 'time';
             return `
-              <div class="logger-set-row" style="margin-bottom:6px;">
-                <div class="logger-set-top">
+              <div class="tmpl-compact-row">
+                <div class="tmpl-compact-name">
+                  ${!isGrouped ? `<input type="checkbox" class="tmpl-group-cb" data-tmpl-blk-idx="${bIdx}" ${tmplGroupSel.has(bIdx) ? 'checked' : ''} aria-label="Select to group" />` : ''}
                   <strong>${esc(it.name)}</strong>
-                  <div style="margin-left:auto; display:flex; gap:4px;">
-                    <button type="button" class="ghost logger-mini-btn" data-tmpl-up="${idx}" ${idx === 0 ? 'disabled' : ''}>↑</button>
-                    <button type="button" class="ghost logger-mini-btn" data-tmpl-down="${idx}" ${idx === editingTemplate.items.length - 1 ? 'disabled' : ''}>↓</button>
-                    <button type="button" class="ghost logger-mini-btn" data-tmpl-rm="${idx}">✕</button>
+                </div>
+                <div class="tmpl-compact-fields">
+                  <label>Sets <input type="number" min="1" max="20" class="logger-in" data-tmpl-field="sets" data-tmpl-b="${bIdx}" data-tmpl-i="${iIdx}" value="${it.sets}" /></label>
+                  ${!isTime
+                    ? `<label>Reps <input type="number" min="1" max="100" class="logger-in" data-tmpl-field="reps" data-tmpl-b="${bIdx}" data-tmpl-i="${iIdx}" value="${it.reps ?? 8}" /></label>`
+                    : `<label>Sec <input type="number" min="5" max="600" class="logger-in" data-tmpl-field="durationSec" data-tmpl-b="${bIdx}" data-tmpl-i="${iIdx}" value="${it.durationSec ?? 45}" /></label>`}
+                  <label>Rest <input type="number" min="0" step="5" class="logger-in" data-tmpl-field="restSec" data-tmpl-b="${bIdx}" data-tmpl-i="${iIdx}" value="${it.restSec ?? 90}" /></label>
+                  <div class="tmpl-compact-btns">
+                    ${isGrouped
+                      ? `<button type="button" class="ghost logger-mini-btn" data-tmpl-ex-up="${bIdx}::${iIdx}" ${iIdx === 0 ? 'disabled' : ''}>↑</button>
+                         <button type="button" class="ghost logger-mini-btn" data-tmpl-ex-down="${bIdx}::${iIdx}" ${iIdx === blk.items.length - 1 ? 'disabled' : ''}>↓</button>
+                         <button type="button" class="ghost logger-mini-btn" data-tmpl-unlink="${bIdx}::${iIdx}" title="Unlink">Unlink</button>`
+                      : `<button type="button" class="ghost logger-mini-btn" data-tmpl-up="${bIdx}" ${bIdx === 0 ? 'disabled' : ''}>↑</button>
+                         <button type="button" class="ghost logger-mini-btn" data-tmpl-down="${bIdx}" ${bIdx === editingTemplate.blocks.length - 1 ? 'disabled' : ''}>↓</button>`}
+                    <button type="button" class="ghost logger-mini-btn" data-tmpl-rm="${bIdx}::${iIdx}" aria-label="Remove">✕</button>
                   </div>
                 </div>
-                <div class="logger-set-inputs">
-                  <label>Sets
-                    <input type="number" min="1" max="20" class="logger-in" data-tmpl-field="sets" data-tmpl-idx="${idx}" value="${it.sets}" />
-                  </label>
-                  ${!isTime ? `
-                    <label>Reps
-                      <input type="number" min="1" max="100" class="logger-in" data-tmpl-field="reps" data-tmpl-idx="${idx}" value="${it.reps ?? 8}" />
-                    </label>
-                  ` : `
-                    <label>Duration (s)
-                      <input type="number" min="5" max="600" class="logger-in" data-tmpl-field="durationSec" data-tmpl-idx="${idx}" value="${it.durationSec ?? 45}" />
-                    </label>
-                  `}
-                  <label>Rest (s)
-                    <input type="number" min="0" step="5" class="logger-in" data-tmpl-field="restSec" data-tmpl-idx="${idx}" value="${it.restSec ?? 90}" />
-                  </label>
-                </div>
               </div>`;
-          }).join('')
-        : '<p class="note">No exercises yet — add exercises below.</p>';
+          }).join('');
 
-      templateManagerEl.innerHTML = `
-        <div class="logger-meta-grid" style="margin-bottom:8px;">
-          <label>Template Name
+          if (isGrouped) {
+            const colorIdx = ssIdx % 16;
+            ssIdx += 1;
+            return `
+              <div class="logger-superset-group" data-ss-color="${colorIdx}">
+                <div class="logger-superset-head">
+                  <select class="logger-group-type-inline" data-tmpl-blk-type="${bIdx}" aria-label="Group type">
+                    ${buildGroupTypeOptionsHtml(blk.blockType, blk.items.length >= 3 ? 'Giant Set' : 'Superset')}
+                  </select>
+                  <div class="logger-superset-actions">
+                    <input type="checkbox" class="tmpl-group-cb" data-tmpl-blk-idx="${bIdx}" ${tmplGroupSel.has(bIdx) ? 'checked' : ''} aria-label="Select to merge" />
+                    <button type="button" class="ghost logger-mini-btn" data-tmpl-up="${bIdx}" ${bIdx === 0 ? 'disabled' : ''}>↑</button>
+                    <button type="button" class="ghost logger-mini-btn" data-tmpl-down="${bIdx}" ${bIdx === editingTemplate.blocks.length - 1 ? 'disabled' : ''}>↓</button>
+                  </div>
+                </div>
+                <div class="logger-superset-body">${itemsHtml}</div>
+              </div>`;
+          }
+          return itemsHtml;
+        }).join('')
+      : '<p class="note">No exercises yet — tap + Add Exercise above.</p>';
+
+    backdrop.innerHTML = `
+      <div class="card ex-picker-modal tmpl-editor-modal" role="dialog" aria-modal="true" aria-label="Edit Workout Template">
+        <div class="ex-picker-head">
+          <strong>${editingTemplate.id ? 'Edit Template' : 'New Template'}</strong>
+          <button type="button" id="tmpl-cancel-btn" class="ghost logger-mini-btn" aria-label="Close">✕</button>
+        </div>
+        <div class="tmpl-meta-row">
+          <label style="flex:1 1 150px;">Name
             <input type="text" id="tmpl-edit-name" value="${esc(editingTemplate.name)}" placeholder="e.g. Upper Body A" />
           </label>
-          <label>Category
+          <label style="flex:0 1 130px;">Category
             <select id="tmpl-edit-cat">
               ${['custom', 'strength', 'hypertrophy', 'mobility', 'wod'].map((c) =>
                 `<option value="${c}"${editingTemplate.category === c ? ' selected' : ''}>${c}</option>`
               ).join('')}
             </select>
           </label>
+          <button type="button" id="tmpl-add-ex-btn" class="primary logger-mini-btn" style="align-self:end;">+ Add Exercise</button>
         </div>
-        ${itemsHtml}
-        <div class="logger-add-ex-row" style="margin:10px 0;">
-          <input type="text" id="tmpl-ex-search" list="tmpl-ex-datalist" placeholder="Add exercise (e.g. Back Squat)…" autocomplete="off" />
-          <datalist id="tmpl-ex-datalist">
-            ${defs.exercises.map((e) => `<option value="${esc(e.name)}"></option>`).join('')}
-          </datalist>
-          <button type="button" id="tmpl-add-ex-btn" class="ghost">+ Add Exercise</button>
-        </div>
-        <div class="storage-actions">
+        ${editingTemplate.blocks.length >= 2 ? `
+          <div class="logger-group-toolbar" style="margin-top:0;">
+            <span class="note">${tmplGroupSel.size} selected</span>
+            <select id="tmpl-group-type-sel" aria-label="Group type">
+              ${buildGroupTypeOptionsHtml(tmplGroupType)}
+            </select>
+            <button type="button" id="tmpl-group-sel-btn" class="primary logger-mini-btn"${tmplGroupSel.size < 2 ? ' disabled' : ''}>🔗 Group Selected</button>
+          </div>` : ''}
+        <div class="tmpl-editor-list">${blocksHtml}</div>
+        <div class="storage-actions" style="justify-content:flex-end;">
+          <button type="button" id="tmpl-modal-cancel" class="ghost">Cancel</button>
           <button type="button" id="tmpl-save-btn" class="primary">Save Template</button>
-          <button type="button" id="tmpl-cancel-btn" class="ghost">Cancel</button>
         </div>
-        ${tmplStatusMsg ? `<p class="note" style="margin-top:6px;">${esc(tmplStatusMsg)}</p>` : ''}
-      `;
-      return;
-    }
+      </div>`;
+    document.body.append(backdrop);
+
+    backdrop.addEventListener('change', (ev) => {
+      if (!editingTemplate) return;
+      if (ev.target.id === 'tmpl-edit-name') { editingTemplate.name = ev.target.value; return; }
+      if (ev.target.id === 'tmpl-edit-cat') { editingTemplate.category = ev.target.value; return; }
+      if (ev.target.id === 'tmpl-group-type-sel') { tmplGroupType = ev.target.value || 'superset'; return; }
+      const blkTypeEl = ev.target.closest('[data-tmpl-blk-type]');
+      if (blkTypeEl) {
+        const bIdx = Number(blkTypeEl.dataset.tmplBlkType);
+        if (editingTemplate.blocks[bIdx]) {
+          editingTemplate.blocks[bIdx].blockType = blkTypeEl.value;
+          balanceTemplateBlock(editingTemplate.blocks[bIdx]);
+          renderTemplateEditorModal();
+        }
+        return;
+      }
+      const cb = ev.target.closest('.tmpl-group-cb');
+      if (cb) {
+        const bIdx = Number(cb.dataset.tmplBlkIdx);
+        if (cb.checked) tmplGroupSel.add(bIdx);
+        else tmplGroupSel.delete(bIdx);
+        renderTemplateEditorModal();
+        return;
+      }
+      const field = ev.target.dataset.tmplField;
+      if (field) {
+        const bIdx = Number(ev.target.dataset.tmplB);
+        const iIdx = Number(ev.target.dataset.tmplI);
+        const item = editingTemplate.blocks[bIdx]?.items?.[iIdx];
+        if (item) item[field] = Math.max(0, Math.round(Number(ev.target.value) || 0));
+      }
+    });
+
+    backdrop.addEventListener('click', async (ev) => {
+      if (!editingTemplate) return;
+      if (ev.target === backdrop || ev.target.closest('#tmpl-cancel-btn, #tmpl-modal-cancel')) {
+        editingTemplate = null;
+        tmplGroupSel.clear();
+        backdrop.remove();
+        return;
+      }
+      if (ev.target.closest('#tmpl-add-ex-btn')) {
+        const opts = editingTemplate.blocks.map((b, idx) => {
+          const names = b.items.map((x) => x.name).join(' + ');
+          return `<option value="${idx}">Add to: ${esc(b.title || (b.items.length > 1 ? `${blockLabel(b.blockType)} (${names})` : names))}</option>`;
+        }).join('');
+        const extraHtml = editingTemplate.blocks.length ? `
+          <label class="note logger-add-target-wrap">Add as
+            <select id="ex-picker-target-group">
+              <option value="">New standalone exercise</option>
+              ${opts}
+            </select>
+          </label>` : '';
+        openExercisePickerModal({
+          title: 'Add Exercise to Template',
+          extraHtml,
+          onSelect: (match, pickerBackdrop) => {
+            const targetIdxStr = pickerBackdrop?.querySelector('#ex-picker-target-group')?.value ?? '';
+            const newItem = {
+              exerciseId: match.id,
+              name: match.name,
+              trackingType: match.trackingType || 'weight_reps',
+              sets: 3,
+              reps: match.trackingType === 'time' ? null : 8,
+              durationSec: match.trackingType === 'time' ? 45 : null,
+              restSec: match.defaultRestSec || 90
+            };
+            if (targetIdxStr !== '' && editingTemplate.blocks[Number(targetIdxStr)]) {
+              const blk = editingTemplate.blocks[Number(targetIdxStr)];
+              if (blk.blockType === 'straight') blk.blockType = 'superset';
+              blk.items.push(newItem);
+              balanceTemplateBlock(blk);
+            } else {
+              editingTemplate.blocks.push({ blockType: 'straight', title: null, items: [newItem] });
+            }
+            renderTemplateEditorModal();
+          }
+        });
+        return;
+      }
+      if (ev.target.closest('#tmpl-group-sel-btn')) {
+        const indices = [...tmplGroupSel].sort((a, b) => a - b);
+        if (indices.length >= 2) {
+          const targetBlk = editingTemplate.blocks[indices[0]];
+          targetBlk.blockType = tmplGroupType;
+          for (let k = indices.length - 1; k >= 1; k -= 1) {
+            const src = editingTemplate.blocks.splice(indices[k], 1)[0];
+            targetBlk.items.push(...src.items);
+          }
+          balanceTemplateBlock(targetBlk);
+          tmplGroupSel.clear();
+          renderTemplateEditorModal();
+        }
+        return;
+      }
+      const upBtn = ev.target.closest('[data-tmpl-up]');
+      if (upBtn) {
+        const i = Number(upBtn.dataset.tmplUp);
+        if (i > 0) {
+          const [blk] = editingTemplate.blocks.splice(i, 1);
+          editingTemplate.blocks.splice(i - 1, 0, blk);
+          tmplGroupSel.clear();
+          renderTemplateEditorModal();
+        }
+        return;
+      }
+      const downBtn = ev.target.closest('[data-tmpl-down]');
+      if (downBtn) {
+        const i = Number(downBtn.dataset.tmplDown);
+        if (i < editingTemplate.blocks.length - 1) {
+          const [blk] = editingTemplate.blocks.splice(i, 1);
+          editingTemplate.blocks.splice(i + 1, 0, blk);
+          tmplGroupSel.clear();
+          renderTemplateEditorModal();
+        }
+        return;
+      }
+      const exUp = ev.target.closest('[data-tmpl-ex-up]');
+      if (exUp) {
+        const [b, i] = exUp.dataset.tmplExUp.split('::').map(Number);
+        const items = editingTemplate.blocks[b]?.items;
+        if (items && i > 0) {
+          const [it] = items.splice(i, 1);
+          items.splice(i - 1, 0, it);
+          renderTemplateEditorModal();
+        }
+        return;
+      }
+      const exDown = ev.target.closest('[data-tmpl-ex-down]');
+      if (exDown) {
+        const [b, i] = exDown.dataset.tmplExDown.split('::').map(Number);
+        const items = editingTemplate.blocks[b]?.items;
+        if (items && i < items.length - 1) {
+          const [it] = items.splice(i, 1);
+          items.splice(i + 1, 0, it);
+          renderTemplateEditorModal();
+        }
+        return;
+      }
+      const unlinkBtn = ev.target.closest('[data-tmpl-unlink]');
+      if (unlinkBtn) {
+        const [b, i] = unlinkBtn.dataset.tmplUnlink.split('::').map(Number);
+        const blk = editingTemplate.blocks[b];
+        if (blk && blk.items[i]) {
+          const [it] = blk.items.splice(i, 1);
+          if (blk.items.length <= 1) blk.blockType = 'straight';
+          editingTemplate.blocks.splice(b + 1, 0, { blockType: 'straight', title: null, items: [it] });
+          tmplGroupSel.clear();
+          renderTemplateEditorModal();
+        }
+        return;
+      }
+      const rmBtn = ev.target.closest('[data-tmpl-rm]');
+      if (rmBtn) {
+        const [b, i] = rmBtn.dataset.tmplRm.split('::').map(Number);
+        const blk = editingTemplate.blocks[b];
+        if (blk) {
+          blk.items.splice(i, 1);
+          if (!blk.items.length) editingTemplate.blocks.splice(b, 1);
+          else if (blk.items.length === 1) blk.blockType = 'straight';
+          tmplGroupSel.clear();
+          renderTemplateEditorModal();
+        }
+        return;
+      }
+      if (ev.target.closest('#tmpl-save-btn')) {
+        const appDb = await ensureAppDb();
+        const name = (backdrop.querySelector('#tmpl-edit-name')?.value || editingTemplate.name || 'Template').trim();
+        const category = backdrop.querySelector('#tmpl-edit-cat')?.value || editingTemplate.category || 'custom';
+        const payload = {
+          blocks: editingTemplate.blocks.map((blk) => {
+            const exercises = [];
+            const maxSets = Math.max(1, ...blk.items.map((it) => Math.max(1, it.sets || 1)));
+            for (let r = 0; r < maxSets; r += 1) {
+              for (const it of blk.items) {
+                if (r < Math.max(1, it.sets || 1)) {
+                  exercises.push({
+                    exerciseId: it.exerciseId,
+                    setType: 'working',
+                    weightKg: null,
+                    reps: it.trackingType === 'time' ? null : (it.reps || 8),
+                    durationSec: it.trackingType === 'time' ? (it.durationSec || 45) : null,
+                    restSec: it.restSec ?? 90
+                  });
+                }
+              }
+            }
+            return {
+              blockType: blk.items.length > 1 ? blk.blockType : 'straight',
+              title: blk.title || null,
+              exercises
+            };
+          })
+        };
+        const now = new Date().toISOString();
+        if (editingTemplate.id) {
+          appDb.run(
+            'UPDATE workout_templates SET name = ?, category = ?, template_json = ?, updated_at = ? WHERE id = ?',
+            [name, category, JSON.stringify(payload), now, editingTemplate.id]
+          );
+          tmplStatusMsg = `Updated "${name}".`;
+        } else {
+          const newId = `tmpl_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+          appDb.run(
+            `INSERT INTO workout_templates (id, name, category, source, template_json, last_used_at, created_at, updated_at)
+             VALUES (?, ?, ?, 'user', ?, ?, ?, ?)`,
+            [newId, name, category, JSON.stringify(payload), now, now, now]
+          );
+          tmplStatusMsg = `Created "${name}".`;
+        }
+        editingTemplate = null;
+        tmplGroupSel.clear();
+        backdrop.remove();
+        await savePersistedAppDb(appDb);
+        await renderTemplateManager();
+      }
+    });
+  }
+
+  async function renderTemplateManager() {
+    if (!templateManagerEl) return;
+    const appDb = await ensureAppDb();
 
     const rows = appDb.exec(
       'SELECT id, name, category, template_json, last_used_at FROM workout_templates ORDER BY last_used_at DESC, name ASC'
@@ -5858,137 +6122,14 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
   }
 
   if (templateManagerEl) {
-    templateManagerEl.addEventListener('change', (e) => {
-      if (!editingTemplate) return;
-      if (e.target.id === 'tmpl-edit-name') {
-        editingTemplate.name = e.target.value;
-        return;
-      }
-      if (e.target.id === 'tmpl-edit-cat') {
-        editingTemplate.category = e.target.value;
-        return;
-      }
-      const field = e.target.dataset.tmplField;
-      const idx = Number(e.target.dataset.tmplIdx);
-      if (field && Number.isInteger(idx) && editingTemplate.items[idx]) {
-        editingTemplate.items[idx][field] = Math.max(0, Math.round(Number(e.target.value) || 0));
-      }
-    });
-
     templateManagerEl.addEventListener('click', async (e) => {
       const appDb = await ensureAppDb();
       tmplStatusMsg = '';
 
       if (e.target.closest('#tmpl-new-btn')) {
-        editingTemplate = { id: null, name: 'New Template', category: 'custom', items: [] };
-        await renderTemplateManager();
-        return;
-      }
-      if (e.target.closest('#tmpl-cancel-btn')) {
-        editingTemplate = null;
-        await renderTemplateManager();
-        return;
-      }
-      if (e.target.closest('#tmpl-add-ex-btn') && editingTemplate) {
-        const rawQ = (templateManagerEl.querySelector('#tmpl-ex-search')?.value || '').trim();
-        const q = rawQ.toLowerCase();
-        const exact = q ? defs.exercises.find((x) => x.name.toLowerCase() === q) : null;
-        if (!exact) {
-          openExercisePickerModal({
-            title: 'Add Exercise to Template',
-            initialQuery: rawQ,
-            onSelect: async (match) => {
-              editingTemplate.items.push({
-                exerciseId: match.id,
-                name: match.name,
-                trackingType: match.trackingType || 'weight_reps',
-                sets: 3,
-                reps: match.trackingType === 'time' ? null : 8,
-                durationSec: match.trackingType === 'time' ? 45 : null,
-                restSec: match.defaultRestSec || 90
-              });
-              await renderTemplateManager();
-            }
-          });
-          return;
-        }
-        editingTemplate.items.push({
-          exerciseId: exact.id,
-          name: exact.name,
-          trackingType: exact.trackingType || 'weight_reps',
-          sets: 3,
-          reps: exact.trackingType === 'time' ? null : 8,
-          durationSec: exact.trackingType === 'time' ? 45 : null,
-          restSec: exact.defaultRestSec || 90
-        });
-        await renderTemplateManager();
-        return;
-      }
-
-      const upBtn = e.target.closest('[data-tmpl-up]');
-      if (upBtn && editingTemplate) {
-        const i = Number(upBtn.dataset.tmplUp);
-        if (i > 0) {
-          const [it] = editingTemplate.items.splice(i, 1);
-          editingTemplate.items.splice(i - 1, 0, it);
-          await renderTemplateManager();
-        }
-        return;
-      }
-      const downBtn = e.target.closest('[data-tmpl-down]');
-      if (downBtn && editingTemplate) {
-        const i = Number(downBtn.dataset.tmplDown);
-        if (i < editingTemplate.items.length - 1) {
-          const [it] = editingTemplate.items.splice(i, 1);
-          editingTemplate.items.splice(i + 1, 0, it);
-          await renderTemplateManager();
-        }
-        return;
-      }
-      const rmBtn = e.target.closest('[data-tmpl-rm]');
-      if (rmBtn && editingTemplate) {
-        const i = Number(rmBtn.dataset.tmplRm);
-        editingTemplate.items.splice(i, 1);
-        await renderTemplateManager();
-        return;
-      }
-
-      if (e.target.closest('#tmpl-save-btn') && editingTemplate) {
-        const name = (templateManagerEl.querySelector('#tmpl-edit-name')?.value || editingTemplate.name || 'Template').trim();
-        const category = templateManagerEl.querySelector('#tmpl-edit-cat')?.value || editingTemplate.category || 'custom';
-        const payload = {
-          blocks: editingTemplate.items.map((it) => ({
-            blockType: 'straight',
-            title: null,
-            exercises: Array.from({ length: Math.max(1, it.sets || 1) }, () => ({
-              exerciseId: it.exerciseId,
-              setType: 'working',
-              weightKg: null,
-              reps: it.trackingType === 'time' ? null : (it.reps || 8),
-              durationSec: it.trackingType === 'time' ? (it.durationSec || 45) : null,
-              restSec: it.restSec ?? 90
-            }))
-          }))
-        };
-        const now = new Date().toISOString();
-        if (editingTemplate.id) {
-          appDb.run(
-            'UPDATE workout_templates SET name = ?, category = ?, template_json = ?, updated_at = ? WHERE id = ?',
-            [name, category, JSON.stringify(payload), now, editingTemplate.id]
-          );
-          tmplStatusMsg = `Updated "${name}".`;
-        } else {
-          const newId = `tmpl_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
-          appDb.run(
-            `INSERT INTO workout_templates (id, name, category, source, template_json, last_used_at, created_at, updated_at)
-             VALUES (?, ?, ?, 'user', ?, ?, ?, ?)`,
-            [newId, name, category, JSON.stringify(payload), now, now, now]
-          );
-          tmplStatusMsg = `Created "${name}".`;
-        }
-        editingTemplate = null;
-        await savePersistedAppDb(appDb);
-        await renderTemplateManager();
+        editingTemplate = { id: null, name: 'New Template', category: 'custom', blocks: [] };
+        tmplGroupSel.clear();
+        renderTemplateEditorModal();
         return;
       }
 
@@ -6001,9 +6142,10 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
             id,
             name: row[0],
             category: row[1] || 'custom',
-            items: templateJsonToItems(JSON.parse(row[2]))
+            blocks: templateJsonToBlocks(JSON.parse(row[2]))
           };
-          await renderTemplateManager();
+          tmplGroupSel.clear();
+          renderTemplateEditorModal();
         }
         return;
       }
