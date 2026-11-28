@@ -840,10 +840,13 @@ export function mount(root, defs) {
 
         <nav class="settings-subnav" role="tablist" aria-label="Settings sections">
           <button type="button" class="settings-subtab active" role="tab" aria-selected="true" data-settings-tab="gym">
-            Gym, Equipment &amp; Defaults
+            Gym, Equipment, &amp; Defaults
+          </button>
+          <button type="button" class="settings-subtab" role="tab" aria-selected="false" data-settings-tab="appearance">
+            Appearance &amp; UI
           </button>
           <button type="button" class="settings-subtab" role="tab" aria-selected="false" data-settings-tab="backup">
-            App &amp; Database Backup
+            App Data &amp; Backup
           </button>
         </nav>
 
@@ -897,25 +900,6 @@ export function mount(root, defs) {
           </div>
 
           <div class="card settings-card">
-            <h3>Appearance &amp; UI</h3>
-            <p class="note">Customize the color theme and text/UI scaling across the app.</p>
-            <div class="catalog-filters" style="align-items:end;">
-              <label>UI &amp; Font Scale
-                <select id="settings-scale-select">
-                  <option value="100" selected>100% · Standard (Default)</option>
-                  <option value="115">115% · Comfortable (Mobile)</option>
-                  <option value="130">130% · Large (High visibility)</option>
-                  <option value="150">150% · Extra Large (Maximum readability)</option>
-                </select>
-              </label>
-              <label>Theme
-                <button type="button" id="theme" class="ghost" aria-label="Toggle theme">◐ Dark</button>
-              </label>
-            </div>
-            <p class="note scale-preview-text">Sample: Barbell Back Squat · 3 sets × 8 reps @ 225 lb (RPE 8)</p>
-          </div>
-
-          <div class="card settings-card">
             <h3>Equipment &amp; Training Defaults</h3>
             <p class="note">Adjust default weight units, bar weights, smallest plate increments, WOD countdowns, and joint exclusions.</p>
             <div class="catalog-filters">
@@ -966,6 +950,27 @@ export function mount(root, defs) {
                 `).join('')}
               </div>
             </fieldset>
+          </div>
+        </div>
+
+        <div class="settings-grid settings-panel" data-settings-panel="appearance" role="tabpanel" hidden>
+          <div class="card settings-card">
+            <h3>Appearance &amp; UI</h3>
+            <p class="note">Customize the color theme and text/UI scaling across the app.</p>
+            <div class="catalog-filters" style="align-items:end;">
+              <label>UI &amp; Font Scale
+                <select id="settings-scale-select">
+                  <option value="100" selected>100% · Standard (Default)</option>
+                  <option value="115">115% · Comfortable (Mobile)</option>
+                  <option value="130">130% · Large (High visibility)</option>
+                  <option value="150">150% · Extra Large (Maximum readability)</option>
+                </select>
+              </label>
+              <label>Theme
+                <button type="button" id="theme" class="ghost" aria-label="Toggle theme">◐ Dark</button>
+              </label>
+            </div>
+            <p class="note scale-preview-text">Sample: Barbell Back Squat · 3 sets × 8 reps @ 225 lb (RPE 8)</p>
           </div>
         </div>
 
@@ -1091,9 +1096,30 @@ export function mount(root, defs) {
   async function renderDrawerWorkout() {
     if (!navDrawerWorkout || !navDrawerLinks) return;
     const inWorkout = activeTab === 'logger' && activeLoggerSessionId;
-    navDrawerWorkout.hidden = !inWorkout;
-    navDrawerLinks.hidden = Boolean(inWorkout);
-    if (navDrawerTitle) navDrawerTitle.textContent = inWorkout ? 'Workout Exercises' : 'Menu';
+    const inSettings = activeTab === 'settings';
+    navDrawerWorkout.hidden = !(inWorkout || inSettings);
+    navDrawerLinks.hidden = Boolean(inWorkout || inSettings);
+    if (navDrawerTitle) navDrawerTitle.textContent = inWorkout ? 'Workout Exercises' : (inSettings ? 'Settings' : 'Menu');
+    if (inSettings) {
+      const curSettings = localStorage.getItem('trainer_settings_tab') || 'gym';
+      const sections = [
+        ['gym', '🏋️ Gym, Equipment, & Defaults'],
+        ['appearance', '🎨 Appearance & UI'],
+        ['backup', '💾 App Data & Backup']
+      ];
+      navDrawerWorkout.innerHTML = `
+        <div class="nav-drawer-ex-list">
+          ${sections.map(([key, label]) => `
+            <button type="button" class="nav-drawer-ex-btn${curSettings === key ? ' active' : ''}" data-drawer-settings="${key}">
+              <span class="nav-drawer-ex-name">${label}</span>
+            </button>
+          `).join('')}
+        </div>
+        <div class="nav-drawer-footer">
+          <button type="button" id="nav-drawer-home-btn" class="ghost nav-drawer-top-btn">🏠 Calendar / Home</button>
+        </div>`;
+      return;
+    }
     if (!inWorkout) {
       navDrawerWorkout.innerHTML = '';
       return;
@@ -1159,6 +1185,12 @@ export function mount(root, defs) {
       if (e.target.closest('#nav-drawer-home-btn')) {
         closeDrawer();
         switchTab('log');
+        return;
+      }
+      const settingsBtn = e.target.closest('[data-drawer-settings]');
+      if (settingsBtn) {
+        closeDrawer();
+        switchSettingsTab(settingsBtn.dataset.drawerSettings);
         return;
       }
       const exBtn = e.target.closest('[data-drawer-ex]');
