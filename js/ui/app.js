@@ -411,7 +411,6 @@ export function mount(root, defs) {
         <input type="text" id="top-title-input" class="app-title-input" aria-label="Workout title" hidden />
         <span id="top-exercise-type" class="note" hidden></span>
         <select id="top-exercises-select" class="logger-top-select" aria-label="Switch exercise in workout" hidden></select>
-        <button type="button" id="top-info-btn" class="ghost logger-mini-btn" title="Exercise form &amp; instructions" hidden>ⓘ</button>
       </div>
 
       <div class="app-actions">
@@ -1046,7 +1045,6 @@ export function mount(root, defs) {
   const topExercisesSelect = root.querySelector('#top-exercises-select');
   const appBar = root.querySelector('.app-bar');
   const topExerciseType = root.querySelector('#top-exercise-type');
-  const topInfoBtn = root.querySelector('#top-info-btn');
   const topExTools = root.querySelector('#top-ex-tools');
   const topTimerToggleBtn = root.querySelector('#top-timer-toggle-btn');
   const topHistoryBtn = root.querySelector('#top-history-btn');
@@ -1114,12 +1112,6 @@ export function mount(root, defs) {
         loggerPairBlockId = null;
         renderActiveLogger();
       }
-    });
-  }
-  if (topInfoBtn) {
-    topInfoBtn.addEventListener('click', () => {
-      activeLoggerSubTab = 'info';
-      renderActiveLogger();
     });
   }
   if (topTimerToggleBtn) {
@@ -1269,7 +1261,6 @@ export function mount(root, defs) {
     if (topExerciseType) topExerciseType.hidden = true;
     appBar?.removeAttribute('data-ss-color');
     if (tabName !== 'logger') appBar?.removeAttribute('data-ss-color');
-    if (topInfoBtn) topInfoBtn.hidden = true;
     if (topExTools) topExTools.hidden = true;
     if (topTimerBar) topTimerBar.hidden = activeTab !== 'logger';
     if (topExTools) topExTools.hidden = !(tabName === 'logger' && activeLoggerExercise);
@@ -2288,6 +2279,17 @@ export function mount(root, defs) {
   let openLoggerMoreModal = null;
   let loggerGroupSelection = new Set();
   let loggerSelectedGroupType = 'superset';
+
+  const COND_BLOCK_TYPES = new Set(['emom', 'amrap', 'for_time', 'circuit', 'tabata']);
+  const isGroupedBlockType = (t) => t === 'superset' || COND_BLOCK_TYPES.has(t);
+  const buildGroupTypeOptionsHtml = (selected, supersetLabel = 'Superset / Giant Set') => [
+    ['superset', supersetLabel],
+    ['circuit', 'Circuit'],
+    ['emom', 'EMOM'],
+    ['amrap', 'AMRAP'],
+    ['for_time', 'For Time'],
+    ['tabata', 'Tabata']
+  ].map(([val, lbl]) => `<option value="${val}"${selected === val ? ' selected' : ''}>${lbl}</option>`).join('');
   let loggerStatusMsg = '';
   let loggerPairBlockId = null;
 
@@ -2474,7 +2476,7 @@ export function mount(root, defs) {
   function openWodRunner(program) {
     const sess = program?.weeks?.[0]?.sessions?.[0];
     if (!sess) return;
-    const condBlk = sess.blocks?.find((b) => ['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(b.blockType)) || sess.blocks?.[0];
+    const condBlk = sess.blocks?.find((b) => COND_BLOCK_TYPES.has(b.blockType)) || sess.blocks?.[0];
     const groups = condBlk?.setGroups || [];
     const movements = [];
     const stations = [];
@@ -2489,7 +2491,7 @@ export function mount(root, defs) {
         });
       }
     }
-    const mode = condBlk?.blockType && ['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(condBlk.blockType)
+    const mode = condBlk?.blockType && COND_BLOCK_TYPES.has(condBlk.blockType)
       ? condBlk.blockType
       : (sess.format || 'for_time');
 
@@ -2775,7 +2777,7 @@ export function mount(root, defs) {
     activeSessionStartedAt = session.startedAt;
     activeSessionStatus = session.status;
 
-    const condBlocks = blocks.filter((b) => (b.sets || []).length > 0 && ['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(b.blockType));
+    const condBlocks = blocks.filter((b) => (b.sets || []).length > 0 && COND_BLOCK_TYPES.has(b.blockType));
     const condBlock = condBlocks.find((b) => b.id === wodTimer.blockId) || condBlocks[0] || null;
     const condExCount = condBlock ? new Set((condBlock.sets || []).map((s) => s.exerciseId)).size : 0;
     const condSetCount = condBlock ? (condBlock.sets || []).filter((s) => s.setType !== 'warmup' && !s.parentSetId).length : 0;
@@ -2884,78 +2886,6 @@ export function mount(root, defs) {
     }
     updateTimerDisplays();
 
-    const buildSetDetailHtml = (st, idxNum, blk, isSuperset, lastSetHint = '') => {
-      const isDrop = st.setType === 'drop' && st.parentSetId;
-      const badge = isDrop ? `↳ Drop ${st.dropIndex ?? ''}` : (st.setType === 'warmup' ? 'Warm' : `S${idxNum}`);
-      const isBw = st.trackingType === 'bodyweight_reps';
-      const isTime = st.trackingType === 'time';
-      const weightLabel = isBw ? `+${unit} (0=BW)` : unit;
-      const weightVal = kgToDisplay(st.weightKg, unit);
-      const focused = loggerFocusSetId === st.id ? ' logger-set-focused' : '';
-      const completedCls = st.isComplete ? ' logger-set-done' : '';
-      const exObj = defs.exercises.find((e) => e.id === st.exerciseId);
-      const eqDefaults = getEquipmentLoadDefaults();
-      const weightStep = Number(eqDefaults.plateIncrement) > 0 ? Number(eqDefaults.plateIncrement) : (unit === 'kg' ? 2.5 : 5);
-      let plateHintHtml = '';
-      if (!isTime && weightVal && isPlateLoaded(exObj)) {
-        const barWt = barWeightFor(exObj, { unit, barWeights: eqDefaults.barWeights });
-        const pm = computePlateLoad(weightVal, { barWeight: barWt, plates: eqDefaults.plates, unit });
-        plateHintHtml = pm.achievable
-          ? (pm.perSide.length
-              ? `<button type="button" class="ghost logger-plate-btn" data-logger-plates="${esc(String(weightVal))}" data-logger-bar="${esc(String(barWt))}" title="Open visual plate loader">🏋️ ${esc(pm.formatted)} · Bar</button>`
-              : `<p class="note" style="margin:2px 0 0;">🏋️ ${esc(pm.formatted)}</p>`)
-          : `<p class="catalog-warn" style="margin:2px 0 0;">⚠️ ${esc(pm.reason)}</p>`;
-      }
-      return `
-        <div class="logger-set-row${isDrop ? ' logger-drop-row' : ''}${focused}${completedCls}" data-set-id="${esc(st.id)}" data-block-id="${esc(blk.id)}">
-          <div class="logger-set-top">
-            <span class="logger-set-badge">${esc(badge)}</span>
-            ${isSuperset ? `<strong class="logger-set-ex">${esc(st.exerciseName)}</strong>` : ''}
-            ${st.isPr ? '<span class="catalog-badge" title="Personal Record">🏆 PR</span>' : ''}
-            ${lastSetHint ? `<span class="note">${esc(lastSetHint)}</span>` : ''}
-            <label class="logger-rest-edit" style="margin-left:auto;">Rest
-              <input type="number" min="0" step="5" class="logger-in logger-rest-in" data-set-field="restSec" data-set-id="${esc(st.id)}" value="${st.restSec ?? 90}" aria-label="Rest seconds" />s
-            </label>
-            ${isTime ? `<button type="button" class="ghost logger-mini-btn" data-logger-hold-set="${esc(st.id)}" data-logger-hold-block="${esc(blk.id)}" data-logger-hold-sec="${st.durationSec || 60}" data-logger-hold-name="${esc(st.exerciseName)}" title="Start full-screen hold countdown">▶ Hold</button>` : ''}
-            ${!isDrop && !isTime && st.setType !== 'warmup' && st.trackingType === 'weight_reps' ? `<button type="button" class="ghost logger-mini-btn" data-logger-add-drop="${esc(st.id)}" title="Add drop set">+ Drop</button>` : ''}
-            <button type="button" class="ghost logger-mini-btn" data-logger-del-set="${esc(st.id)}" aria-label="Delete set">✕</button>
-          </div>
-          <div class="logger-set-inputs">
-            ${!isTime ? `
-              <label>${esc(weightLabel)}
-                <div class="logger-step-wrap">
-                  <button type="button" class="logger-step-btn" data-set-step="-1" data-step-field="weightKg" data-step-delta="${weightStep}" data-set-id="${esc(st.id)}" aria-label="Decrease weight">−</button>
-                  <input type="number" step="0.5" min="0" class="logger-in" data-set-field="weightKg" data-set-id="${esc(st.id)}" value="${esc(String(weightVal))}" placeholder="${isBw ? '0' : unit}" />
-                  <button type="button" class="logger-step-btn" data-set-step="1" data-step-field="weightKg" data-step-delta="${weightStep}" data-set-id="${esc(st.id)}" aria-label="Increase weight">+</button>
-                </div>
-              </label>
-              <label>Reps
-                <div class="logger-step-wrap">
-                  <button type="button" class="logger-step-btn" data-set-step="-1" data-step-field="reps" data-step-delta="1" data-set-id="${esc(st.id)}" aria-label="Decrease reps">−</button>
-                  <input type="number" step="1" min="0" class="logger-in" data-set-field="reps" data-set-id="${esc(st.id)}" value="${st.reps ?? ''}" placeholder="0" />
-                  <button type="button" class="logger-step-btn" data-set-step="1" data-step-field="reps" data-step-delta="1" data-set-id="${esc(st.id)}" aria-label="Increase reps">+</button>
-                </div>
-              </label>
-            ` : `
-              <label>Duration (s)
-                <input type="number" step="1" min="0" class="logger-in" data-set-field="durationSec" data-set-id="${esc(st.id)}" value="${st.durationSec ?? ''}" placeholder="60" />
-              </label>
-            `}
-            <label>RIR
-              <input type="number" step="0.5" min="0" max="10" class="logger-in" data-set-field="rir" data-set-id="${esc(st.id)}" value="${st.rir ?? ''}" placeholder="2" />
-            </label>
-            <label class="logger-note-in">Note
-              <input type="text" class="logger-in" data-set-field="notes" data-set-id="${esc(st.id)}" value="${esc(st.notes)}" placeholder="e.g. paused" />
-            </label>
-            <label class="logger-check-wrap" title="Complete set">
-              <input type="checkbox" class="logger-complete-cb" data-set-id="${esc(st.id)}" data-block-id="${esc(blk.id)}" ${st.isComplete ? 'checked' : ''} />
-              <span>Done</span>
-            </label>
-          </div>
-          ${plateHintHtml}
-        </div>`;
-    };
-
     const buildCompactSetRowHtml = (st, idxNum, blk, isFocused, prevSt = null) => {
       const isDrop = st.setType === 'drop' && st.parentSetId;
       const badge = isDrop ? `D${st.dropIndex ?? ''}` : (st.setType === 'warmup' ? 'W' : `S${idxNum}`);
@@ -3001,7 +2931,7 @@ export function mount(root, defs) {
     };
 
     const buildWodPanelHtml = (blk) => {
-      const isCond = ['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(blk.blockType);
+      const isCond = COND_BLOCK_TYPES.has(blk.blockType);
       if (!isCond || !(blk.sets || []).length) return '';
       if (wodTimer.blockId !== blk.id) {
         return `<div class="wod-timer-activate"><button type="button" class="ghost logger-mini-btn" data-wod-activate-block="${esc(blk.id)}">⏱️ Open ${esc(blockLabel(blk.blockType))} Timer</button></div>`;
@@ -3060,7 +2990,7 @@ export function mount(root, defs) {
         let gIdx = 0;
         for (const b of blocks) {
           const bExCount = new Set((b.sets || []).map((s) => s.exerciseId)).size;
-          const bGrouped = ['superset', 'emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(b.blockType) && bExCount > 1;
+          const bGrouped = isGroupedBlockType(b.blockType) && bExCount > 1;
           if (b.id === blk.id) {
             if (bGrouped) activeGroupColorIdx = gIdx % 16;
             break;
@@ -3323,8 +3253,7 @@ export function mount(root, defs) {
           appBar.removeAttribute('data-ss-color');
         }
       }
-      if (topInfoBtn) topInfoBtn.hidden = true;
-    if (topExTools) topExTools.hidden = true;
+      if (topExTools) topExTools.hidden = true;
     if (topTimerBar) topTimerBar.hidden = activeTab !== 'logger';
       if (topExTools) topExTools.hidden = activeTab !== 'logger';
       if (topHistoryBtn) topHistoryBtn.classList.toggle('active', activeLoggerSubTab === 'history');
@@ -3370,7 +3299,7 @@ export function mount(root, defs) {
     let ssGroupIdx = 0;
     const blocksHtml = blocks.length
       ? blocks.map((blk, bIdx) => {
-          const isGrouped = ['superset', 'circuit', 'emom', 'amrap', 'for_time', 'tabata'].includes(blk.blockType);
+          const isGrouped = isGroupedBlockType(blk.blockType);
           const blockExercises = [];
           const seenEx = new Set();
           for (const st of blk.sets) {
@@ -3448,14 +3377,7 @@ export function mount(root, defs) {
                 <input type="checkbox" class="logger-group-cb" data-group-block-id="${esc(blk.id)}" ${loggerGroupSelection.has(blk.id) ? 'checked' : ''} />
               </label>
               <select class="logger-group-type-inline" data-logger-block-type="${esc(blk.id)}" aria-label="Group type">
-                ${[
-                  ['superset', blockExercises.length >= 3 ? 'Giant Set' : 'Superset'],
-                  ['circuit', 'Circuit'],
-                  ['emom', 'EMOM'],
-                  ['amrap', 'AMRAP'],
-                  ['for_time', 'For Time'],
-                  ['tabata', 'Tabata']
-                ].map(([val, lbl]) => `<option value="${val}"${blk.blockType === val ? ' selected' : ''}>${lbl}</option>`).join('')}
+                ${buildGroupTypeOptionsHtml(blk.blockType, blockExercises.length >= 3 ? 'Giant Set' : 'Superset')}
               </select>
               <button type="button" class="ghost logger-mini-btn" data-logger-blk-up="${esc(blk.id)}" ${bIdx === 0 ? 'disabled' : ''}>↑</button>
               <button type="button" class="ghost logger-mini-btn" data-logger-blk-down="${esc(blk.id)}" ${bIdx === blocks.length - 1 ? 'disabled' : ''}>↓</button>
@@ -3495,7 +3417,6 @@ export function mount(root, defs) {
     if (topExercisesSelect) topExercisesSelect.hidden = true;
     if (topExerciseType) topExerciseType.hidden = true;
     appBar?.removeAttribute('data-ss-color');
-    if (topInfoBtn) topInfoBtn.hidden = true;
     if (topExTools) topExTools.hidden = true;
     if (topTimerBar) topTimerBar.hidden = activeTab !== 'logger';
     const startTimeLabel = session.startedAt
@@ -3526,12 +3447,7 @@ export function mount(root, defs) {
           <div class="logger-group-toolbar">
             <span class="note">${loggerGroupSelection.size} selected</span>
             <select id="logger-group-type-select" aria-label="Group type">
-              <option value="superset"${loggerSelectedGroupType === 'superset' ? ' selected' : ''}>Superset / Giant Set</option>
-              <option value="circuit"${loggerSelectedGroupType === 'circuit' ? ' selected' : ''}>Circuit</option>
-              <option value="emom"${loggerSelectedGroupType === 'emom' ? ' selected' : ''}>EMOM</option>
-              <option value="amrap"${loggerSelectedGroupType === 'amrap' ? ' selected' : ''}>AMRAP</option>
-              <option value="for_time"${loggerSelectedGroupType === 'for_time' ? ' selected' : ''}>For Time</option>
-              <option value="tabata"${loggerSelectedGroupType === 'tabata' ? ' selected' : ''}>Tabata</option>
+              ${buildGroupTypeOptionsHtml(loggerSelectedGroupType)}
             </select>
             <button type="button" id="logger-group-selected-btn" class="primary logger-mini-btn"${loggerGroupSelection.size < 2 ? ' disabled' : ''}>🔗 Group Selected</button>
             <button type="button" id="logger-clear-group-sel-btn" class="ghost logger-mini-btn"${loggerGroupSelection.size === 0 ? ' disabled' : ''}>Clear</button>
@@ -3640,7 +3556,7 @@ export function mount(root, defs) {
           const active = loadActiveWorkout(appDb, activeLoggerSessionId);
           const blk = active?.blocks.find((b) => b.id === blockId);
           const completedSet = blk?.sets.find((s) => s.id === setId);
-          if (completedSet && blk && !['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(blk.blockType)) {
+          if (completedSet && blk && !COND_BLOCK_TYPES.has(blk.blockType)) {
             startCountdownTimer(completedSet.restSec || 90, 'rest', `Rest (${completedSet.exerciseName})`);
           }
           await savePersistedAppDb(appDb);
@@ -3863,7 +3779,7 @@ export function mount(root, defs) {
               appDb.run('UPDATE logged_sets SET is_pr = 1 WHERE id = ?', [setId]);
               loggerStatusMsg = `🏆 New PR on ${completedSet.exerciseName}! (Est. 1RM ~${kgToDisplay(est1RmKg, unit)} ${unit})`;
             }
-            if (!['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(blk.blockType)) {
+            if (!COND_BLOCK_TYPES.has(blk.blockType)) {
               startCountdownTimer(completedSet.restSec || 90, 'rest', `Rest (${completedSet.exerciseName})`);
             }
           }
