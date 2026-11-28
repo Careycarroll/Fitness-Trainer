@@ -410,7 +410,6 @@ export function mount(root, defs) {
         <button type="button" id="top-title-edit-btn" class="ghost logger-mini-btn" title="Rename workout" aria-label="Rename workout" hidden>✎</button>
         <input type="text" id="top-title-input" class="app-title-input" aria-label="Workout title" hidden />
         <span id="top-exercise-type" class="note" hidden></span>
-        <select id="top-exercises-select" class="logger-top-select" aria-label="Switch exercise in workout" hidden></select>
       </div>
 
       <div class="app-actions">
@@ -1043,7 +1042,6 @@ export function mount(root, defs) {
   const topTitleEditBtn = root.querySelector('#top-title-edit-btn');
   const topTitleInput = root.querySelector('#top-title-input');
   const topWorkoutBackBtn = root.querySelector('#top-workout-back-btn');
-  const topExercisesSelect = root.querySelector('#top-exercises-select');
   const appBar = root.querySelector('.app-bar');
   const topExerciseType = root.querySelector('#top-exercise-type');
   const topExTools = root.querySelector('#top-ex-tools');
@@ -1186,17 +1184,6 @@ export function mount(root, defs) {
         renderActiveLogger();
       } else {
         switchTab('log');
-      }
-    });
-  }
-  if (topExercisesSelect) {
-    topExercisesSelect.addEventListener('change', () => {
-      const [blockId, exerciseId] = (topExercisesSelect.value || '').split('::');
-      if (blockId && exerciseId) {
-        activeLoggerExercise = { blockId, exerciseId };
-        activeLoggerSubTab = 'track';
-        loggerPairBlockId = null;
-        renderActiveLogger();
       }
     });
   }
@@ -1343,7 +1330,6 @@ export function mount(root, defs) {
     if (topTitleInput) topTitleInput.hidden = true;
     if (topTitleEditBtn) topTitleEditBtn.hidden = !(tabName === 'logger' && !activeLoggerExercise && activeLoggerSessionId);
     if (topWorkoutBackBtn) topWorkoutBackBtn.hidden = tabName !== 'logger';
-    if (topExercisesSelect) topExercisesSelect.hidden = !(tabName === 'logger' && activeLoggerExercise);
     if (topExerciseType) topExerciseType.hidden = true;
     appBar?.removeAttribute('data-ss-color');
     if (tabName !== 'logger') appBar?.removeAttribute('data-ss-color');
@@ -3322,14 +3308,6 @@ export function mount(root, defs) {
         topWorkoutBackBtn.textContent = '← Workout';
         topWorkoutBackBtn.title = 'Back to Workout';
       }
-      if (topExercisesSelect) {
-        topExercisesSelect.hidden = activeTab !== 'logger';
-        topExercisesSelect.innerHTML = workoutExercises.map((we) => {
-          const val = `${we.blockId}::${we.exerciseId}`;
-          const isAct = we.blockId === blk?.id && we.exerciseId === exId;
-          return `<option value="${esc(val)}"${isAct ? ' selected' : ''}>${esc(we.exerciseName)} (${we.doneCount}/${we.setCount})</option>`;
-        }).join('');
-      }
       if (topExerciseType) topExerciseType.hidden = true;
     appBar?.removeAttribute('data-ss-color');
       if (appBar) {
@@ -3500,7 +3478,6 @@ export function mount(root, defs) {
       topWorkoutBackBtn.textContent = '← Log';
       topWorkoutBackBtn.title = 'Back to Log';
     }
-    if (topExercisesSelect) topExercisesSelect.hidden = true;
     if (topExerciseType) topExerciseType.hidden = true;
     appBar?.removeAttribute('data-ss-color');
     if (topExTools) topExTools.hidden = true;

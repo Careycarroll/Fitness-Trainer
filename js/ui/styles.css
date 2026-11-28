@@ -2679,18 +2679,6 @@ button[disabled] {
   cursor: pointer;
 }
 
-.logger-top-select {
-  flex: 1 1 120px;
-  width: auto !important;
-  min-width: 0;
-  max-width: 260px;
-  min-height: 32px !important;
-  padding: 4px 26px 4px 8px !important;
-  font-size: 0.82rem !important;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .logger-top-tools {
   display: inline-flex;
   align-items: center;
