@@ -3201,7 +3201,10 @@ export function mount(root, defs) {
         const defaultPlateTarget = targetSetWt ? kgToDisplay(targetSetWt, unit) : (unit === 'kg' ? 60 : 135);
         const defaultBarWt = barWeightFor(exObj, { unit, barWeights: eqDefaults.barWeights });
         const groupPillHtml = (blk && (blk.blockType !== 'straight' || partnerExercises.length > 0))
-          ? `<div class="logger-group-pill"${activeGroupColorIdx != null ? ` data-ss-color="${activeGroupColorIdx}"` : ''}>${esc(supersetNote)}</div>`
+          ? `<div class="logger-group-pill"${activeGroupColorIdx != null ? ` data-ss-color="${activeGroupColorIdx}"` : ''}>
+               <span class="logger-group-pill-label">${esc(blockTitleOrType)}</span>
+               ${partnerChipsHtml ? `<div class="logger-partner-chips">${partnerChipsHtml}</div>` : ''}
+             </div>`
           : '';
         subBodyHtml = `
           ${groupPillHtml}
@@ -3212,7 +3215,6 @@ export function mount(root, defs) {
           ${setsTableHtml}
           <div class="logger-block-actions" style="margin-top:10px;">
             <button type="button" class="primary logger-mini-btn" data-logger-add-set="${esc(blk.id)}" data-ex-id="${esc(exId)}">+ Add Set</button>
-            ${partnerChipsHtml}
           </div>
           ${pairBoxHtml}`;
         openLoggerMoreModal = () => {

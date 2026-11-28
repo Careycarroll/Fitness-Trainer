@@ -2542,15 +2542,27 @@ button:active,
 }
 
 .logger-group-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
   font-size: 0.78rem;
   font-weight: 600;
   color: var(--muted);
-  padding: 4px 8px;
+  padding: 5px 8px;
   margin-bottom: 8px;
   border-radius: 6px;
   background: var(--surface-raised);
   border: 1px solid var(--border);
   border-left: 3px solid var(--ss-color, var(--accent));
+}
+
+.logger-partner-chips {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 /* 16 pastel presets for dark theme */
