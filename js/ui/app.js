@@ -3335,7 +3335,7 @@ export function mount(root, defs) {
     let ssGroupIdx = 0;
     const blocksHtml = blocks.length
       ? blocks.map((blk, bIdx) => {
-          const isGrouped = blk.blockType === 'superset' || blk.blockType === 'circuit';
+          const isGrouped = ['superset', 'circuit', 'emom', 'amrap', 'for_time', 'tabata'].includes(blk.blockType);
           const blockExercises = [];
           const seenEx = new Set();
           for (const st of blk.sets) {
@@ -3344,9 +3344,9 @@ export function mount(root, defs) {
               blockExercises.push({ id: st.exerciseId, name: st.exerciseName });
             }
           }
-          const defaultGroupLabel = blk.blockType === 'circuit'
-            ? `Circuit (${blockExercises.length})`
-            : (blockExercises.length >= 3 ? `Giant Set (${blockExercises.length})` : `Superset (${blockExercises.length})`);
+          const defaultGroupLabel = blk.blockType === 'superset'
+            ? `${blockExercises.length >= 3 ? 'Giant Set' : 'Superset'} (${blockExercises.length})`
+            : `${blockLabel(blk.blockType)} (${blockExercises.length})`;
           const groupLabel = blk.title || defaultGroupLabel;
           const typeLabel = blockExercises.length >= 3 && blk.blockType === 'superset' ? 'Giant Set' : blockLabel(blk.blockType);
 
