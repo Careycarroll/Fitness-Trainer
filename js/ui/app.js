@@ -436,7 +436,6 @@ export function mount(root, defs) {
               <option value="desktop">Desktop</option>
             </select>
           </label>` : ''}
-        <span class="build-stamp" title="Build timestamp">${__BUILD__}</span>
       </div>
     </header>
 
@@ -1038,6 +1037,7 @@ export function mount(root, defs) {
   const topTitleInput = root.querySelector('#top-title-input');
   const topWorkoutBackBtn = root.querySelector('#top-workout-back-btn');
   const topExercisesSelect = root.querySelector('#top-exercises-select');
+  const appBar = root.querySelector('.app-bar');
   const topExerciseType = root.querySelector('#top-exercise-type');
   const topInfoBtn = root.querySelector('#top-info-btn');
   const topTimerBar = root.querySelector('#top-timer-bar');
@@ -1236,7 +1236,9 @@ export function mount(root, defs) {
     if (topTitleEditBtn) topTitleEditBtn.hidden = !(tabName === 'logger' && !activeLoggerExercise && activeLoggerSessionId);
     if (topWorkoutBackBtn) topWorkoutBackBtn.hidden = tabName !== 'logger';
     if (topExercisesSelect) topExercisesSelect.hidden = !(tabName === 'logger' && activeLoggerExercise);
-    if (topExerciseType) topExerciseType.hidden = !(tabName === 'logger' && activeLoggerExercise);
+    if (topExerciseType) topExerciseType.hidden = true;
+    appBar?.removeAttribute('data-ss-color');
+    if (tabName !== 'logger') appBar?.removeAttribute('data-ss-color');
     if (topInfoBtn) topInfoBtn.hidden = !(tabName === 'logger' && activeLoggerExercise);
     if (topTimerBar) topTimerBar.hidden = !(tabName === 'logger' && activeLoggerSessionId);
     navTabs.forEach((t) => {
@@ -2980,6 +2982,19 @@ export function mount(root, defs) {
       const supersetNote = partnerExercises.length
         ? `${blockTitleOrType} w/ ${partnerExercises.map((p) => p.name).join(', ')}`
         : blockTitleOrType;
+      let activeGroupColorIdx = null;
+      if (blk) {
+        let gIdx = 0;
+        for (const b of blocks) {
+          const bExCount = new Set((b.sets || []).map((s) => s.exerciseId)).size;
+          const bGrouped = ['superset', 'emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(b.blockType) && bExCount > 1;
+          if (b.id === blk.id) {
+            if (bGrouped) activeGroupColorIdx = gIdx % 16;
+            break;
+          }
+          if (bGrouped) gIdx += 1;
+        }
+      }
 
       const lastPerf = getLastExercisePerformance(appDb, exId, activeLoggerSessionId);
       const bestPrior = getExerciseBestMetrics(appDb, exId, activeLoggerSessionId);
@@ -3115,7 +3130,11 @@ export function mount(root, defs) {
         const topSetWt = exSets.find((s) => s.weightKg > 0)?.weightKg;
         const defaultPlateTarget = topSetWt ? kgToDisplay(topSetWt, unit) : (unit === 'kg' ? 60 : 135);
         const defaultBarWt = barWeightFor(exObj, { unit, barWeights: eqDefaults.barWeights });
+        const groupPillHtml = (blk && (blk.blockType !== 'straight' || partnerExercises.length > 0))
+          ? `<div class="logger-group-pill"${activeGroupColorIdx != null ? ` data-ss-color="${activeGroupColorIdx}"` : ''}>${esc(supersetNote)}</div>`
+          : '';
         subBodyHtml = `
+          ${groupPillHtml}
           ${blk ? buildWodPanelHtml(blk) : ''}
           ${trackMetaHtml}
           ${loggerStatusMsg ? `<p class="note" style="color:var(--accent); font-weight:600; margin:0 0 8px;">${esc(loggerStatusMsg)}</p>` : ''}
@@ -3200,9 +3219,14 @@ export function mount(root, defs) {
           return `<option value="${esc(val)}"${isAct ? ' selected' : ''}>${esc(we.exerciseName)} (${we.doneCount}/${we.setCount})</option>`;
         }).join('');
       }
-      if (topExerciseType) {
-        topExerciseType.hidden = activeTab !== 'logger';
-        topExerciseType.textContent = supersetNote;
+      if (topExerciseType) topExerciseType.hidden = true;
+    appBar?.removeAttribute('data-ss-color');
+      if (appBar) {
+        if (activeTab === 'logger' && activeGroupColorIdx != null) {
+          appBar.setAttribute('data-ss-color', String(activeGroupColorIdx));
+        } else {
+          appBar.removeAttribute('data-ss-color');
+        }
       }
       if (topInfoBtn) topInfoBtn.hidden = true;
       if (topTitleEditBtn) topTitleEditBtn.hidden = true;
@@ -3356,6 +3380,7 @@ export function mount(root, defs) {
     }
     if (topExercisesSelect) topExercisesSelect.hidden = true;
     if (topExerciseType) topExerciseType.hidden = true;
+    appBar?.removeAttribute('data-ss-color');
     if (topInfoBtn) topInfoBtn.hidden = true;
     const startTimeLabel = session.startedAt
       ? new Date(session.startedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
