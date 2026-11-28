@@ -2774,8 +2774,10 @@ export function mount(root, defs) {
     activeSessionStartedAt = session.startedAt;
     activeSessionStatus = session.status;
 
-    const condBlock = blocks.find((b) => ['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(b.blockType));
-    if (condBlock && wodTimer.blockId !== condBlock.id) {
+    const condBlocks = blocks.filter((b) => ['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(b.blockType));
+    const condBlock = condBlocks.find((b) => b.id === wodTimer.blockId) || condBlocks[0] || null;
+    const condExCount = condBlock ? new Set((condBlock.sets || []).map((s) => s.exerciseId)).size : 0;
+    if (condBlock && (wodTimer.blockId !== condBlock.id || wodTimer.config?.mode !== condBlock.blockType || (wodTimer.config?.movements?.length || 0) !== condExCount)) {
       const mvLabels = [];
       const stations = [];
       const seenMv = new Set();
@@ -2976,13 +2978,22 @@ export function mount(root, defs) {
 
     const buildWodPanelHtml = (blk) => {
       const isCond = ['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(blk.blockType);
-      if (!isCond || wodTimer.blockId !== blk.id) return '';
+      if (!isCond) return '';
+      if (wodTimer.blockId !== blk.id) {
+        return `<div class="wod-timer-activate"><button type="button" class="ghost logger-mini-btn" data-wod-activate-block="${esc(blk.id)}">⏱️ Open ${esc(blockLabel(blk.blockType))} Timer</button></div>`;
+      }
       const wst = computeConditioningState(wodTimer.config, getWodElapsedSec());
+      const cfgCapMin = Math.max(1, Math.round((wodTimer.config.timeCapSec || 600) / 60));
+      const cfgRounds = Math.max(1, Number(wodTimer.config.rounds || (blk.blockType === 'tabata' ? 8 : 10)));
+      const cfgHtml = (blk.blockType === 'amrap' || blk.blockType === 'for_time')
+        ? `<label class="wod-cfg-inline">Cap <input type="number" min="1" max="120" step="1" id="wod-cfg-cap-min" data-wod-cfg-block="${esc(blk.id)}" value="${cfgCapMin}" aria-label="Time cap minutes" /> min</label>`
+        : `<label class="wod-cfg-inline">Rounds <input type="number" min="1" max="99" step="1" id="wod-cfg-rounds" data-wod-cfg-block="${esc(blk.id)}" value="${cfgRounds}" aria-label="Target rounds" /></label>`;
       return `
         <div class="wod-timer-panel">
           <div class="wod-timer-top">
             <span class="catalog-badge">${esc(blk.blockType.toUpperCase())}</span>
             <strong id="wod-timer-round">${wst.totalRounds ? `Round ${wst.currentRound} / ${wst.totalRounds}` : (blk.blockType === 'amrap' ? `Rounds: ${wodTimer.amrapRounds}` : 'Stopwatch')}</strong>
+            ${cfgHtml}
             <span class="note" id="wod-timer-total">${esc(wst.totalClock)}</span>
           </div>
           <div id="wod-timer-clock" class="wod-timer-clock">${wodTimer.prepEndMs > 0 ? `GET READY · ${wodTimer.prepRemainingSec}` : esc(wst.displayClock)}</div>
@@ -3726,6 +3737,25 @@ export function mount(root, defs) {
         return;
       }
 
+      if (e.target.id === 'wod-cfg-cap-min') {
+        const bId = e.target.dataset.wodCfgBlock;
+        const mins = Math.max(1, Math.min(120, Math.round(Number(e.target.value) || 10)));
+        const capSec = mins * 60;
+        appDb.run('UPDATE workout_blocks SET time_cap_sec = ? WHERE id = ?', [capSec, bId]);
+        if (wodTimer.config && wodTimer.blockId === bId) wodTimer.config.timeCapSec = capSec;
+        await savePersistedAppDb(appDb);
+        await renderActiveLogger();
+        return;
+      }
+      if (e.target.id === 'wod-cfg-rounds') {
+        const bId = e.target.dataset.wodCfgBlock;
+        const rds = Math.max(1, Math.min(99, Math.round(Number(e.target.value) || 10)));
+        appDb.run('UPDATE workout_blocks SET rounds_target = ? WHERE id = ?', [rds, bId]);
+        if (wodTimer.config && wodTimer.blockId === bId) wodTimer.config.rounds = rds;
+        await savePersistedAppDb(appDb);
+        await renderActiveLogger();
+        return;
+      }
       if (e.target.id === 'logger-group-type-select') {
         loggerSelectedGroupType = e.target.value || 'superset';
         return;
@@ -4042,6 +4072,14 @@ export function mount(root, defs) {
           label: holdBtn.dataset.loggerHoldName || 'Hold',
           durationSec: dur
         });
+        return;
+      }
+      const activateWodBtn = e.target.closest('[data-wod-activate-block]');
+      if (activateWodBtn) {
+        wodTimer.blockId = activateWodBtn.dataset.wodActivateBlock;
+        wodTimer.config = null;
+        wodTimer.running = false;
+        await renderActiveLogger();
         return;
       }
       if (e.target.closest('#wod-timer-toggle-btn')) {
