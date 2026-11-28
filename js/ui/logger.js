@@ -548,6 +548,29 @@ export function moveExerciseInBlock(appDb, sessionId, blockId, exerciseId, direc
 /**
  * Merge `sourceBlockId` into `targetBlockId` as a superset / giant set.
  */
+export function balanceGroupSets(appDb, sessionId, blockId) {
+  if (!blockId) return false;
+  const rows = appDb.exec(
+    `SELECT exercise_id, COUNT(*) AS cnt
+     FROM logged_sets
+     WHERE block_id = ? AND parent_set_id IS NULL AND set_type != 'warmup'
+     GROUP BY exercise_id`,
+    [blockId]
+  )[0]?.values ?? [];
+  if (rows.length < 2) return false;
+  const maxCnt = Math.max(...rows.map(([, c]) => Number(c)));
+  let changed = false;
+  for (const [exId, cnt] of rows) {
+    const missing = maxCnt - Number(cnt);
+    for (let i = 0; i < missing; i += 1) {
+      addSetToBlock(appDb, sessionId, blockId, exId, 'working');
+      changed = true;
+    }
+  }
+  if (changed) reindexSessionSets(appDb, sessionId);
+  return changed;
+}
+
 export function linkBlocksIntoSuperset(appDb, sessionId, sourceBlockId, targetBlockId, blockType = 'superset') {
   if (!sourceBlockId || !targetBlockId || sourceBlockId === targetBlockId) return false;
   const maxOrder = Number(
@@ -564,6 +587,7 @@ export function linkBlocksIntoSuperset(appDb, sessionId, sourceBlockId, targetBl
   appDb.run(`UPDATE workout_blocks SET block_type = ? WHERE id = ?`, [nextType, targetBlockId]);
   appDb.run('DELETE FROM workout_blocks WHERE id = ?', [sourceBlockId]);
   reindexSessionBlocks(appDb, sessionId);
+  balanceGroupSets(appDb, sessionId, targetBlockId);
   reindexSessionSets(appDb, sessionId);
   return true;
 }

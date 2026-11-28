@@ -50,16 +50,19 @@ export function computeConditioningState(config, elapsedSec) {
     const roundRemaining = completed ? 0 : intervalSec - inRoundElapsed;
     const totalRemaining = Math.max(0, totalSec - clamped);
 
+    const roundLabels = Array.isArray(config.roundLabels) && config.roundLabels.length ? config.roundLabels : null;
     // If multiple movements and rounds > movements, rotate or show all per minute
-    const rotatePerMinute = movements.length > 1 && totalRounds % movements.length === 0 && movements.length <= 4 && totalRounds <= 24;
-    const currentMovement = rotatePerMinute
-      ? movements[roundIdx % movements.length]
-      : movements.join(' · ');
+    const rotatePerMinute = !roundLabels && movements.length > 1 && totalRounds % movements.length === 0 && movements.length <= 4 && totalRounds <= 24;
+    const currentMovement = roundLabels
+      ? roundLabels[roundIdx % roundLabels.length]
+      : (rotatePerMinute ? movements[roundIdx % movements.length] : movements.join(' · '));
     const nextMovement = completed
       ? 'Finished'
-      : rotatePerMinute
-        ? movements[(roundIdx + 1) % movements.length]
-        : (roundIdx + 1 < totalRounds ? `Round ${roundIdx + 2}: ${movements.join(' · ')}` : 'Final Round');
+      : roundLabels
+        ? (roundIdx + 1 < totalRounds ? roundLabels[(roundIdx + 1) % roundLabels.length] : 'Final Round')
+        : (rotatePerMinute
+          ? movements[(roundIdx + 1) % movements.length]
+          : (roundIdx + 1 < totalRounds ? `Round ${roundIdx + 2}: ${movements.join(' · ')}` : 'Final Round'));
 
     return {
       mode,

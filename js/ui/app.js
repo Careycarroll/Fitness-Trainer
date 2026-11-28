@@ -97,6 +97,7 @@ import {
   updateSessionMeta,
   updateBlockTitle,
   updateBlockType,
+  balanceGroupSets,
   swapExerciseInBlock,
   deleteWorkoutSession,
   moveWorkoutBlock,
@@ -2777,11 +2778,17 @@ export function mount(root, defs) {
     const condBlocks = blocks.filter((b) => ['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(b.blockType));
     const condBlock = condBlocks.find((b) => b.id === wodTimer.blockId) || condBlocks[0] || null;
     const condExCount = condBlock ? new Set((condBlock.sets || []).map((s) => s.exerciseId)).size : 0;
-    if (condBlock && (wodTimer.blockId !== condBlock.id || wodTimer.config?.mode !== condBlock.blockType || (wodTimer.config?.movements?.length || 0) !== condExCount)) {
+    const condSetCount = condBlock ? (condBlock.sets || []).filter((s) => s.setType !== 'warmup' && !s.parentSetId).length : 0;
+    if (condBlock && (wodTimer.blockId !== condBlock.id || wodTimer.config?.mode !== condBlock.blockType || (wodTimer.config?.movements?.length || 0) !== condExCount || (wodTimer.config?.setCount || 0) !== condSetCount)) {
       const mvLabels = [];
       const stations = [];
+      const byExSets = new Map();
       const seenMv = new Set();
       for (const st of condBlock.sets) {
+        if (st.setType !== 'warmup' && !st.parentSetId) {
+          if (!byExSets.has(st.exerciseId)) byExSets.set(st.exerciseId, []);
+          byExSets.get(st.exerciseId).push(st);
+        }
         if (!seenMv.has(st.exerciseId)) {
           seenMv.add(st.exerciseId);
           const repTxt = st.reps ? `${st.reps} ` : (st.durationSec ? `${st.durationSec}s ` : '');
@@ -2795,14 +2802,31 @@ export function mount(root, defs) {
           }
         }
       }
+      const roundLabels = [];
+      const exLists = [...byExSets.values()];
+      const maxExLen = exLists.length ? Math.max(...exLists.map((a) => a.length)) : 0;
+      for (let r = 0; r < maxExLen; r += 1) {
+        for (const list of exLists) {
+          const st = list[r];
+          if (st) {
+            const repTxt = st.reps ? `${st.reps} ` : (st.durationSec ? `${st.durationSec}s ` : '');
+            roundLabels.push(`${repTxt}${st.exerciseName}`);
+          }
+        }
+      }
+      const defaultRounds = condBlock.blockType === 'emom'
+        ? (condBlock.roundsTarget || roundLabels.length || 10)
+        : condBlock.roundsTarget;
       wodTimer = {
         blockId: condBlock.id,
         config: {
           mode: condBlock.blockType,
-          rounds: condBlock.roundsTarget,
+          rounds: defaultRounds,
           intervalSec: 60,
           timeCapSec: condBlock.timeCapSec,
           movements: mvLabels,
+          roundLabels,
+          setCount: condSetCount,
           stations
         },
         running: false,
@@ -3363,7 +3387,7 @@ export function mount(root, defs) {
 
           const exCardsHtml = blockExercises.map((ex, eIdx) => {
             const exObj = defs.exercises.find((e) => e.id === ex.id);
-            const cat = (exObj?.primaryMuscles || []).slice(0, 2).join(', ') || typeLabel;
+            const cat = (exObj?.primaryMuscles || []).slice(0, 2).join(', ') || (isGrouped && blockExercises.length > 1 ? '' : typeLabel);
             const exSets = blk.sets.filter((s) => s.exerciseId === ex.id);
             const setLinesHtml = exSets.map((st, idx) => {
               const isTime = st.trackingType === 'time';
@@ -3404,7 +3428,7 @@ export function mount(root, defs) {
                 <div class="logger-overview-head">
                   <div>
                     <strong>${esc(ex.name)}</strong>
-                    <span class="note" style="margin-left:6px;">${esc(cat)}</span>
+                    ${cat ? `<span class="note" style="margin-left:6px;">${esc(cat)}</span>` : ''}
                   </div>
                   <span class="note">Track →</span>
                 </div>
@@ -3762,7 +3786,9 @@ export function mount(root, defs) {
       }
       const blkTypeSel = e.target.closest('[data-logger-block-type]');
       if (blkTypeSel) {
-        updateBlockType(appDb, blkTypeSel.dataset.loggerBlockType, blkTypeSel.value);
+        const bId = blkTypeSel.dataset.loggerBlockType;
+        updateBlockType(appDb, bId, blkTypeSel.value);
+        balanceGroupSets(appDb, activeLoggerSessionId, bId);
         await savePersistedAppDb(appDb);
         await renderActiveLogger();
         return;
@@ -3941,6 +3967,7 @@ export function mount(root, defs) {
               if (curBlk && curBlk.blockType === 'straight') {
                 updateBlockType(dbInst, targetBlockId, 'superset');
               }
+              balanceGroupSets(dbInst, activeLoggerSessionId, targetBlockId);
             }
             loggerStatusMsg = targetBlockId ? `Added ${match.name} to group.` : `Added ${match.name}.`;
             await savePersistedAppDb(dbInst);
@@ -4148,6 +4175,7 @@ export function mount(root, defs) {
             onSelect: async (match) => {
               const dbInst = await ensureAppDb();
               addExerciseToWorkout(dbInst, activeLoggerSessionId, match.id, { blockId: loggerPairBlockId });
+              if (loggerPairBlockId) balanceGroupSets(dbInst, activeLoggerSessionId, loggerPairBlockId);
               loggerPairBlockId = null;
               loggerStatusMsg = `Added ${match.name}.`;
               await savePersistedAppDb(dbInst);
