@@ -548,7 +548,7 @@ export function moveExerciseInBlock(appDb, sessionId, blockId, exerciseId, direc
 /**
  * Merge `sourceBlockId` into `targetBlockId` as a superset / giant set.
  */
-export function linkBlocksIntoSuperset(appDb, sessionId, sourceBlockId, targetBlockId) {
+export function linkBlocksIntoSuperset(appDb, sessionId, sourceBlockId, targetBlockId, blockType = 'superset') {
   if (!sourceBlockId || !targetBlockId || sourceBlockId === targetBlockId) return false;
   const maxOrder = Number(
     appDb.exec('SELECT COALESCE(MAX(order_index), -1) FROM logged_sets WHERE block_id = ?', [targetBlockId])[0]?.values?.[0]?.[0] ?? -1
@@ -560,10 +560,20 @@ export function linkBlocksIntoSuperset(appDb, sessionId, sourceBlockId, targetBl
   srcSets.forEach(([sid], i) => {
     appDb.run('UPDATE logged_sets SET block_id = ?, order_index = ? WHERE id = ?', [targetBlockId, maxOrder + 1 + i, sid]);
   });
-  appDb.run(`UPDATE workout_blocks SET block_type = 'superset' WHERE id = ? AND block_type = 'straight'`, [targetBlockId]);
+  const nextType = blockType || 'superset';
+  appDb.run(`UPDATE workout_blocks SET block_type = ? WHERE id = ?`, [nextType, targetBlockId]);
   appDb.run('DELETE FROM workout_blocks WHERE id = ?', [sourceBlockId]);
   reindexSessionBlocks(appDb, sessionId);
   reindexSessionSets(appDb, sessionId);
+  return true;
+}
+
+/**
+ * Update a workout block's type (e.g. superset, circuit, emom, amrap, for_time, tabata).
+ */
+export function updateBlockType(appDb, blockId, blockType) {
+  if (!blockId || !blockType) return false;
+  appDb.run('UPDATE workout_blocks SET block_type = ? WHERE id = ?', [blockType, blockId]);
   return true;
 }
 

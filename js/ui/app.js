@@ -96,6 +96,7 @@ import {
   deleteSet,
   updateSessionMeta,
   updateBlockTitle,
+  updateBlockType,
   swapExerciseInBlock,
   deleteWorkoutSession,
   moveWorkoutBlock,
@@ -413,11 +414,6 @@ export function mount(root, defs) {
       </div>
 
       <div class="app-actions">
-        <div id="top-ex-tools" class="logger-top-tools" hidden>
-          <button type="button" id="top-timer-toggle-btn" class="ghost logger-mini-btn" title="Toggle timer" aria-label="Toggle timer">⏱️</button>
-          <button type="button" id="top-history-btn" class="ghost logger-mini-btn" title="Exercise history" aria-label="Exercise history">📈</button>
-          <button type="button" id="top-more-btn" class="ghost logger-mini-btn" title="Exercise tools" aria-label="Exercise tools">⋮</button>
-        </div>
         <div id="top-timer-bar" class="app-timer-bar" hidden>
           <div class="logger-timer-row">
             <span class="app-timer-elapsed">⏱️ <strong id="logger-elapsed-clock">00:00</strong></span>
@@ -432,6 +428,11 @@ export function mount(root, defs) {
             <button type="button" id="rest-toggle-btn" class="ghost logger-mini-btn">Pause</button>
             <button type="button" id="rest-skip-btn" class="ghost logger-mini-btn">Skip</button>
           </div>
+        </div>
+        <div id="top-ex-tools" class="logger-top-tools" hidden>
+          <button type="button" id="top-timer-toggle-btn" class="ghost logger-mini-btn" title="Toggle timer" aria-label="Toggle timer">⏱️</button>
+          <button type="button" id="top-history-btn" class="ghost logger-mini-btn" title="Exercise history" aria-label="Exercise history">📈</button>
+          <button type="button" id="top-more-btn" class="ghost logger-mini-btn" title="Exercise tools" aria-label="Exercise tools">⋮</button>
         </div>
         ${import.meta.env.DEV ? `
           <label class="preview-control">Preview
@@ -2284,6 +2285,8 @@ export function mount(root, defs) {
   let loggerFocusSetId = null;
   let loggerTimerDrawerOpen = false;
   let openLoggerMoreModal = null;
+  let loggerGroupSelection = new Set();
+  let loggerSelectedGroupType = 'superset';
   let loggerStatusMsg = '';
   let loggerPairBlockId = null;
 
@@ -3375,9 +3378,12 @@ export function mount(root, defs) {
                   <button type="button" class="ghost logger-mini-btn" data-logger-ex-down="${esc(blk.id)}::${esc(ex.id)}" ${eIdx === blockExercises.length - 1 ? 'disabled' : ''}>↓</button>
                   <button type="button" class="ghost logger-mini-btn" data-logger-unlink="${esc(blk.id)}::${esc(ex.id)}" title="Split out into standalone exercise">Unlink</button>
                 ` : `
+                  <label class="logger-group-select-lbl" title="Select to group">
+                    <input type="checkbox" class="logger-group-cb" data-group-block-id="${esc(blk.id)}" ${loggerGroupSelection.has(blk.id) ? 'checked' : ''} />
+                    <span>Select</span>
+                  </label>
                   <button type="button" class="ghost logger-mini-btn" data-logger-blk-up="${esc(blk.id)}" ${bIdx === 0 ? 'disabled' : ''}>↑</button>
                   <button type="button" class="ghost logger-mini-btn" data-logger-blk-down="${esc(blk.id)}" ${bIdx === blocks.length - 1 ? 'disabled' : ''}>↓</button>
-                  ${bIdx > 0 ? `<button type="button" class="ghost logger-mini-btn" data-logger-link-prev="${esc(blk.id)}::${esc(blocks[bIdx - 1].id)}" title="Group into superset / giant set with above">🔗 Link w/ Above</button>` : ''}
                 `}
               </div>` : '';
 
@@ -3403,9 +3409,21 @@ export function mount(root, defs) {
             const colorIdx = ssGroupIdx % 16;
             ssGroupIdx += 1;
             const groupOrderBtns = loggerEditOrder ? `
+              <label class="logger-group-select-lbl" title="Select to merge with another block">
+                <input type="checkbox" class="logger-group-cb" data-group-block-id="${esc(blk.id)}" ${loggerGroupSelection.has(blk.id) ? 'checked' : ''} />
+              </label>
+              <select class="logger-group-type-inline" data-logger-block-type="${esc(blk.id)}" aria-label="Group type">
+                ${[
+                  ['superset', blockExercises.length >= 3 ? 'Giant Set' : 'Superset'],
+                  ['circuit', 'Circuit'],
+                  ['emom', 'EMOM'],
+                  ['amrap', 'AMRAP'],
+                  ['for_time', 'For Time'],
+                  ['tabata', 'Tabata']
+                ].map(([val, lbl]) => `<option value="${val}"${blk.blockType === val ? ' selected' : ''}>${lbl}</option>`).join('')}
+              </select>
               <button type="button" class="ghost logger-mini-btn" data-logger-blk-up="${esc(blk.id)}" ${bIdx === 0 ? 'disabled' : ''}>↑</button>
               <button type="button" class="ghost logger-mini-btn" data-logger-blk-down="${esc(blk.id)}" ${bIdx === blocks.length - 1 ? 'disabled' : ''}>↓</button>
-              ${bIdx > 0 ? `<button type="button" class="ghost logger-mini-btn" data-logger-link-prev="${esc(blk.id)}::${esc(blocks[bIdx - 1].id)}">🔗 Link w/ Above</button>` : ''}
             ` : '';
             return `
               <article class="logger-superset-group" data-ss-color="${colorIdx}">
@@ -3463,27 +3481,31 @@ export function mount(root, defs) {
             </details>
           </div>
           <div class="logger-head-actions">
+            <button type="button" id="logger-open-add-ex-btn" class="primary">+ Add Exercise</button>
             <button type="button" id="logger-edit-order-btn" class="${loggerEditOrder ? 'primary' : 'ghost'}">${loggerEditOrder ? '✓ Done Editing' : '⇅ Reorder / Group'}</button>
             <button type="button" id="logger-save-tmpl-btn" class="ghost">Save Template</button>
             ${primaryActionBtn}
           </div>
         </div>
+        ${loggerEditOrder ? `
+          <div class="logger-group-toolbar">
+            <span class="note">${loggerGroupSelection.size} selected</span>
+            <select id="logger-group-type-select" aria-label="Group type">
+              <option value="superset"${loggerSelectedGroupType === 'superset' ? ' selected' : ''}>Superset / Giant Set</option>
+              <option value="circuit"${loggerSelectedGroupType === 'circuit' ? ' selected' : ''}>Circuit</option>
+              <option value="emom"${loggerSelectedGroupType === 'emom' ? ' selected' : ''}>EMOM</option>
+              <option value="amrap"${loggerSelectedGroupType === 'amrap' ? ' selected' : ''}>AMRAP</option>
+              <option value="for_time"${loggerSelectedGroupType === 'for_time' ? ' selected' : ''}>For Time</option>
+              <option value="tabata"${loggerSelectedGroupType === 'tabata' ? ' selected' : ''}>Tabata</option>
+            </select>
+            <button type="button" id="logger-group-selected-btn" class="primary logger-mini-btn"${loggerGroupSelection.size < 2 ? ' disabled' : ''}>🔗 Group Selected</button>
+            <button type="button" id="logger-clear-group-sel-btn" class="ghost logger-mini-btn"${loggerGroupSelection.size === 0 ? ' disabled' : ''}>Clear</button>
+          </div>
+        ` : ''}
         ${loggerStatusMsg ? `<p class="note" style="color:var(--accent); font-weight:600; margin:6px 0 0;">${esc(loggerStatusMsg)}</p>` : ''}
       </div>
 
       <div class="logger-overview-list">${blocksHtml}</div>
-
-      <div class="card logger-add-ex-card">
-        <h3>${loggerPairBlockId ? 'Pair Superset Exercise into Block' : 'Add Exercise to Workout'}</h3>
-        <div class="logger-add-ex-row">
-          <input type="text" id="logger-ex-search" list="logger-ex-datalist" placeholder="Type exercise name (e.g. Back Squat)…" autocomplete="off" />
-          <datalist id="logger-ex-datalist">
-            ${defs.exercises.map((e) => `<option value="${esc(e.name)}"></option>`).join('')}
-          </datalist>
-          <button type="button" id="logger-add-ex-btn" class="primary">${loggerPairBlockId ? '+ Pair Exercise' : '+ Add Exercise'}</button>
-          ${loggerPairBlockId ? '<button type="button" id="logger-cancel-pair-btn" class="ghost">Cancel Pair</button>' : ''}
-        </div>
-      </div>
 
       <div class="logger-overview-footer">
         <div class="logger-footer-meta">
@@ -3704,6 +3726,26 @@ export function mount(root, defs) {
         return;
       }
 
+      if (e.target.id === 'logger-group-type-select') {
+        loggerSelectedGroupType = e.target.value || 'superset';
+        return;
+      }
+      const blkTypeSel = e.target.closest('[data-logger-block-type]');
+      if (blkTypeSel) {
+        updateBlockType(appDb, blkTypeSel.dataset.loggerBlockType, blkTypeSel.value);
+        await savePersistedAppDb(appDb);
+        await renderActiveLogger();
+        return;
+      }
+      const groupCb = e.target.closest('.logger-group-cb');
+      if (groupCb) {
+        const bId = groupCb.dataset.groupBlockId;
+        if (groupCb.checked) loggerGroupSelection.add(bId);
+        else loggerGroupSelection.delete(bId);
+        await renderActiveLogger();
+        return;
+      }
+
       if (e.target.id === 'logger-ex-rest-in') {
         const bId = e.target.dataset.exRestBlock;
         const xId = e.target.dataset.exRestEx;
@@ -3815,7 +3857,66 @@ export function mount(root, defs) {
       }
       if (e.target.closest('#logger-edit-order-btn')) {
         loggerEditOrder = !loggerEditOrder;
+        if (!loggerEditOrder) loggerGroupSelection.clear();
         await renderActiveLogger();
+        return;
+      }
+      if (e.target.closest('#logger-clear-group-sel-btn')) {
+        loggerGroupSelection.clear();
+        await renderActiveLogger();
+        return;
+      }
+      if (e.target.closest('#logger-group-selected-btn')) {
+        const active = loadActiveWorkout(appDb, activeLoggerSessionId);
+        const selectedBlocks = (active?.blocks || []).filter((b) => loggerGroupSelection.has(b.id));
+        if (selectedBlocks.length >= 2) {
+          const targetBlk = selectedBlocks[0];
+          for (let i = 1; i < selectedBlocks.length; i += 1) {
+            linkBlocksIntoSuperset(appDb, activeLoggerSessionId, selectedBlocks[i].id, targetBlk.id, loggerSelectedGroupType);
+          }
+          if (selectedBlocks.length === 1) {
+            updateBlockType(appDb, targetBlk.id, loggerSelectedGroupType);
+          }
+          loggerGroupSelection.clear();
+          loggerStatusMsg = `Grouped ${selectedBlocks.length} blocks as ${blockLabel(loggerSelectedGroupType)}.`;
+          await savePersistedAppDb(appDb);
+          await renderActiveLogger();
+        }
+        return;
+      }
+      if (e.target.closest('#logger-open-add-ex-btn')) {
+        const active = loadActiveWorkout(appDb, activeLoggerSessionId);
+        const existingBlocks = active?.blocks || [];
+        const groupOptions = existingBlocks.map((b) => {
+          const names = [...new Set((b.sets || []).map((s) => s.exerciseName))];
+          const lbl = b.title || (names.length > 1 ? `${blockLabel(b.blockType)} (${names.join(' + ')})` : (names[0] || blockLabel(b.blockType)));
+          return `<option value="${esc(b.id)}">Add to: ${esc(lbl)}</option>`;
+        }).join('');
+        const extraHtml = existingBlocks.length ? `
+          <label class="note logger-add-target-wrap">Add as
+            <select id="ex-picker-target-group">
+              <option value="">New standalone exercise</option>
+              ${groupOptions}
+            </select>
+          </label>` : '';
+        openExercisePickerModal({
+          title: 'Add Exercise to Workout',
+          extraHtml,
+          onSelect: async (match, backdrop) => {
+            const dbInst = await ensureAppDb();
+            const targetBlockId = backdrop?.querySelector('#ex-picker-target-group')?.value || null;
+            addExerciseToWorkout(dbInst, activeLoggerSessionId, match.id, { blockId: targetBlockId });
+            if (targetBlockId) {
+              const curBlk = loadActiveWorkout(dbInst, activeLoggerSessionId)?.blocks.find((b) => b.id === targetBlockId);
+              if (curBlk && curBlk.blockType === 'straight') {
+                updateBlockType(dbInst, targetBlockId, 'superset');
+              }
+            }
+            loggerStatusMsg = targetBlockId ? `Added ${match.name} to group.` : `Added ${match.name}.`;
+            await savePersistedAppDb(dbInst);
+            await renderActiveLogger();
+          }
+        });
         return;
       }
       const renameBlkBtn = e.target.closest('[data-logger-rename-block]');
@@ -3912,7 +4013,7 @@ export function mount(root, defs) {
         await renderActiveLogger();
         return;
       }
-      const selectExBtn = !e.target.closest('.logger-edit-controls')
+      const selectExBtn = !e.target.closest('.logger-edit-controls, .logger-group-select-lbl, .logger-group-type-inline')
         ? e.target.closest('[data-logger-select-ex]')
         : null;
       if (selectExBtn) {
@@ -5180,7 +5281,7 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
   // -- an empty panel under a heading, which reads as a broken build (#8).
   currentDefs = currentDefs ?? defs;
 
-  function openExercisePickerModal({ title = 'Select Exercise', initialQuery = '', filterFn = null, filterLabel = '', onSelect, onCancel } = {}) {
+  function openExercisePickerModal({ title = 'Select Exercise', initialQuery = '', filterFn = null, filterLabel = '', extraHtml = '', onSelect, onCancel } = {}) {
     document.querySelector('.ex-picker-backdrop')?.remove();
     const backdrop = document.createElement('div');
     backdrop.className = 'ex-picker-backdrop';
@@ -5190,6 +5291,7 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
           <strong>${esc(title)}</strong>
           <button type="button" class="ghost logger-mini-btn ex-picker-close" aria-label="Close">✕</button>
         </div>
+        ${extraHtml}
         <input type="search" class="ex-picker-input" placeholder="Search by name, muscle, or equipment…" value="${esc(initialQuery)}" autocomplete="off" />
         ${filterFn ? `
           <label class="note" style="display:inline-flex; flex-direction:row; align-items:center; gap:6px; cursor:pointer;">
@@ -5259,7 +5361,7 @@ function resolveStagedExercise(item, defs, defaultSets = 1, defaultLoadNote = ''
       if (pick) {
         const ex = defs.exercises.find((x) => x.id === pick.dataset.pickEx);
         backdrop.remove();
-        if (ex && onSelect) onSelect(ex);
+        if (ex && onSelect) onSelect(ex, backdrop);
       }
     });
 

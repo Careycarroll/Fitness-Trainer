@@ -2635,8 +2635,16 @@ button[disabled] {
 .logger-top-tools {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   flex-shrink: 0;
+}
+
+.logger-top-tools .logger-mini-btn {
+  min-width: 38px;
+  min-height: 38px;
+  padding: 6px 8px !important;
+  font-size: 1.15rem !important;
+  line-height: 1;
 }
 
 .logger-top-tools .logger-mini-btn.active {
@@ -2676,6 +2684,45 @@ button[disabled] {
   justify-content: flex-start;
   text-align: left;
   width: 100%;
+}
+
+.logger-group-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface-raised));
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--border));
+}
+
+.logger-group-toolbar select,
+.logger-group-type-inline,
+.logger-add-target-wrap select {
+  width: auto !important;
+  min-height: 32px !important;
+  padding: 4px 26px 4px 8px !important;
+  font-size: 0.82rem !important;
+}
+
+.logger-group-select-lbl {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.logger-add-target-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .ex-picker-backdrop {
