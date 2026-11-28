@@ -2632,6 +2632,52 @@ button[disabled] {
   text-overflow: ellipsis;
 }
 
+.logger-top-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.logger-top-tools .logger-mini-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.logger-sub-back-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.logger-more-modal {
+  width: min(360px, 100%);
+}
+
+.logger-more-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+}
+
+.logger-more-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.logger-more-actions button {
+  justify-content: flex-start;
+  text-align: left;
+  width: 100%;
+}
+
 .ex-picker-backdrop {
   position: fixed;
   inset: 0;

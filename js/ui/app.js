@@ -413,6 +413,11 @@ export function mount(root, defs) {
       </div>
 
       <div class="app-actions">
+        <div id="top-ex-tools" class="logger-top-tools" hidden>
+          <button type="button" id="top-timer-toggle-btn" class="ghost logger-mini-btn" title="Toggle timer" aria-label="Toggle timer">⏱️</button>
+          <button type="button" id="top-history-btn" class="ghost logger-mini-btn" title="Exercise history" aria-label="Exercise history">📈</button>
+          <button type="button" id="top-more-btn" class="ghost logger-mini-btn" title="Exercise tools" aria-label="Exercise tools">⋮</button>
+        </div>
         <div id="top-timer-bar" class="app-timer-bar" hidden>
           <div class="logger-timer-row">
             <span class="app-timer-elapsed">⏱️ <strong id="logger-elapsed-clock">00:00</strong></span>
@@ -1040,6 +1045,10 @@ export function mount(root, defs) {
   const appBar = root.querySelector('.app-bar');
   const topExerciseType = root.querySelector('#top-exercise-type');
   const topInfoBtn = root.querySelector('#top-info-btn');
+  const topExTools = root.querySelector('#top-ex-tools');
+  const topTimerToggleBtn = root.querySelector('#top-timer-toggle-btn');
+  const topHistoryBtn = root.querySelector('#top-history-btn');
+  const topMoreBtn = root.querySelector('#top-more-btn');
   const topTimerBar = root.querySelector('#top-timer-bar');
   const wodForm = root.querySelector('#wod-form');
   const wodOut = root.querySelector('#wod-out');
@@ -1109,6 +1118,25 @@ export function mount(root, defs) {
     topInfoBtn.addEventListener('click', () => {
       activeLoggerSubTab = 'info';
       renderActiveLogger();
+    });
+  }
+  if (topTimerToggleBtn) {
+    topTimerToggleBtn.addEventListener('click', () => {
+      loggerTimerDrawerOpen = !loggerTimerDrawerOpen;
+      const show = loggerTimerDrawerOpen || restTimer.active;
+      if (topTimerBar) topTimerBar.hidden = !show;
+      topTimerToggleBtn.classList.toggle('active', show);
+    });
+  }
+  if (topHistoryBtn) {
+    topHistoryBtn.addEventListener('click', () => {
+      activeLoggerSubTab = activeLoggerSubTab === 'history' ? 'track' : 'history';
+      renderActiveLogger();
+    });
+  }
+  if (topMoreBtn) {
+    topMoreBtn.addEventListener('click', () => {
+      if (typeof openLoggerMoreModal === 'function') openLoggerMoreModal();
     });
   }
   if (topTimerBar) {
@@ -1239,8 +1267,13 @@ export function mount(root, defs) {
     if (topExerciseType) topExerciseType.hidden = true;
     appBar?.removeAttribute('data-ss-color');
     if (tabName !== 'logger') appBar?.removeAttribute('data-ss-color');
-    if (topInfoBtn) topInfoBtn.hidden = !(tabName === 'logger' && activeLoggerExercise);
-    if (topTimerBar) topTimerBar.hidden = !(tabName === 'logger' && activeLoggerSessionId);
+    if (topInfoBtn) topInfoBtn.hidden = true;
+    if (topExTools) topExTools.hidden = true;
+    if (topTimerBar) topTimerBar.hidden = activeTab !== 'logger';
+    if (topExTools) topExTools.hidden = !(tabName === 'logger' && activeLoggerExercise);
+    if (topTimerBar) {
+      topTimerBar.hidden = !(tabName === 'logger' && activeLoggerSessionId && (!activeLoggerExercise || loggerTimerDrawerOpen || restTimer.active));
+    }
     navTabs.forEach((t) => {
       const isSelected = t.dataset.tab === tabName;
       t.classList.toggle('selected', isSelected);
@@ -2249,6 +2282,8 @@ export function mount(root, defs) {
   let activeLoggerSubTab = 'track'; // 'track' | 'history' | 'info'
   let loggerEditOrder = false;
   let loggerFocusSetId = null;
+  let loggerTimerDrawerOpen = false;
+  let openLoggerMoreModal = null;
   let loggerStatusMsg = '';
   let loggerPairBlockId = null;
 
@@ -3060,11 +3095,6 @@ export function mount(root, defs) {
                 </label>
               </div>
             </div>
-            ${bestEstKg > 0 ? `
-              <span class="note" title="Estimated 1RM using Epley formula — estimate only">
-                📈 Est. 1RM: <strong>~${esc(String(kgToDisplay(liveEst1RmKg || bestEstKg, unit)))} ${esc(unit)}</strong>${bestPrior.bestEst1RmKg > 0 ? ` · Best: ~${esc(String(kgToDisplay(bestPrior.bestEst1RmKg, unit)))} ${esc(unit)}` : ''}
-              </span>` : ''}
-            ${pctChipsHtml}
           </div>`;
         const eqDefaults = getEquipmentLoadDefaults();
         const weightStep = Number(eqDefaults.plateIncrement) > 0 ? Number(eqDefaults.plateIncrement) : (unit === 'kg' ? 2.5 : 5);
@@ -3142,13 +3172,40 @@ export function mount(root, defs) {
           ${setsTableHtml}
           <div class="logger-block-actions" style="margin-top:10px;">
             <button type="button" class="primary logger-mini-btn" data-logger-add-set="${esc(blk.id)}" data-ex-id="${esc(exId)}">+ Add Set</button>
-            ${isWeightReps ? `<button type="button" class="ghost logger-mini-btn" data-logger-add-warmups="${esc(blk.id)}" data-ex-id="${esc(exId)}" title="Insert ramped warm-up sets">+ Warm-ups</button>` : ''}
-            ${isWeightReps ? `<button type="button" class="ghost logger-mini-btn" data-logger-plates="${esc(String(defaultPlateTarget))}" data-logger-bar="${esc(String(defaultBarWt))}" title="Open visual barbell plate calculator">🏋️ Plates</button>` : ''}
-            <button type="button" class="ghost logger-mini-btn" data-logger-swap-ex="${esc(blk.id)}::${esc(exId)}" title="Swap exercise for an available alternative">⇄ Swap</button>
             ${partnerChipsHtml}
-            ${(blk?.blockType === 'straight' || blk?.blockType === 'superset') && loggerPairBlockId !== blk?.id ? `<button type="button" class="ghost logger-mini-btn" data-logger-pair-block="${esc(blk.id)}">${blk?.blockType === 'superset' ? '+ Add to Giant Set' : '+ Pair Superset'}</button>` : ''}
           </div>
           ${pairBoxHtml}`;
+        openLoggerMoreModal = () => {
+          viewLogger.querySelector('#logger-more-backdrop')?.remove();
+          const el = document.createElement('div');
+          el.id = 'logger-more-backdrop';
+          el.className = 'ex-picker-backdrop';
+          el.innerHTML = `
+            <div class="card ex-picker-modal logger-more-modal" role="dialog" aria-modal="true" aria-label="Exercise tools">
+              <div class="ex-picker-head">
+                <strong>${esc(exName)}</strong>
+                <button type="button" class="ghost logger-mini-btn" data-more-close="1" aria-label="Close">✕</button>
+              </div>
+              ${bestEstKg > 0 ? `
+                <div class="logger-more-section">
+                  <span class="note">📈 Est. 1RM: <strong>~${esc(String(kgToDisplay(liveEst1RmKg || bestEstKg, unit)))} ${esc(unit)}</strong>${bestPrior.bestEst1RmKg > 0 ? ` · All-time: ~${esc(String(kgToDisplay(bestPrior.bestEst1RmKg, unit)))} ${esc(unit)}` : ''}</span>
+                  ${pctChipsHtml}
+                </div>` : ''}
+              <div class="logger-more-actions">
+                ${isWeightReps ? `<button type="button" class="ghost" data-more-close="1" data-logger-plates="${esc(String(defaultPlateTarget))}" data-logger-bar="${esc(String(defaultBarWt))}">🏋️ Plate Calculator</button>` : ''}
+                <button type="button" class="ghost" data-more-close="1" data-logger-subtab="info">ⓘ Info &amp; Form</button>
+                ${isWeightReps ? `<button type="button" class="ghost" data-more-close="1" data-logger-add-warmups="${esc(blk.id)}" data-ex-id="${esc(exId)}">+ Warm-up Sets</button>` : ''}
+                <button type="button" class="ghost" data-more-close="1" data-logger-swap-ex="${esc(blk.id)}::${esc(exId)}">⇄ Swap Exercise</button>
+                ${(blk?.blockType === 'straight' || blk?.blockType === 'superset') && loggerPairBlockId !== blk?.id ? `<button type="button" class="ghost" data-more-close="1" data-logger-pair-block="${esc(blk.id)}">${blk?.blockType === 'superset' ? '+ Add to Giant Set' : '+ Pair Superset'}</button>` : ''}
+              </div>
+            </div>`;
+          el.addEventListener('click', (ev) => {
+            if (ev.target === el || ev.target.closest('[data-more-close]') || ev.target.closest('[data-logger-pct-wt]')) {
+              el.remove();
+            }
+          });
+          viewLogger.appendChild(el);
+        };
       } else if (activeLoggerSubTab === 'history') {
         const histRes = appDb.exec(
           `SELECT ws.date, ls.weight_kg, ls.reps, ls.duration_sec, ls.rir, ls.is_pr, ls.notes
@@ -3229,20 +3286,24 @@ export function mount(root, defs) {
         }
       }
       if (topInfoBtn) topInfoBtn.hidden = true;
+    if (topExTools) topExTools.hidden = true;
+    if (topTimerBar) topTimerBar.hidden = activeTab !== 'logger';
+      if (topExTools) topExTools.hidden = activeTab !== 'logger';
+      if (topHistoryBtn) topHistoryBtn.classList.toggle('active', activeLoggerSubTab === 'history');
+      if (topTimerBar) topTimerBar.hidden = activeTab !== 'logger' || !(loggerTimerDrawerOpen || restTimer.active);
+      if (topTimerToggleBtn) topTimerToggleBtn.classList.toggle('active', loggerTimerDrawerOpen || restTimer.active);
       if (topTitleEditBtn) topTitleEditBtn.hidden = true;
       if (topTitleInput) topTitleInput.hidden = true;
       if (navCurrentLabel) {
         navCurrentLabel.hidden = false;
         navCurrentLabel.classList.remove('is-editable');
       }
+      const subBackBar = activeLoggerSubTab !== 'track'
+        ? `<div class="logger-sub-back-row"><button type="button" class="ghost logger-mini-btn" data-logger-subtab="track">← Back to Track</button><strong class="note">${activeLoggerSubTab === 'history' ? 'History' : 'Info &amp; Form'}</strong></div>`
+        : '';
       viewLogger.innerHTML = `
         <div class="card logger-sub-card">
-          <div class="logger-sub-tabs">
-            <button type="button" class="logger-sub-tab${activeLoggerSubTab === 'track' ? ' active' : ''}" data-logger-subtab="track">Track</button>
-            <button type="button" class="logger-sub-tab${activeLoggerSubTab === 'history' ? ' active' : ''}" data-logger-subtab="history">History</button>
-            <button type="button" class="logger-sub-tab${activeLoggerSubTab === 'info' ? ' active' : ''}" data-logger-subtab="info">Info &amp; Form</button>
-          </div>
-          <div class="logger-sub-body">${subBodyHtml}</div>
+          <div class="logger-sub-body">${subBackBar}${subBodyHtml}</div>
         </div>`;
 
       if (activeLoggerSubTab === 'info') {
@@ -3382,6 +3443,8 @@ export function mount(root, defs) {
     if (topExerciseType) topExerciseType.hidden = true;
     appBar?.removeAttribute('data-ss-color');
     if (topInfoBtn) topInfoBtn.hidden = true;
+    if (topExTools) topExTools.hidden = true;
+    if (topTimerBar) topTimerBar.hidden = activeTab !== 'logger';
     const startTimeLabel = session.startedAt
       ? new Date(session.startedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       : null;
