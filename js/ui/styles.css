@@ -2,15 +2,15 @@
 :root {
   color-scheme: dark;
   --bg: #12161c;
-  --surface: #1a212a;
-  --surface-raised: #202936;
+  --surface: #1e2632;
+  --surface-raised: #273140;
   --text: #e6edf3;
   --muted: #9aa7b4;
   --accent: #4c9aff;
   --accent-ink: #08121f;
   --warn: #f0b429;
   --error: #ff6b6b;
-  --border: #2a3340;
+  --border: #364354;
   --radius: 10px;
   --gap: 12px;
   --shadow: 0 12px 32px rgb(0 0 0 / 18%);
@@ -2168,6 +2168,9 @@ button[disabled] {
 }
 
 .logger-modifier-bar {
+  position: sticky;
+  top: 56px;
+  z-index: 20;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -2175,8 +2178,30 @@ button[disabled] {
   padding: 6px 8px;
   margin-bottom: 8px;
   border-radius: var(--radius);
-  background: color-mix(in srgb, var(--accent) 10%, var(--surface-raised));
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface-raised));
   border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--border));
+  backdrop-filter: blur(8px);
+}
+
+button,
+.logger-compact-row,
+.logger-overview-card {
+  touch-action: manipulation;
+}
+
+button:active,
+.logger-overview-card:active {
+  transform: scale(0.985);
+}
+
+@media (max-width: 600px) {
+  .app-shell {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .logger-sub-card {
+    padding: 12px 10px;
+  }
 }
 
 .logger-mod-group {
