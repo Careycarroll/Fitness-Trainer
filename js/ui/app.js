@@ -2890,6 +2890,50 @@ export function mount(root, defs) {
         </div>`;
     };
 
+    const buildCompactSetRowHtml = (st, idxNum, blk, isFocused, prevSt = null) => {
+      const isDrop = st.setType === 'drop' && st.parentSetId;
+      const badge = isDrop ? `D${st.dropIndex ?? ''}` : (st.setType === 'warmup' ? 'W' : `S${idxNum}`);
+      const isBw = st.trackingType === 'bodyweight_reps';
+      const isTime = st.trackingType === 'time';
+      const weightVal = kgToDisplay(st.weightKg, unit);
+      const focusedCls = isFocused ? ' logger-set-focused' : '';
+      const completedCls = st.isComplete ? ' logger-set-done' : '';
+      const exObj = defs.exercises.find((e) => e.id === st.exerciseId);
+      const eqDefaults = getEquipmentLoadDefaults();
+      let plateHintHtml = '';
+      if (!isTime && weightVal && isPlateLoaded(exObj)) {
+        const barWt = barWeightFor(exObj, { unit, barWeights: eqDefaults.barWeights });
+        const pm = computePlateLoad(weightVal, { barWeight: barWt, plates: eqDefaults.plates, unit });
+        plateHintHtml = pm.achievable
+          ? (pm.perSide.length
+              ? `<button type="button" class="ghost logger-plate-btn" data-logger-plates="${esc(String(weightVal))}" data-logger-bar="${esc(String(barWt))}" title="Open visual plate loader">🏋️ ${esc(pm.formatted)} · Bar</button>`
+              : `<span class="note logger-compact-plate-note">🏋️ ${esc(pm.formatted)}</span>`)
+          : `<span class="catalog-warn logger-compact-plate-note">⚠️ ${esc(pm.reason)}</span>`;
+      }
+      const wtPh = prevSt && prevSt.weightKg ? String(kgToDisplay(prevSt.weightKg, unit)) : (isBw ? '0' : '0');
+      const repsPh = prevSt && prevSt.reps != null ? String(prevSt.reps) : '0';
+      const durPh = prevSt && prevSt.durationSec != null ? String(prevSt.durationSec) : '60';
+      return `
+        <div class="logger-compact-row${isDrop ? ' logger-drop-row' : ''}${focusedCls}${completedCls}" data-set-id="${esc(st.id)}" data-block-id="${esc(blk.id)}" data-set-badge="${esc(badge)}" data-set-type="${esc(st.setType || 'working')}" data-tracking-type="${esc(st.trackingType || 'weight_reps')}">
+          <div class="logger-compact-badge-cell">
+            <span class="logger-set-badge">${esc(badge)}</span>
+            ${st.isPr ? '<span title="Personal Record">🏆</span>' : ''}
+          </div>
+          ${!isTime ? `
+            <input type="number" step="0.5" min="0" inputmode="decimal" class="logger-in logger-compact-in" data-set-field="weightKg" data-set-id="${esc(st.id)}" value="${esc(String(weightVal))}" placeholder="${esc(wtPh)}" aria-label="${esc(badge)} weight (${esc(unit)})" />
+            <input type="number" step="1" min="0" inputmode="numeric" class="logger-in logger-compact-in" data-set-field="reps" data-set-id="${esc(st.id)}" value="${st.reps ?? ''}" placeholder="${esc(repsPh)}" aria-label="${esc(badge)} reps" />
+          ` : `
+            <input type="number" step="1" min="0" inputmode="numeric" class="logger-in logger-compact-in" data-set-field="durationSec" data-set-id="${esc(st.id)}" value="${st.durationSec ?? ''}" placeholder="${esc(durPh)}" aria-label="${esc(badge)} seconds" />
+          `}
+          <input type="number" step="0.5" min="0" max="10" inputmode="decimal" class="logger-in logger-compact-in" data-set-field="rir" data-set-id="${esc(st.id)}" value="${st.rir ?? ''}" placeholder="—" aria-label="${esc(badge)} RIR" />
+          <input type="text" class="logger-in logger-compact-in logger-compact-note" data-set-field="notes" data-set-id="${esc(st.id)}" value="${esc(st.notes)}" placeholder="note" aria-label="${esc(badge)} note" />
+          <label class="logger-check-cell" title="Complete set">
+            <input type="checkbox" class="logger-complete-cb" data-set-id="${esc(st.id)}" data-block-id="${esc(blk.id)}" ${st.isComplete ? 'checked' : ''} />
+          </label>
+          ${plateHintHtml ? `<div class="logger-compact-sub">${plateHintHtml}</div>` : ''}
+        </div>`;
+    };
+
     const buildWodPanelHtml = (blk) => {
       const isCond = ['emom', 'amrap', 'for_time', 'circuit', 'tabata'].includes(blk.blockType);
       if (!isCond || wodTimer.blockId !== blk.id) return '';
@@ -2940,23 +2984,19 @@ export function mount(root, defs) {
       const lastPerf = getLastExercisePerformance(appDb, exId, activeLoggerSessionId);
       const bestPrior = getExerciseBestMetrics(appDb, exId, activeLoggerSessionId);
       const lastWorkSets = lastPerf ? lastPerf.sets.filter((s) => s.setType !== 'warmup') : [];
+      const focusedSet = exSets.find((s) => s.id === loggerFocusSetId) || exSets.find((s) => !s.isComplete) || exSets[0] || null;
       let workIdx = 0;
       let workNum = 0;
       const detailSetsHtml = exSets.map((st) => {
         const isDrop = st.setType === 'drop' && st.parentSetId;
         const isWarmup = st.setType === 'warmup';
         if (!isDrop && !isWarmup) workNum += 1;
-        let lastHint = '';
+        let prevSt = null;
         if (!isDrop && !isWarmup) {
-          const prevSt = lastWorkSets[workIdx];
+          prevSt = lastWorkSets[workIdx] || null;
           workIdx += 1;
-          if (prevSt) {
-            lastHint = prevSt.durationSec
-              ? `Last: ${prevSt.durationSec}s`
-              : `Last: ${kgToDisplay(prevSt.weightKg, unit) || 0} ${unit} × ${prevSt.reps ?? 0}`;
-          }
         }
-        return buildSetDetailHtml(st, isWarmup ? 0 : workNum, blk, false, lastHint);
+        return buildCompactSetRowHtml(st, isWarmup ? 0 : workNum, blk, focusedSet?.id === st.id, prevSt);
       }).join('');
 
       let liveEst1RmKg = 0;
@@ -2983,28 +3023,83 @@ export function mount(root, defs) {
         const lastSummaryTxt = lastPerf
           ? lastWorkSets.slice(0, 4).map((s) => (s.durationSec ? `${s.durationSec}s` : `${kgToDisplay(s.weightKg, unit) || 0}×${s.reps ?? 0}`)).join(', ')
           : '';
+        const sharedRestSec = exSets.find((s) => s.setType !== 'warmup')?.restSec ?? exSets[0]?.restSec ?? 90;
         const pctChipsHtml = isWeightReps && ref1RmDisp > 0 ? `
           <div class="logger-pct-row" title="Tap to fill next working set (${known1RmDisp > 0 ? 'Known 1RM' : 'Est. 1RM'})">
-            <span class="note">% of ${known1RmDisp > 0 ? '1RM' : 'Est. 1RM'}:</span>
+            <span class="note">% ${known1RmDisp > 0 ? '1RM' : 'Est.'}:</span>
             ${[65, 70, 75, 80, 85, 90].map((pct) => {
               const w = Math.max(pctInc, Math.round((ref1RmDisp * (pct / 100)) / pctInc) * pctInc);
-              return `<button type="button" class="ghost logger-mini-btn" data-logger-pct-wt="${w}" data-block-id="${esc(blk.id)}" data-ex-id="${esc(exId)}">${pct}% · ${w}</button>`;
+              return `<button type="button" class="ghost logger-mini-btn" data-logger-pct-wt="${w}" data-block-id="${esc(blk.id)}" data-ex-id="${esc(exId)}">${pct}%·${w}</button>`;
             }).join('')}
           </div>` : '';
-        const trackMetaHtml = (lastPerf || bestEstKg > 0 || pctChipsHtml) ? `
+        const trackMetaHtml = `
           <div class="logger-track-meta">
-            ${lastPerf ? `
-              <div class="logger-last-banner">
-                <span class="note"><strong>Last (${esc(lastPerf.date)}):</strong> ${esc(lastSummaryTxt)}${lastWorkSets.length > 4 ? ` (+${lastWorkSets.length - 4})` : ''}</span>
-                <button type="button" class="ghost logger-mini-btn" data-logger-copy-last="${esc(blk.id)}::${esc(exId)}">📋 Copy Last</button>
-              </div>` : ''}
+            <div class="logger-last-banner">
+              ${lastPerf
+                ? `<span class="note logger-last-text"><strong>Last:</strong> ${esc(lastSummaryTxt)}${lastWorkSets.length > 4 ? ` (+${lastWorkSets.length - 4})` : ''}</span>`
+                : `<span class="note logger-last-text">No prior history</span>`}
+              <div class="logger-meta-controls">
+                ${lastPerf ? `<button type="button" class="ghost logger-mini-btn" data-logger-copy-last="${esc(blk.id)}::${esc(exId)}">📋 Copy</button>` : ''}
+                <label class="logger-rest-edit">Rest
+                  <input type="number" min="0" step="5" inputmode="numeric" class="logger-in logger-rest-in" id="logger-ex-rest-in" data-ex-rest-block="${esc(blk.id)}" data-ex-rest-ex="${esc(exId)}" value="${sharedRestSec}" aria-label="Default rest seconds" />s
+                </label>
+              </div>
+            </div>
             ${bestEstKg > 0 ? `
               <span class="note" title="Estimated 1RM using Epley formula — estimate only">
-                📈 Est. 1RM: <strong>~${esc(String(kgToDisplay(liveEst1RmKg || bestEstKg, unit)))} ${esc(unit)}</strong> <em>(estimate)</em>
-                ${bestPrior.bestEst1RmKg > 0 ? ` · All-time est: ~${esc(String(kgToDisplay(bestPrior.bestEst1RmKg, unit)))} ${esc(unit)}` : ''}
+                📈 Est. 1RM: <strong>~${esc(String(kgToDisplay(liveEst1RmKg || bestEstKg, unit)))} ${esc(unit)}</strong>${bestPrior.bestEst1RmKg > 0 ? ` · Best: ~${esc(String(kgToDisplay(bestPrior.bestEst1RmKg, unit)))} ${esc(unit)}` : ''}
               </span>` : ''}
             ${pctChipsHtml}
-          </div>` : '';
+          </div>`;
+        const eqDefaults = getEquipmentLoadDefaults();
+        const weightStep = Number(eqDefaults.plateIncrement) > 0 ? Number(eqDefaults.plateIncrement) : (unit === 'kg' ? 2.5 : 5);
+        let modifierBarHtml = '';
+        if (focusedSet) {
+          const fIsDrop = focusedSet.setType === 'drop' && focusedSet.parentSetId;
+          const fIsTime = focusedSet.trackingType === 'time';
+          const fWorkIdx = exSets.filter((s) => !(s.setType === 'drop' && s.parentSetId) && s.setType !== 'warmup').indexOf(focusedSet);
+          const fBadge = fIsDrop ? `D${focusedSet.dropIndex ?? ''}` : (focusedSet.setType === 'warmup' ? 'W' : `S${fWorkIdx >= 0 ? fWorkIdx + 1 : 1}`);
+          modifierBarHtml = `
+            <div class="logger-modifier-bar" data-mod-set-id="${esc(focusedSet.id)}">
+              <span class="logger-set-badge logger-mod-badge">${esc(fBadge)}</span>
+              ${!fIsTime ? `
+                <div class="logger-mod-group">
+                  <span class="logger-mod-label">${esc(unit)}</span>
+                  <button type="button" class="logger-step-btn" data-set-step="-1" data-step-field="weightKg" data-step-delta="${weightStep}" data-set-id="${esc(focusedSet.id)}" aria-label="Decrease weight">−${weightStep}</button>
+                  <button type="button" class="logger-step-btn" data-set-step="1" data-step-field="weightKg" data-step-delta="${weightStep}" data-set-id="${esc(focusedSet.id)}" aria-label="Increase weight">+${weightStep}</button>
+                </div>
+                <div class="logger-mod-group">
+                  <span class="logger-mod-label">Reps</span>
+                  <button type="button" class="logger-step-btn" data-set-step="-1" data-step-field="reps" data-step-delta="1" data-set-id="${esc(focusedSet.id)}" aria-label="Decrease reps">−</button>
+                  <button type="button" class="logger-step-btn" data-set-step="1" data-step-field="reps" data-step-delta="1" data-set-id="${esc(focusedSet.id)}" aria-label="Increase reps">+</button>
+                </div>
+              ` : `
+                <div class="logger-mod-group">
+                  <button type="button" class="ghost logger-mini-btn" data-logger-hold-set="${esc(focusedSet.id)}" data-logger-hold-block="${esc(blk.id)}" data-logger-hold-sec="${focusedSet.durationSec || 60}" data-logger-hold-name="${esc(focusedSet.exerciseName)}" title="Start full-screen hold countdown">▶ Hold</button>
+                  <button type="button" class="logger-step-btn" data-set-step="-1" data-step-field="durationSec" data-step-delta="5" data-set-id="${esc(focusedSet.id)}" aria-label="Decrease seconds">−5s</button>
+                  <button type="button" class="logger-step-btn" data-set-step="1" data-step-field="durationSec" data-step-delta="5" data-set-id="${esc(focusedSet.id)}" aria-label="Increase seconds">+5s</button>
+                </div>
+              `}
+              <div class="logger-mod-actions">
+                ${!fIsDrop && !fIsTime && focusedSet.setType !== 'warmup' && focusedSet.trackingType === 'weight_reps' ? `<button type="button" class="ghost logger-mini-btn" data-logger-add-drop="${esc(focusedSet.id)}" title="Add drop set">+ Drop</button>` : ''}
+                <button type="button" class="ghost logger-mini-btn" data-logger-del-set="${esc(focusedSet.id)}" aria-label="Delete selected set" title="Delete selected set">✕</button>
+              </div>
+            </div>`;
+        }
+        const isFirstTime = exSets[0]?.trackingType === 'time';
+        const isFirstBw = exSets[0]?.trackingType === 'bodyweight_reps';
+        const setsTableHtml = exSets.length ? `
+          <div class="logger-set-table${isFirstTime ? ' is-time' : ''}">
+            <div class="logger-set-thead">
+              <span>#</span>
+              <span>${isFirstTime ? 'Sec' : esc(isFirstBw ? `+${unit}` : unit)}</span>
+              ${!isFirstTime ? '<span>Reps</span>' : ''}
+              <span>RIR</span>
+              <span>Note</span>
+              <span aria-label="Done">✓</span>
+            </div>
+            ${detailSetsHtml}
+          </div>` : '<p class="note">No sets yet.</p>';
         const pairBoxHtml = loggerPairBlockId === blk?.id ? `
           <div class="logger-add-ex-row" style="margin-top:10px;">
             <input type="text" id="logger-ex-search" list="logger-ex-datalist" placeholder="Pair exercise (e.g. Dumbbell Row)…" autocomplete="off" />
@@ -3017,7 +3112,6 @@ export function mount(root, defs) {
         const partnerChipsHtml = partnerExercises.map((p) =>
           `<button type="button" class="ghost logger-mini-btn" data-logger-select-ex="${esc(p.id)}" data-logger-select-block="${esc(blk.id)}">⇄ ${esc(p.name)}</button>`
         ).join('');
-        const eqDefaults = getEquipmentLoadDefaults();
         const topSetWt = exSets.find((s) => s.weightKg > 0)?.weightKg;
         const defaultPlateTarget = topSetWt ? kgToDisplay(topSetWt, unit) : (unit === 'kg' ? 60 : 135);
         const defaultBarWt = barWeightFor(exObj, { unit, barWeights: eqDefaults.barWeights });
@@ -3025,7 +3119,8 @@ export function mount(root, defs) {
           ${blk ? buildWodPanelHtml(blk) : ''}
           ${trackMetaHtml}
           ${loggerStatusMsg ? `<p class="note" style="color:var(--accent); font-weight:600; margin:0 0 8px;">${esc(loggerStatusMsg)}</p>` : ''}
-          <div class="logger-sets-list">${detailSetsHtml || '<p class="note">No sets yet.</p>'}</div>
+          ${modifierBarHtml}
+          ${setsTableHtml}
           <div class="logger-block-actions" style="margin-top:10px;">
             <button type="button" class="primary logger-mini-btn" data-logger-add-set="${esc(blk.id)}" data-ex-id="${esc(exId)}">+ Add Set</button>
             ${isWeightReps ? `<button type="button" class="ghost logger-mini-btn" data-logger-add-warmups="${esc(blk.id)}" data-ex-id="${esc(exId)}" title="Insert ramped warm-up sets">+ Warm-ups</button>` : ''}
@@ -3109,7 +3204,7 @@ export function mount(root, defs) {
         topExerciseType.hidden = activeTab !== 'logger';
         topExerciseType.textContent = supersetNote;
       }
-      if (topInfoBtn) topInfoBtn.hidden = activeTab !== 'logger';
+      if (topInfoBtn) topInfoBtn.hidden = true;
       if (topTitleEditBtn) topTitleEditBtn.hidden = true;
       if (topTitleInput) topTitleInput.hidden = true;
       if (navCurrentLabel) {
@@ -3521,6 +3616,22 @@ export function mount(root, defs) {
         return;
       }
 
+      if (e.target.id === 'logger-ex-rest-in') {
+        const bId = e.target.dataset.exRestBlock;
+        const xId = e.target.dataset.exRestEx;
+        const restVal = e.target.value === '' ? 90 : Math.max(0, Math.round(Number(e.target.value)));
+        const active = loadActiveWorkout(appDb, activeLoggerSessionId);
+        const blk = active?.blocks.find((b) => b.id === bId);
+        for (const s of blk?.sets || []) {
+          if (s.exerciseId === xId && s.setType !== 'drop') {
+            updateSetFields(appDb, s.id, { restSec: restVal });
+          }
+        }
+        if (xId) appDb.run('UPDATE exercises SET user_rest_sec = ? WHERE id = ?', [restVal, xId]);
+        await savePersistedAppDb(appDb);
+        return;
+      }
+
       const fieldEl = e.target.closest('[data-set-field]');
       if (fieldEl) {
         const setId = fieldEl.dataset.setId;
@@ -3575,6 +3686,34 @@ export function mount(root, defs) {
         }
         await savePersistedAppDb(appDb);
         await renderActiveLogger();
+      }
+    });
+
+    viewLogger.addEventListener('focusin', (e) => {
+      const compactRow = e.target.closest('.logger-compact-row');
+      if (!compactRow) return;
+      const sid = compactRow.dataset.setId;
+      if (!sid || sid === loggerFocusSetId) return;
+      loggerFocusSetId = sid;
+      viewLogger.querySelectorAll('.logger-compact-row.logger-set-focused').forEach((el) => el.classList.remove('logger-set-focused'));
+      compactRow.classList.add('logger-set-focused');
+      const modBar = viewLogger.querySelector('.logger-modifier-bar');
+      if (modBar) {
+        modBar.dataset.modSetId = sid;
+        const badgeEl = modBar.querySelector('.logger-mod-badge');
+        if (badgeEl) badgeEl.textContent = compactRow.dataset.setBadge || '';
+        modBar.querySelectorAll('[data-set-id]').forEach((btn) => { btn.dataset.setId = sid; });
+        const delBtn = modBar.querySelector('[data-logger-del-set]');
+        if (delBtn) delBtn.dataset.loggerDelSet = sid;
+        const dropBtn = modBar.querySelector('[data-logger-add-drop]');
+        if (dropBtn) {
+          dropBtn.dataset.loggerAddDrop = sid;
+          const sType = compactRow.dataset.setType;
+          const tType = compactRow.dataset.trackingType;
+          dropBtn.hidden = sType === 'drop' || sType === 'warmup' || tType !== 'weight_reps';
+        }
+        const holdBtn = modBar.querySelector('[data-logger-hold-set]');
+        if (holdBtn) holdBtn.dataset.loggerHoldSet = sid;
       }
     });
 
@@ -3701,7 +3840,7 @@ export function mount(root, defs) {
       if (holdBtn) {
         const setId = holdBtn.dataset.loggerHoldSet;
         const blockId = holdBtn.dataset.loggerHoldBlock;
-        const row = holdBtn.closest('.logger-set-row');
+        const row = holdBtn.closest('.logger-set-row, .logger-compact-row') || viewLogger.querySelector(`[data-set-id="${CSS.escape(setId)}"]`);
         const durInput = row?.querySelector('[data-set-field="durationSec"]');
         const liveSec = durInput && durInput.value !== '' ? Number(durInput.value) : Number(holdBtn.dataset.loggerHoldSec || 60);
         const dur = Math.max(1, Math.round(liveSec || 60));
@@ -3803,16 +3942,26 @@ export function mount(root, defs) {
         const field = stepBtn.dataset.stepField;
         const dir = Number(stepBtn.dataset.setStep || 1);
         const delta = Number(stepBtn.dataset.stepDelta || 1);
-        const row = stepBtn.closest('.logger-set-row');
+        const row = viewLogger.querySelector(`[data-set-id="${CSS.escape(setId)}"]`) || stepBtn.closest('.logger-set-row');
         const input = row?.querySelector(`input[data-set-field="${field}"]`);
         const unit = getDisplayUnit();
         const curr = Number(input?.value || 0);
         const nextDisplay = Math.max(0, Math.round((curr + dir * delta) * 100) / 100);
         if (input) input.value = String(nextDisplay);
         const dbVal = field === 'weightKg' ? displayToKg(nextDisplay, unit) : Math.round(nextDisplay);
+        loggerFocusSetId = setId;
         updateSetFields(appDb, setId, { [field]: dbVal });
         await savePersistedAppDb(appDb);
         await renderActiveLogger();
+        return;
+      }
+      const compactRow = e.target.closest('.logger-compact-row');
+      if (compactRow && !e.target.closest('input, button, label.logger-check-cell')) {
+        const sid = compactRow.dataset.setId;
+        if (sid && sid !== loggerFocusSetId) {
+          loggerFocusSetId = sid;
+          await renderActiveLogger();
+        }
         return;
       }
       const pctBtn = e.target.closest('[data-logger-pct-wt]');

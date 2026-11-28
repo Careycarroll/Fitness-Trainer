@@ -1971,9 +1971,21 @@ button[disabled] {
 
 .logger-pct-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 6px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.logger-pct-row::-webkit-scrollbar {
+  display: none;
+}
+
+.logger-pct-row > * {
+  flex: 0 0 auto;
 }
 
 .logger-bw-inline {
@@ -2079,6 +2091,141 @@ button[disabled] {
   justify-content: space-between;
   gap: 8px;
   flex-wrap: wrap;
+}
+
+.logger-last-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1 1 140px;
+}
+
+.logger-meta-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.logger-modifier-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 6px 8px;
+  margin-bottom: 8px;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface-raised));
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--border));
+}
+
+.logger-mod-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.logger-mod-label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.logger-mod-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.logger-set-table {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.logger-set-thead,
+.logger-compact-row {
+  display: grid;
+  grid-template-columns: 36px minmax(52px, 1.1fr) minmax(44px, 0.85fr) minmax(36px, 0.65fr) minmax(56px, 1.35fr) 30px;
+  gap: 5px;
+  align-items: center;
+  min-width: 0;
+}
+
+.logger-set-table.is-time .logger-set-thead,
+.logger-set-table.is-time .logger-compact-row {
+  grid-template-columns: 36px minmax(58px, 1fr) minmax(36px, 0.65fr) minmax(70px, 1.5fr) 30px;
+}
+
+.logger-set-thead {
+  padding: 2px 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.logger-set-thead > span:last-child {
+  text-align: center;
+}
+
+.logger-compact-row {
+  padding: 5px 6px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.logger-compact-row.logger-drop-row {
+  margin-left: 12px;
+  border-left: 3px solid var(--accent);
+}
+
+.logger-compact-badge-cell {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.logger-compact-in {
+  width: 100%;
+  min-width: 0;
+  min-height: 34px !important;
+  padding: 4px 5px !important;
+  font-size: 0.88rem !important;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.logger-compact-note {
+  text-align: left;
+  font-size: 0.8rem !important;
+}
+
+.logger-check-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  cursor: pointer;
+}
+
+.logger-compact-sub {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.logger-compact-plate-note {
+  margin: 0;
+  font-size: 0.75rem;
 }
 
 .logger-plate-btn {
@@ -2457,11 +2604,15 @@ button[disabled] {
 }
 
 .logger-top-select {
+  flex: 1 1 120px;
   width: auto !important;
-  max-width: 210px;
+  min-width: 0;
+  max-width: 260px;
   min-height: 32px !important;
   padding: 4px 26px 4px 8px !important;
   font-size: 0.82rem !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ex-picker-backdrop {
